@@ -119,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Increment',
         child: Icon(Icons.add),
         onPressed: () {
-          setState(() {
+
             final navigator = Navigator.of(context);
 
             navigator.push(new MaterialPageRoute(
@@ -130,7 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
             navigator.pushNamed('/shoplist');
 
             navigator.pushReplacementNamed('/shoplist');
-          });
+
         },
       ),
       // This trailing comma makes auto-formatting nicer for build methods.
