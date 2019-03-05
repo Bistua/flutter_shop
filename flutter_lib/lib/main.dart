@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:ui';
 import './bridge.dart';
 
+import './shoplist.dart';
+
 import 'package:flutter_test/flutter_test.dart';
 import './widget/banner/banner_widget.dart';
 import './widget/banner/banner_evalutor.dart';
@@ -12,8 +14,8 @@ Widget _widgetForRoute(String route) {
   switch (route) {
     case 'route1':
       return MyApp();
-    case 'route2':
-      return MyApp();
+    case 'shoplist':
+      return shoplist();
     default:
       return Center(
         child: Text('Unknown route: $route', textDirection: TextDirection.ltr),
@@ -31,6 +33,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
+      routes: <String, WidgetBuilder>{
+        '/shoplist': (context) => shoplist(),
+      },
     );
   }
 }
@@ -66,9 +71,6 @@ const List<Choice> choices = const <Choice>[
 ];
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  String _batteryLevel = 'Unknown battery level.';
-
   final List<Model> data = [
     new Model(
         imgUrl:
@@ -83,35 +85,18 @@ class _MyHomePageState extends State<MyHomePage> {
     new Model(imgUrl: 'http://uploads.5068.com/allimg/1711/151-1G130093R1.jpg'),
   ];
 
-//
-//  Future<Null> _getBatteryLevel() async {
-//    String batteryLevel;
-//    batteryLevel = await bridge.getBatteryLevel();
-//    setState(() {
-//      _batteryLevel = batteryLevel;
-//    });
-//  }
   @override
   void initState() {
     super.initState();
-    Future<String> future = bridge.getBatteryLevel();
-    future.then((value) {
-      setState(() {
-        _batteryLevel = value;
-      });
-    });
   }
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-      post();
-      if (_counter > 5) {
-        print("TTT: +$_counter");
-        bridge.gotoVideoPage();
-      }
-    });
+  @override
+  void dispose() {
+    super.dispose();
   }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {}
 
   Future post() async {
     String result = await bridge.httpRequest(1, "发送一个post请求");
@@ -121,7 +106,6 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -129,76 +113,93 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Container(
-        child: CustomScrollView(slivers: <Widget>[
-          SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                buildBanner(),
-                buildDefaultTabController(),
-                Text(
-                  "热销精品",
-                ),
-              ],
-            ),
-          ),
-          SliverGrid(
-            gridDelegate:
-                SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-            delegate: SliverChildListDelegate(
-              [
-                Image.network(data[1].bannerUrl),
-                Image.network(data[1].bannerUrl),
-                Image.network(data[1].bannerUrl),
-                Image.network(data[1].bannerUrl),
-                Image.network(data[1].bannerUrl),
-                Image.network(data[1].bannerUrl),
-              ],
-            ),
-          ),
-          SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                Text(
-                  "\n热销商品榜>\n",
-                ),
-                Text(
-                  "上新好货",
-                ),
-              ],
-            ),
-          ),
-          SliverGrid(
-            gridDelegate:
-                SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-            delegate: SliverChildListDelegate(
-              [
-                Image.network(data[2].bannerUrl),
-                Image.network(data[2].bannerUrl),
-                Image.network(data[2].bannerUrl),
-                Image.network(data[2].bannerUrl),
-                Image.network(data[2].bannerUrl),
-                Image.network(data[2].bannerUrl),
-              ],
-            ),
-          ),
-          SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                Text(
-                  "所有上新好货>\n\n",
-                ),
-              ],
-            ),
-          ),
-        ]),
+        child: Text("sa"),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: Icon(Icons.add),
+        onPressed: () {
+          setState(() {
+            final navigator = Navigator.of(context);
+
+            navigator.push(new MaterialPageRoute(
+                builder: (context) => new shoplist(
+                      title: "test",
+                    )));
+
+            navigator.pushNamed('/shoplist');
+
+            navigator.pushReplacementNamed('/shoplist');
+          });
+        },
       ),
       // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  CustomScrollView buildCustomScrollView() {
+    return CustomScrollView(slivers: <Widget>[
+      SliverList(
+        delegate: SliverChildListDelegate(
+          [
+            buildBanner(),
+            buildDefaultTabController(),
+            Text(
+              "热销精品",
+            ),
+          ],
+        ),
+      ),
+      SliverGrid(
+        gridDelegate:
+            SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        delegate: SliverChildListDelegate(
+          [
+            Image.network(data[1].bannerUrl),
+            Image.network(data[1].bannerUrl),
+            Image.network(data[1].bannerUrl),
+            Image.network(data[1].bannerUrl),
+            Image.network(data[1].bannerUrl),
+            Image.network(data[1].bannerUrl),
+          ],
+        ),
+      ),
+      SliverList(
+        delegate: SliverChildListDelegate(
+          [
+            Text(
+              "\n热销商品榜>\n",
+            ),
+            Text(
+              "上新好货",
+            ),
+          ],
+        ),
+      ),
+      SliverGrid(
+        gridDelegate:
+            SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        delegate: SliverChildListDelegate(
+          [
+            Image.network(data[2].bannerUrl),
+            Image.network(data[2].bannerUrl),
+            Image.network(data[2].bannerUrl),
+            Image.network(data[2].bannerUrl),
+            Image.network(data[2].bannerUrl),
+            Image.network(data[2].bannerUrl),
+          ],
+        ),
+      ),
+      SliverList(
+        delegate: SliverChildListDelegate(
+          [
+            Text(
+              "所有上新好货>\n\n",
+            ),
+          ],
+        ),
+      ),
+    ]);
   }
 
   DefaultTabController buildDefaultTabController() {
@@ -207,6 +208,20 @@ class _MyHomePageState extends State<MyHomePage> {
       child: new TabBar(
         isScrollable: false,
         labelColor: Colors.blue,
+        onTap: (int i) {
+          switch (i) {
+            case 0:
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) => new shoplist(
+                            title: choices[i].title,
+                          )));
+              break;
+            case 1:
+              break;
+          }
+        },
         tabs: choices.map((Choice choice) {
           return new Tab(
             text: choice.title,
