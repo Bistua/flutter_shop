@@ -8,14 +8,13 @@ import 'package:flutter_test/flutter_test.dart';
 import './widget/banner/banner_widget.dart';
 import './widget/banner/banner_evalutor.dart';
 
-void main() => runApp(_widgetForRoute(window.defaultRouteName));
+void main() => runApp(MyApp());
 
 Widget _widgetForRoute(String route) {
   switch (route) {
     case 'route1':
       return MyApp();
-    case 'shoplist':
-      return shoplist();
+
     default:
       return Center(
         child: Text('Unknown route: $route', textDirection: TextDirection.ltr),
@@ -122,13 +121,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
             final navigator = Navigator.of(context);
 
-            navigator.push(new MaterialPageRoute(
-                builder: (context) => new shoplist(
-                      title: "test",
-                    )));
+//            navigator.push(new MaterialPageRoute(
+//                builder: (context) => new shoplist(
+//                      title: "test",
+//                    )));
 
-            navigator.pushNamed('/shoplist');
-
+//            navigator.pushNamed('/shoplist');
+//
             navigator.pushReplacementNamed('/shoplist');
 
         },

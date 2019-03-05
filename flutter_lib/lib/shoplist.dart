@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class shoplist extends StatelessWidget{
+class shoplist extends StatelessWidget {
   const shoplist({Key key, this.title}) : super(key: key);
   final title;
 
@@ -14,10 +14,7 @@ class shoplist extends StatelessWidget{
       home: shoplistpage(title: 'Flutter Demo Home Page'),
     );
   }
-
-
 }
-
 
 class shoplistpage extends StatefulWidget {
   shoplistpage({Key key, this.title}) : super(key: key);
@@ -27,9 +24,7 @@ class shoplistpage extends StatefulWidget {
   _shopliststate createState() => _shopliststate();
 }
 
-
 class _shopliststate extends State<shoplistpage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,10 +40,8 @@ class _shopliststate extends State<shoplistpage> {
           );
         }),
       ),
-      body: Container(
-      ),
+      body: Container(),
       // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
-
 }
