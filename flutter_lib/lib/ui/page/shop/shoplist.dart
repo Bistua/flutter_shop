@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
 class ShopList extends StatelessWidget {
-  const ShopList({Key key, this.title}) : super(key: key);
-  final title;
+//  const ShopList({Key key, this.title}) : super(key: key);
+//  final title;
 
   @override
   Widget build(BuildContext context) {
-    return ShopListPage(title: title);
+    return ShopListPage();
   }
 }
 
 class ShopListPage extends StatefulWidget {
-  ShopListPage({Key key, this.title}) : super(key: key);
-  final String title;
+//  ShopListPage({Key key, this.title}) : super(key: key);
+//  final String title;
 
   @override
   ShopListState createState() => ShopListState();
@@ -23,7 +23,7 @@ class ShopListState extends State<ShopListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text("test shoplist"),
         centerTitle: true,
         leading: Builder(builder: (BuildContext context) {
           return IconButton(

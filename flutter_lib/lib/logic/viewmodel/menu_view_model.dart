@@ -14,14 +14,14 @@ class MenuViewModel {
           menuColor: Color(0xff050505),
           icon: Icons.person,
           image: UIData.profileImage,
-          items: ["View Profile", "Profile 2", "Profile 3", "Profile 4"]),
+          items: ["home", "Profile 2", "Profile 3", "Profile 4"]),
       Menu(
           title: "Shopping",
           menuColor: Color(0xffc8c4bd),
           icon: Icons.shopping_cart,
           image: UIData.shoppingImage,
           items: [
-            "Shopping List",
+            "shoplist",
             "Shopping Details",
             "Product Details",
             "Shopping 4"

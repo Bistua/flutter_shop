@@ -9,8 +9,7 @@ import 'package:flutter_lib/ui/widgets/banner/banner_widget.dart';
 import 'package:flutter_lib/ui/widgets/banner/banner_evalutor.dart';
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-  final String title;
+
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -42,13 +41,13 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Model> data = [
     new Model(
         imgUrl:
-        'https://img01.sogoucdn.com/app/a/100520093/60d2f4fe0275d790-007c9f9485c5acfd-bdc6566f9acf5ba2a7e7190734c38920.jpg'),
+            'https://img01.sogoucdn.com/app/a/100520093/60d2f4fe0275d790-007c9f9485c5acfd-bdc6566f9acf5ba2a7e7190734c38920.jpg'),
     new Model(
         imgUrl:
-        'http://img4.duitang.com/uploads/item/201502/27/20150227083741_w5YjR.jpeg'),
+            'http://img4.duitang.com/uploads/item/201502/27/20150227083741_w5YjR.jpeg'),
     new Model(
         imgUrl:
-        'http://img4.duitang.com/uploads/item/201501/06/20150106081248_ae4Rk.jpeg'),
+            'http://img4.duitang.com/uploads/item/201501/06/20150106081248_ae4Rk.jpeg'),
     new Model(imgUrl: 'http://pic1.win4000.com/wallpaper/a/59322eda4daf0.jpg'),
     new Model(imgUrl: 'http://uploads.5068.com/allimg/1711/151-1G130093R1.jpg'),
   ];
@@ -78,21 +77,19 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text("home"),
         centerTitle: true,
       ),
       body: Container(
-        child:buildCustomScrollView(),
+        child: buildCustomScrollView(),
       ),
       floatingActionButton: FloatingActionButton(
         tooltip: 'Increment',
         child: Icon(Icons.add),
         onPressed: () {
           final navigator = Navigator.of(context);
-          navigator.push(new MaterialPageRoute(
-              builder: (context) => new ShopList(
-                title: "test",
-              )));
+          navigator.push(
+              new MaterialPageRoute(builder: (context) => new ShopList()));
         },
       ),
       // This trailing comma makes auto-formatting nicer for build methods.
@@ -114,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       SliverGrid(
         gridDelegate:
-        SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+            SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
         delegate: SliverChildListDelegate(
           [
             Image.network(data[1].bannerUrl),
@@ -140,7 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       SliverGrid(
         gridDelegate:
-        SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+            SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
         delegate: SliverChildListDelegate(
           [
             Image.network(data[2].bannerUrl),
@@ -173,12 +170,8 @@ class _MyHomePageState extends State<MyHomePage> {
         onTap: (int i) {
           switch (i) {
             case 0:
-              Navigator.push(
-                  context,
-                  new MaterialPageRoute(
-                      builder: (context) => new ShopList(
-                        title: choices[i].title,
-                      )));
+              Navigator.push(context,
+                  new MaterialPageRoute(builder: (context) => new ShopList()));
               break;
             case 1:
               break;

@@ -70,7 +70,7 @@ class HomePage extends StatelessWidget {
 
   //appbar
   Widget appBar() => SliverAppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.blue,
         pinned: true,
         elevation: 10.0,
         forceElevated: true,
