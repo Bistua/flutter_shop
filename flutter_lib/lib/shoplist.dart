@@ -1,30 +1,24 @@
 import 'package:flutter/material.dart';
 
-class shoplist extends StatelessWidget {
-  const shoplist({Key key, this.title}) : super(key: key);
+class ShopList extends StatelessWidget {
+  const ShopList({Key key, this.title}) : super(key: key);
   final title;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "ter",
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: shoplistpage(title: 'Flutter Demo Home Page'),
-    );
+    return ShopListPage(title: title);
   }
 }
 
-class shoplistpage extends StatefulWidget {
-  shoplistpage({Key key, this.title}) : super(key: key);
+class ShopListPage extends StatefulWidget {
+  ShopListPage({Key key, this.title}) : super(key: key);
   final String title;
 
   @override
-  _shopliststate createState() => _shopliststate();
+  ShopListState createState() => ShopListState();
 }
 
-class _shopliststate extends State<shoplistpage> {
+class ShopListState extends State<ShopListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -28,12 +28,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
       routes: <String, WidgetBuilder>{
-        '/shoplist': (context) => shoplist(),
+        '/homepage': (context) => MyHomePage(title: 'Flutter Demo Home Page'),
+        '/shoplist': (context) => ShopList(title: "shoplist",),
       },
     );
   }
@@ -110,26 +112,20 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        centerTitle: true,
       ),
       body: Container(
-        child: Text("sa"),
+        child:buildCustomScrollView(),
       ),
       floatingActionButton: FloatingActionButton(
         tooltip: 'Increment',
         child: Icon(Icons.add),
         onPressed: () {
-
             final navigator = Navigator.of(context);
-
-//            navigator.push(new MaterialPageRoute(
-//                builder: (context) => new shoplist(
-//                      title: "test",
-//                    )));
-
-//            navigator.pushNamed('/shoplist');
-//
-            navigator.pushReplacementNamed('/shoplist');
-
+            navigator.push(new MaterialPageRoute(
+                builder: (context) => new ShopList(
+                      title: "test",
+                    )));
         },
       ),
       // This trailing comma makes auto-formatting nicer for build methods.
@@ -213,7 +209,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Navigator.push(
                   context,
                   new MaterialPageRoute(
-                      builder: (context) => new shoplist(
+                      builder: (context) => new ShopList(
                             title: choices[i].title,
                           )));
               break;
