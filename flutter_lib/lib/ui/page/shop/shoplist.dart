@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lib/logic/bloc/tab_bloc.dart';
+import 'package:flutter_lib/model/searchTab.dart';
+import 'package:flutter_lib/logic/viewmodel/tab_view_model.dart';
 
 class ShopList extends StatelessWidget {
 //  const ShopList({Key key, this.title}) : super(key: key);
@@ -24,14 +27,19 @@ class ShopListState extends State<ShopListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: buildSearchAppBar(context),
-      body: Container(),
-      // This trailing comma makes auto-formatting nicer for build methods.
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: buildSearchAppBar(context),
+        body: Container(),
+        // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 
   AppBar buildSearchAppBar(BuildContext context) {
+    TabViewModel tabViewModel = TabViewModel();
+    tabViewModel.getMenuItems();
     return new AppBar(
       centerTitle: true,
       title: new Center(
@@ -46,13 +54,40 @@ class ShopListState extends State<ShopListPage> {
               hintStyle: new TextStyle(color: Colors.white)),
         ),
       ),
+      bottom: new TabBar(
+        indicatorColor: Colors.transparent,
+        isScrollable: false,
+        labelColor: Colors.blue,
+        onTap: (int i) {
+          switch (i) {
+            case 0:
+
+              break;
+            case 1:
+              break;
+          }
+        },
+        tabs: tabViewModel.tabItems.map((SearchTab choice) {
+          return new Tab(
+            child: new Row(
+              children: <Widget>[
+                Text(choice.title),
+                Icon(
+                  choice.icon,
+                  color: choice.menuColor,
+                ),
+              ],
+            ),
+          );
+        }).toList(),
+      ),
       leading: new IconButton(
         icon: Icon(Icons.arrow_back),
         onPressed: () => Navigator.pop(context, false),
       ),
       actions: <Widget>[
         new GestureDetector(
-          onTap:(){
+          onTap: () {
             _doSearch(_searchQuery);
           },
           child: new Container(
@@ -84,15 +119,10 @@ class ShopListState extends State<ShopListPage> {
   void _doSearch(TextEditingController searchQuery) {
     searchQuery.addListener(() {
       if (searchQuery.text.isEmpty) {
-        setState(() {
-
-        });
+        setState(() {});
       } else {
-        setState(() {
-
-        });
+        setState(() {});
       }
     });
-
   }
 }
