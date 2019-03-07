@@ -10,12 +10,12 @@ class MyApp extends StatelessWidget {
   final materialApp = MaterialApp(
       title: UIData.appName,
       theme: ThemeData(
-          primaryColor: Colors.black,
+          primaryColor: Colors.white,
           fontFamily: UIData.quickFont,
-          primarySwatch: Colors.amber),
+          primarySwatch: Colors.grey),
       debugShowCheckedModeBanner: false,
       showPerformanceOverlay: false,
-      home: HomePage(),
+      home: MyHomePage(),
 //      localizationsDelegates: [
 //        const TranslationsDelegate(),
 //        GlobalMaterialLocalizations.delegate,
@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
 //            icon: FontAwesomeIcons.solidSmile,
             title: UIData.coming_soon,
             message: "Under Development",
-            iconColor: Colors.green,
+            iconColor: Colors.grey,
           )));
 
   @override

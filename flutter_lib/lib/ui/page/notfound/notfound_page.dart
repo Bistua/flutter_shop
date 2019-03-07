@@ -16,7 +16,7 @@ class NotFoundPage extends StatelessWidget {
       this.message = "Try a more general keyword.",
       this.icon = Icons.search,
       this.image,
-      this.iconColor = Colors.black});
+      this.iconColor = Colors.white});
 
   Widget bodyData() => Center(
         child: Column(

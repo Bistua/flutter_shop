@@ -44,7 +44,7 @@ class HomePage extends StatelessWidget {
   Widget menuColor() => new Container(
         decoration: BoxDecoration(boxShadow: <BoxShadow>[
           BoxShadow(
-            color: Colors.black.withOpacity(0.8),
+            color: Colors.white.withOpacity(0.8),
             blurRadius: 5.0,
           ),
         ]),
@@ -63,14 +63,14 @@ class HomePage extends StatelessWidget {
           ),
           Text(
             menu.title,
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           )
         ],
       );
 
   //appbar
   Widget appBar() => SliverAppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.white,
         pinned: true,
         elevation: 10.0,
         forceElevated: true,
