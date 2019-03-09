@@ -20,6 +20,9 @@ cd flutter_lib
 
 flutter build apk
 
+google hybrid方案：https://github.com/flutter/flutter/wiki/Add-Flutter-to-existing-apps
+
+
 蓝图地址：
 https://lanhuapp.com/url/tzWeO
 
