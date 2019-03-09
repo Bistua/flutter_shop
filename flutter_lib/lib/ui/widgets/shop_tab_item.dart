@@ -7,7 +7,7 @@ class PreferreSizeWidget extends PreferredSize {
 
 
   @override
-  Size get preferredSize =>  new Size.fromHeight(28);
+  Size get preferredSize =>  new Size.fromHeight(48);
 
 
   @override

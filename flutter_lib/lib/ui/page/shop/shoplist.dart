@@ -108,42 +108,8 @@ class ShopListState extends State<ShopListPage> {
     );
   }
 
-  PreferredSize buildPreferredSize() {
-    return PreferredSize(
-      preferredSize: new Size.fromHeight(28),
-      child: Container(
-        height: 50,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            new GestureDetector(
-              onTap: ()=>{
-              bridge.showLongToast("click")
-              },
-              child: new Row(
-                children: <Widget>[
-                  new Text(
-                    '综合排序',
-                  ),
-                  new Icon(Icons.arrow_drop_down),
-                ],
-              ),
-            ),
-            new GestureDetector(
-              child: new Text(
-                '销量',
-              ),
-            ),
-            new GestureDetector(
-              child: new Text(
-                '价格',
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+
+
 
   void _doSearch(TextEditingController searchQuery) {
     searchQuery.addListener(() {
