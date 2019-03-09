@@ -42,16 +42,29 @@ class ShopListState extends State<ShopListPage> {
     tabViewModel.getMenuItems();
     return new AppBar(
       centerTitle: true,
-      title: new Center(
-        child: new TextField(
-          controller: _searchQuery,
-          style: new TextStyle(
-            color: Colors.grey,
+      title: new Container(
+        width: 244,
+        height: 28,
+          decoration: new BoxDecoration(
+          color:new Color(0xfff5f5f5),
+          shape: BoxShape.rectangle,
+          borderRadius: new BorderRadius.circular(14),
+          border: new Border.all(
+            width: 5.0,
+            color: new Color(0xfff5f5f5),
           ),
-          decoration: new InputDecoration(
-              suffixIcon: new Icon(Icons.search, color: Colors.black),
-              hintText: "请输入搜索内容",
-              hintStyle: new TextStyle(color: Colors.white)),
+        ),
+        child: new Center(
+          child: new TextField(
+            controller: _searchQuery,
+            style: new TextStyle(
+              color: Colors.grey,
+            ),
+            decoration: new InputDecoration(
+                suffixIcon: new Icon(Icons.search, color: Colors.black),
+                hintText: "请输入搜索内容",
+                hintStyle: new TextStyle(color: Colors.white)),
+          ),
         ),
       ),
       bottom: new TabBar(
@@ -91,7 +104,9 @@ class ShopListState extends State<ShopListPage> {
             _doSearch(_searchQuery);
           },
           child: new Container(
-            margin: EdgeInsets.fromLTRB(8, 12, 8, 12),
+            width: 60.0,
+            height: 28.0,
+            margin: EdgeInsets.fromLTRB(14, 14, 14, 14),
             child: new Center(
               child: new Text(
                 "搜索",
@@ -104,7 +119,7 @@ class ShopListState extends State<ShopListPage> {
             decoration: new BoxDecoration(
               color: Colors.red,
               shape: BoxShape.rectangle,
-              borderRadius: new BorderRadius.circular(8.0),
+              borderRadius: new BorderRadius.circular(14),
               border: new Border.all(
                 width: 5.0,
                 color: Colors.red,
