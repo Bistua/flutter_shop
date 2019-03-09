@@ -45,66 +45,88 @@ class ShopListState extends State<ShopListPage> {
     tabViewModel.getMenuItems();
     return new AppBar(
       centerTitle: true,
-      title: new Center(
-        child: new Container(
-          child: new Center(
-            child: new TextField(
-              textAlign: TextAlign.start,
-              controller: _searchQuery,
-              style: new TextStyle(color: Colors.grey, fontSize: 14),
-              decoration: new InputDecoration(
-                  suffixIcon: new Icon(Icons.search, color: UIData.ffcccccc),
-                  hintText: "请输入搜索内容",
-                  hintStyle: new TextStyle(color: UIData.ffcccccc)),
-            ),
-          ),
-          alignment: Alignment.topLeft,
-
-          decoration: new BoxDecoration(
-            color: new Color(0xfff5f5f5),
-            shape: BoxShape.rectangle,
-            borderRadius: new BorderRadius.circular(14),
-            border: new Border.all(
-              width: 5.0,
-              color: new Color(0xfff5f5f5),
-            ),
-          ),
-        ),
-      ),
+      title: buildTextField(),
       bottom: new PreferreSizeWidget(),
       leading: new IconButton(
         icon: Icon(Icons.arrow_back),
         onPressed: () => Navigator.pop(context, false),
       ),
       actions: <Widget>[
-        new GestureDetector(
-          onTap: () {
-            _doSearch(_searchQuery);
-          },
-          child: new Container(
-            width: 60,
-            margin: EdgeInsets.fromLTRB(10,8,10,8),
-            child: new Center(
+        buildSearchBtn(),
+      ],
+    );
+  }
+
+  GestureDetector buildSearchBtn() {
+    return new GestureDetector(
+        onTap: () {
+          _doSearch(_searchQuery);
+        },
+        child: Container(
+          padding: new EdgeInsets.fromLTRB(15.0, 0, 15.0, 0),
+          child: new Center(
+            child: Container(
+              alignment: Alignment.center,
+              width: 60,
+              height: 28,
               child: new Text(
-                "搜索",
-                textAlign: TextAlign.center,
-                style: new TextStyle(
-                  color: Colors.white,
-                ),
+                '搜索',
+                style: TextStyle(color: Colors.white),
               ),
-            ),
-            decoration: new BoxDecoration(
-              color: Colors.red,
-              shape: BoxShape.rectangle,
-              borderRadius: new BorderRadius.circular(14),
-              border: new Border.all(
-                width: 5.0,
+              decoration: new BoxDecoration(
                 color: Colors.red,
+                shape: BoxShape.rectangle,
+                borderRadius: new BorderRadius.circular(14),
+                border: new Border.all(
+                  width: 5.0,
+                  color: Colors.red,
+                ),
               ),
             ),
           ),
         ),
-      ],
+      );
+  }
+
+  BoxDecoration buildBoxDecoration() {
+    return new BoxDecoration(
+      color: new Color(0xfff5f5f5),
+      shape: BoxShape.rectangle,
+      borderRadius: new BorderRadius.circular(5),
+      border: new Border.all(
+        color: new Color(0xfff5f5f5),
+      ),
+    );
+  }
+
+  Widget buildTextField() {
+    return new Container(
+      alignment: Alignment.centerLeft,
+      height: 28,
+      child: new Center(
+        child: new TextField(
+          textAlign: TextAlign.start,
+          controller: _searchQuery,
+          cursorColor: Colors.transparent,
+          cursorWidth: 0,
+          style: new TextStyle(color: UIData.ff353535, fontSize: 12),
+          decoration: new InputDecoration(
+              fillColor: Color(0xfff5f5f5),
+              contentPadding: new EdgeInsets.fromLTRB(10.0, 4, 10.0, 4),
+              filled: true,
+              border: new OutlineInputBorder(
+                borderRadius: new BorderRadius.circular(14.0),
+                borderSide: new BorderSide(color: Colors.red, width: 0),
+              ),
+              suffixIcon: new Icon(
+                Icons.search,
+                color: UIData.ffcccccc,
+                size: 18,
+              ),
+              hintText: "请输入搜索内容",
+              hintStyle: new TextStyle(color: UIData.ffcccccc)),
+        ),
+      ),
     );
   }
 
