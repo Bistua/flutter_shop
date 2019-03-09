@@ -22,7 +22,6 @@ class TabViewModel {
       SearchTab(
           title: "价格",
           menuColor: Color(0xff050505),
-          icon: null,
           items: []),
     ];
   }

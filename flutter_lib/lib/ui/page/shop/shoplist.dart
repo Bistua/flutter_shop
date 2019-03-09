@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_lib/logic/bloc/tab_bloc.dart';
 import 'package:flutter_lib/model/searchTab.dart';
 import 'package:flutter_lib/logic/viewmodel/tab_view_model.dart';
+import 'package:flutter_lib/utils/uidata.dart';
 
 class ShopList extends StatelessWidget {
 //  const ShopList({Key key, this.title}) : super(key: key);
@@ -42,58 +43,34 @@ class ShopListState extends State<ShopListPage> {
     tabViewModel.getMenuItems();
     return new AppBar(
       centerTitle: true,
-      title: new Container(
-        width: 244,
-        height: 28,
+      title: new Center(
+        child: new Container(
+          child: new Center(
+            child: new TextField(
+              textAlign: TextAlign.start,
+              controller: _searchQuery,
+              style: new TextStyle(color: Colors.grey, fontSize: 14),
+              decoration: new InputDecoration(
+                  suffixIcon: new Icon(Icons.search, color: UIData.ffcccccc),
+                  hintText: "请输入搜索内容",
+                  hintStyle: new TextStyle(color: UIData.ffcccccc)),
+            ),
+          ),
+          alignment: Alignment.topLeft,
+          width: 244,
+          height: 28,
           decoration: new BoxDecoration(
-          color:new Color(0xfff5f5f5),
-          shape: BoxShape.rectangle,
-          borderRadius: new BorderRadius.circular(14),
-          border: new Border.all(
-            width: 5.0,
             color: new Color(0xfff5f5f5),
-          ),
-        ),
-        child: new Center(
-          child: new TextField(
-            controller: _searchQuery,
-            style: new TextStyle(
-              color: Colors.grey,
+            shape: BoxShape.rectangle,
+            borderRadius: new BorderRadius.circular(14),
+            border: new Border.all(
+              width: 5.0,
+              color: new Color(0xfff5f5f5),
             ),
-            decoration: new InputDecoration(
-                suffixIcon: new Icon(Icons.search, color: Colors.black),
-                hintText: "请输入搜索内容",
-                hintStyle: new TextStyle(color: Colors.white)),
           ),
         ),
       ),
-      bottom: new TabBar(
-        indicatorColor: Colors.transparent,
-        isScrollable: false,
-        labelColor: Colors.blue,
-        onTap: (int i) {
-          switch (i) {
-            case 0:
-
-              break;
-            case 1:
-              break;
-          }
-        },
-        tabs: tabViewModel.tabItems.map((SearchTab choice) {
-          return new Tab(
-            child: new Row(
-              children: <Widget>[
-                Text(choice.title),
-                Icon(
-                  choice.icon,
-                  color: choice.menuColor,
-                ),
-              ],
-            ),
-          );
-        }).toList(),
-      ),
+      bottom:buildPreferredSize(),
       leading: new IconButton(
         icon: Icon(Icons.arrow_back),
         onPressed: () => Navigator.pop(context, false),
@@ -128,6 +105,34 @@ class ShopListState extends State<ShopListPage> {
           ),
         ),
       ],
+    );
+  }
+
+  PreferredSize buildPreferredSize() {
+    return PreferredSize(
+      preferredSize: new Size.fromHeight(28),
+      child: Container(
+        height: 50,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+           new Row(
+             children: <Widget>[
+               new Text(
+                 '综合排序',
+               ),
+               new Icon(Icons.arrow_drop_down),
+             ],
+           ),
+            new Text(
+              '销量',
+            ), new Text(
+              '价格',
+            ),
+
+          ],
+        ),
+      ),
     );
   }
 

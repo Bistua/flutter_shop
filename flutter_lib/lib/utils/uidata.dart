@@ -53,7 +53,10 @@ class UIData {
 
 
   static const MaterialColor ui_kit_color = Colors.grey;
+  static const Color ffcccccc = Color(0xffcccccc);
 
+
+  static const Color ff353535 = Color(0xff353535);
 //colors
   static List<Color> kitGradients = [
     // new Color.fromRGBO(103, 218, 255, 1.0),
@@ -61,6 +64,7 @@ class UIData {
     // new Color.fromRGBO(0, 122, 193, 1.0),
     Colors.blueGrey.shade800,
     Colors.black87,
+
   ];
   static List<Color> kitGradients2 = [
     Colors.cyan.shade600,
