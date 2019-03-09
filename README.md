@@ -14,7 +14,11 @@ flutter android ios google hybrid方案
 
 其它版本不确定是否支持hybrid
 
+首次打开项目，执行以下命令
 
+cd flutter_lib
+
+flutter build apk
 
 蓝图地址：
 https://lanhuapp.com/url/tzWeO
@@ -31,3 +35,5 @@ https://pan.baidu.com/s/12gGDI8O5WicXhgkXaEdFMQ
 pm.bristua.com
 初始密码：bristua123456
 账号：个人手机号
+
+
