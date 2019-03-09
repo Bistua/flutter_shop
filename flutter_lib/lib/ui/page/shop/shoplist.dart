@@ -3,6 +3,8 @@ import 'package:flutter_lib/logic/bloc/tab_bloc.dart';
 import 'package:flutter_lib/model/searchTab.dart';
 import 'package:flutter_lib/logic/viewmodel/tab_view_model.dart';
 import 'package:flutter_lib/utils/uidata.dart';
+import 'package:flutter_lib/bridge.dart';
+import 'package:flutter_lib/ui/widgets/shop_tab_item.dart';
 
 class ShopList extends StatelessWidget {
 //  const ShopList({Key key, this.title}) : super(key: key);
@@ -45,16 +47,14 @@ class ShopListState extends State<ShopListPage> {
       centerTitle: true,
       title: new Center(
         child: new Container(
-          child: new Center(
-            child: new TextField(
-              textAlign: TextAlign.start,
-              controller: _searchQuery,
-              style: new TextStyle(color: Colors.grey, fontSize: 14),
-              decoration: new InputDecoration(
-                  suffixIcon: new Icon(Icons.search, color: UIData.ffcccccc),
-                  hintText: "请输入搜索内容",
-                  hintStyle: new TextStyle(color: UIData.ffcccccc)),
-            ),
+          child: new TextField(
+            textAlign: TextAlign.start,
+            controller: _searchQuery,
+            style: new TextStyle(color: Colors.grey, fontSize: 14),
+            decoration: new InputDecoration(
+                suffixIcon: new Icon(Icons.search, color: UIData.ffcccccc),
+                hintText: "请输入搜索内容",
+                hintStyle: new TextStyle(color: UIData.ffcccccc)),
           ),
           alignment: Alignment.topLeft,
           width: 244,
@@ -70,7 +70,7 @@ class ShopListState extends State<ShopListPage> {
           ),
         ),
       ),
-      bottom:buildPreferredSize(),
+      bottom: new PreferreSizeWidget(),
       leading: new IconButton(
         icon: Icon(Icons.arrow_back),
         onPressed: () => Navigator.pop(context, false),
@@ -116,20 +116,29 @@ class ShopListState extends State<ShopListPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-           new Row(
-             children: <Widget>[
-               new Text(
-                 '综合排序',
-               ),
-               new Icon(Icons.arrow_drop_down),
-             ],
-           ),
-            new Text(
-              '销量',
-            ), new Text(
-              '价格',
+            new GestureDetector(
+              onTap: ()=>{
+              bridge.showLongToast("click")
+              },
+              child: new Row(
+                children: <Widget>[
+                  new Text(
+                    '综合排序',
+                  ),
+                  new Icon(Icons.arrow_drop_down),
+                ],
+              ),
             ),
-
+            new GestureDetector(
+              child: new Text(
+                '销量',
+              ),
+            ),
+            new GestureDetector(
+              child: new Text(
+                '价格',
+              ),
+            ),
           ],
         ),
       ),
