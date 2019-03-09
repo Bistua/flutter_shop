@@ -47,18 +47,19 @@ class ShopListState extends State<ShopListPage> {
       centerTitle: true,
       title: new Center(
         child: new Container(
-          child: new TextField(
-            textAlign: TextAlign.start,
-            controller: _searchQuery,
-            style: new TextStyle(color: Colors.grey, fontSize: 14),
-            decoration: new InputDecoration(
-                suffixIcon: new Icon(Icons.search, color: UIData.ffcccccc),
-                hintText: "请输入搜索内容",
-                hintStyle: new TextStyle(color: UIData.ffcccccc)),
+          child: new Center(
+            child: new TextField(
+              textAlign: TextAlign.start,
+              controller: _searchQuery,
+              style: new TextStyle(color: Colors.grey, fontSize: 14),
+              decoration: new InputDecoration(
+                  suffixIcon: new Icon(Icons.search, color: UIData.ffcccccc),
+                  hintText: "请输入搜索内容",
+                  hintStyle: new TextStyle(color: UIData.ffcccccc)),
+            ),
           ),
           alignment: Alignment.topLeft,
-          width: 244,
-          height: 28,
+
           decoration: new BoxDecoration(
             color: new Color(0xfff5f5f5),
             shape: BoxShape.rectangle,
@@ -81,9 +82,8 @@ class ShopListState extends State<ShopListPage> {
             _doSearch(_searchQuery);
           },
           child: new Container(
-            width: 60.0,
-            height: 28.0,
-            margin: EdgeInsets.fromLTRB(14, 14, 14, 14),
+            width: 60,
+            margin: EdgeInsets.fromLTRB(10,8,10,8),
             child: new Center(
               child: new Text(
                 "搜索",
@@ -107,9 +107,6 @@ class ShopListState extends State<ShopListPage> {
       ],
     );
   }
-
-
-
 
   void _doSearch(TextEditingController searchQuery) {
     searchQuery.addListener(() {
