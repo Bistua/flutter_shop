@@ -64,7 +64,7 @@ class ShopListState extends State<ShopListPage> {
           itemCount: data.length,
           gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            childAspectRatio: (0.5),//item长宽比
+            childAspectRatio: (0.7), //item长宽比
             mainAxisSpacing: 5.0,
             crossAxisSpacing: 5.0, // add some space
           ),
@@ -76,27 +76,42 @@ class ShopListState extends State<ShopListPage> {
                   alignment: Alignment.center,
                   child: new Column(
                     children: <Widget>[
-                      new Expanded(
-                        child: Image.network(
-                          data[index].image,
-                          fit: BoxFit.cover,
-                        ),
+                      new Stack(
+                        children: <Widget>[
+                          Image.network(
+                            data[index].image,
+                            fit: BoxFit.contain,
+                          ),
+                          Positioned(
+                              bottom: 0,
+                              left: 0,
+                              right: 0,
+                              child: new Container(
+                                color: Colors.white,
+                                child: new Column(
+                                  children: <Widget>[
+                                    new Padding(
+                                      padding: EdgeInsets.fromLTRB(0, 12, 0, 6),
+                                      child: new Text(
+                                        data[index].name,
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color: UIData.ff353535),
+                                      ),
+                                    ),
+                                    new Padding(
+                                      padding: EdgeInsets.fromLTRB(0, 6, 0, 12),
+                                      child: new Text(
+                                        data[index].price,
+                                        style: TextStyle(
+                                            color: Colors.red, fontSize: 16),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )),
+                        ],
                       ),
-                      new Padding(
-                        padding: EdgeInsets.fromLTRB(0, 12, 0, 6),
-                        child: new Text(
-                          data[index].name,
-                          style:
-                              TextStyle(fontSize: 12, color: UIData.ff353535),
-                        ),
-                      ),
-                      new Padding(
-                        padding: EdgeInsets.fromLTRB(0, 6, 0, 12),
-                        child: new Text(
-                          data[index].price,
-                          style: TextStyle(color: Colors.red, fontSize: 16),
-                        ),
-                      )
                     ],
                   ),
                 ),
