@@ -5,13 +5,15 @@ import 'package:flutter_lib/logic/viewmodel/tab_view_model.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 import 'package:flutter_lib/bridge.dart';
 import 'package:flutter_lib/ui/widgets/shop_tab_item.dart';
+import 'package:flutter_lib/logic/bloc/product_bloc.dart';
+import 'package:flutter_lib/model/product.dart';
 
 class ShopList extends StatelessWidget {
-//  const ShopList({Key key, this.title}) : super(key: key);
-//  final title;
+  BuildContext _context;
 
   @override
   Widget build(BuildContext context) {
+    _context = context;
     return ShopListPage();
   }
 }
@@ -35,41 +37,75 @@ class ShopListState extends State<ShopListPage> {
       child: Scaffold(
         appBar: buildSearchAppBar(context),
         body: Container(
-          child:gridView ,
+          child: bodyData(),
         ),
         // This trailing comma makes auto-formatting nicer for build methods.
       ),
     );
   }
 
-  var gridView = new GridView.builder(
-      itemCount: 20,
-      gridDelegate:
-      new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-      itemBuilder: (BuildContext context, int index) {
-        return new GestureDetector(
-          child: new Card(
-            elevation: 5.0,
-            child: new Container(
-              alignment: Alignment.center,
-              child:Container(
-                child: new Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Image.network("http://pic1.win4000.com/wallpaper/a/59322eda4daf0.jpg"),
-                    new Text('Item $index'),
-                  ],
+  Widget bodyData() {
+    ProductBloc productBloc = ProductBloc();
+    print(productBloc.productItems);
+    return StreamBuilder<List<Product>>(
+        stream: productBloc.productItems,
+        builder: (context, snapshot) {
+          return snapshot.hasData
+              ? productGrid(snapshot.data)
+              : Center(child: CircularProgressIndicator());
+        });
+  }
+
+  Widget productGrid(List<Product> data) {
+    var size = MediaQuery.of(context).size;
+    return new Padding(
+      padding: EdgeInsets.all(5),
+      child: new GridView.builder(
+          itemCount: data.length,
+          gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: (0.5),//item长宽比
+            mainAxisSpacing: 5.0,
+            crossAxisSpacing: 5.0, // add some space
+          ),
+          itemBuilder: (BuildContext context, int index) {
+            return new GestureDetector(
+              child: new Card(
+                elevation: 5.0,
+                child: new Container(
+                  alignment: Alignment.center,
+                  child: new Column(
+                    children: <Widget>[
+                      new Expanded(
+                        child: Image.network(
+                          data[index].image,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      new Padding(
+                        padding: EdgeInsets.fromLTRB(0, 12, 0, 6),
+                        child: new Text(
+                          data[index].name,
+                          style:
+                              TextStyle(fontSize: 12, color: UIData.ff353535),
+                        ),
+                      ),
+                      new Padding(
+                        padding: EdgeInsets.fromLTRB(0, 6, 0, 12),
+                        child: new Text(
+                          data[index].price,
+                          style: TextStyle(color: Colors.red, fontSize: 16),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ),
-          onTap: () {
-
-
-          },
-        );
-      });
-
+              onTap: () {},
+            );
+          }),
+    );
+  }
 
   AppBar buildSearchAppBar(BuildContext context) {
     TabViewModel tabViewModel = TabViewModel();
@@ -77,7 +113,7 @@ class ShopListState extends State<ShopListPage> {
     return new AppBar(
       centerTitle: false,
       title: buildTextField(),
-      bottom:new PreferreSizeWidget(),
+      bottom: new PreferreSizeWidget(),
       leading: new IconButton(
         icon: Icon(Icons.arrow_back),
         onPressed: () => Navigator.pop(context, false),
