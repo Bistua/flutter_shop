@@ -44,9 +44,9 @@ class ShopListState extends State<ShopListPage> {
     TabViewModel tabViewModel = TabViewModel();
     tabViewModel.getMenuItems();
     return new AppBar(
-      centerTitle: true,
+      centerTitle: false,
       title: buildTextField(),
-      bottom: new PreferreSizeWidget(),
+      bottom:new PreferreSizeWidget(),
       leading: new IconButton(
         icon: Icon(Icons.arrow_back),
         onPressed: () => Navigator.pop(context, false),
@@ -59,33 +59,33 @@ class ShopListState extends State<ShopListPage> {
 
   GestureDetector buildSearchBtn() {
     return new GestureDetector(
-        onTap: () {
-          _doSearch(_searchQuery);
-        },
-        child: Container(
-          padding: new EdgeInsets.fromLTRB(15.0, 0, 15.0, 0),
-          child: new Center(
-            child: Container(
-              alignment: Alignment.center,
-              width: 60,
-              height: 28,
-              child: new Text(
-                '搜索',
-                style: TextStyle(color: Colors.white),
-              ),
-              decoration: new BoxDecoration(
+      onTap: () {
+        _doSearch(_searchQuery);
+      },
+      child: Container(
+        padding: new EdgeInsets.fromLTRB(16.0, 7, 15.0, 8),
+        child: new Center(
+          child: Container(
+            alignment: Alignment.center,
+            width: 60,
+            height: 28,
+            child: new Text(
+              '搜索',
+              style: TextStyle(color: Colors.white),
+            ),
+            decoration: new BoxDecoration(
+              color: Colors.red,
+              shape: BoxShape.rectangle,
+              borderRadius: new BorderRadius.circular(14),
+              border: new Border.all(
+                width: 5.0,
                 color: Colors.red,
-                shape: BoxShape.rectangle,
-                borderRadius: new BorderRadius.circular(14),
-                border: new Border.all(
-                  width: 5.0,
-                  color: Colors.red,
-                ),
               ),
             ),
           ),
         ),
-      );
+      ),
+    );
   }
 
   BoxDecoration buildBoxDecoration() {

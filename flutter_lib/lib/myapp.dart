@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
           primaryColor: Colors.white,
           fontFamily: UIData.quickFont,
           primarySwatch: Colors.grey,
+          brightness: Brightness.light,
           hintColor: Colors.transparent),
       debugShowCheckedModeBanner: false,
       showPerformanceOverlay: false,
