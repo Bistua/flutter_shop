@@ -34,11 +34,42 @@ class ShopListState extends State<ShopListPage> {
       length: 3,
       child: Scaffold(
         appBar: buildSearchAppBar(context),
-        body: Container(),
+        body: Container(
+          child:gridView ,
+        ),
         // This trailing comma makes auto-formatting nicer for build methods.
       ),
     );
   }
+
+  var gridView = new GridView.builder(
+      itemCount: 20,
+      gridDelegate:
+      new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+      itemBuilder: (BuildContext context, int index) {
+        return new GestureDetector(
+          child: new Card(
+            elevation: 5.0,
+            child: new Container(
+              alignment: Alignment.center,
+              child:Container(
+                child: new Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Image.network("http://pic1.win4000.com/wallpaper/a/59322eda4daf0.jpg"),
+                    new Text('Item $index'),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          onTap: () {
+
+
+          },
+        );
+      });
+
 
   AppBar buildSearchAppBar(BuildContext context) {
     TabViewModel tabViewModel = TabViewModel();
