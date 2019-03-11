@@ -129,7 +129,7 @@ class SearchShopListState extends State<SearchShopListPage> {
       title: buildTextField(),
       bottom: new PreferreSizeWidget(),
       leading: new IconButton(
-        icon: Icon(Icons.arrow_back),
+        icon: UIData.back,
         onPressed: () => Navigator.pop(context, false),
       ),
       actions: <Widget>[

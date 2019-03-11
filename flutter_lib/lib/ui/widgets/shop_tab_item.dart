@@ -59,8 +59,9 @@ class TabItemState extends State<TabItemPage> {
         children: <Widget>[
           new Text(
             s,
+            style: TextStyle(color: Colors.red),
           ),
-          isArrowDown?new Icon(Icons.arrow_drop_down):new Icon(Icons.arrow_drop_up)
+          isArrowDown?new Icon(Icons.arrow_drop_down,color: Colors.red,):new Icon(Icons.arrow_drop_up,color: Colors.red,)
         ],
       ),
       onTap: ()=>{

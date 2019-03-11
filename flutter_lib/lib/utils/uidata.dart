@@ -58,6 +58,10 @@ class UIData {
 
 
   static const Color ff353535 = Color(0xff353535);
+
+  static const Icon back =  Icon(Icons.arrow_back_ios ,color: UIData.ff353535);
+
+
 //colors
   static List<Color> kitGradients = [
     // new Color.fromRGBO(103, 218, 255, 1.0),

@@ -10,8 +10,6 @@ import 'package:flutter_lib/ui/widgets/banner/banner_widget.dart';
 import 'package:flutter_lib/ui/widgets/banner/banner_evalutor.dart';
 
 class MyHomePage extends StatefulWidget {
-
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -89,8 +87,8 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Icon(Icons.add),
         onPressed: () {
           final navigator = Navigator.of(context);
-          navigator.push(
-              new MaterialPageRoute(builder: (context) => new SearchShopList()));
+          navigator.push(new MaterialPageRoute(
+              builder: (context) => new SearchShopList()));
         },
       ),
       // This trailing comma makes auto-formatting nicer for build methods.
@@ -171,12 +169,20 @@ class _MyHomePageState extends State<MyHomePage> {
         onTap: (int i) {
           switch (i) {
             case 0:
-              Navigator.push(context,
-                  new MaterialPageRoute(builder: (context) => new SearchShopList()));
-              break;
             case 1:
-              Navigator.push(context,
-                  new MaterialPageRoute(builder: (context) => new ShopList()));
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) => new ShopListPage(
+                            title: choices[i].title,
+                          )));
+              break;
+            case 2:
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) => new SearchShopList()));
+
               break;
           }
         },

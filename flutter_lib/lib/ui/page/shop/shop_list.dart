@@ -9,17 +9,24 @@ import 'package:flutter_lib/logic/bloc/product_bloc.dart';
 import 'package:flutter_lib/model/product.dart';
 
 class ShopList extends StatelessWidget {
+  String title;
+  ShopList(String title){
+    this.title = title;
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
-
-    return ShopListPage();
+    return ShopListPage(title: title,);
   }
 }
 
+
 class ShopListPage extends StatefulWidget {
-//  ShopListPage({Key key, this.title}) : super(key: key);
-//  final String title;
+
+  ShopListPage({Key key, this.title}) : super(key: key);
+  final String title;
 
   @override
   ShopListState createState() => ShopListState();
@@ -33,7 +40,15 @@ class ShopListState extends State<ShopListPage> {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        appBar: buildCenterTitleAppBar(context),
+        appBar: new AppBar(
+          centerTitle: true,
+          title: Text(widget.title),
+          bottom: new PreferreSizeWidget(),
+          leading: new IconButton(
+            icon: UIData.back,
+            onPressed: () => Navigator.pop(context, false),
+          ),
+        ),
         body: Container(
           child: bodyData(),
         ),
@@ -117,20 +132,6 @@ class ShopListState extends State<ShopListPage> {
               onTap: () {},
             );
           }),
-    );
-  }
-
-  AppBar buildCenterTitleAppBar(BuildContext context) {
-    TabViewModel tabViewModel = TabViewModel();
-    tabViewModel.getMenuItems();
-    return new AppBar(
-      centerTitle: true,
-      title: Text("上新好货"),
-      bottom: new PreferreSizeWidget(),
-      leading: new IconButton(
-        icon: Icon(Icons.arrow_back),
-        onPressed: () => Navigator.pop(context, false),
-      ),
     );
   }
 }

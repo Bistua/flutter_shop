@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
       //routes
       routes: <String, WidgetBuilder>{
         UIData.homeRoute: (BuildContext context) => MyHomePage(),
-        UIData.shoplist: (BuildContext context) => ShopList(),
+        UIData.shoplist: (BuildContext context) => ShopListPage(title:"热销"),
         UIData.searchShopList: (BuildContext context) => SearchShopList(),
         UIData.notFoundRoute: (BuildContext context) => NotFoundPage(),
       },
