@@ -8,25 +8,24 @@ import 'package:flutter_lib/ui/widgets/shop_tab_item.dart';
 import 'package:flutter_lib/logic/bloc/product_bloc.dart';
 import 'package:flutter_lib/model/product.dart';
 
-class ShopList extends StatelessWidget {
-  BuildContext _context;
+class SearchShopList extends StatelessWidget {
+
 
   @override
   Widget build(BuildContext context) {
-    _context = context;
-    return ShopListPage();
+    return SearchShopListPage();
   }
 }
 
-class ShopListPage extends StatefulWidget {
+class SearchShopListPage extends StatefulWidget {
 //  ShopListPage({Key key, this.title}) : super(key: key);
 //  final String title;
 
   @override
-  ShopListState createState() => ShopListState();
+  SearchShopListState createState() => SearchShopListState();
 }
 
-class ShopListState extends State<ShopListPage> {
+class SearchShopListState extends State<SearchShopListPage> {
   Widget appBarTitle;
   final TextEditingController _searchQuery = new TextEditingController();
 

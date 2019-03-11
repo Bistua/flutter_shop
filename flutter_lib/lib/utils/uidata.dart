@@ -6,6 +6,7 @@ class UIData {
   //routes
   static const String homeRoute = "/home";
   static const String shoplist = "/shoplist";
+  static const String searchShopList = "/search_shop_list";
   static const String notFoundRoute = "/No Search Result";
 
 

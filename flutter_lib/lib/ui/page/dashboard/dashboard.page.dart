@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:flutter_lib/bridge.dart';
 
-import 'package:flutter_lib/ui/page/shop/shoplist.dart';
+import 'package:flutter_lib/ui/page/shop/search_shop_list.dart';
+import 'package:flutter_lib/ui/page/shop/shop_list.dart';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_lib/ui/widgets/banner/banner_widget.dart';
@@ -89,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: () {
           final navigator = Navigator.of(context);
           navigator.push(
-              new MaterialPageRoute(builder: (context) => new ShopList()));
+              new MaterialPageRoute(builder: (context) => new SearchShopList()));
         },
       ),
       // This trailing comma makes auto-formatting nicer for build methods.
@@ -171,9 +172,11 @@ class _MyHomePageState extends State<MyHomePage> {
           switch (i) {
             case 0:
               Navigator.push(context,
-                  new MaterialPageRoute(builder: (context) => new ShopList()));
+                  new MaterialPageRoute(builder: (context) => new SearchShopList()));
               break;
             case 1:
+              Navigator.push(context,
+                  new MaterialPageRoute(builder: (context) => new ShopList()));
               break;
           }
         },

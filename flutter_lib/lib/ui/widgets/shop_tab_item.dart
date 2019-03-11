@@ -20,6 +20,7 @@ class TabItemPage extends StatefulWidget {
 }
 
 class TabItemState extends State<TabItemPage> {
+  var isArrowDown = true;
   @override
   Widget build(BuildContext context) {
     return buildContainer();
@@ -31,7 +32,7 @@ class TabItemState extends State<TabItemPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          buildDropdownButton(),
+          buildArrowDownUpText("综合"),
           buildGestureDetector("销量"),
           buildGestureDetector("价格"),
         ],
@@ -39,11 +40,34 @@ class TabItemState extends State<TabItemPage> {
     );
   }
 
+
+
   GestureDetector buildGestureDetector(String s) {
     return new GestureDetector(
       child: new Text(
         s,
       ),
+    );
+  }
+
+
+
+  GestureDetector buildArrowDownUpText(String s) {
+
+    return new GestureDetector(
+      child:new Row(
+        children: <Widget>[
+          new Text(
+            s,
+          ),
+          isArrowDown?new Icon(Icons.arrow_drop_down):new Icon(Icons.arrow_drop_up)
+        ],
+      ),
+      onTap: ()=>{
+        this.setState((){
+          isArrowDown = !isArrowDown;
+        })
+      },
     );
   }
 
