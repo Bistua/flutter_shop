@@ -58,6 +58,16 @@ class UIData {
 
 
   static const Color ff353535 = Color(0xff353535);
+  static const Color fffa4848 = Color(0xfffa4848);
+  static const Color fff = Color(0xffffffff);
+  static const Color ffffe116 = Color(0xffffe116);
+  static const Color ffffa5a5 = Color(0xffffa5a5);
+
+  static const Color ff999999 = Color(0xff999999);
+
+
+
+
 
   static const Icon back =  Icon(Icons.arrow_back_ios ,color: UIData.ff353535);
 
@@ -78,6 +88,30 @@ class UIData {
 
   //randomcolor
   static final Random _random = new Random();
+
+  static Text getTextWidget(String text,Color color,double fontSize){
+    return  Text(text,style: TextStyle(fontSize: fontSize,color: color));
+  }
+
+  static Padding getTextWithPading(String text,Color color,double fontSize,double padding){
+    return  Padding(
+      padding: EdgeInsets.all(padding),
+      child: Text(text,style: TextStyle(fontSize: fontSize,color: color)),
+    );
+  }
+
+
+  static AppBar getCenterTitleAppBar(String title,BuildContext context){
+  return  new AppBar(
+     centerTitle: true,
+     title: Text(title),
+     leading: new IconButton(
+       icon: UIData.back,
+       onPressed: () => Navigator.pop(context, false),
+     ),
+   );
+ }
+
 
   /// Returns a random color.
   static Color next() {

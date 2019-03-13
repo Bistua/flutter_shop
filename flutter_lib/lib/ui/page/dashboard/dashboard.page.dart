@@ -8,6 +8,7 @@ import 'package:flutter_lib/ui/page/shop/shop_list.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_lib/ui/widgets/banner/banner_widget.dart';
 import 'package:flutter_lib/ui/widgets/banner/banner_evalutor.dart';
+import 'package:flutter_lib/ui/page/invite/invite_friends.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -184,6 +185,14 @@ class _MyHomePageState extends State<MyHomePage> {
                       builder: (context) => new SearchShopList()));
 
               break;
+            case 3:
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) => new IviteFriendsPage()));
+
+              break;
+
           }
         },
         tabs: choices.map((Choice choice) {

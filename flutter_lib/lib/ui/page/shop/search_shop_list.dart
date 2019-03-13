@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_lib/logic/bloc/tab_bloc.dart';
-import 'package:flutter_lib/model/searchTab.dart';
-import 'package:flutter_lib/logic/viewmodel/tab_view_model.dart';
-import 'package:flutter_lib/utils/uidata.dart';
-import 'package:flutter_lib/bridge.dart';
-import 'package:flutter_lib/ui/widgets/shop_tab_item.dart';
 import 'package:flutter_lib/logic/bloc/product_bloc.dart';
+import 'package:flutter_lib/logic/viewmodel/tab_view_model.dart';
 import 'package:flutter_lib/model/product.dart';
+import 'package:flutter_lib/ui/widgets/shop_tab_item.dart';
+import 'package:flutter_lib/utils/uidata.dart';
 
 class SearchShopList extends StatelessWidget {
 
