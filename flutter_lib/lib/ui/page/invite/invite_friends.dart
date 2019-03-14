@@ -3,6 +3,8 @@ import 'package:flutter_lib/utils/uidata.dart';
 import 'package:flutter_lib/logic/bloc/product_bloc.dart';
 import 'package:flutter_lib/model/product.dart';
 import 'package:flutter_lib/ui/widgets/shop_tab_item.dart';
+import 'package:flutter_lib/model/rankList.dart';
+import 'package:flutter_lib/logic/viewmodel/rank_view_model.dart';
 
 class IviteFriendsPage extends StatefulWidget {
   IviteFriendsPage({Key key}) : super(key: key);
@@ -13,11 +15,13 @@ class IviteFriendsPage extends StatefulWidget {
 
 class IviteFriendsPageState extends State<IviteFriendsPage> {
   BuildContext _context;
+
   @override
   Widget build(BuildContext context) {
     _context = context;
     ProductBloc productBloc = ProductBloc();
-
+    RankViewModel rankViewModel = RankViewModel();
+    List<Rank> rankList = rankViewModel.getMenuItems();
     print(productBloc.productItems);
     return new Scaffold(
       appBar: UIData.getCenterTitleAppBar("邀请好友下单", context),
@@ -34,31 +38,57 @@ class IviteFriendsPageState extends State<IviteFriendsPage> {
             ),
           ),
           SliverFixedExtentList(
-            itemExtent: 78, // I'm forcing item heights
+            itemExtent: 77, // I'm forcing item heights
             delegate: SliverChildBuilderDelegate(
               (context, index) => Container(
                     color: UIData.fff,
                     child: new Column(
                       children: <Widget>[
-                        ListTile(
-                          title: Text(
-                            generatedList[index],
-                            style: TextStyle(fontSize: 20.0),
-                          ),
+                        Row(
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(17, 18, 15, 18),
+                              child:  Container(
+                                width: 25,
+                                height: 25,
+                                child: Center(
+                                  child:  UIData.getTextWidget((index+1).toString(), UIData.fff, 15),
+                                ),
+                                decoration: new BoxDecoration(
+                                  color: rankList[index].color,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                            ),
+                            new Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Padding(
+                                  child: UIData.getTextWidget(rankList[index].name,
+                                      UIData.ff353535, 12),
+                                  padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                                ),
+                                Padding(
+                                  child: UIData.getTextWidget(rankList[index].xiaofei,
+                                      UIData.ff353535, 12),
+                                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                         Divider(),
                       ],
                     ),
                   ),
-              childCount: generatedList.length,
+              childCount: rankList.length,
             ),
           ),
         ],
       ),
     );
   }
-
-  final generatedList = List.generate(5, (index) => 'Item $index');
 
   Padding buildFriendsPayInfoList() {
     return Padding(
@@ -89,72 +119,6 @@ class IviteFriendsPageState extends State<IviteFriendsPage> {
           ],
         ),
       ),
-    );
-  }
-
-  Widget productListView(List<Product> data) {
-    var size = MediaQuery.of(context).size;
-    return new Padding(
-      padding: EdgeInsets.all(5),
-      child: new GridView.builder(
-          itemCount: data.length,
-          gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: (0.7), //item长宽比
-            mainAxisSpacing: 5.0,
-            crossAxisSpacing: 5.0, // add some space
-          ),
-          itemBuilder: (BuildContext context, int index) {
-            return new GestureDetector(
-              child: new Card(
-                elevation: 5.0,
-                child: new Container(
-                  alignment: Alignment.center,
-                  child: new Column(
-                    children: <Widget>[
-                      new Stack(
-                        children: <Widget>[
-                          Image.network(
-                            data[index].image,
-                            fit: BoxFit.contain,
-                          ),
-                          Positioned(
-                              bottom: 0,
-                              left: 0,
-                              right: 0,
-                              child: new Container(
-                                color: Colors.white,
-                                child: new Column(
-                                  children: <Widget>[
-                                    new Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 12, 0, 6),
-                                      child: new Text(
-                                        data[index].name,
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            color: UIData.ff353535),
-                                      ),
-                                    ),
-                                    new Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 6, 0, 12),
-                                      child: new Text(
-                                        data[index].price,
-                                        style: TextStyle(
-                                            color: Colors.red, fontSize: 16),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              onTap: () {},
-            );
-          }),
     );
   }
 
@@ -240,7 +204,13 @@ class IviteFriendsPageState extends State<IviteFriendsPage> {
                 child: RaisedButton(
                   color: UIData.fffa4848,
                   textColor: UIData.fff,
-                  child: UIData.getTextWidget("立即成为VIP", UIData.fff, 18),
+                  child: new Container(
+                    width: 345,
+                    height: 45,
+                    child: Center(
+                      child: UIData.getTextWidget("立即成为VIP", UIData.fff, 18),
+                    ),
+                  ),
                   onPressed: () {},
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),

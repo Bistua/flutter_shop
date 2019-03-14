@@ -61,6 +61,12 @@ class UIData {
   static const Color fffa4848 = Color(0xfffa4848);
   static const Color fff = Color(0xffffffff);
   static const Color ffffe116 = Color(0xffffe116);
+  static const Color ffffb414 = Color(0xffffb414);
+  static const Color ff85b8e7 = Color(0xff85b8e7);
+  static const Color ffd5d5d5 = Color(0xffd5d5d5);
+
+
+
   static const Color ffffa5a5 = Color(0xffffa5a5);
 
   static const Color ff999999 = Color(0xff999999);
