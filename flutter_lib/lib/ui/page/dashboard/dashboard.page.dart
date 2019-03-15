@@ -186,13 +186,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
               break;
             case 3:
-              Navigator.push(
-                  context,
-                  new MaterialPageRoute(
-                      builder: (context) => new IviteFriendsPage()));
+              Navigator.push(context, new MaterialPageRoute(builder: (context) => new IviteFriendsPage()));
 
               break;
-
           }
         },
         tabs: choices.map((Choice choice) {

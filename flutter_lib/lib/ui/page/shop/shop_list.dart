@@ -7,6 +7,7 @@ import 'package:flutter_lib/bridge.dart';
 import 'package:flutter_lib/ui/widgets/shop_tab_item.dart';
 import 'package:flutter_lib/logic/bloc/product_bloc.dart';
 import 'package:flutter_lib/model/product.dart';
+import 'package:flutter_lib/ui/page/shop/shop_detail.dart';
 
 class ShopList extends StatelessWidget {
   String title;
@@ -129,7 +130,9 @@ class ShopListState extends State<ShopListPage> {
                   ),
                 ),
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(context, new MaterialPageRoute(builder: (context) => new ShopDetailPage(data[index])));
+              },
             );
           }),
     );
