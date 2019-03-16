@@ -65,33 +65,33 @@ class TabItemState extends State<TabItemPage> {
         ],
       ),
       onTap: ()=>{
-        this.setState((){
-          isArrowDown = !isArrowDown;
-        })
+      this.setState((){
+        isArrowDown = !isArrowDown;
+      })
       },
     );
   }
 
-  String value = "综合";
-
-  Widget buildDropdownButton() {
-    return DropdownButtonHideUnderline(
-        child:  DropdownButton<String>(
-          value: value,
-          onChanged: (String newValue) {
-            setState(() {
-              value = newValue;
-            });
-          },
-          items: <String>['综合', '价格', '热门']
-              .map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
-        ),
-
-    );
-  }
+//  String value = "综合";
+//
+//  Widget buildDropdownButton() {
+//    return DropdownButtonHideUnderline(
+//      child:  DropdownButton<String>(
+//        value: value,
+//        onChanged: (String newValue) {
+//          setState(() {
+//            value = newValue;
+//          });
+//        },
+//        items: <String>['综合', '价格', '热门']
+//            .map<DropdownMenuItem<String>>((String value) {
+//          return DropdownMenuItem<String>(
+//            value: value,
+//            child: Text(value),
+//          );
+//        }).toList(),
+//      ),
+//
+//    );
+//  }
 }

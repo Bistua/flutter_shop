@@ -18,7 +18,7 @@ class ShopDetailPage extends StatefulWidget {
 class ShopDetailPageState extends State<ShopDetailPage> {
   BuildContext _context;
   Product product;
-
+  int shopCartCount = 0;
   ShopDetailPageState(Product product) {
     this.product = product;
   }
@@ -39,42 +39,56 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                   Padding(
                     padding: EdgeInsets.all(15),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
-                        Text(
-                          product.price,
-                          style:
-                              TextStyle(color: UIData.fffa4848, fontSize: 18),
-                        ),
-                        RichText(
-                          text: new TextSpan(
-                            text: 'This item costs ',
-                            children: <TextSpan>[
-                              new TextSpan(
-                                text: product.price,
-                                style: new TextStyle(
-                                  color: UIData.ff999999,
-                                  decoration: TextDecoration.lineThrough,
+                        Expanded(
+                          child: RichText(
+                            text: new TextSpan(
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: product.price,
+                                  style: TextStyle(
+                                      color: UIData.fffa4848, fontSize: 18),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
+                          flex: 1,
                         ),
-                        GestureDetector(
-                          onTap: () {},
-                          child: Container(
-                            width: 115,
-                            height: 20,
-                            color: UIData.fffff6f6,
-                            child: Center(
-                              child: Text(
-                                "邀请好友下单返金币",
-                                style: TextStyle(
-                                    color: UIData.fffa4848, fontSize: 12),
+                        Expanded(
+                          child: RichText(
+                            text: new TextSpan(
+                              children: <TextSpan>[
+                                new TextSpan(
+                                  text: product.price,
+                                  style: new TextStyle(
+                                    color: UIData.ff999999,
+                                    decoration: TextDecoration.lineThrough,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          flex: 2,
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {},
+                            child: Container(
+                              width: 115,
+                              height: 20,
+                              color: UIData.fffff6f6,
+                              child: Center(
+                                child: Text(
+                                  "邀请好友下单返金币",
+                                  style: TextStyle(
+                                      color: UIData.fffa4848, fontSize: 12),
+                                ),
                               ),
                             ),
                           ),
+                          flex: 2,
                         ),
                       ],
                     ),
@@ -120,18 +134,48 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                     right: 0,
                     child: new Row(
                       mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
                         Expanded(
-                          child: Icon(
-                            Icons.shopping_cart,
-                            color: Colors.black,
+                          flex: 1,
+                          child: Stack(
+                            children: <Widget>[
+                              Center(
+                                  child: IconButton(
+                                      icon: Icon(
+                                        Icons.shopping_cart,
+                                        color: Colors.black,
+                                      ),
+                                      onPressed: () {})),
+                              Positioned(
+                                right: 8,
+                                top: 8,
+                                child: new Container(
+                                  width: 13,
+                                  height: 13,
+                                  child: Center(
+                                    child: UIData.getTextWidget(
+                                        shopCartCount.toString(),
+                                        UIData.fff,
+                                        10),
+                                  ),
+                                  decoration: UIData.getCircleBoxDecoration(UIData.fffa4848)
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         Expanded(
-                          child: Icon(Icons.star, color: Colors.black),
+                          flex: 1,
+                          child: IconButton(
+                            icon: Icon(Icons.star, color: Colors.black),
+                            onPressed: () {},
+                          ),
                         ),
                         UIData.getShapeButton(UIData.fffa4848, UIData.fff, 125,
-                            50, "加入购物车", 16, 0, () {}),
+                            50, "加入购物车", 16, 0, () {
+                          addShopCartCount();
+                        }),
                         UIData.getShapeButton(UIData.ffffa517, UIData.fff, 110,
                             50, "立即购买", 16, 0, () {}),
                       ],
@@ -228,6 +272,12 @@ class ShopDetailPageState extends State<ShopDetailPage> {
         ),
       ],
     );
+  }
+
+  addShopCartCount() {
+    setState(() {
+      shopCartCount++;
+    });
   }
 
   Widget buildFriendsPayInfoList() {

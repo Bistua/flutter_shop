@@ -190,6 +190,21 @@ class UIData {
         UIData.fffa4848, UIData.fff, 345, 45, text, 18, 5, onPressed);
   }
 
+  static BoxDecoration getCircleBoxDecoration(Color color) {
+    return BoxDecoration(
+      color: color,
+      shape: BoxShape.circle,
+    );
+  }
+
+  static BoxDecoration buildBoxDecoration(Color color, double radius) {
+    return new BoxDecoration(
+      color: color,
+      shape: BoxShape.rectangle,
+      borderRadius: new BorderRadius.circular(radius),
+    );
+  }
+
   /// Returns a random color.
   static Color next() {
     return new Color(0xFF000000 + _random.nextInt(0x00FFFFFF));
