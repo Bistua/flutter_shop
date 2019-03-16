@@ -33,31 +33,49 @@ class ShopDetailPageState extends State<ShopDetailPage> {
             children: <Widget>[
               Image.network(this.product.image),
               Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.all(15),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        Expanded(
-                          child: Text(
-                            product.price,
-                            style:
-                                TextStyle(color: UIData.fffa4848, fontSize: 18),
+                        Text(
+                          product.price,
+                          style:
+                              TextStyle(color: UIData.fffa4848, fontSize: 18),
+                        ),
+                        RichText(
+                          text: new TextSpan(
+                            text: 'This item costs ',
+                            children: <TextSpan>[
+                              new TextSpan(
+                                text: product.price,
+                                style: new TextStyle(
+                                  color: UIData.ff999999,
+                                  decoration: TextDecoration.lineThrough,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        Expanded(
-                          child: Text(
-                            product.price,
-                            style:
-                                TextStyle(color: UIData.ff999999, fontSize: 15),
+                        GestureDetector(
+                          onTap: () {},
+                          child: Container(
+                            width: 115,
+                            height: 20,
+                            color: UIData.fffff6f6,
+                            child: Center(
+                              child: Text(
+                                "邀请好友下单返金币",
+                                style: TextStyle(
+                                    color: UIData.fffa4848, fontSize: 12),
+                              ),
+                            ),
                           ),
                         ),
-                        UIData.getShapeButton(UIData.fffff6f6, UIData.fffa4848, 115, 20, "邀请好友下单返金币", 12, 0, (){
-
-                        }),
                       ],
                     ),
                   ),
