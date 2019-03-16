@@ -39,22 +39,25 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                   Padding(
                     padding: EdgeInsets.all(15),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
-                        Text(
-                          product.price,
-                          style:
-                              TextStyle(color: UIData.fffa4848, fontSize: 15),
+                        Expanded(
+                          child: Text(
+                            product.price,
+                            style:
+                                TextStyle(color: UIData.fffa4848, fontSize: 18),
+                          ),
                         ),
-                        Text(
-                          product.price,
-                          style:
-                              TextStyle(color: UIData.ff999999, fontSize: 15),
+                        Expanded(
+                          child: Text(
+                            product.price,
+                            style:
+                                TextStyle(color: UIData.ff999999, fontSize: 15),
+                          ),
                         ),
-                        Text(
-                          "邀请好友下单返金币",
-                          style:
-                              TextStyle(color: UIData.fffa4848, fontSize: 12),
-                        )
+                        UIData.getShapeButton(UIData.fffff6f6, UIData.fffa4848, 115, 20, "邀请好友下单返金币", 12, 0, (){
+
+                        }),
                       ],
                     ),
                   ),
@@ -90,7 +93,42 @@ class ShopDetailPageState extends State<ShopDetailPage> {
       appBar: UIData.getCenterTitleAppBar(product.name, context),
       body: product == null
           ? CircularProgressIndicator()
-          : buildCustomScrollView(rankList),
+          : Container(
+              child: Stack(
+                children: <Widget>[
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: new Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Expanded(
+                          child: Icon(
+                            Icons.shopping_cart,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Expanded(
+                          child: Icon(Icons.star, color: Colors.black),
+                        ),
+                        UIData.getShapeButton(UIData.fffa4848, UIData.fff, 125,
+                            50, "加入购物车", 16, 0, () {}),
+                        UIData.getShapeButton(UIData.ffffa517, UIData.fff, 110,
+                            50, "立即购买", 16, 0, () {}),
+                      ],
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 50,
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    child: buildCustomScrollView(rankList),
+                  ),
+                ],
+              ),
+            ),
     );
   }
 

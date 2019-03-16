@@ -2,13 +2,13 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+
 class UIData {
   //routes
   static const String homeRoute = "/home";
   static const String shoplist = "/shoplist";
   static const String searchShopList = "/search_shop_list";
   static const String notFoundRoute = "/No Search Result";
-
 
   //strings
   static const String appName = "Flutter UIKit";
@@ -52,32 +52,28 @@ class UIData {
   static const String something_went_wrong = "Something went wrong";
   static const String coming_soon = "Coming Soon";
 
-
   static const MaterialColor ui_kit_color = Colors.grey;
   static const Color ffcccccc = Color(0xffcccccc);
 
-
   static const Color ff353535 = Color(0xff353535);
   static const Color fffa4848 = Color(0xfffa4848);
+  static const Color fffff6f6 = Color(0xfffff6f6);
+
   static const Color fff = Color(0xffffffff);
   static const Color ffffe116 = Color(0xffffe116);
   static const Color ffffb414 = Color(0xffffb414);
+
+  static const Color ffffa517 = Color(0xffffa517);
+
   static const Color ff85b8e7 = Color(0xff85b8e7);
   static const Color ffd5d5d5 = Color(0xffd5d5d5);
-
-
 
   static const Color ffffa5a5 = Color(0xffffa5a5);
 
   static const Color ff999999 = Color(0xff999999);
   static const Color ff666666 = Color(0xff666666);
 
-
-
-
-
-  static const Icon back =  Icon(Icons.arrow_back_ios ,color: UIData.ff353535);
-
+  static const Icon back = Icon(Icons.arrow_back_ios, color: UIData.ff353535);
 
 //colors
   static List<Color> kitGradients = [
@@ -86,7 +82,6 @@ class UIData {
     // new Color.fromRGBO(0, 122, 193, 1.0),
     Colors.blueGrey.shade800,
     Colors.black87,
-
   ];
   static List<Color> kitGradients2 = [
     Colors.cyan.shade600,
@@ -96,29 +91,104 @@ class UIData {
   //randomcolor
   static final Random _random = new Random();
 
-  static Text getTextWidget(String text,Color color,double fontSize){
-    return  Text(text,style: TextStyle(fontSize: fontSize,color: color));
+  static Text getTextWidget(String text, Color color, double fontSize) {
+    return Text(text, style: TextStyle(fontSize: fontSize, color: color));
   }
 
-  static Padding getTextWithPading(String text,Color color,double fontSize,double padding){
-    return  Padding(
+  static Padding getTextWithPading(
+      String text, Color color, double fontSize, double padding) {
+    return Padding(
       padding: EdgeInsets.all(padding),
-      child: Text(text,style: TextStyle(fontSize: fontSize,color: color)),
+      child: Text(text, style: TextStyle(fontSize: fontSize, color: color)),
     );
   }
 
+  static AppBar getCenterTitleAppBar(String title, BuildContext context) {
+    return new AppBar(
+      centerTitle: true,
+      title: Text(title),
+      leading: new IconButton(
+        icon: UIData.back,
+        onPressed: () => Navigator.pop(context, false),
+      ),
+    );
+  }
 
-  static AppBar getCenterTitleAppBar(String title,BuildContext context){
-  return  new AppBar(
-     centerTitle: true,
-     title: Text(title),
-     leading: new IconButton(
-       icon: UIData.back,
-       onPressed: () => Navigator.pop(context, false),
-     ),
-   );
- }
+  static Widget getNoShapeButton() {
+    return new Center(
+      child: Container(
+        alignment: Alignment.center,
+        width: 60,
+        height: 28,
+        child: new Text(
+          '搜索',
+          style: TextStyle(color: Colors.white),
+        ),
+        decoration: new BoxDecoration(
+          color: Colors.red,
+          shape: BoxShape.rectangle,
+          borderRadius: new BorderRadius.circular(14),
+          border: new Border.all(
+            width: 5.0,
+            color: Colors.red,
+          ),
+        ),
+      ),
+    );
+  }
 
+  static Widget getShapeButton(
+      Color shapeColor,
+      Color textColor,
+      double width,
+      double height,
+      String text,
+      double fontSize,
+      double radius,
+      VoidCallback onPressed) {
+    if (radius != 0) {
+      return new Center(
+        child: RaisedButton(
+          color: shapeColor,
+          textColor: textColor,
+          elevation: 0,
+          highlightElevation: 0,
+          disabledElevation: 0,
+          child: new Container(
+            width: width,
+            height: height,
+            child: Center(
+              child: UIData.getTextWidget(text, textColor, fontSize),
+            ),
+          ),
+          onPressed: onPressed,
+        ),
+      );
+    } else {
+      return new Center(
+        child: RaisedButton(
+          color: shapeColor,
+          textColor: textColor,
+          child: new Container(
+            width: width,
+            height: height,
+            child: Center(
+              child: UIData.getTextWidget(text, textColor, fontSize),
+            ),
+          ),
+          onPressed: onPressed,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(radius),
+          ),
+        ),
+      );
+    }
+  }
+
+  static Widget getMaxWidthButton(String text, VoidCallback onPressed) {
+    return getShapeButton(
+        UIData.fffa4848, UIData.fff, 345, 45, text, 18, 5, onPressed);
+  }
 
   /// Returns a random color.
   static Color next() {

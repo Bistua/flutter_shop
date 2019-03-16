@@ -200,23 +200,9 @@ class IviteFriendsPageState extends State<IviteFriendsPage> {
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(15, 8, 15, 10),
-              child: new Center(
-                child: RaisedButton(
-                  color: UIData.fffa4848,
-                  textColor: UIData.fff,
-                  child: new Container(
-                    width: 345,
-                    height: 45,
-                    child: Center(
-                      child: UIData.getTextWidget("立即成为VIP", UIData.fff, 18),
-                    ),
-                  ),
-                  onPressed: () {},
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                ),
-              ),
+              child:UIData.getMaxWidthButton("立即成为VIP", (){
+
+              }),
             ),
           ],
         ),
