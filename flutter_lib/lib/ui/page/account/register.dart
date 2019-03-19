@@ -7,7 +7,13 @@ class Register extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RegisterPage();
+    return WillPopScope(
+      child: RegisterPage(),
+      onWillPop: () {
+        Navigator.pop(context);
+        return Future.value(false);
+      },
+    );
   }
 }
 
@@ -49,6 +55,4 @@ class RegisterState extends State<RegisterPage> {
       ),
     );
   }
-
-
 }
