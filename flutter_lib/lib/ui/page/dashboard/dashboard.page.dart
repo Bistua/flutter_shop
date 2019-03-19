@@ -9,6 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_lib/ui/widgets/banner/banner_widget.dart';
 import 'package:flutter_lib/ui/widgets/banner/banner_evalutor.dart';
 import 'package:flutter_lib/ui/page/invite/invite_friends.dart';
+import 'package:flutter_lib/ui/page/account/login.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -170,6 +171,8 @@ class _MyHomePageState extends State<MyHomePage> {
         onTap: (int i) {
           switch (i) {
             case 0:
+              Navigator.push(context, new MaterialPageRoute(builder: (context) => new Login()));
+              break;
             case 1:
               Navigator.push(
                   context,

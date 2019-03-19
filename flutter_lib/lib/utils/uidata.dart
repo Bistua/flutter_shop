@@ -72,8 +72,8 @@ class UIData {
 
   static const Color ff999999 = Color(0xff999999);
   static const Color ff666666 = Color(0xff666666);
-
   static const Icon back = Icon(Icons.arrow_back_ios, color: UIData.ff353535);
+  static const Icon back_white = Icon(Icons.arrow_back_ios, color: UIData.fff);
 
 //colors
   static List<Color> kitGradients = [
@@ -146,7 +146,7 @@ class UIData {
       double fontSize,
       double radius,
       VoidCallback onPressed) {
-    if (radius != 0) {
+    if (radius == 0) {
       return new Center(
         child: RaisedButton(
           color: shapeColor,
@@ -183,6 +183,11 @@ class UIData {
         ),
       );
     }
+  }
+
+  static Widget getMaxWidthButtonWithRadius(String text,double radius, VoidCallback onPressed) {
+    return getShapeButton(
+        UIData.fffa4848, UIData.fff, 315, 50, text, 18, radius, onPressed);
   }
 
   static Widget getMaxWidthButton(String text, VoidCallback onPressed) {
