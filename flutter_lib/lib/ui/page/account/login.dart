@@ -24,6 +24,7 @@ class LoginState extends State<LoginPage> {
     return Stack(children: <Widget>[
       Container(
         decoration: new BoxDecoration(
+          color: Colors.transparent,
           image: new DecorationImage(
             image: new AssetImage("assets/image/login.jpeg"),
             fit: BoxFit.cover,
