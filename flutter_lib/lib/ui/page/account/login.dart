@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/myapp.dart';
+import 'package:flutter_lib/ui/page/account/perfectinfo.dart';
 import 'package:flutter_lib/ui/page/account/register.dart';
 
 class Login extends StatelessWidget {
@@ -23,11 +24,19 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginState extends State<LoginPage> {
+  var _scaffoldkey = new GlobalKey<ScaffoldState>();
+
+  void showSnackBar(String message) {
+    var snackBar = SnackBar(content: Text(message));
+    _scaffoldkey.currentState.showSnackBar(snackBar);
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
+        key: _scaffoldkey,
         //appBar: buildSearchAppBar(context),
         body: Stack(
           children: <Widget>[
@@ -130,17 +139,27 @@ class LoginState extends State<LoginPage> {
                         ),
                       ],
                     ),
-                    Container(
-                      padding: EdgeInsets.fromLTRB(0, 17.0, 0, 9.0),
-                      child: Image.asset(
-                        'images/icon_login_wx.png',
-                        width: 46.0,
-                        height: 46.0,
+                    FlatButton(
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            padding: EdgeInsets.fromLTRB(0, 17.0, 0, 9.0),
+                            child: Image.asset(
+                              'images/icon_login_wx.png',
+                              width: 46.0,
+                              height: 46.0,
+                            ),
+                          ),
+                          Text(
+                            "微信登录",
+                            style:
+                                TextStyle(fontSize: 12.0, color: Colors.white),
+                          ),
+                        ],
                       ),
-                    ),
-                    Text(
-                      "微信登录",
-                      style: TextStyle(fontSize: 12.0, color: Colors.white),
+                      onPressed: () {
+                        _navigateToPerfectInfo(context);
+                      },
                     ),
                   ],
                 ),
@@ -159,7 +178,16 @@ class LoginState extends State<LoginPage> {
         //等待
         context,
         MaterialPageRoute(builder: (context) => Register()));
-    Scaffold.of(context).showSnackBar(SnackBar(content: Text('$result')));
+    showSnackBar('$result');
+  }
+
+  _navigateToPerfectInfo(BuildContext context) async {
+    //async是启用异步方法
+    final result = await Navigator.push(
+        //等待
+        context,
+        MaterialPageRoute(builder: (context) => PerfectInfo()));
+    showSnackBar('$result');
   }
 }
 

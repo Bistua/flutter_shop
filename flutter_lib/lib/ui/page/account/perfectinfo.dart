@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
-class Register extends StatelessWidget {
+class PerfectInfo extends StatelessWidget {
 //  const ShopList({Key key, this.title}) : super(key: key);
 //  final title;
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      child: RegisterPage(),
+      child: PerfectPage(),
       onWillPop: () {
         Navigator.pop(context);
         return Future.value(false);
@@ -17,15 +17,15 @@ class Register extends StatelessWidget {
   }
 }
 
-class RegisterPage extends StatefulWidget {
+class PerfectPage extends StatefulWidget {
 //  ShopListPage({Key key, this.title}) : super(key: key);
 //  final String title;
 
   @override
-  RegisterState createState() => RegisterState();
+  PerfectState createState() => PerfectState();
 }
 
-class RegisterState extends State<RegisterPage> {
+class PerfectState extends State<PerfectPage> {
   final TextEditingController _controller = new TextEditingController();
   Color _registercolor = Color(0xFFFF7B7B);
   Color _verifycodecolor = Color(0xFF999999);
@@ -85,7 +85,7 @@ class RegisterState extends State<RegisterPage> {
                     child: Text(
                       '取消',
                       style:
-                          TextStyle(color: Color(0xFF353535), fontSize: 16.0),
+                      TextStyle(color: Color(0xFF353535), fontSize: 16.0),
                     ),
                     onPressed: () {
                       Navigator.pop(context, "取消注册");
@@ -99,9 +99,9 @@ class RegisterState extends State<RegisterPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        "新用户注册",
+                        "完善信息",
                         style:
-                            TextStyle(color: Color(0xFF353535), fontSize: 24.0),
+                        TextStyle(color: Color(0xFF353535), fontSize: 24.0),
                       ),
                       Container(
                         height: 40,
@@ -117,10 +117,10 @@ class RegisterState extends State<RegisterPage> {
                               fontSize: 15.0, color: Color(0xFF333333)),
                           //输入文本的样式
                           decoration: new InputDecoration(
-                              //fillColor: Color(0xFFEEEEEE),
+                            //fillColor: Color(0xFFEEEEEE),
                               border: InputBorder.none,
                               counterStyle:
-                                  TextStyle(color: Colors.transparent),
+                              TextStyle(color: Colors.transparent),
                               hintText: '请输入手机号',
                               hintStyle: TextStyle(
                                   fontSize: 15.0, color: Color(0xFFBBBBBB))),
@@ -157,10 +157,10 @@ class RegisterState extends State<RegisterPage> {
                                   fontSize: 15.0, color: Color(0xFF333333)),
                               //输入文本的样式
                               decoration: new InputDecoration(
-                                  //fillColor: Color(0xFFEEEEEE),
+                                //fillColor: Color(0xFFEEEEEE),
                                   border: InputBorder.none,
                                   counterStyle:
-                                      TextStyle(color: Colors.transparent),
+                                  TextStyle(color: Colors.transparent),
                                   hintText: '短信验证码',
                                   hintStyle: TextStyle(
                                       fontSize: 15.0,
@@ -226,10 +226,10 @@ class RegisterState extends State<RegisterPage> {
                               fontSize: 15.0, color: Color(0xFF333333)),
                           //输入文本的样式
                           decoration: new InputDecoration(
-                              //fillColor: Color(0xFFEEEEEE),
+                            //fillColor: Color(0xFFEEEEEE),
                               border: InputBorder.none,
                               counterStyle:
-                                  TextStyle(color: Colors.transparent),
+                              TextStyle(color: Colors.transparent),
                               hintText: '请输入邀请码(选填)',
                               hintStyle: TextStyle(
                                   fontSize: 15.0, color: Color(0xFFBBBBBB))),
@@ -249,7 +249,7 @@ class RegisterState extends State<RegisterPage> {
                         child: RaisedButton(
                           child: new Container(
                             child: new Text(
-                              "注册",
+                              "注册完成",
                               style: TextStyle(fontSize: 18.0),
                             ),
                             alignment: Alignment.center,
@@ -277,3 +277,4 @@ class RegisterState extends State<RegisterPage> {
         ));
   }
 }
+
