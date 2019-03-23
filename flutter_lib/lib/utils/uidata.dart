@@ -216,4 +216,9 @@ class UIData {
   static Color next() {
     return new Color(0xFF000000 + _random.nextInt(0x00FFFFFF));
   }
+
+  //验证手机号
+  static bool isPhone(String str) {
+    return new RegExp('^((13[0-9])|(15[^4])|(166)|(17[0-8])|(18[0-9])|(19[8-9])|(147,145))\\d{8}\$').hasMatch(str);
+  }
 }

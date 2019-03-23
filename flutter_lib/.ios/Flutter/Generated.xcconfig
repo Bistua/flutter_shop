@@ -1,6 +1,6 @@
 // This is a generated file; do not edit or check into version control.
-FLUTTER_ROOT=C:\workspace\flutter
-FLUTTER_APPLICATION_PATH=C:\workspace\github\bristuaftshop\flutter_lib
+FLUTTER_ROOT=H:\kftool\flutter
+FLUTTER_APPLICATION_PATH=H:\wc\ftshop\flutter_lib
 FLUTTER_TARGET=lib/main.dart
 FLUTTER_BUILD_DIR=build
 SYMROOT=${SOURCE_ROOT}/../build\ios
