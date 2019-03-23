@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_lib/logic/viewmodel/product_view_model.dart';
-import 'package:flutter_lib/model/product.dart';
-
 import 'package:flutter_lib/logic/viewmodel/category_view_model.dart';
-import 'package:flutter_lib/model/category.dart';
-
-import 'package:flutter_lib/ui/page/shop/shop_detail.dart';
-import 'package:flutter_lib/ui/page/shop/shop_list.dart';
-import 'package:flutter_lib/ui/widgets/shop_tab_item.dart';
-import 'package:flutter_lib/utils/uidata.dart';
-import 'package:flutter_lib/ui/widgets/shop_grid.dart';
 import 'package:flutter_lib/logic/viewmodel/sub_category_view_model.dart';
+import 'package:flutter_lib/model/category.dart';
+import 'package:flutter_lib/ui/page/shop/shop_list.dart';
+import 'package:flutter_lib/utils/uidata.dart';
 
 class ShopCategoryList extends StatelessWidget {
   String title;

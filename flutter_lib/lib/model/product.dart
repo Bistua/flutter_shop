@@ -5,6 +5,7 @@ class Product {
   String image;
   double rating;
   String price;
+  double priceNum;
   String brand;
   String description;
   int totalReviews;
@@ -12,21 +13,18 @@ class Product {
   List<ProductColor> colors;
   int quantity = 0;
 
-  
-
   Product(
       {this.name,
       this.image,
       this.brand,
       this.price,
+      this.priceNum,
       this.rating,
       this.description,
       this.totalReviews,
       this.sizes,
       this.colors,
       this.quantity});
-
-  
 }
 
 class ProductColor {

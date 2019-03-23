@@ -47,4 +47,13 @@ public class MainActivity extends AppCompatActivity {
         super.onPostResume();
         flutterView.onPostResume();
     }
+
+    @Override
+    public void onBackPressed() {
+        if (flutterView != null) {
+            flutterView.popRoute();
+            return;
+        }
+        super.onBackPressed();
+    }
 }

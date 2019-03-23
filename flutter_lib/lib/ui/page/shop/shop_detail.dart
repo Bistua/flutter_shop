@@ -3,6 +3,8 @@ import 'package:flutter_lib/logic/viewmodel/comment_view_model.dart';
 import 'package:flutter_lib/model/product.dart';
 import 'package:flutter_lib/model/comment.dart';
 import 'package:flutter_lib/utils/uidata.dart';
+import 'package:flutter_lib/logic/manager/shop_cart_manager.dart';
+import 'package:flutter_lib/ui/page/shop/shop_cart_list.dart';
 
 class ShopDetailPage extends StatefulWidget {
   Product product;
@@ -18,7 +20,6 @@ class ShopDetailPage extends StatefulWidget {
 class ShopDetailPageState extends State<ShopDetailPage> {
   BuildContext _context;
   Product product;
-  int shopCartCount = 0;
   ShopDetailPageState(Product product) {
     this.product = product;
   }
@@ -146,21 +147,29 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                                         Icons.shopping_cart,
                                         color: Colors.black,
                                       ),
-                                      onPressed: () {})),
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            new MaterialPageRoute(
+                                                builder: (context) =>
+                                                    new ShopCartList()));
+                                      })),
                               Positioned(
                                 right: 8,
                                 top: 8,
                                 child: new Container(
-                                  width: 13,
-                                  height: 13,
-                                  child: Center(
-                                    child: UIData.getTextWidget(
-                                        shopCartCount.toString(),
-                                        UIData.fff,
-                                        10),
-                                  ),
-                                  decoration: UIData.getCircleBoxDecoration(UIData.fffa4848)
-                                ),
+                                    width: 13,
+                                    height: 13,
+                                    child: Center(
+                                      child: UIData.getTextWidget(
+                                          ShopCartManager.instance
+                                              .size()
+                                              .toString(),
+                                          UIData.fff,
+                                          10),
+                                    ),
+                                    decoration: UIData.getCircleBoxDecoration(
+                                        UIData.fffa4848)),
                               ),
                             ],
                           ),
@@ -276,7 +285,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
 
   addShopCartCount() {
     setState(() {
-      shopCartCount++;
+      ShopCartManager.instance.addProduct(product);
     });
   }
 

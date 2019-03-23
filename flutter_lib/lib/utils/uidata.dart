@@ -116,6 +116,19 @@ class UIData {
     );
   }
 
+  static AppBar getCenterTitleAppBarWithColor(String title,Color color, BuildContext context) {
+    return new AppBar(
+      backgroundColor: color,
+      centerTitle: true,
+      title: Text(title),
+      leading: new IconButton(
+        icon: UIData.back,
+        onPressed: () => Navigator.pop(context, false),
+      ),
+    );
+  }
+
+
   static Widget getNoShapeButton() {
     return new Center(
       child: Container(
