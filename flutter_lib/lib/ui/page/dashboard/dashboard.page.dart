@@ -10,6 +10,7 @@ import 'package:flutter_lib/ui/widgets/banner/banner_widget.dart';
 import 'package:flutter_lib/ui/widgets/banner/banner_evalutor.dart';
 import 'package:flutter_lib/ui/page/invite/invite_friends.dart';
 import 'package:flutter_lib/ui/page/account/login.dart';
+import 'package:flutter_lib/ui/page/shop/shop_category_list.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -171,7 +172,13 @@ class _MyHomePageState extends State<MyHomePage> {
         onTap: (int i) {
           switch (i) {
             case 0:
-              Navigator.push(context, new MaterialPageRoute(builder: (context) => new Login()));
+              Navigator.push(context,
+                  new MaterialPageRoute(builder: (context) => new Login()));
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) => new SearchShopList()));
+
               break;
             case 1:
               Navigator.push(
@@ -185,11 +192,14 @@ class _MyHomePageState extends State<MyHomePage> {
               Navigator.push(
                   context,
                   new MaterialPageRoute(
-                      builder: (context) => new SearchShopList()));
-
+                      builder: (context) =>
+                          new ShopCategoryList(choices[i].title)));
               break;
             case 3:
-              Navigator.push(context, new MaterialPageRoute(builder: (context) => new IviteFriendsPage()));
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) => new IviteFriendsPage()));
 
               break;
           }
