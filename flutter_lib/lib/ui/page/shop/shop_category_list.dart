@@ -71,114 +71,119 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
     List<Category> data = productViewModel.getCategory();
     return Container(
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Expanded(
-            child: ListView.builder(
-              itemCount: categories.length,
-              itemBuilder: (buildContext, index) {
-                return GestureDetector(
-                  child: Container(
-                    color: selectIndex == index ? UIData.fff : UIData.fff6f6f6,
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
-                      child: Text(
-                        categories[index].name,
-                        style: TextStyle(
-                            color: selectIndex == index
-                                ? UIData.fffa4848
-                                : UIData.ff353535,
-                            fontSize: selectIndex == index ? 15 : 12),
+            child: Container(
+              color: UIData.fff6f6f6,
+              child:  ListView.builder(
+                itemCount: categories.length,
+                itemBuilder: (buildContext, index) {
+                  return GestureDetector(
+                    child: Container(
+                      color: selectIndex == index ? UIData.fff : UIData.fff6f6f6,
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
+                        child: Text(
+                          categories[index].name,
+                          style: TextStyle(
+                              color: selectIndex == index
+                                  ? UIData.fffa4848
+                                  : UIData.ff353535,
+                              fontSize: selectIndex == index ? 15 : 12),
+                        ),
                       ),
                     ),
-                  ),
-                  onTap: () {
-                    setState(() {
-                      this.selectIndex = index;
-                    });
-                  },
-                );
-              },
+                    onTap: () {
+                      setState(() {
+                        this.selectIndex = index;
+                      });
+                    },
+                  );
+                },
+              ),
             ),
             flex: 1,
           ),
           Expanded(
-            child: CustomScrollView(
-              slivers: <Widget>[
-                SliverList(
-                  delegate: SliverChildListDelegate(
-                    [
-                      Center(
-                        child: UIData.getTextWithPading(
-                            categories[selectIndex].name,
-                            UIData.ff353535,
-                            12,
-                            16),
-                      ),
-                    ],
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
+              child: CustomScrollView(
+                slivers: <Widget>[
+                  SliverList(
+                    delegate: SliverChildListDelegate(
+                      [
+                        Center(
+                          child: UIData.getTextWithPading(
+                              categories[selectIndex].name,
+                              UIData.ff353535,
+                              12,
+                              16),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                SliverGrid(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 8.0,
-                    mainAxisSpacing: 8.0,
-                    childAspectRatio: 0.66,
-                  ),
-                  delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-                      return new GestureDetector(
-                        child: new Container(
+                  SliverGrid(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 8.0,
+                      mainAxisSpacing: 8.0,
+                      childAspectRatio: 0.66,
+                    ),
+                    delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                        return new GestureDetector(
+                          child: new Container(
                             alignment: Alignment.center,
-                            child: Padding(
-                              padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
-                              child: new Column(
-                                children: <Widget>[
-                                  new Stack(
-                                    children: <Widget>[
-                                      Image.network(
-                                        data[index].image,
-                                        fit: BoxFit.contain,
-                                      ),
-                                      Positioned(
-                                          bottom: 0,
-                                          left: 0,
-                                          right: 0,
-                                          child: new Container(
-                                            color: Colors.white,
-                                            child: new Column(
-                                              children: <Widget>[
-                                                new Padding(
-                                                  padding: EdgeInsets.fromLTRB(
-                                                      0, 12, 0, 6),
-                                                  child: new Text(
-                                                    data[index].name,
-                                                    style: TextStyle(
-                                                        fontSize: 11,
-                                                        color: UIData.ff353535),
-                                                    maxLines: 1,
-                                                  ),
+                            child: new Column(
+                              children: <Widget>[
+                                new Stack(
+                                  children: <Widget>[
+                                    Image.network(
+                                      data[index].image,
+                                      fit: BoxFit.contain,
+                                    ),
+                                    Positioned(
+                                        bottom: 0,
+                                        left: 0,
+                                        right: 0,
+                                        child: new Container(
+                                          color: Colors.white,
+                                          child: new Column(
+                                            children: <Widget>[
+                                              new Padding(
+                                                padding: EdgeInsets.fromLTRB(
+                                                    0, 12, 0, 6),
+                                                child: new Text(
+                                                  data[index].name,
+                                                  style: TextStyle(
+                                                      fontSize: 11,
+                                                      color: UIData.ff353535),
+                                                  maxLines: 1,
                                                 ),
-                                              ],
-                                            ),
-                                          )),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            )),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                  builder: (context) =>
-                                      new ShopList(data[index].name)));
-                        },
-                      );
-                    },
-                    childCount: data.length,
+                                              ),
+                                            ],
+                                          ),
+                                        )),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                    builder: (context) =>
+                                        new ShopList(data[index].name)));
+                          },
+                        );
+                      },
+                      childCount: data.length,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             flex: 3,
           ),
