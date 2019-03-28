@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_lib/ui/page/shop/search_shop_list.dart';
-import 'package:flutter_lib/ui/page/notfound/notfound_page.dart';
-import 'package:flutter_lib/utils/uidata.dart';
-import 'package:flutter_lib/ui/page/shop/shop_list.dart';
 import 'package:flutter_lib/ui/page/dashboard/dashboard.page.dart';
-import 'package:flutter_lib/ui/page/home_page.dart';
+import 'package:flutter_lib/ui/page/notfound/notfound_page.dart';
+import 'package:flutter_lib/ui/page/shop/search_shop_list.dart';
+import 'package:flutter_lib/ui/page/shop/shop_list.dart';
+import 'package:flutter_lib/utils/uidata.dart';
 
 class MyApp extends StatelessWidget {
   final materialApp = MaterialApp(
