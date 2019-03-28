@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ym.flutter.flutterhost">
+    package="com.bristua.flutter.ftshop">
 
     <application
         android:allowBackup="true"
@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".VideoActivity"
+            android:name="com.bristua.flutter.ftshop.VideoActivity"
             android:theme="@style/DarkAppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -25,7 +25,7 @@
 
         </activity>
 
-        <activity android:name=".MainActivity">
+        <activity android:name="com.bristua.flutter.ftshop.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -110,10 +110,12 @@ class SearchShopListState extends State<SearchShopListPage> {
                 borderRadius: new BorderRadius.circular(14.0),
                 borderSide: new BorderSide(color: Colors.red, width: 0),
               ),
-              suffixIcon: new Icon(
-                Icons.search,
+              suffixIcon:new IconButton(
                 color: UIData.ffcccccc,
-                size: 18,
+                icon: Icon(Icons.close),
+                onPressed: () {
+                  _searchQuery.clear();
+                },
               ),
               hintText: "请输入搜索内容",
               hintStyle: new TextStyle(color: UIData.ffcccccc)),

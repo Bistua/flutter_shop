@@ -74,6 +74,9 @@ class UIData {
 
   static const Color ff999999 = Color(0xff999999);
   static const Color ff666666 = Color(0xff666666);
+  static const Color fff7f7f7 = Color(0xfff7f7f7);
+
+
   static const Icon back = Icon(Icons.arrow_back_ios, color: UIData.ff353535);
   static const Icon back_white = Icon(Icons.arrow_back_ios, color: UIData.fff);
 
@@ -116,27 +119,88 @@ class UIData {
     );
   }
 
-  static Widget getNoShapeButton() {
+  static AppBar getCenterTitleAppBarWithColor(String title,Color color, BuildContext context) {
+    return new AppBar(
+      backgroundColor: color,
+      centerTitle: true,
+      title: Text(title),
+      leading: new IconButton(
+        icon: UIData.back,
+        onPressed: () => Navigator.pop(context, false),
+      ),
+    );
+  }
+
+
+  static Widget getNoShapeButton(double w,double h,Color color,String text) {
     return new Center(
       child: Container(
         alignment: Alignment.center,
-        width: 60,
-        height: 28,
+        width: w,
+        height: h,
         child: new Text(
           '搜索',
           style: TextStyle(color: Colors.white),
         ),
         decoration: new BoxDecoration(
-          color: Colors.red,
+          color: color,
           shape: BoxShape.rectangle,
           borderRadius: new BorderRadius.circular(14),
           border: new Border.all(
             width: 5.0,
-            color: Colors.red,
+            color: color,
           ),
         ),
       ),
     );
+  }
+
+  static Widget getNoElevationShapeButton(Color shapeColor,
+      Color textColor,
+
+      String text,
+      double fontSize,
+      double radius,
+      double elevation,
+      VoidCallback onPressed){
+    if (radius == 0) {
+      return new Center(
+        child: RaisedButton(
+          color: shapeColor,
+          textColor: textColor,
+          elevation: elevation,
+          highlightElevation: elevation,
+          disabledElevation: elevation,
+          child: new Container(
+
+            child: Center(
+              child: UIData.getTextWidget(text, textColor, fontSize),
+            ),
+          ),
+          onPressed: onPressed,
+        ),
+      );
+    } else {
+      return new Center(
+        child: RaisedButton(
+          color: shapeColor,
+          textColor: textColor,
+          elevation: elevation,
+          highlightElevation: elevation,
+          disabledElevation: elevation,
+          child: new Container(
+
+            child: Center(
+              child: UIData.getTextWidget(text, textColor, fontSize),
+            ),
+          ),
+          onPressed: onPressed,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(radius),
+          ),
+        ),
+      );
+    }
   }
 
   static Widget getShapeButton(

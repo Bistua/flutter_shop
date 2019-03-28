@@ -3,6 +3,8 @@ import 'package:flutter_lib/logic/viewmodel/comment_view_model.dart';
 import 'package:flutter_lib/model/product.dart';
 import 'package:flutter_lib/model/comment.dart';
 import 'package:flutter_lib/utils/uidata.dart';
+import 'package:flutter_lib/logic/viewmodel/shop_cart_manager.dart';
+import 'package:flutter_lib/ui/page/shop/shop_cart_list.dart';
 
 class ShopDetailPage extends StatefulWidget {
   Product product;
@@ -15,13 +17,83 @@ class ShopDetailPage extends StatefulWidget {
   ShopDetailPageState createState() => new ShopDetailPageState(product);
 }
 
-class ShopDetailPageState extends State<ShopDetailPage> {
+class ShopDetailPageState extends State<ShopDetailPage>  with WidgetsBindingObserver {
   BuildContext _context;
   Product product;
-  int shopCartCount = 0;
+
   ShopDetailPageState(Product product) {
     this.product = product;
   }
+  @override
+  void initState() {
+
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    print("didChangeDependencies");
+
+    super.didChangeDependencies();
+  }
+
+  @override
+  Future<bool> didPopRoute() {
+    print("didPopRoute");
+    setState(() {
+      _updateShopCartCount();
+    });
+    return super.didPopRoute();
+  }
+
+  @override
+  Future<bool> didPushRoute(String route) {
+    print("didPushRoute");
+    return super.didPushRoute(route);
+  }
+
+  @override
+  void didUpdateWidget(ShopDetailPage oldWidget) {
+    print("didUpdateWidget");
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void deactivate() {
+    print("deactivate");
+
+    super.deactivate();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print("didChangeAppLifecycleState");
+    setState(() {
+
+      switch (state) {
+        case AppLifecycleState.inactive:
+        case AppLifecycleState.paused:
+        case AppLifecycleState.suspending:
+
+          break;
+        case AppLifecycleState.resumed:
+          print("1resumed");
+          _updateShopCartCount();
+          break;
+      }
+    });
+  }
+
+
+
 
   Padding buildHeader() {
     return Padding(
@@ -146,21 +218,27 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                                         Icons.shopping_cart,
                                         color: Colors.black,
                                       ),
-                                      onPressed: () {})),
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            new MaterialPageRoute(
+                                                builder: (context) =>
+                                                    new ShopCartListPage()));
+                                      })),
                               Positioned(
                                 right: 8,
                                 top: 8,
                                 child: new Container(
-                                  width: 13,
-                                  height: 13,
-                                  child: Center(
-                                    child: UIData.getTextWidget(
-                                        shopCartCount.toString(),
-                                        UIData.fff,
-                                        10),
-                                  ),
-                                  decoration: UIData.getCircleBoxDecoration(UIData.fffa4848)
-                                ),
+                                    width: 13,
+                                    height: 13,
+                                    child: Center(
+                                      child: UIData.getTextWidget(
+                                         count.toString(),
+                                          UIData.fff,
+                                          10),
+                                    ),
+                                    decoration: UIData.getCircleBoxDecoration(
+                                        UIData.fffa4848)),
                               ),
                             ],
                           ),
@@ -174,7 +252,8 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                         ),
                         UIData.getShapeButton(UIData.fffa4848, UIData.fff, 125,
                             50, "加入购物车", 16, 0, () {
-                          addShopCartCount();
+                              ShopCartManager.instance.addProduct(product);
+                              _updateShopCartCount();
                         }),
                         UIData.getShapeButton(UIData.ffffa517, UIData.fff, 110,
                             50, "立即购买", 16, 0, () {}),
@@ -193,6 +272,9 @@ class ShopDetailPageState extends State<ShopDetailPage> {
             ),
     );
   }
+
+
+
 
   CustomScrollView buildCustomScrollView(List<Comment> rankList) {
     return CustomScrollView(
@@ -274,11 +356,13 @@ class ShopDetailPageState extends State<ShopDetailPage> {
     );
   }
 
-  addShopCartCount() {
+  _updateShopCartCount() {
     setState(() {
-      shopCartCount++;
+      count = ShopCartManager.instance.size();
     });
   }
+
+  int count = ShopCartManager.instance.size();
 
   Widget buildFriendsPayInfoList() {
     return Container(
