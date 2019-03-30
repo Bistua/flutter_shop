@@ -9,6 +9,11 @@ class UIData {
   static const String shoplist = "/shoplist";
   static const String searchShopList = "/search_shop_list";
   static const String notFoundRoute = "/No Search Result";
+  static const String IviteFriendsPage = "/IviteFriendsPage";
+  static const String UserHomeListPage = "/UserHomeListPage";
+  static const String MineCollectionPage = "/MineCollectionPage";
+
+  static const String ShopDetailPage = "/ShopDetailPage";
 
   //strings
   static const String appName = "Flutter UIKit";

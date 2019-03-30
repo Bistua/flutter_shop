@@ -13,6 +13,8 @@ class ShopDetailPage extends StatefulWidget {
     this.product = data;
   }
 
+
+
   @override
   ShopDetailPageState createState() => new ShopDetailPageState(product);
 }

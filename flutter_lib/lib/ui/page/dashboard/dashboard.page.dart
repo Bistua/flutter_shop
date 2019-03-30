@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:flutter_lib/bridge.dart';
+import 'package:flutter_lib/ui/page/dashboard/user_home_page.dart';
 
 import 'package:flutter_lib/ui/page/shop/search_shop_list.dart';
 import 'package:flutter_lib/ui/page/shop/shop_list.dart';
@@ -200,6 +201,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   context,
                   new MaterialPageRoute(
                       builder: (context) => new IviteFriendsPage()));
+
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) => new UserHomeListPage()));
 
               break;
           }
