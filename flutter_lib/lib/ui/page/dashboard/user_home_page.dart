@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_lib/logic/viewmodel/homeitem_view_model.dart';
 import 'package:flutter_lib/model/homeitem.dart';
+import 'package:flutter_lib/ui/page/account/login.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class UserHomeListPage extends StatefulWidget {
@@ -46,45 +47,53 @@ class _UserHomeState extends State<UserHomeListPage> {
                   automaticallyImplyLeading: false,
                   flexibleSpace: FlexibleSpaceBar(
                     centerTitle: false,
-                    background: Container(
-                      color: UIData.fffa4848,
-                      child: Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Expanded(
-                              child: Padding(
-                                padding: EdgeInsets.fromLTRB(22, 56, 8, 16),
-                                child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: <Widget>[
-                                    Text(
-                                      "小猪佩奇",
-                                      style: TextStyle(
-                                          color: UIData.fff, fontSize: 20),
-                                    ),
-                                    Text(
-                                      "账号：18610001234",
-                                      style: TextStyle(
-                                          color: UIData.fff, fontSize: 15),
-                                    ),
-                                  ],
+                    background: GestureDetector(
+                      child: Container(
+                        color: UIData.fffa4848,
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Expanded(
+                                child: Padding(
+                                  padding: EdgeInsets.fromLTRB(22, 56, 8, 16),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: <Widget>[
+                                      Text(
+                                        "小猪佩奇",
+                                        style: TextStyle(
+                                            color: UIData.fff, fontSize: 20),
+                                      ),
+                                      Text(
+                                        "账号：18610001234",
+                                        style: TextStyle(
+                                            color: UIData.fff, fontSize: 15),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            Padding(
-                              child: CircleAvatar(
-                                radius: 30,
-                                backgroundImage: NetworkImage(
-                                    "http://pic1.win4000.com/wallpaper/a/59322eda4daf0.jpg"),
+                              Padding(
+                                child: CircleAvatar(
+                                  radius: 30,
+                                  backgroundImage: NetworkImage(
+                                      "http://pic1.win4000.com/wallpaper/a/59322eda4daf0.jpg"),
+                                ),
+                                padding: EdgeInsets.fromLTRB(0, 0, 22, 0),
                               ),
-                              padding: EdgeInsets.fromLTRB(0, 0, 22, 0),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            new MaterialPageRoute(
+                                builder: (context) => new Login()));
+                      },
                     ),
                   ),
                 ),
@@ -286,7 +295,7 @@ class _UserHomeState extends State<UserHomeListPage> {
           ],
         ),
       ),
-      onTap: (){
+      onTap: () {
         Navigator.pushNamed(context, homeItem.action);
       },
     );

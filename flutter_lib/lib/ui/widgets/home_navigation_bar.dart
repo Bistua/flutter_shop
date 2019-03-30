@@ -11,21 +11,28 @@ class HomeNavigationBar extends StatelessWidget {
               Icons.home,
             ),
             title: Text(
-              'HOME',
+              '首页',
             )),
         BottomNavigationBarItem(
             icon: Icon(
-              Icons.home,
+              Icons.category,
             ),
             title: Text(
-              'HOME',
+              '分类',
             )),
         BottomNavigationBarItem(
             icon: Icon(
-              Icons.home,
+              Icons.add_shopping_cart,
             ),
             title: Text(
-              'HOME',
+              '购物车',
+            )),
+        BottomNavigationBarItem(
+            icon: Icon(
+              Icons.person,
+            ),
+            title: Text(
+              '我的',
             )),
       ],
       currentIndex: 0,

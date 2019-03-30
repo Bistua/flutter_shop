@@ -6,12 +6,19 @@ import 'package:flutter/material.dart';
 class UIData {
   //routes
   static const String homeRoute = "/home";
-  static const String shoplist = "/shoplist";
-  static const String searchShopList = "/search_shop_list";
   static const String notFoundRoute = "/No Search Result";
+
+  static const String ShopListPage = "/ShopListPage";
+  static const String SearchShopList = "/SearchShopList";
+  static const String ShopCategoryList = "/ShopCategoryList";
   static const String IviteFriendsPage = "/IviteFriendsPage";
   static const String UserHomeListPage = "/UserHomeListPage";
+
+
   static const String MineCollectionPage = "/MineCollectionPage";
+
+
+
 
   static const String ShopDetailPage = "/ShopDetailPage";
 
