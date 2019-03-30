@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_lib/logic/viewmodel/comment_view_model.dart';
 import 'package:flutter_lib/model/product.dart';
 import 'package:flutter_lib/model/comment.dart';
+import 'package:flutter_lib/ui/page/shop/shop_order.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 import 'package:flutter_lib/logic/viewmodel/shop_cart_manager.dart';
 import 'package:flutter_lib/ui/page/shop/shop_cart_list.dart';
@@ -13,13 +14,12 @@ class ShopDetailPage extends StatefulWidget {
     this.product = data;
   }
 
-
-
   @override
   ShopDetailPageState createState() => new ShopDetailPageState(product);
 }
 
-class ShopDetailPageState extends State<ShopDetailPage>  with WidgetsBindingObserver {
+class ShopDetailPageState extends State<ShopDetailPage>
+    with WidgetsBindingObserver {
   BuildContext _context;
   Product product;
 
@@ -28,11 +28,9 @@ class ShopDetailPageState extends State<ShopDetailPage>  with WidgetsBindingObse
   }
   @override
   void initState() {
-
     super.initState();
     WidgetsBinding.instance.addObserver(this);
   }
-
 
   @override
   void dispose() {
@@ -79,12 +77,10 @@ class ShopDetailPageState extends State<ShopDetailPage>  with WidgetsBindingObse
   void didChangeAppLifecycleState(AppLifecycleState state) {
     print("didChangeAppLifecycleState");
     setState(() {
-
       switch (state) {
         case AppLifecycleState.inactive:
         case AppLifecycleState.paused:
         case AppLifecycleState.suspending:
-
           break;
         case AppLifecycleState.resumed:
           print("1resumed");
@@ -93,9 +89,6 @@ class ShopDetailPageState extends State<ShopDetailPage>  with WidgetsBindingObse
       }
     });
   }
-
-
-
 
   Padding buildHeader() {
     return Padding(
@@ -235,9 +228,7 @@ class ShopDetailPageState extends State<ShopDetailPage>  with WidgetsBindingObse
                                     height: 13,
                                     child: Center(
                                       child: UIData.getTextWidget(
-                                         count.toString(),
-                                          UIData.fff,
-                                          10),
+                                          count.toString(), UIData.fff, 10),
                                     ),
                                     decoration: UIData.getCircleBoxDecoration(
                                         UIData.fffa4848)),
@@ -254,11 +245,20 @@ class ShopDetailPageState extends State<ShopDetailPage>  with WidgetsBindingObse
                         ),
                         UIData.getShapeButton(UIData.fffa4848, UIData.fff, 125,
                             50, "加入购物车", 16, 0, () {
-                              ShopCartManager.instance.addProduct(product);
-                              _updateShopCartCount();
+                          product.isChecked = true;
+                          ShopCartManager.instance.addProduct(product);
+                          _updateShopCartCount();
                         }),
                         UIData.getShapeButton(UIData.ffffa517, UIData.fff, 110,
-                            50, "立即购买", 16, 0, () {}),
+                            50, "立即购买", 16, 0, () {
+                              product.isChecked = true;
+                              ShopCartManager.instance.addProduct(product);
+                              _updateShopCartCount();
+                              Navigator.push(
+                                  context,
+                                  new MaterialPageRoute(
+                                      builder: (context) => new ShopOrderListPage()));
+                            }),
                       ],
                     ),
                   ),
@@ -274,9 +274,6 @@ class ShopDetailPageState extends State<ShopDetailPage>  with WidgetsBindingObse
             ),
     );
   }
-
-
-
 
   CustomScrollView buildCustomScrollView(List<Comment> rankList) {
     return CustomScrollView(

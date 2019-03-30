@@ -70,6 +70,7 @@ class _ShopCartListState extends State<ShopCartListPage> {
                   Row(
                     children: <Widget>[
                       Checkbox(
+                        activeColor: UIData.fffa4848,
                         value: ShopCartManager.instance.isAllChecked(),
                         onChanged: (bool value) {
                           setState(() {
@@ -157,6 +158,7 @@ class _ShopCartListState extends State<ShopCartListPage> {
                     child: Row(
                       children: <Widget>[
                         Checkbox(
+                          activeColor: UIData.fffa4848,
                           value: ShopCartManager
                               .instance.products[index].isChecked,
                           onChanged: (bool value) {

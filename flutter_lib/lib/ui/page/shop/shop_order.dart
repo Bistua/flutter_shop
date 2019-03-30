@@ -120,8 +120,10 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                   ),
                   Padding(
                     padding: EdgeInsets.fromLTRB(0, 0, 15, 0),
-                    child: UIData.getShapeButton(UIData.fffa4848, UIData.fff,
-                        90, 33, "提交订单", 15, 0, () {}),
+                    child: UIData.getShapeButton(
+                        UIData.fffa4848, UIData.fff, 90, 33, "提交订单", 15, 0, () {
+                      showPayDialog(context);
+                    }),
                   ),
                 ],
               ),
@@ -136,6 +138,92 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
         ],
       ),
     );
+  }
+
+  showPayDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Container(
+            // container to set color
+            color: Colors.black12,
+            child: Stack(
+              children: <Widget>[
+                Positioned(
+                  top: 256,
+                  bottom: 15,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    color: Colors.white,
+                    child: Stack(
+                      children: <Widget>[
+                        Positioned(
+                          top: 0,
+                          bottom: 15,
+                          left: 0,
+                          right: 0,
+                          child: Column(
+                            children: [
+                              Padding(
+                                child: Text(
+                                  "确认付款",
+                                  style: TextStyle(
+                                      color: UIData.ff353535, fontSize: 13),
+                                ),
+                                padding: EdgeInsets.fromLTRB(0, 14, 0, 14),
+                              ),
+                              Divider(),
+                              Padding(
+                                child: Text(
+                                  "￥" +
+                                      (deliverPrice +
+                                              ShopCartManager.instance
+                                                  .getTotalPrice())
+                                          .toStringAsFixed(2),
+                                  style: TextStyle(
+                                      color: UIData.ff353535, fontSize: 33),
+                                ),
+                                padding: EdgeInsets.fromLTRB(0, 40, 20, 40),
+                              ),
+                              Divider(),
+                              Padding(
+                                child: Text(
+                                  "支付宝",
+                                  style: TextStyle(
+                                      color: UIData.ff353535, fontSize: 13),
+                                ),
+                                padding: EdgeInsets.fromLTRB(0, 14, 0, 14),
+                              ),
+                              Divider(),
+                            ],
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 15,
+                          left: 0,
+                          right: 0,
+                          child: UIData.getShapeButton(
+                            UIData.fffa4848,
+                            UIData.fff,
+                            345,
+                            45,
+                            "立即付款",
+                            18,
+                            5,
+                            () {
+                              goToPay();
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
   }
 
   GestureDetector buildListIItem(int index) {
@@ -402,4 +490,6 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
       ),
     );
   }
+
+  void goToPay() {}
 }
