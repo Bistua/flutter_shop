@@ -90,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("home"),
+        title: Text("首页"),
         centerTitle: true,
       ),
       body: Container(
