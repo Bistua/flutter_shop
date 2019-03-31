@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_lib/logic/viewmodel/homeitem_view_model.dart';
 import 'package:flutter_lib/model/homeitem.dart';
 import 'package:flutter_lib/ui/page/account/login.dart';
+import 'package:flutter_lib/ui/page/order/all_shop_cart_list.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class UserHomeListPage extends StatefulWidget {
@@ -137,23 +138,28 @@ class _UserHomeState extends State<UserHomeListPage> {
                     ),
                   ),
                   Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        Text(
-                          "查看全部订单",
-                          style:
-                              TextStyle(color: UIData.ff999999, fontSize: 15),
-                        ),
-                        Padding(
-                          child: Icon(
-                            Icons.arrow_forward_ios,
-                            color: UIData.ff999999,
-                            size: 9,
+                    child: GestureDetector(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          Text(
+                            "查看全部订单",
+                            style:
+                                TextStyle(color: UIData.ff999999, fontSize: 15),
                           ),
-                          padding: EdgeInsets.fromLTRB(5, 0, 15, 0),
-                        ),
-                      ],
+                          Padding(
+                            child: Icon(
+                              Icons.arrow_forward_ios,
+                              color: UIData.ff999999,
+                              size: 9,
+                            ),
+                            padding: EdgeInsets.fromLTRB(5, 0, 15, 0),
+                          ),
+                        ],
+                      ),
+                      onTap: () {
+                        Navigator.pushNamed(context, UIData.AllShopOrderPage);
+                      },
                     ),
                   ),
                 ],

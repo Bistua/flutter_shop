@@ -132,6 +132,7 @@ class ProductViewModel {
             image:
                 "https://gd4.alicdn.com/imgextra/i4/2927333027/O1CN01EW7p0O1YEPNUYL65B_!!2927333027.jpg_400x400.jpg_.webp",
             price: "¥49.00",
+            priceNum: 83.99,
             brand: "MAI PIÙ SENZA",
             description: "Awesome Heels",
             rating: 4.1,
@@ -141,6 +142,7 @@ class ProductViewModel {
             image:
                 "https://img.alicdn.com/imgextra/i2/115232883/O1CN01EQXrw41XASMSEzjB9_!!115232883.jpg",
             price: "¥59.00",
+            priceNum: 83.99,
             brand: "MAI PIÙ SENZA",
             description: "Awesome Heels",
             rating: 4.1,
@@ -150,6 +152,7 @@ class ProductViewModel {
             image:
                 "https://gd3.alicdn.com/imgextra/i2/0/TB1xcJ3kbsTMeJjSszdXXcEupXa_!!0-item_pic.jpg_400x400.jpg",
             price: "¥27.00",
+            priceNum: 83.99,
             brand: "MAI PIÙ SENZA",
             description: "Awesome Heels",
             rating: 4.1,
@@ -159,6 +162,7 @@ class ProductViewModel {
             image:
                 "https://gd2.alicdn.com/imgextra/i2/2873137436/TB2gX2DrDmWBKNjSZFBXXXxUFXa_!!2873137436.png_400x400.jpg",
             price: "¥29.00",
+            priceNum: 83.99,
             brand: "MAI PIÙ SENZA",
             description: "Awesome Heels",
             rating: 4.1,
@@ -168,6 +172,7 @@ class ProductViewModel {
             image:
                 "https://gd2.alicdn.com/imgextra/i1/842112630/TB2Su1sxkKWBuNjy1zjXXcOypXa_!!842112630.jpg",
             price: "¥89.00",
+            priceNum: 83.99,
             brand: "MAI PIÙ SENZA",
             description: "Awesome Heels",
             rating: 4.1,
@@ -177,6 +182,7 @@ class ProductViewModel {
             image:
                 "https://gd1.alicdn.com/imgextra/i4/842112630/TB2HDRvjb1YBuNjSszeXXablFXa_!!842112630.jpg",
             price: "¥89.00",
+            priceNum: 83.99,
             brand: "MAI PIÙ SENZA",
             description: "Awesome Heels",
             rating: 4.1,
@@ -186,6 +192,7 @@ class ProductViewModel {
             image:
                 "https://gd3.alicdn.com/imgextra/i3/2873137436/TB2R7juDeySBuNjy1zdXXXPxFXa_!!2873137436.jpg",
             price: "¥38.00",
+            priceNum: 83.99,
             brand: "MAI PIÙ SENZA",
             description: "Awesome Heels",
             rating: 4.1,
@@ -195,6 +202,7 @@ class ProductViewModel {
             image:
                 "https://gd1.alicdn.com/imgextra/i1/173752284/O1CN01a8IsUi1Sk774g4TgD_!!173752284.jpg",
             price: "¥59.00",
+            priceNum: 83.99,
             brand: "MAI PIÙ SENZA",
             description: "Awesome Heels",
             rating: 4.1,
@@ -204,6 +212,7 @@ class ProductViewModel {
             image:
                 "https://gd2.alicdn.com/imgextra/i2/2393144150/TB2w5wMoiMnBKNjSZFoXXbOSFXa_!!2393144150.jpg",
             price: "¥35.80",
+            priceNum: 83.99,
             brand: "MAI PIÙ SENZA",
             description: "Awesome Heels",
             rating: 4.1,

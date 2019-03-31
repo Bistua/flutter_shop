@@ -26,7 +26,8 @@ class Product {
       this.totalReviews,
       this.sizes,
       this.colors,
-      this.quantity});
+      this.quantity,
+      this.count});
 
   @override
   bool operator ==(other) {
