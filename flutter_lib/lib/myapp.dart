@@ -4,6 +4,7 @@ import 'package:flutter_lib/ui/page/dashboard/dashboard.page.dart';
 import 'package:flutter_lib/ui/page/dashboard/home_page.dart';
 import 'package:flutter_lib/ui/page/dashboard/user_home_page.dart';
 import 'package:flutter_lib/ui/page/invite/invite_friends.dart';
+import 'package:flutter_lib/ui/page/invite/invite_input.dart';
 import 'package:flutter_lib/ui/page/notfound/notfound_page.dart';
 import 'package:flutter_lib/ui/page/shop/mine_collection.dart';
 import 'package:flutter_lib/ui/page/shop/search_shop_list.dart';
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
         UIData.SearchShopList: (BuildContext context) => SearchShopList(),
         UIData.notFoundRoute: (BuildContext context) => NotFoundPage(),
         UIData.IviteFriendsPage: (BuildContext context) => IviteFriendsPage(),
+        UIData.InviteInputPage: (BuildContext context) => InviteInputPage(),
         UIData.UserHomeListPage: (BuildContext context) => UserHomeListPage(),
         UIData.MineCollectionPage: (BuildContext context) =>
             MineCollectionPage(),

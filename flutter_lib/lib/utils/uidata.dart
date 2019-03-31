@@ -12,6 +12,7 @@ class UIData {
   static const String SearchShopList = "/SearchShopList";
   static const String ShopCategoryList = "/ShopCategoryList";
   static const String IviteFriendsPage = "/IviteFriendsPage";
+  static const String InviteInputPage = "/InviteInputPage";
   static const String UserHomeListPage = "/UserHomeListPage";
 
 

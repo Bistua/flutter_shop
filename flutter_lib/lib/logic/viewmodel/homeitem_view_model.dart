@@ -30,7 +30,8 @@ class HomeItemViewModel {
           icon: Icons.import_contacts,
           title: "输入邀请码",
           subTitle: "",
-          arrowIcon:Icons.arrow_forward_ios),
+          arrowIcon:Icons.arrow_forward_ios,
+          action: UIData.InviteInputPage),
       HomeItem(
           icon: Icons.import_contacts,
           title: "我的收藏",
