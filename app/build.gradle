@@ -4,7 +4,7 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         config {
-            keyAlias 'bristua'
+            keyAlias 'bristuaftshop'
             keyPassword 'bristua'
             storeFile file('../ftshop.jks')
             storePassword 'bristua'
