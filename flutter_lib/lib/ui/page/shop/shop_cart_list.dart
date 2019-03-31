@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_lib/logic/viewmodel/shop_cart_manager.dart';
-import 'package:flutter_lib/ui/page/shop/shop_order.dart';
+import 'package:flutter_lib/ui/page/order/shop_order.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 

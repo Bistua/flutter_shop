@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_lib/logic/viewmodel/comment_view_model.dart';
 import 'package:flutter_lib/model/product.dart';
 import 'package:flutter_lib/model/comment.dart';
-import 'package:flutter_lib/ui/page/shop/shop_order.dart';
+import 'package:flutter_lib/ui/page/order/shop_order.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 import 'package:flutter_lib/logic/viewmodel/shop_cart_manager.dart';
 import 'package:flutter_lib/ui/page/shop/shop_cart_list.dart';
