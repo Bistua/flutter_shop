@@ -1,6 +1,7 @@
 package com.bristua.flutter.ftshop.plugin;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import org.json.JSONException;
@@ -22,7 +23,22 @@ public class PluginProvider {
                     result.notImplemented();
                     return;
                 }
-                iDelegate.call(context, methodCall, jsonObject, result);
+                iDelegate.call(context, methodCall, jsonObject, new Result() {
+                    @Override
+                    public void success(@Nullable Object o) {
+                        result.success(o);
+                    }
+
+                    @Override
+                    public void error(String s, @Nullable String s1, @Nullable Object o) {
+                        result.error(s,s1,o);
+                    }
+
+                    @Override
+                    public void notImplemented() {
+                        result.notImplemented();
+                    }
+                });
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -30,4 +46,7 @@ public class PluginProvider {
 
 
     }
+
+
+
 }

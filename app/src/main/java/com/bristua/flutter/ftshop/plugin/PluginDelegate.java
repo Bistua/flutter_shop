@@ -8,6 +8,7 @@ import android.os.BatteryManager;
 import android.os.Build;
 import android.text.TextUtils;
 import android.widget.Toast;
+import com.bristua.flutter.ftshop.plugin.*;
 
 import com.bristua.flutter.ftshop.VideoActivity;
 
@@ -18,7 +19,7 @@ import io.flutter.plugin.common.MethodChannel;
 
 public class PluginDelegate {
 
-    public void call(Context context, MethodCall methodCall, JSONObject jsonObject, MethodChannel.Result result) {
+    public void call(Context context, MethodCall methodCall, JSONObject jsonObject, Result result) {
         String action = jsonObject.optString("action");
         switch (action) {
             case "toast":
@@ -36,7 +37,7 @@ public class PluginDelegate {
         }
     }
 
-    private void doNavigate(Context context, MethodCall methodCall, MethodChannel.Result result) {
+    private void doNavigate(Context context, MethodCall methodCall, Result result) {
         if (methodCall.method.equals("video")) {
             Intent intent = new Intent(context, VideoActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -47,7 +48,7 @@ public class PluginDelegate {
         }
     }
 
-    private void getBattery(Context context, MethodCall methodCall, MethodChannel.Result result) {
+    private void getBattery(Context context, MethodCall methodCall, Result result) {
         if (methodCall.method.equals("getBatteryLevel")) {
             String batteryLevel = getBatteryLevel(context);
             if (!TextUtils.equals(batteryLevel, "-1")) {
@@ -60,7 +61,7 @@ public class PluginDelegate {
         }
     }
 
-    private void doHttp(MethodCall methodCall, JSONObject jsonObject, MethodChannel.Result result) {
+    private void doHttp(MethodCall methodCall, JSONObject jsonObject, Result result) {
         switch (methodCall.method) {
             case "get":
                 String param = jsonObject.optString("json");
@@ -75,7 +76,7 @@ public class PluginDelegate {
         }
     }
 
-    private void doToast(Context context, MethodCall methodCall, JSONObject jsonObject, MethodChannel.Result result) {
+    private void doToast(Context context, MethodCall methodCall, JSONObject jsonObject, Result result) {
         switch (methodCall.method) {
             case "showShortToast":
                 Toast.makeText(context, jsonObject.optString("message"), Toast.LENGTH_SHORT).show();

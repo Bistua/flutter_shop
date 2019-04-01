@@ -26,7 +26,10 @@ class _ShopCartListState extends State<AllShopOrderPage> {
           centerTitle: true,
           title: Text(
             "我的订单",
-            style: TextStyle(color: UIData.ff353535, fontSize: 18,fontWeight: FontWeight.bold),
+            style: TextStyle(
+                color: UIData.ff353535,
+                fontSize: 18,
+                fontWeight: FontWeight.bold),
           ),
           elevation: 0,
           leading: new IconButton(
@@ -43,19 +46,28 @@ class _ShopCartListState extends State<AllShopOrderPage> {
               Tab(
                 child: Container(
                   color: UIData.fff,
-                  child: Text("全部",style: TextStyle(color: UIData.ff666666,fontSize: 14),),
+                  child: Text(
+                    "全部",
+                    style: TextStyle(color: UIData.ff666666, fontSize: 14),
+                  ),
                 ),
               ),
               Tab(
                 child: Container(
                   color: UIData.fff,
-                  child: Text("待发货",style: TextStyle(color: UIData.ff666666,fontSize: 14),),
+                  child: Text(
+                    "待发货",
+                    style: TextStyle(color: UIData.ff666666, fontSize: 14),
+                  ),
                 ),
               ),
               Tab(
                 child: Container(
                   color: UIData.fff,
-                  child: Text("待评价",style: TextStyle(color: UIData.ff666666,fontSize: 14),),
+                  child: Text(
+                    "待评价",
+                    style: TextStyle(color: UIData.ff666666, fontSize: 14),
+                  ),
                 ),
               ),
             ],
@@ -112,8 +124,14 @@ class _ShopCartListState extends State<AllShopOrderPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text("订单号：" + orderItem.orderNumber,style: TextStyle(color: UIData.ff353535,fontSize: 14),),
-                      Text("待发货",style: TextStyle(color: UIData.fffa4848,fontSize: 14),),
+                      Text(
+                        "订单号：" + orderItem.orderNumber,
+                        style: TextStyle(color: UIData.ff353535, fontSize: 14),
+                      ),
+                      Text(
+                        "待发货",
+                        style: TextStyle(color: UIData.fffa4848, fontSize: 14),
+                      ),
                     ],
                   ),
                   Divider(),
@@ -125,14 +143,34 @@ class _ShopCartListState extends State<AllShopOrderPage> {
                     },
                     itemCount: prducts.length,
                   ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Text(
+                        "共" +
+                            prducts.length.toString() +
+                            "商品，已付款：" +
+                            orderItem.payPrice.toString(),
+                        style: TextStyle(color: UIData.ff353535, fontSize: 14),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Text(
+                        "取消订单",
+                        style: TextStyle(color: UIData.ff353535, fontSize: 14),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
           ),
         ),
       ),
-      onTap: () {
-      },
+      onTap: () {},
     );
   }
 
