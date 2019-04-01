@@ -5,7 +5,7 @@ import 'package:flutter_lib/ui/page/dashboard/home_page.dart';
 import 'package:flutter_lib/ui/page/dashboard/user_home_page.dart';
 import 'package:flutter_lib/ui/page/invite/invite_friends.dart';
 import 'package:flutter_lib/ui/page/notfound/notfound_page.dart';
-import 'package:flutter_lib/ui/page/order/all_shop_cart_list.dart';
+import 'package:flutter_lib/ui/page/order/all_shop_order_list.dart';
 import 'package:flutter_lib/ui/page/shop/mine_collection.dart';
 import 'package:flutter_lib/ui/page/shop/search_shop_list.dart';
 import 'package:flutter_lib/ui/page/shop/shop_category_list.dart';
