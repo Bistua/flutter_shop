@@ -7,6 +7,7 @@ import 'package:flutter_lib/ui/page/invite/invite_friends.dart';
 import 'package:flutter_lib/ui/page/invite/invite_input.dart';
 import 'package:flutter_lib/ui/page/notfound/notfound_page.dart';
 import 'package:flutter_lib/ui/page/shop/mine_collection.dart';
+import 'package:flutter_lib/ui/page/shop/order_detail.dart';
 import 'package:flutter_lib/ui/page/shop/search_shop_list.dart';
 import 'package:flutter_lib/ui/page/shop/shop_category_list.dart';
 import 'package:flutter_lib/ui/page/shop/shop_detail.dart';
@@ -44,8 +45,8 @@ class MyApp extends StatelessWidget {
         UIData.IviteFriendsPage: (BuildContext context) => IviteFriendsPage(),
         UIData.InviteInputPage: (BuildContext context) => InviteInputPage(),
         UIData.UserHomeListPage: (BuildContext context) => UserHomeListPage(),
-        UIData.MineCollectionPage: (BuildContext context) =>
-            MineCollectionPage(),
+        UIData.MineCollectionPage: (BuildContext context) => MineCollectionPage(),
+        UIData.OrderDetailPage: (BuildContext context) => OrderDetailPage(),
       },
       onGenerateRoute: (RouteSettings settings) {
         final arguments = settings.arguments;
