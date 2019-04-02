@@ -8,33 +8,18 @@ import android.os.BatteryManager;
 import android.os.Build;
 import android.text.TextUtils;
 import android.widget.Toast;
-import com.bristua.flutter.ftshop.plugin.*;
-
 import com.bristua.flutter.ftshop.VideoActivity;
+import com.bristua.framework.define.IFlutterResult;
+import com.bristua.framework.router.BRouter;
 
 import org.json.JSONObject;
 
 import io.flutter.plugin.common.MethodCall;
-import io.flutter.plugin.common.MethodChannel;
-
 public class PluginDelegate {
 
-    public void call(Context context, MethodCall methodCall, JSONObject jsonObject, Result result) {
+    public void call(Context context, MethodCall methodCall, JSONObject jsonObject, IFlutterResult result) throws Exception {
         String action = jsonObject.optString("action");
-        switch (action) {
-            case "toast":
-                doToast(context, methodCall, jsonObject, result);
-                break;
-            case "http":
-                doHttp(methodCall, jsonObject, result);
-                break;
-            case "battery":
-                getBattery(context, methodCall, result);
-                break;
-            case "navigate":
-                doNavigate(context, methodCall, result);
-                break;
-        }
+        BRouter.getInstance().build(action).setProtocol(jsonObject.toString()).setResult(result).navigation();
     }
 
     private void doNavigate(Context context, MethodCall methodCall, Result result) {

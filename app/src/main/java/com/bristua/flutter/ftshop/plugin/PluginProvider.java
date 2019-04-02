@@ -4,12 +4,18 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import com.bristua.framework.define.IFlutterResult;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodChannel;
 
+/**
+ * @author richsjeson
+ * flutter 桥
+ */
 public class PluginProvider {
     private static final String CHANNEL = "com.ym.framework.plugins/bridge";
 
@@ -23,22 +29,27 @@ public class PluginProvider {
                     result.notImplemented();
                     return;
                 }
-                iDelegate.call(context, methodCall, jsonObject, new Result() {
-                    @Override
-                    public void success(@Nullable Object o) {
-                        result.success(o);
-                    }
+                try {
+                    iDelegate.call(context, methodCall, jsonObject, new IFlutterResult() {
+                        @Override
+                        public void success(@Nullable String pResult, int pErrorCode, @Nullable String pMessage) {
 
-                    @Override
-                    public void error(String s, @Nullable String s1, @Nullable Object o) {
-                        result.error(s,s1,o);
-                    }
+                            result.success(pResult);
+                        }
 
-                    @Override
-                    public void notImplemented() {
-                        result.notImplemented();
-                    }
-                });
+                        @Override
+                        public void error(@Nullable String pMessage, int pErrorCode) {
+                            result.error(pMessage, String.valueOf(pErrorCode),null);
+                        }
+
+                        @Override
+                        public void notImplemented() {
+                            result.notImplemented();
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
