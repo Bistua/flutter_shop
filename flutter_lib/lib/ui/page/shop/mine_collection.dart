@@ -11,7 +11,7 @@ class MineCollectionPage extends StatefulWidget {
 }
 
 class MineCollectionPageState extends State<MineCollectionPage> {
-  List<Product> items = ProductViewModel().getProducts();
+  List<Product> items = ProductViewModel().getProductTests();
 
   _upItems(List<Product> items) {
     setState(() {
