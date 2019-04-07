@@ -13,18 +13,11 @@ class ProductBloc {
   }
 
   ProductBloc() {
-   Future<String> future =  productViewModel.getProducts("1");
-   future.then((string){
-     Map<String, dynamic> products = json.decode(string);
-
-
-//     productController.add()
-     
-   }).catchError((error){
-     print(error);
-   });
-  
+    Future<String> future = productViewModel.getProducts("1");
+    future.then((string) {
+      productController.add(Product.parseProducts(string));
+    }).catchError((error) {
+      print(error);
+    });
   }
-
-
 }

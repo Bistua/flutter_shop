@@ -36,7 +36,7 @@ class Product {
     return other is Product && other.name == this.name;
   }
 
-  List<Product> parseProducts(String responseBody) {
+  static List<Product> parseProducts(String responseBody) {
     final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
 
     return parsed.map<Product>((json) => Product.fromJson(json)).toList();
