@@ -79,10 +79,10 @@ class _MyHomePageState extends State<MyHomePage> {
   void didChangeAppLifecycleState(AppLifecycleState state) {}
 
   Future post() async {
-    String result = await bridge.httpRequest(1, "发送一个post请求");
+    String result = await Bridge.httpRequest(1, "发送一个post请求");
     setState(() {
       print("TTT " + result);
-      bridge.showShortToast(result);
+      Bridge.showShortToast(result);
     });
   }
 

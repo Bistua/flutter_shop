@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
+import 'dart:convert';
 
 class Product {
   String name;
@@ -31,10 +33,21 @@ class Product {
 
   @override
   bool operator ==(other) {
-
-    return other is Product&& other.name==this.name;
+    return other is Product && other.name == this.name;
   }
 
+  List<Product> parseProducts(String responseBody) {
+    final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
+
+    return parsed.map<Product>((json) => Product.fromJson(json)).toList();
+  }
+
+  factory Product.fromJson(Map<String, dynamic> json) {
+    return Product(
+      name: json['name'],
+      image: json['image'],
+    );
+  }
 }
 
 class ProductColor {

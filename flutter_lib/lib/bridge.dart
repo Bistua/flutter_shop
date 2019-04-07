@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 
-class bridge {
+class Bridge {
   static const _bridgePlatform =
       const MethodChannel("com.ym.framework.plugins/bridge");
 
@@ -12,6 +12,16 @@ class bridge {
     } on PlatformException catch (e) {
       return e.message;
     }
+  }
+
+  static Future<String> getProducts(String type) {
+    return dispenser({
+      "method": "getProducts",
+      "params": {
+        "action": "getProducts",
+        "data": {"type": type}
+      }
+    });
   }
 
   static void gotoVideoPage() {

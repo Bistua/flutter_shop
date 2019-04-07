@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lib/bridge.dart';
 import 'package:flutter_lib/model/product.dart';
 
 class ProductViewModel {
@@ -6,7 +7,11 @@ class ProductViewModel {
 
   ProductViewModel({this.productsItems});
 
-  getProducts() => <Product>[
+  Future<String> getProducts(type) {
+    return Bridge.getProducts(type);
+  }
+
+  getProductTests() => <Product>[
         Product(
             brand: "Levis",
             description: "Print T-shirt",
