@@ -140,10 +140,15 @@ class _UserHomeState extends State<UserHomeListPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
-                        Text(
-                          "查看全部订单",
-                          style:
-                              TextStyle(color: UIData.ff999999, fontSize: 15),
+                        InkWell(
+                          child:  Text(
+                            "查看全部订单",
+                            style:
+                            TextStyle(color: UIData.ff999999, fontSize: 15),
+                          ),
+                          onTap: () {
+                            Navigator.pushNamed(context, UIData.MineOrderPage);
+                          },
                         ),
                         Padding(
                           child: Icon(

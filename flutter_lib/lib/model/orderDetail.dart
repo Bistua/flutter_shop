@@ -28,6 +28,21 @@ class OrderDetail {
     }
   }
 
+  String getListStatusName(){
+    switch(status){
+      case 0:
+        return "已取消";
+      case 1:
+        return "待发货";
+      case 2:
+        return "已发货";
+      case 3:
+        return "待评价";
+      case 4:
+        return "待评价";
+    }
+  }
+
   String getStatusButtonName(){
     switch(status){
       case 0:
@@ -40,6 +55,21 @@ class OrderDetail {
         return "申请售后";
       case 4:
         return "申请售后";
+    }
+  }
+
+  String getListStatusButtonName(){
+    switch(status){
+      case 0:
+        return "已取消";
+      case 1:
+        return "取消订单";
+      case 2:
+        return "查看物流";
+      case 3:
+        return "退换货";
+      case 4:
+        return "退换货";
     }
   }
 }

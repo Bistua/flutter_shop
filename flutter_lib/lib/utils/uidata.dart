@@ -15,10 +15,9 @@ class UIData {
   static const String InviteInputPage = "/InviteInputPage";
   static const String UserHomeListPage = "/UserHomeListPage";
 
-
   static const String MineCollectionPage = "/MineCollectionPage";
   static const String OrderDetailPage = "/OrderDetailPage";
-
+  static const String MineOrderPage = "/MineOrderPage";
 
   static const String ShopDetailPage = "/ShopDetailPage";
 
