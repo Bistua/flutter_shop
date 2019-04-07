@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/bridge.dart';
-import 'package:flutter_lib/bridge/account.dart';
+import 'package:flutter_lib/bridge/account_bridge.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class Register extends StatelessWidget {
