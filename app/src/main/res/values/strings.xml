@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">FlutterHost</string>
+    <string name="vm_init_exception">组件启动异常，组件管理器没有被初始化</string>
+    <string name="vm_stop_exception">关闭系统异常，组件管理器没有被初始化，无法对其进行释放</string>
 </resources>

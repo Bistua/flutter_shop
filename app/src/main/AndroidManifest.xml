@@ -3,6 +3,7 @@
     package="com.bristua.flutter.ftshop">
 
     <application
+        android:name="com.bristua.flutter.ftshop.AppApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

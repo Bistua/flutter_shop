@@ -47,9 +47,20 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    implementation 'com.bristua.framework:appconfig:1.0.3-SNAPHOST'
-    implementation 'com.bristua.framework:component_manager:1.0.3-SNAPHOST'
-    implementation 'com.bristua.framework:brouter:1.0.3-SNAPHOST'
-    implementation 'com.bristua.framework:common_api:1.0.3-SNAPHOST'
+    //系统全局配置模块
+    implementation 'com.bristua.framework:appconfig:1.0.4-SNAPHOST'
+    implementation 'com.bristua.framework:component_manager:1.0.4-SNAPHOST'
+    //https模块
+    implementation 'com.bristua.framework:https:1.0.4-SNAPHOST'
+    //路由模块
+    implementation 'com.bristua.framework:brouter:1.0.0-SNAPHOST'
+    implementation 'com.bristua.framework:common_api:1.0.4-SNAPHOST'
+    implementation 'com.bristua.framework:sp_manager:1.0.4-SNAPHOST'
+    implementation 'com.bristua.framework:context:1.0.4-SNAPHOST'
+    implementation 'com.ft.business.interceptor:response:1.0.0-SNAPHOST'
+    implementation 'com.ft.business.component:user_login:1.0.8-SNAPHOST'
+    implementation 'com.ft.business.component:enviroment:1.0.4-SNAPHOST'
+    annotationProcessor 'com.nd.sdp.android.serviceloader:service-loader-compiler-app:1.0.9'
+    implementation 'com.nd.sdp.android.serviceloader:service-loader:1.0.9'
 
 }

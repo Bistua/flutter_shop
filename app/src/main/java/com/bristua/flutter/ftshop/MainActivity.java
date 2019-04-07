@@ -1,19 +1,26 @@
 package com.bristua.flutter.ftshop;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.bristua.flutter.ftshop.plugin.PluginDelegate;
 import com.bristua.flutter.ftshop.plugin.PluginProvider;
+import com.bristua.framework.define.IFlutterResult;
+import com.bristua.framework.router.BRouter;
+import com.bristua.ft.component.userlogin.UserLoginConstant;
 
 import io.flutter.facade.Flutter;
 import io.flutter.view.FlutterView;
 
 public class MainActivity extends AppCompatActivity {
     FlutterView flutterView;
+
+    private final String TAG=MainActivity.class.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +33,37 @@ public class MainActivity extends AppCompatActivity {
         FrameLayout.LayoutParams layout = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         PluginProvider.registerPlugin(this, flutterView, new PluginDelegate());
         setContentView(flutterView, layout);
+        /**
+         * 远离flutter Ui 层进行接口测试
+         */
+        testLogin();
     }
+
+
+    private void testLogin(){
+        try {
+            BRouter.getInstance().build(UserLoginConstant.USER_LOGIN_MODULE).setProtocol("hello").setResult(new IFlutterResult() {
+                @Override
+                public void success(@Nullable String pResult, int pErrorCode, @Nullable String pMessage) {
+
+                    Log.i(TAG,String.format("pResult:%s,code:%d,message:%s",pResult,pErrorCode,pMessage));
+                }
+
+                @Override
+                public void error(@Nullable String pMessage, int pErrorCode) {
+                    Log.i(TAG,String.format("pMessage:%s,code:%d",pMessage,pErrorCode));
+                }
+
+                @Override
+                public void notImplemented() {
+
+                }
+            }).navigation();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     protected void onDestroy() {
