@@ -38,45 +38,26 @@ class Bridge {
     });
   }
 
-  /*
-   *
-   *获取产品列表
-   */
-  static Future<String> getProducts(String type) {
-    return dispenser({
-      "method": "getProducts",
-      "params": {
-        "action": "getProducts",
-        "data": {"type": type}
-      }
+
+
+  static void gotoVideoPage() {
+    dispenser({
+      "method": "video",
+      "params": {"action": "navigate"}
     });
   }
 
-  /*
-  获取短信验证码
-   * type=0 注册
-   */
-  static Future<String> getSmsCode(String type, String phone) {
+  static Future<String> httpRequest(var requestType, String url) async {
     return dispenser({
-      "method": "getSmsCode",
-      "params": {
-        "action": "getSmsCode",
-        "data": {"type": type, "phone": phone}
-      }
+      "method": "get",
+      "params": {"action": "http", "message": url}
     });
   }
 
-/*
-  注册
- */
-  static Future<String> register(
-      String phone, String smsCode, String inviteCode) {
+  static Future<String> getBatteryLevel() async {
     return dispenser({
-      "method": "register",
-      "params": {
-        "action": "register",
-        "data": {"phone": phone, "smsCode": smsCode, "inviteCode": inviteCode},
-      }
+      "method": "getBatteryLevel",
+      "params": {"action": "battery", "message": "msg"}
     });
   }
 }

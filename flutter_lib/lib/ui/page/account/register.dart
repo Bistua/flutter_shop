@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/bridge.dart';
+import 'package:flutter_lib/bridge/account.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class Register extends StatelessWidget {
@@ -211,7 +212,7 @@ class RegisterState extends State<RegisterPage> {
                                     ),
                                     //圆角大小,与BoxDecoration保持一致，更美观
                                     onPressed: () {
-                                      Future<String> future = Bridge.getSmsCode(
+                                      Future<String> future = AccountBridge.getSmsCode(
                                           "0", _controller.text);
                                       future.then((result) {
                                         //todo 短信验证码是否获取成功
@@ -279,7 +280,7 @@ class RegisterState extends State<RegisterPage> {
                             if (_phonenum != null &&
                                 _phonenum.length == 11 &&
                                 UIData.isPhone(_phonenum)) {
-                              Future<String> future = Bridge.register(
+                              Future<String> future = AccountBridge.register(
                                   _controller.text,
                                   smsCodeEditingController.text,
                                   inviteCodeEditingController.text);
