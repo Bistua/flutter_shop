@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lib/bridge.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class Register extends StatelessWidget {
@@ -57,6 +58,9 @@ class RegisterState extends State<RegisterPage> {
     }
   }
 
+  TextEditingController smsCodeEditingController = new TextEditingController();
+  TextEditingController inviteCodeEditingController =
+      new TextEditingController();
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -148,6 +152,7 @@ class RegisterState extends State<RegisterPage> {
                         child: Stack(
                           children: <Widget>[
                             TextField(
+                              controller: smsCodeEditingController,
                               keyboardType: TextInputType.number,
                               maxLength: 6,
                               //最大长度，设置此项会让TextField右下角有一个输入数量的统计字符串
@@ -186,7 +191,8 @@ class RegisterState extends State<RegisterPage> {
                                     height: 22.0,
                                     decoration: BoxDecoration(
                                       border: Border.all(
-                                          color: _verifybordercolor, width: _verifyborderwidth),
+                                          color: _verifybordercolor,
+                                          width: _verifyborderwidth),
                                       borderRadius: new BorderRadius.all(
                                           new Radius.circular(11.0)),
                                     ),
@@ -204,7 +210,15 @@ class RegisterState extends State<RegisterPage> {
                                       alignment: Alignment.center,
                                     ),
                                     //圆角大小,与BoxDecoration保持一致，更美观
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Future<String> future = Bridge.getSmsCode(
+                                          "0", _controller.text);
+                                      future.then((result) {
+                                        //todo 短信验证码是否获取成功
+                                      }).catchError((e) {
+                                        print(e.toString());
+                                      });
+                                    },
                                   ),
                                 ],
                               ),
@@ -217,6 +231,7 @@ class RegisterState extends State<RegisterPage> {
                         height: 40,
                         margin: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
                         child: TextField(
+                          controller: inviteCodeEditingController,
                           keyboardType: TextInputType.number,
                           maxLength: 11,
                           //最大长度，设置此项会让TextField右下角有一个输入数量的统计字符串
@@ -264,7 +279,15 @@ class RegisterState extends State<RegisterPage> {
                             if (_phonenum != null &&
                                 _phonenum.length == 11 &&
                                 UIData.isPhone(_phonenum)) {
-                              Navigator.pop(context, "注册成功");
+                              Future<String> future = Bridge.register(
+                                  _controller.text,
+                                  smsCodeEditingController.text,
+                                  inviteCodeEditingController.text);
+                              future.then((result) {
+                                //todo 解析结果
+                              }).catchError((e) {
+                                print(e.toString());
+                              });
                             } else {}
                           },
                           textColor: _registercolor,

@@ -14,23 +14,6 @@ class Bridge {
     }
   }
 
-  static Future<String> getProducts(String type) {
-    return dispenser({
-      "method": "getProducts",
-      "params": {
-        "action": "getProducts",
-        "data": {"type": type}
-      }
-    });
-  }
-
-  static void gotoVideoPage() {
-    dispenser({
-      "method": "video",
-      "params": {"action": "navigate"}
-    });
-  }
-
   static void showShortToast(String message) {
     message = message.replaceAll(" ", "");
     dispenser({
@@ -55,17 +38,45 @@ class Bridge {
     });
   }
 
-  static Future<String> httpRequest(var requestType, String url) async {
+  /*
+   *
+   *获取产品列表
+   */
+  static Future<String> getProducts(String type) {
     return dispenser({
-      "method": "get",
-      "params": {"action": "http", "message": url}
+      "method": "getProducts",
+      "params": {
+        "action": "getProducts",
+        "data": {"type": type}
+      }
     });
   }
 
-  static Future<String> getBatteryLevel() async {
+  /*
+  获取短信验证码
+   * type=0 注册
+   */
+  static Future<String> getSmsCode(String type, String phone) {
     return dispenser({
-      "method": "getBatteryLevel",
-      "params": {"action": "battery", "message": "msg"}
+      "method": "getSmsCode",
+      "params": {
+        "action": "getSmsCode",
+        "data": {"type": type, "phone": phone}
+      }
+    });
+  }
+
+/*
+  注册
+ */
+  static Future<String> register(
+      String phone, String smsCode, String inviteCode) {
+    return dispenser({
+      "method": "register",
+      "params": {
+        "action": "register",
+        "data": {"phone": phone, "smsCode": smsCode, "inviteCode": inviteCode},
+      }
     });
   }
 }
