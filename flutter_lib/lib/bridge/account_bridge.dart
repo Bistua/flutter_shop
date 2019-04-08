@@ -1,4 +1,4 @@
-import 'package:flutter_lib/bridge.dart';
+import 'package:flutter_lib/bridge/common_bridge.dart';
 
 class AccountBridge {
   static const String component = "account";

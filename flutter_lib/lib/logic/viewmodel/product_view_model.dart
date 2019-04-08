@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_lib/bridge.dart';
+import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/bridge/product_bridge.dart';
 import 'package:flutter_lib/model/product.dart';
 

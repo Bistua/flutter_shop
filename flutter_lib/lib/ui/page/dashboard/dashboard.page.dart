@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_lib/bridge.dart';
+import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/ui/page/dashboard/home_page.dart';
 import 'package:flutter_lib/ui/page/dashboard/user_home_page.dart';
 import 'package:flutter_lib/ui/page/shop/shop_cart_list.dart';
@@ -62,13 +62,20 @@ class DashboardPageState extends State<DashboardPage> {
   int currentIndex = 0;
   final List<Widget> _children = [
     MyHomePage(),
-    ShopCategoryList("全部分类",false),
+    ShopCategoryList("全部分类", false),
     ShopCartListPage(),
     UserHomeListPage(),
   ];
 
+
+  Future showShortToast() async {
+    String future = await Bridge.showShortToast("test toast");
+    print("toast1:" + future);
+  }
+
   @override
   Widget build(BuildContext context) {
+    showShortToast();
     return Scaffold(
       body: _children[currentIndex],
       bottomNavigationBar: BottomNavigationBar(

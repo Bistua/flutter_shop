@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_lib/bridge.dart';
+import 'package:flutter_lib/bridge/common_bridge.dart';
 
 class PreferreSizeWidget extends StatelessWidget implements PreferredSize {
   @override

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:flutter_lib/bridge.dart';
+import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/model/product.dart';
 import 'package:flutter_lib/logic/viewmodel/product_view_model.dart';
 

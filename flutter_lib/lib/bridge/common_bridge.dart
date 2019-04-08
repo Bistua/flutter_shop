@@ -7,18 +7,20 @@ class Bridge {
   static Future<String> dispenser(var dispenser) async {
     try {
       String method = dispenser['method'];
-      var params = dispenser['arguments'];
+      var params = dispenser['params'];
       return await _bridgePlatform.invokeMethod(method, params);
     } on PlatformException catch (e) {
       return e.message;
     }
   }
 
-  static void showShortToast(String message) {
+  static Future<String> showShortToast(String message) {
     message = message.replaceAll(" ", "");
-    dispenser({
+    return dispenser({
       "method": "showShortToast",
-      "arguments": {"action": "toast", "message": message}
+      "params": {
+        "message": message,
+      },
     });
   }
 
@@ -26,7 +28,7 @@ class Bridge {
     message = message.replaceAll(" ", "");
     dispenser({
       "method": "showLongToast",
-      "arguments": {"action": "toast", "message": message}
+      "params": {"action": "toast", "message": message}
     });
   }
 
@@ -34,23 +36,21 @@ class Bridge {
     message = message.replaceAll(" ", "");
     dispenser({
       "method": "showToast",
-      "arguments": {"action": "toast", "message": message, "duration": duration}
+      "params": {"action": "toast", "message": message, "duration": duration}
     });
   }
-
-
 
   static void gotoVideoPage() {
     dispenser({
       "method": "video",
-      "arguments": {"action": "navigate"}
+      "params": {"action": "navigate"}
     });
   }
 
   static Future<String> httpRequest(var requestType, String url) async {
     return dispenser({
       "method": "get",
-      "arguments": {"action": "http", "message": url}
+      "params": {"action": "http", "message": url}
     });
   }
 

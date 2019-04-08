@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
-import 'package:flutter_lib/bridge.dart';
+import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/ui/page/dashboard/user_home_page.dart';
 
 import 'package:flutter_lib/ui/page/shop/search_shop_list.dart';

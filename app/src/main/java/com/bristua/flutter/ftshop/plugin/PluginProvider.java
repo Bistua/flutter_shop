@@ -33,7 +33,6 @@ public class PluginProvider {
                     iDelegate.call(context, methodCall, jsonObject, new IFlutterResult() {
                         @Override
                         public void success(@Nullable String pResult, int pErrorCode, @Nullable String pMessage) {
-
                             result.success(pResult);
                         }
 
