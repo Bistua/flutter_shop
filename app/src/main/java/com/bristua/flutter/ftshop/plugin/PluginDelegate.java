@@ -29,8 +29,7 @@ public class PluginDelegate {
                 break;
             default:
                 String action = jsonObject.optString("action");
-                JSONObject jsonObject1 = jsonObject.optJSONObject("data");
-                BRouter.getInstance().build(action).setProtocol(jsonObject1.toString()).setResult(result).navigation();
+                BRouter.getInstance().build(action).setProtocol(jsonObject.toString()).setResult(result).navigation();
                 break;
         }
 
