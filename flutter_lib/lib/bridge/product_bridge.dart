@@ -11,7 +11,10 @@ class ProductBridge {
       "method": "getProducts",
       "params": {
         "action": component,
-        "data": {"type": type}
+        "arguments": {
+          "method": "getProducts",
+          "data": {"type": type}
+        }
       }
     });
   }

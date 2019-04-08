@@ -10,8 +10,10 @@ class AccountBridge {
       "method": "getSmsCode",
       "params": {
         "action": component,
-        "method": "getSmsCode",
-        "data": {"type": type, "phone": phone}
+        "arguments": {
+          "method": "getSmsCode",
+          "data": {"type": type, "phone": phone}
+        }
       }
     });
   }
@@ -25,8 +27,14 @@ class AccountBridge {
       "method": "register",
       "params": {
         "action": component,
-        "method": "register",
-        "data": {"phone": phone, "smsCode": smsCode, "inviteCode": inviteCode},
+        "arguments": {
+          "method": "register",
+          "data": {
+            "phone": phone,
+            "smsCode": smsCode,
+            "inviteCode": inviteCode
+          },
+        }
       }
     });
   }
@@ -39,8 +47,10 @@ class AccountBridge {
       "method": "login",
       "params": {
         "action": component,
-        "method": "login",
-        "data": {"type": type, "phone": phone, "smsCode": smsCode},
+        "arguments": {
+          "method": "login",
+          "data": {"type": type, "phone": phone, "smsCode": smsCode},
+        }
       }
     });
   }
@@ -53,8 +63,10 @@ class AccountBridge {
       "method": "wxlogin",
       "params": {
         "action": component,
-        "method": "wxlogin",
-        "data": {"phone": phone},
+        "arguments": {
+          "method": "wxlogin",
+          "data": {"phone": phone},
+        }
       }
     });
   }

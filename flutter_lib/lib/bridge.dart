@@ -7,7 +7,7 @@ class Bridge {
   static Future<String> dispenser(var dispenser) async {
     try {
       String method = dispenser['method'];
-      var params = dispenser['params'];
+      var params = dispenser['arguments'];
       return await _bridgePlatform.invokeMethod(method, params);
     } on PlatformException catch (e) {
       return e.message;
@@ -18,7 +18,7 @@ class Bridge {
     message = message.replaceAll(" ", "");
     dispenser({
       "method": "showShortToast",
-      "params": {"action": "toast", "message": message}
+      "arguments": {"action": "toast", "message": message}
     });
   }
 
@@ -26,7 +26,7 @@ class Bridge {
     message = message.replaceAll(" ", "");
     dispenser({
       "method": "showLongToast",
-      "params": {"action": "toast", "message": message}
+      "arguments": {"action": "toast", "message": message}
     });
   }
 
@@ -34,7 +34,7 @@ class Bridge {
     message = message.replaceAll(" ", "");
     dispenser({
       "method": "showToast",
-      "params": {"action": "toast", "message": message, "duration": duration}
+      "arguments": {"action": "toast", "message": message, "duration": duration}
     });
   }
 
@@ -43,21 +43,21 @@ class Bridge {
   static void gotoVideoPage() {
     dispenser({
       "method": "video",
-      "params": {"action": "navigate"}
+      "arguments": {"action": "navigate"}
     });
   }
 
   static Future<String> httpRequest(var requestType, String url) async {
     return dispenser({
       "method": "get",
-      "params": {"action": "http", "message": url}
+      "arguments": {"action": "http", "message": url}
     });
   }
 
   static Future<String> getBatteryLevel() async {
     return dispenser({
       "method": "getBatteryLevel",
-      "params": {"action": "battery", "message": "msg"}
+      "arguments": {"action": "battery", "message": "msg"}
     });
   }
 }
