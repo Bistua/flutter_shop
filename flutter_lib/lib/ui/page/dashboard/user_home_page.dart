@@ -43,7 +43,8 @@ class _UserHomeState extends State<UserHomeListPage> {
                   centerTitle: false,
                   expandedHeight: 155.0,
                   floating: false,
-                  pinned: false, //固定在顶部
+                  pinned: false,
+                  //固定在顶部
                   automaticallyImplyLeading: false,
                   flexibleSpace: FlexibleSpaceBar(
                     centerTitle: false,
@@ -141,13 +142,14 @@ class _UserHomeState extends State<UserHomeListPage> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         InkWell(
-                          child:  Text(
+                          child: Text(
                             "查看全部订单",
                             style:
-                            TextStyle(color: UIData.ff999999, fontSize: 15),
+                                TextStyle(color: UIData.ff999999, fontSize: 15),
                           ),
                           onTap: () {
-                            Navigator.pushNamed(context, UIData.MineOrderPage);
+                            Navigator.pushNamed(context, UIData.MineOrderPage,
+                                arguments: 0);
                           },
                         ),
                         Padding(
@@ -169,73 +171,97 @@ class _UserHomeState extends State<UserHomeListPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Padding(
-                          child: Icon(
-                            Icons.bookmark_border,
-                            size: 22,
+                    InkWell(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            child: Icon(
+                              Icons.bookmark_border,
+                              size: 22,
+                            ),
+                            padding: EdgeInsets.fromLTRB(0, 12, 0, 8),
                           ),
-                          padding: EdgeInsets.fromLTRB(0, 12, 0, 8),
-                        ),
-                        Text(
-                          "待付款",
-                          style:
-                              TextStyle(color: UIData.ff353535, fontSize: 12),
-                        ),
-                      ],
+                          Text(
+                            "待付款",
+                            style:
+                                TextStyle(color: UIData.ff353535, fontSize: 12),
+                          ),
+                        ],
+                      ),
+                      onTap: () {
+                        Navigator.pushNamed(context, UIData.MineOrderPage,
+                            arguments: 0);
+                      },
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Padding(
-                          child: Icon(
-                            Icons.bookmark_border,
-                            size: 22,
+                    InkWell(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            child: Icon(
+                              Icons.bookmark_border,
+                              size: 22,
+                            ),
+                            padding: EdgeInsets.fromLTRB(0, 12, 0, 8),
                           ),
-                          padding: EdgeInsets.fromLTRB(0, 12, 0, 8),
-                        ),
-                        Text(
-                          "待发货",
-                          style:
-                              TextStyle(color: UIData.ff353535, fontSize: 12),
-                        ),
-                      ],
+                          Text(
+                            "待发货",
+                            style:
+                                TextStyle(color: UIData.ff353535, fontSize: 12),
+                          ),
+                        ],
+                      ),
+                      onTap: () {
+                        Navigator.pushNamed(context, UIData.MineOrderPage,
+                            arguments: 1);
+                      },
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Padding(
-                          child: Icon(
-                            Icons.bookmark_border,
-                            size: 22,
+                    InkWell(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            child: Icon(
+                              Icons.bookmark_border,
+                              size: 22,
+                            ),
+                            padding: EdgeInsets.fromLTRB(0, 12, 0, 8),
                           ),
-                          padding: EdgeInsets.fromLTRB(0, 12, 0, 8),
-                        ),
-                        Text(
-                          "待收货",
-                          style:
-                              TextStyle(color: UIData.ff353535, fontSize: 12),
-                        ),
-                      ],
+                          Text(
+                            "待收货",
+                            style:
+                            TextStyle(color: UIData.ff353535, fontSize: 12),
+                          ),
+                        ],
+                      ),
+                      onTap: () {
+                        Navigator.pushNamed(context, UIData.MineOrderPage,
+                            arguments: 2);
+                      },
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Padding(
-                          child: Icon(
-                            Icons.bookmark_border,
-                            size: 22,
+                    InkWell(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            child: Icon(
+                              Icons.bookmark_border,
+                              size: 22,
+                            ),
+                            padding: EdgeInsets.fromLTRB(0, 12, 0, 8),
                           ),
-                          padding: EdgeInsets.fromLTRB(0, 12, 0, 8),
-                        ),
-                        Text(
-                          "待评价",
-                          style:
-                              TextStyle(color: UIData.ff353535, fontSize: 12),
-                        ),
-                      ],
+                          Text(
+                            "待评价",
+                            style:
+                            TextStyle(color: UIData.ff353535, fontSize: 12),
+                          ),
+                        ],
+                      ),
+                      onTap: () {
+                        Navigator.pushNamed(context, UIData.MineOrderPage,
+                            arguments: 3);
+                      },
                     ),
                   ],
                 ),

@@ -4,10 +4,14 @@ import 'package:flutter_lib/ui/page/order/mine_order_list.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class MineOrderPage extends StatefulWidget {
-  MineOrderPage({Key key}) : super(key: key);
+  int page;
+
+  MineOrderPage(int page, {Key key}) : super(key: key) {
+    this.page = page;
+  }
 
   @override
-  MineOrderPageState createState() => new MineOrderPageState();
+  MineOrderPageState createState() => new MineOrderPageState(page);
 }
 
 //定义tab页基本数据结构
@@ -19,7 +23,10 @@ final List<MineOrderTab> mineOrderTabs = <MineOrderTab>[
 ];
 
 class MineOrderPageState extends State<MineOrderPage> {
-  MineOrderTab _currenttab = mineOrderTabs[0]; //定义默认打开的Tab页
+  MineOrderTab _currenttab; //定义默认打开的Tab页
+  MineOrderPageState(int page) {
+    _currenttab = mineOrderTabs[page];
+  }
 
   void _selectTab(MineOrderTab tab) {
     //修改状态值
@@ -48,17 +55,17 @@ class MineOrderPageState extends State<MineOrderPage> {
             left: 0,
             right: 0,
             bottom: 0,
-            child:  Container(
+            child: Container(
               color: Color(0xFFF5F5F5),
               child: Stack(
                   children: mineOrderTabs.map((item) {
-                    return Offstage(
-                      offstage: _currenttab != item,
-                      child: MineOrderList(
-                          pageKey: PageStorageKey<MineOrderTab>(item),
-                          orderType: item.tabDescribe),
-                    );
-                  }).toList()),
+                return Offstage(
+                  offstage: _currenttab != item,
+                  child: MineOrderList(
+                      pageKey: PageStorageKey<MineOrderTab>(item),
+                      orderType: item.tabDescribe),
+                );
+              }).toList()),
             ),
           ),
         ],

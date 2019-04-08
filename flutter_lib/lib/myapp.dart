@@ -50,7 +50,6 @@ class MyApp extends StatelessWidget {
         UIData.UserHomeListPage: (BuildContext context) => UserHomeListPage(),
         UIData.MineCollectionPage: (BuildContext context) => MineCollectionPage(),
         UIData.OrderDetailPage: (BuildContext context) => OrderDetailPage(),
-        UIData.MineOrderPage: (BuildContext context) => MineOrderPage(),
         UIData.OrderCommentPage: (BuildContext context) => OrderCommentPage(),
         UIData.OrderCommentListPage: (BuildContext context) => OrderCommentListPage(),
       },
@@ -79,6 +78,14 @@ class MyApp extends StatelessWidget {
                 settings: settings,
                 builder: (BuildContext context) =>
                     ShopListPage(title: arguments),
+              );
+            }
+            break;
+          case UIData.MineOrderPage:
+            if (arguments is int) {
+              return new MaterialPageRoute(
+                settings: settings,
+                builder: (BuildContext context) => MineOrderPage(arguments),
               );
             }
             break;
