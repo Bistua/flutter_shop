@@ -3,6 +3,7 @@ import 'package:flutter_lib/logic/viewmodel/comment_view_model.dart';
 import 'package:flutter_lib/model/product.dart';
 import 'package:flutter_lib/model/comment.dart';
 import 'package:flutter_lib/ui/page/shop/shop_order.dart';
+import 'package:flutter_lib/ui/widgets/rating_bar.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 import 'package:flutter_lib/logic/viewmodel/shop_cart_manager.dart';
 import 'package:flutter_lib/ui/page/shop/shop_cart_list.dart';
@@ -287,8 +288,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
             ],
           ),
         ),
-        SliverFixedExtentList(
-          itemExtent: 101, // I'm forcing item heights
+        SliverList(
           delegate: SliverChildBuilderDelegate(
             (context, index) => Container(
                   color: UIData.fff,
@@ -311,11 +311,20 @@ class ShopDetailPageState extends State<ShopDetailPage>
                             children: <Widget>[
                               Padding(
                                 padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
-                                child: UIData.getTextWidget(
-                                    rankList[index].name, UIData.ff666666, 12),
+                                child: Row(
+                                  children: <Widget>[
+                                    UIData.getTextWidget(
+                                        rankList[index].name, UIData.ff666666, 12),
+                                    Container(width: 8.0,),
+                                    StaticRatingBar(
+                                      size: 10.0,
+                                      rate: rankList[index].star,
+                                    )
+                                  ],
+                                ),
                               ),
                               UIData.getTextWidget(
-                                  rankList[index].time.toString(),
+                                  rankList[index].time,
                                   UIData.ff999999,
                                   10),
                             ],
@@ -327,7 +336,11 @@ class ShopDetailPageState extends State<ShopDetailPage>
                         child: UIData.getTextWidget(
                             rankList[index].comment, UIData.ff353535, 12),
                       ),
-                      Divider(),
+                      Container(
+                        margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
+                        height: 1.0,
+                        color: Color(0xFFEAEAEA),
+                      ),
                     ],
                   ),
                 ),
@@ -376,10 +389,15 @@ class ShopDetailPageState extends State<ShopDetailPage>
               "用户评价(15)",
               style: TextStyle(color: UIData.ff353535, fontSize: 15),
             ),
-            Text(
-              "查看全部>",
-              style: TextStyle(color: UIData.ff999999, fontSize: 12),
-            )
+            InkWell(
+              child:  Text(
+                "查看全部>",
+                style: TextStyle(color: UIData.ff999999, fontSize: 12),
+              ),
+              onTap: () {
+                Navigator.pushNamed(context, UIData.OrderCommentListPage);
+              },
+            ),
           ],
         ),
       ),

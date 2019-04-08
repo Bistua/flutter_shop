@@ -18,6 +18,8 @@ class UIData {
   static const String MineCollectionPage = "/MineCollectionPage";
   static const String OrderDetailPage = "/OrderDetailPage";
   static const String MineOrderPage = "/MineOrderPage";
+  static const String OrderCommentPage = "/OrderCommentPage";
+  static const String OrderCommentListPage = "/OrderCommentListPage";
 
   static const String ShopDetailPage = "/ShopDetailPage";
 
