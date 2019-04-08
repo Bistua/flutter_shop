@@ -45,7 +45,6 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
         appBar: new AppBar(
           centerTitle: true,
           title: Text(widget.title),
-          automaticallyImplyLeading: widget.showBackBtn,
           leading: widget.showBackBtn == true
               ? new IconButton(
                   icon: UIData.back,
