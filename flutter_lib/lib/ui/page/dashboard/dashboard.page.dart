@@ -75,7 +75,7 @@ class DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    showShortToast();
+//    showShortToast();
     return Scaffold(
       body: _children[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
