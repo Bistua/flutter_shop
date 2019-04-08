@@ -10,6 +10,7 @@ class AccountBridge {
       "method": "getSmsCode",
       "params": {
         "action": component,
+        "method": "getSmsCode",
         "data": {"type": type, "phone": phone}
       }
     });
@@ -24,6 +25,7 @@ class AccountBridge {
       "method": "register",
       "params": {
         "action": component,
+        "method": "register",
         "data": {"phone": phone, "smsCode": smsCode, "inviteCode": inviteCode},
       }
     });
@@ -37,7 +39,22 @@ class AccountBridge {
       "method": "login",
       "params": {
         "action": component,
+        "method": "login",
         "data": {"type": type, "phone": phone, "smsCode": smsCode},
+      }
+    });
+  }
+
+  /*
+  微信登录
+ */
+  static Future<String> wxLogin(String phone) {
+    return Bridge.dispenser({
+      "method": "wxlogin",
+      "params": {
+        "action": component,
+        "method": "wxlogin",
+        "data": {"phone": phone},
       }
     });
   }

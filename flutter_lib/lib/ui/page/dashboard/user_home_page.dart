@@ -170,22 +170,28 @@ class _UserHomeState extends State<UserHomeListPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Padding(
-                          child: Icon(
-                            Icons.bookmark_border,
-                            size: 22,
+
+                    GestureDetector(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            child: Icon(
+                              Icons.bookmark_border,
+                              size: 22,
+                            ),
+                            padding: EdgeInsets.fromLTRB(0, 12, 0, 8),
                           ),
-                          padding: EdgeInsets.fromLTRB(0, 12, 0, 8),
-                        ),
-                        Text(
-                          "待付款",
-                          style:
-                              TextStyle(color: UIData.ff353535, fontSize: 12),
-                        ),
-                      ],
+                          Text(
+                            "待付款",
+                            style:
+                                TextStyle(color: UIData.ff353535, fontSize: 12),
+                          ),
+                        ],
+                      ),
+                      onTap: (){
+
+                      },
                     ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
