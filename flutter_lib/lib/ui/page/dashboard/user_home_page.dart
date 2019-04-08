@@ -190,7 +190,7 @@ class _UserHomeState extends State<UserHomeListPage> {
                         ],
                       ),
                       onTap: (){
-
+                        Navigator.pushNamed(context, UIData.AllShopOrderPage);
                       },
                     ),
                     Column(

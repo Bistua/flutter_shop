@@ -171,7 +171,9 @@ class _ShopCartListState extends State<AllShopOrderPage> {
           ),
         ),
       ),
-      onTap: () {},
+      onTap: () {
+        Navigator.pushNamed(context, UIData.OrderDetailPage);
+      },
     );
   }
 

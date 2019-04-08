@@ -13,7 +13,8 @@ class HomeItemViewModel {
           icon: Icons.import_contacts,
           title: "成为VIP",
           subTitle: "邀请返利不限量",
-          arrowIcon:Icons.arrow_forward_ios),
+          arrowIcon:Icons.arrow_forward_ios,
+          action: UIData.OrderDetailPage),
       HomeItem(
           icon: Icons.import_contacts,
           title: "邀请好友赢返利 ",
@@ -30,7 +31,8 @@ class HomeItemViewModel {
           icon: Icons.import_contacts,
           title: "输入邀请码",
           subTitle: "",
-          arrowIcon:Icons.arrow_forward_ios),
+          arrowIcon:Icons.arrow_forward_ios,
+          action: UIData.InviteInputPage),
       HomeItem(
           icon: Icons.import_contacts,
           title: "我的收藏",
