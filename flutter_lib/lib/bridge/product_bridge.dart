@@ -1,6 +1,7 @@
 import 'package:flutter_lib/bridge.dart';
 
 class ProductBridge {
+  static const String component = "product";
   /*
    *
    *获取产品列表
@@ -9,7 +10,7 @@ class ProductBridge {
     return Bridge.dispenser({
       "method": "getProducts",
       "params": {
-        "action": "getProducts",
+        "action": component,
         "data": {"type": type}
       }
     });

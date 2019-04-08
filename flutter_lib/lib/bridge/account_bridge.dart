@@ -1,9 +1,7 @@
-
 import 'package:flutter_lib/bridge.dart';
 
 class AccountBridge {
-
-
+  static const String component = "account";
   /*
   获取短信验证码   type=0 注册
    */
@@ -11,7 +9,7 @@ class AccountBridge {
     return Bridge.dispenser({
       "method": "getSmsCode",
       "params": {
-        "action": "getSmsCode",
+        "action": component,
         "data": {"type": type, "phone": phone}
       }
     });
@@ -25,7 +23,7 @@ class AccountBridge {
     return Bridge.dispenser({
       "method": "register",
       "params": {
-        "action": "register",
+        "action": component,
         "data": {"phone": phone, "smsCode": smsCode, "inviteCode": inviteCode},
       }
     });
@@ -34,15 +32,13 @@ class AccountBridge {
   /*
   登录
  */
-  static Future<String> login(String type,
-      String phone, String smsCode) {
+  static Future<String> login(String type, String phone, String smsCode) {
     return Bridge.dispenser({
       "method": "login",
       "params": {
-        "action": "login",
-        "data": {"type": type,"phone": phone, "smsCode": smsCode},
+        "action": component,
+        "data": {"type": type, "phone": phone, "smsCode": smsCode},
       }
     });
   }
-
 }

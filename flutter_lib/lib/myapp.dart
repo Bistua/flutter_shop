@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
             if (arguments is String) {
               return new MaterialPageRoute(
                 settings: settings,
-                builder: (BuildContext context) => ShopCategoryList(arguments),
+                builder: (BuildContext context) => ShopCategoryList(arguments[0],true),
               );
             }
             break;

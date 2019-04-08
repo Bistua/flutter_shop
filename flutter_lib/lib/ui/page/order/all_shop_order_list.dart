@@ -141,6 +141,7 @@ class _ShopCartListState extends State<AllShopOrderPage> {
                     itemBuilder: (BuildContext context, int index) {
                       return buildListIItem(prducts[index]);
                     },
+
                     itemCount: prducts.length,
                   ),
                   Row(
@@ -251,7 +252,9 @@ class _ShopCartListState extends State<AllShopOrderPage> {
           ],
         ),
       ),
-      onTap: () {},
+      onTap: () {
+        Navigator.pushNamed(context, UIData.ShopDetailPage,arguments: product);
+      },
     );
   }
 }

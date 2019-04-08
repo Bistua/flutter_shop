@@ -7,9 +7,11 @@ import 'package:flutter_lib/utils/uidata.dart';
 
 class ShopCategoryList extends StatelessWidget {
   String title;
+  bool showBackBtn = false;
   BuildContext buildContext;
-  ShopCategoryList(String title) {
+  ShopCategoryList(String title, bool showBackBtn) {
     this.title = title;
+    this.showBackBtn = showBackBtn;
   }
 
   @override
@@ -17,13 +19,16 @@ class ShopCategoryList extends StatelessWidget {
     buildContext = context;
     return ShopCategoryListPage(
       title: title,
+      showBackBtn: showBackBtn,
     );
   }
 }
 
 class ShopCategoryListPage extends StatefulWidget {
-  ShopCategoryListPage({Key key, this.title}) : super(key: key);
+  ShopCategoryListPage({Key key, this.title, this.showBackBtn})
+      : super(key: key);
   final String title;
+  final bool showBackBtn;
 
   @override
   ShopCategoryListState createState() => ShopCategoryListState();
@@ -40,10 +45,13 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
         appBar: new AppBar(
           centerTitle: true,
           title: Text(widget.title),
-          leading: new IconButton(
-            icon: UIData.back,
-            onPressed: () => Navigator.pop(context, false),
-          ),
+          automaticallyImplyLeading: widget.showBackBtn,
+          leading: widget.showBackBtn == true
+              ? new IconButton(
+                  icon: UIData.back,
+                  onPressed: () => Navigator.pop(context, false),
+                )
+              :null,
         ),
         body: Container(
           color: UIData.fff,
@@ -69,12 +77,13 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
           Expanded(
             child: Container(
               color: UIData.fff6f6f6,
-              child:  ListView.builder(
+              child: ListView.builder(
                 itemCount: categories.length,
                 itemBuilder: (buildContext, index) {
                   return GestureDetector(
                     child: Container(
-                      color: selectIndex == index ? UIData.fff : UIData.fff6f6f6,
+                      color:
+                          selectIndex == index ? UIData.fff : UIData.fff6f6f6,
                       child: Padding(
                         padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
                         child: Text(

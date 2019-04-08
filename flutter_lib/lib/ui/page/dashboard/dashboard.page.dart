@@ -62,7 +62,7 @@ class DashboardPageState extends State<DashboardPage> {
   int currentIndex = 0;
   final List<Widget> _children = [
     MyHomePage(),
-    ShopCategoryList("全部分类"),
+    ShopCategoryList("全部分类",false),
     ShopCartListPage(),
     UserHomeListPage(),
   ];

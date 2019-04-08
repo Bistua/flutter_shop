@@ -116,8 +116,11 @@ class _MyHomePageState extends State<MyHomePage> {
           [
             buildBanner(),
             buildDefaultTabController(),
-            Text(
-              "热销精品",
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Text(
+                "热销精品",
+              ),
             ),
           ],
         ),
@@ -139,11 +142,17 @@ class _MyHomePageState extends State<MyHomePage> {
       SliverList(
         delegate: SliverChildListDelegate(
           [
-            Text(
-              "\n热销商品榜>\n",
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Text(
+                "\n热销商品榜>\n",
+              ),
             ),
-            Text(
-              "上新好货",
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Text(
+                "上新好货",
+              ),
             ),
           ],
         ),
@@ -165,8 +174,11 @@ class _MyHomePageState extends State<MyHomePage> {
       SliverList(
         delegate: SliverChildListDelegate(
           [
-            Text(
-              "所有上新好货>\n\n",
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Text(
+                "所有上新好货>\n\n",
+              ),
             ),
           ],
         ),
@@ -179,16 +191,17 @@ class _MyHomePageState extends State<MyHomePage> {
       length: choices.length,
       child: new TabBar(
         isScrollable: false,
-        labelColor: Colors.blue,
+        labelColor: UIData.ff353535,
         onTap: (int i) {
-          Navigator.pushNamed(context, choices[i].action,arguments: choices[i].title);
+          Navigator.pushNamed(context, choices[i].action,
+              arguments: choices[i].title);
         },
         tabs: choices.map((Choice choice) {
           return new Tab(
             text: choice.title,
             icon: new Icon(
               choice.icon,
-              color: Colors.blue,
+              color: UIData.ff353535,
             ),
           );
         }).toList(),
