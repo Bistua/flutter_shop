@@ -75,6 +75,7 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
         children: <Widget>[
           Expanded(
             child: Container(
+              alignment: Alignment.center,
               color: UIData.fff6f6f6,
               child: ListView.builder(
                 itemCount: categories.length,
@@ -85,13 +86,15 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
                           selectIndex == index ? UIData.fff : UIData.fff6f6f6,
                       child: Padding(
                         padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
-                        child: Text(
-                          categories[index].name,
-                          style: TextStyle(
-                              color: selectIndex == index
-                                  ? UIData.fffa4848
-                                  : UIData.ff353535,
-                              fontSize: selectIndex == index ? 15 : 12),
+                        child: Center(
+                          child: Text(
+                            categories[index].name,
+                            style: TextStyle(
+                                color: selectIndex == index
+                                    ? UIData.fffa4848
+                                    : UIData.ff353535,
+                                fontSize: selectIndex == index ? 15 : 12),
+                          ),
                         ),
                       ),
                     ),
@@ -104,7 +107,7 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
                 },
               ),
             ),
-            flex: 1,
+            flex:2,
           ),
           Expanded(
             child: Padding(
@@ -186,7 +189,7 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
                 ],
               ),
             ),
-            flex: 3,
+            flex: 5,
           ),
         ],
       ),
