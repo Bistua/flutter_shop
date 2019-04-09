@@ -12,9 +12,19 @@ flutter android ios google hybrid方案
 
 ##2
 其它版本不确定是否支持hybrid
-修改settings.gradle
-将'./bristuaftshop/flutter_lib/.android/include_flutter.groovy'中的
-bristuaftshop改成你的父类文件夹目录
+
+    新建目录‘ bristuaftshop’
+
+    在‘ bristuaftshop’ 中 clone本项目
+
+
+或者：
+
+    修改settings.gradle
+
+    将'./bristuaftshop/flutter_lib/.android/include_flutter.groovy'中的
+
+    bristuaftshop改成你的父类文件夹目录
 
 
 ##3执行以下命令
