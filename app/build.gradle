@@ -58,7 +58,7 @@ dependencies {
     implementation 'com.bristua.framework:sp_manager:1.0.4-SNAPHOST'
     implementation 'com.bristua.framework:context:2.0.0-SNAPHOST'
     implementation 'com.ft.business.interceptor:response:1.0.0-SNAPHOST'
-    implementation 'com.ft.business.component:user_login:2.0.0-SNAPHOST'
+    implementation 'com.ft.business.component:user_login:2.0.1-SNAPHOST'
     implementation 'com.ft.business.component:enviroment:1.0.4-SNAPHOST'
     annotationProcessor 'com.nd.sdp.android.serviceloader:service-loader-compiler-app:1.0.9'
     implementation 'com.nd.sdp.android.serviceloader:service-loader:1.0.9'
