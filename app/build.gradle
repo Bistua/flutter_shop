@@ -53,7 +53,7 @@ dependencies {
     //https模块
     implementation 'com.bristua.framework:https:2.0.0-SNAPHOST'
     //路由模块
-    implementation 'com.ft.business.component:user_login:2.0.1-SNAPHOST'
+    implementation 'com.bristua.framework:brouter:2.0.0-SNAPHOST'
     implementation 'com.bristua.framework:common_api:2.0.0-SNAPHOST'
     implementation 'com.bristua.framework:sp_manager:1.0.4-SNAPHOST'
     implementation 'com.bristua.framework:context:2.0.0-SNAPHOST'
