@@ -49,7 +49,7 @@ class AccountBridge {
         "action": component,
         "arguments": {
           "method": "login",
-          "data": {"type": type, "phone": phone, "smsCode": smsCode},
+          "data": {"phone": phone, "smsCode": smsCode},
         }
       }
     });
