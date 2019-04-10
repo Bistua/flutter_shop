@@ -1,6 +1,7 @@
 package com.bristua.flutter.ftshop.plugin;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.bristua.framework.define.IFlutterResult;
@@ -29,8 +30,16 @@ public class PluginDelegate {
                 break;
             default:
                 String action = jsonObject.optString("action");
+                if(TextUtils.isEmpty(action)){
+                    break;
+                }
                 JSONObject arguments = jsonObject.optJSONObject("arguments");
-                BRouter.getInstance().build(action).setProtocol(arguments.toString()).setResult(result).navigation();
+
+                if(arguments ==  null){
+                    break;
+                }
+                String argument=arguments.toString();
+                BRouter.getInstance().build(action).setProtocol(argument).setResult(result).navigation();
                 break;
         }
 
