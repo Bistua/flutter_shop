@@ -6,6 +6,9 @@ class AccountBridge {
   获取短信验证码   type=0 注册
    */
   static Future<String> getSmsCode(String type, String phone) {
+    if (phone == null || phone.isEmpty) {
+      return Future.value({"code": -1, "msg": "请输入手机号"}.toString());
+    }
     return Bridge.dispenser({
       "method": "getSmsCode",
       "params": {

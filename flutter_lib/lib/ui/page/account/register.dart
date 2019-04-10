@@ -212,8 +212,13 @@ class RegisterState extends State<RegisterPage> {
                                     ),
                                     //圆角大小,与BoxDecoration保持一致，更美观
                                     onPressed: () {
-                                      Future<String> future = AccountBridge.getSmsCode(
-                                          "0", _controller.text);
+                                      if (_controller.text.isEmpty) {
+                                        Bridge.showShortToast("请输入手机号");
+                                        return;
+                                      }
+                                      Future<String> future =
+                                          AccountBridge.getSmsCode(
+                                              "0", _controller.text);
                                       future.then((result) {
                                         //todo 短信验证码是否获取成功
                                       }).catchError((e) {
