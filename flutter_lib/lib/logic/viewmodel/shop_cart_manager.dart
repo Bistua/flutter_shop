@@ -4,6 +4,8 @@ class ShopCartManager {
   factory ShopCartManager() => _getInstance();
   static ShopCartManager get instance => _getInstance();
   static ShopCartManager _instance;
+  List<Product> products = new List();
+
 
   static ShopCartManager _getInstance() {
     if (_instance == null) {
@@ -14,9 +16,10 @@ class ShopCartManager {
 
   ShopCartManager._internal() {
     // 初始化
+    products = new List();
   }
 
-  List<Product> products = new List();
+
 
   int size() {
     int totalCount = 0;
@@ -33,17 +36,20 @@ class ShopCartManager {
       products.add(product);
       return;
     }
+    bool has = false;
     products.forEach((f) {
       if (f == product) {
         f.count++;
+        has = true;
         print("1" + product.toString());
       } else {
-        if (product.count == 0) {
-          product.count = 1;
-          products.add(product);
-        }
+        has = false;
+        product.count = 1;
       }
     });
+    if(!has){
+      products.add(product);
+    }
   }
 
   void remove(Product product) {
@@ -74,7 +80,6 @@ class ShopCartManager {
 
   List<Product> getCheckedProducts() {
     List<Product> checkedProducts = new List();
-
 
     products.forEach((f) {
       if (f.isChecked) {
