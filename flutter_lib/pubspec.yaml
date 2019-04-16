@@ -50,6 +50,15 @@ flutter:
     - images/icon_login_bg.webp
     - images/icon_login_wx.png
     - images/icon_back.png
+    - images/icon_code.png
+    - images/shop_type_hat.png
+    - images/shop_type_beauty.png
+    - images/shop_type_furniture.png
+    - images/shop_type_life.png
+    - images/shop_type_office.png
+    - images/shop_type_store.png
+    - images/shop_type_education.png
+    - images/shop_type_classification.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

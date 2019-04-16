@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:flutter_lib/bridge.dart';
+import 'package:flutter_lib/logic/viewmodel/product_view_model.dart';
+import 'package:flutter_lib/model/product.dart';
 import 'package:flutter_lib/ui/page/dashboard/user_home_page.dart';
 
 import 'package:flutter_lib/ui/page/shop/search_shop_list.dart';
@@ -30,6 +32,7 @@ class Model extends Object with BannerWithEval {
 
 class Choice {
   const Choice({this.title, this.icon, this.action});
+
   final String title;
   final IconData icon;
   final String action;
@@ -54,16 +57,22 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Model> data = [
     new Model(
         imgUrl:
-            'https://img01.sogoucdn.com/app/a/100520093/60d2f4fe0275d790-007c9f9485c5acfd-bdc6566f9acf5ba2a7e7190734c38920.jpg'),
+            'https://img1.360buyimg.com/da/jfs/t1/26933/21/15251/101018/5cae9e2fEb2d18145/ce92ccee53fc3e62.jpg'),
     new Model(
         imgUrl:
-            'http://img4.duitang.com/uploads/item/201502/27/20150227083741_w5YjR.jpeg'),
+            'https://img1.360buyimg.com/pop/jfs/t1/33615/26/2942/67787/5cb2db16E190d1438/f87d36b439a01bb4.jpg'),
     new Model(
         imgUrl:
-            'http://img4.duitang.com/uploads/item/201501/06/20150106081248_ae4Rk.jpeg'),
-    new Model(imgUrl: 'http://pic1.win4000.com/wallpaper/a/59322eda4daf0.jpg'),
-    new Model(imgUrl: 'http://uploads.5068.com/allimg/1711/151-1G130093R1.jpg'),
+            'https://m.360buyimg.com/babel/jfs/t1/32943/39/11194/86395/5cb44a60Eacbc1baf/d15986655530b38a.jpg'),
+    new Model(
+        imgUrl:
+            'https://m.360buyimg.com/babel/jfs/t1/35770/34/1817/46457/5cb43c53E9c28780e/b05442df5d5ba2c3.jpg'),
+    new Model(
+        imgUrl:
+            'https://m.360buyimg.com/babel/jfs/t1/25888/33/15004/99699/5caca583E85bc0c4b/0144e355305c5946.jpg'),
   ];
+
+  final List<Product> discountList = ProductViewModel().getDiscountList();
 
   @override
   void initState() {
@@ -89,10 +98,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("首页"),
-        centerTitle: true,
-      ),
       body: Container(
         child: buildCustomScrollView(),
       ),
@@ -114,37 +119,47 @@ class _MyHomePageState extends State<MyHomePage> {
       SliverList(
         delegate: SliverChildListDelegate(
           [
+            buildHeader(),
             buildBanner(),
-            buildDefaultTabController(),
-            Text(
-              "热销精品",
+            buildType(),
+            buildAdvertisement(
+                "https://img20.360buyimg.com/mobilecms/s350x128_jfs/t8554/10/1668315357/28454/82af77f0/59be2c79Ne4502dcf.jpg!q90!cc_350x128.webp"),
+            buildDiscount(),
+            Container(
+              height: 1.0,
+              width: double.infinity,
             ),
           ],
         ),
       ),
       SliverGrid(
-        gridDelegate:
-            SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-        delegate: SliverChildListDelegate(
-          [
-            Image.network(data[1].bannerUrl),
-            Image.network(data[1].bannerUrl),
-            Image.network(data[1].bannerUrl),
-            Image.network(data[1].bannerUrl),
-            Image.network(data[1].bannerUrl),
-            Image.network(data[1].bannerUrl),
-          ],
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 1.0,
+          mainAxisSpacing: 1.0,
+          childAspectRatio: 1.88,
+        ),
+        delegate: SliverChildBuilderDelegate(
+          (BuildContext context, int index) {
+            return Container(
+              height: 100.0,
+              color: Colors.white,
+              child: buildDiscountItem(index, discountList[index]),
+            );
+          },
+          childCount: discountList.length,
         ),
       ),
       SliverList(
         delegate: SliverChildListDelegate(
           [
-            Text(
-              "\n热销商品榜>\n",
+            Container(
+              height: 10.0,
+              width: double.infinity,
             ),
-            Text(
-              "上新好货",
-            ),
+            buildMustBay(
+                "https://img11.360buyimg.com/mobilecms/s350x250_jfs/t1/23441/6/14922/36622/5cac1223Edaf540b0/7df256141224531d.jpg!q90!cc_350x250.webp",
+                "https://img11.360buyimg.com/mobilecms/s350x250_jfs/t1/30730/6/10877/44332/5cb34d0cE9e0fcea6/9c3cde5807ab4186.jpg!q90!cc_350x250.webp"),
           ],
         ),
       ),
@@ -181,7 +196,8 @@ class _MyHomePageState extends State<MyHomePage> {
         isScrollable: false,
         labelColor: Colors.blue,
         onTap: (int i) {
-          Navigator.pushNamed(context, choices[i].action,arguments: choices[i].title);
+          Navigator.pushNamed(context, choices[i].action,
+              arguments: choices[i].title);
         },
         tabs: choices.map((Choice choice) {
           return new Tab(
@@ -196,6 +212,87 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  Container buildHeader() {
+    return Container(
+      height: 44.0,
+      color: Colors.white,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 0.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "速易销",
+                  style: TextStyle(
+                      color: Color(0xFFFA4848),
+                      fontSize: 16,
+                      fontStyle: FontStyle.italic),
+                ),
+                Text(
+                  "SU YI TRADE",
+                  style: TextStyle(color: Color(0xFFFA4848), fontSize: 6),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: InkWell(
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    alignment: Alignment.center,
+                    height: 30.0,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Color(0xFFF5F5F5), width: 15.0),
+                      borderRadius:
+                          new BorderRadius.all(new Radius.circular(15.0)),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(11.0, 0.0, 0.0, 0.0),
+                    alignment: Alignment.centerLeft,
+                    height: 30.0,
+                    child: Icon(
+                      Icons.search,
+                      color: Color(0xFF999999),
+                      size: 16.0,
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(32.0, 0.0, 0.0, 0.0),
+                    height: 30.0,
+                    child: new Text(
+                      "请输入搜索商品",
+                      style: TextStyle(color: Color(0xFF999999), fontSize: 12),
+                    ),
+                    alignment: Alignment.centerLeft,
+                  ),
+                ],
+              ),
+              //搜索框点击事件
+              onTap: () {},
+            ),
+          ),
+          InkWell(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 0.0),
+              child: Image.asset(
+                'images/icon_code.png',
+                width: 20.0,
+                height: 20.0,
+              ),
+            ),
+            //二维码图标点击事件
+            onTap: () {},
+          ),
+        ],
+      ),
+    );
+  }
+
   BannerWidget buildBanner() {
     return BannerWidget(
         data: data,
@@ -203,5 +300,280 @@ class _MyHomePageState extends State<MyHomePage> {
         onClick: (position, bannerWithEval) {
           print(position);
         });
+  }
+
+  Container buildType() {
+    return Container(
+      padding: EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 4.0),
+      color: Colors.white,
+      child: Column(
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: buildTypeChild(
+                  0,
+                  "服饰",
+                  "images/shop_type_hat.png",
+                ),
+              ),
+              Expanded(
+                child: buildTypeChild(1, "鞋帽箱包", "images/shop_type_hat.png"),
+              ),
+              Expanded(
+                child: buildTypeChild(2, "丽人", "images/shop_type_beauty.png"),
+              ),
+              Expanded(
+                child:
+                    buildTypeChild(3, "家具家装", "images/shop_type_furniture.png"),
+              ),
+              Expanded(
+                child: buildTypeChild(4, "生活服务", "images/shop_type_life.png"),
+              ),
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: buildTypeChild(5, "数码", "images/shop_type_hat.png"),
+              ),
+              Expanded(
+                child: buildTypeChild(6, "办公", "images/shop_type_office.png"),
+              ),
+              Expanded(
+                child: buildTypeChild(7, "百货超市", "images/shop_type_store.png"),
+              ),
+              Expanded(
+                child:
+                    buildTypeChild(8, "教育培训", "images/shop_type_education.png"),
+              ),
+              Expanded(
+                child: buildTypeChild(
+                    9, "分类", "images/shop_type_classification.png"),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Container buildAdvertisement(String imageUrl) {
+    return Container(
+      padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
+      color: Color(0xFFF6F6F6),
+      child: InkWell(
+        child: Image.network(imageUrl, height: 100.0, fit: BoxFit.cover),
+        onTap: () {},
+      ),
+    );
+  }
+
+  Container buildDiscount() {
+    return Container(
+      height: 46.0,
+      color: Colors.white,
+      child: InkWell(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              alignment: Alignment.center,
+              width: 80.0,
+              height: 25.0,
+              child: Text(
+                "优惠好品",
+                style: TextStyle(color: Colors.white, fontSize: 12),
+              ),
+              decoration: new BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(15.0),
+                      bottomRight: Radius.circular(15.0)),
+                  gradient: RadialGradient(
+                      colors: [Color(0xFFFF5341), Color(0xFFFF873E)],
+                      radius: 12.5,
+                      tileMode: TileMode.mirror)),
+            ),
+            Expanded(
+              child: Container(),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Text(
+                  "更多",
+                  style: TextStyle(color: UIData.ff999999, fontSize: 12),
+                ),
+                Padding(
+                  child: Icon(
+                    Icons.arrow_forward_ios,
+                    color: UIData.ff999999,
+                    size: 9,
+                  ),
+                  padding: EdgeInsets.fromLTRB(2, 0, 12, 0),
+                ),
+              ],
+            ),
+          ],
+        ),
+        onTap: () {},
+      ),
+    );
+  }
+
+  Container buildTypeChild(int type, String typeName, String typeImg) {
+    return Container(
+        child: InkWell(
+      child: Column(
+        children: <Widget>[
+          Image.asset(
+            typeImg,
+            width: 43.0,
+            height: 43.0,
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 16.0),
+            child: Text(
+              typeName,
+              style: TextStyle(color: Color(0xFF666666), fontSize: 11),
+            ),
+          ),
+        ],
+      ),
+      //每一个类别点击事件
+      onTap: () {
+        switch (type) {
+          case 0:
+            break;
+          case 1:
+            break;
+          case 2:
+            break;
+          case 3:
+            break;
+          case 4:
+            break;
+          case 5:
+            break;
+          case 6:
+            break;
+          case 7:
+            break;
+          case 8:
+            break;
+          case 9:
+            break;
+        }
+      },
+    ));
+  }
+
+  Container buildDiscountItem(int index, Product product) {
+    return Container(
+      child: InkWell(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(12.0, 16.0, 0.0, 4.0),
+                    child: Text(
+                      product.name,
+                      maxLines: 1,
+                      style: TextStyle(color: Color(0xFF353535), fontSize: 13),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(12.0, 0.0, 0.0, 0.0),
+                    child: Text(
+                      product.description,
+                      maxLines: 1,
+                      style: TextStyle(color: Color(0xFF999999), fontSize: 11),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(12.0, 8.0, 0.0, 0.0),
+                    child: Text(
+                      product.price,
+                      style: TextStyle(color: Color(0xFFEF2F2F), fontSize: 15),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(3.0, 12.0, 6.0, 0.0),
+              child: Image.network(
+                product.image,
+                fit: BoxFit.cover,
+                height: 75.0,
+                width: 75.0,
+              ),
+            ),
+//            index % 2 == 0
+//                ? Container()
+//                : Container(
+//                    width: 1.0,
+//                    color: Color(0xFFEEEEEE),
+//                  ),
+          ],
+        ),
+        onTap: () {
+          Navigator.pushNamed(context, UIData.ShopDetailPage,
+              arguments: product);
+        },
+      ),
+    );
+  }
+
+  Container buildMustBay(String leftImage, String rightImage) {
+    return Container(
+      height: 130.0,
+      child: Row(
+        children: <Widget>[
+          Expanded(
+              child: Stack(
+            children: <Widget>[
+              Image.network(
+                leftImage,
+                width: double.infinity,
+                height: 130.0,
+                fit: BoxFit.cover,
+              ),
+              Container(
+                alignment: Alignment.center,
+                width: 80.0,
+                height: 25.0,
+                child: Text(
+                  "必买清单",
+                  style: TextStyle(color: Colors.white, fontSize: 12),
+                ),
+                decoration: new BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(15.0),
+                        bottomRight: Radius.circular(15.0)),
+                    gradient: RadialGradient(
+                        colors: [Color(0xFF2CB4B9), Color(0xFF82E6D0)],
+                        radius: 12.5,
+                        tileMode: TileMode.mirror)),
+              ),
+            ],
+          )),
+          Container(
+            color: Colors.white,
+            padding: EdgeInsets.fromLTRB(2.0, 0.0, 0.0, 0.0),
+            child: Image.network(
+              rightImage,
+              fit: BoxFit.cover,
+              width: 166.0,
+              height: 130.0,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
