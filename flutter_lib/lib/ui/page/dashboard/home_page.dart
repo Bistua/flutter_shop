@@ -3,18 +3,13 @@ import 'dart:ui';
 import 'package:flutter_lib/bridge.dart';
 import 'package:flutter_lib/logic/viewmodel/product_view_model.dart';
 import 'package:flutter_lib/model/product.dart';
-import 'package:flutter_lib/ui/page/dashboard/user_home_page.dart';
 
 import 'package:flutter_lib/ui/page/shop/search_shop_list.dart';
-import 'package:flutter_lib/ui/page/shop/shop_list.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_lib/ui/widgets/banner/banner_widget.dart';
 import 'package:flutter_lib/ui/widgets/banner/banner_evalutor.dart';
-import 'package:flutter_lib/ui/page/invite/invite_friends.dart';
-import 'package:flutter_lib/ui/page/account/login.dart';
-import 'package:flutter_lib/ui/page/shop/shop_category_list.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -98,21 +93,25 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        child: buildCustomScrollView(),
-      ),
-//      floatingActionButton: FloatingActionButton(
-//        tooltip: 'Increment',
-//        child: Icon(Icons.add),
-//        onPressed: () {
-//          final navigator = Navigator.of(context);
-//          navigator.push(new MaterialPageRoute(
-//              builder: (context) => new SearchShopList()));
-//        },
-//      ),
-      // This trailing comma makes auto-formatting nicer for build methods.
+    return new SafeArea(
+      top: true,
+      child: buildCustomScrollView(),
     );
+//    return Scaffold(
+//      body: Container(
+//        child: buildCustomScrollView(),
+//      ),
+////      floatingActionButton: FloatingActionButton(
+////        tooltip: 'Increment',
+////        child: Icon(Icons.add),
+////        onPressed: () {
+////          final navigator = Navigator.of(context);
+////          navigator.push(new MaterialPageRoute(
+////              builder: (context) => new SearchShopList()));
+////        },
+////      ),
+//      // This trailing comma makes auto-formatting nicer for build methods.
+//    );
   }
 
   CustomScrollView buildCustomScrollView() {
