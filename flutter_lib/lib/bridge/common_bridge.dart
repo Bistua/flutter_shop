@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_lib/model/Result.dart';
 
@@ -15,7 +17,7 @@ class Bridge {
       print(data);
       return Result.fromJson(data);
     }
-    return Result.fromJson("出错了");
+    return Result.fromJson(json.encode({"code": -1, "msg": "无结果"}));
   }
 
   static Future<Result> showShortToast(String message) {
