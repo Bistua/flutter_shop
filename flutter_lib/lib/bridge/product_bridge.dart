@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter_lib/bridge/common_bridge.dart';
+import 'package:flutter_lib/model/sku.dart';
 
 class ProductBridge {
   static const String component = "product";
@@ -18,4 +21,24 @@ class ProductBridge {
       }
     });
   }
+
+
+
+  /*
+   *
+   *创建订单
+   */
+  static Future<String> newOrder(List<Sku> sku) {
+    return Bridge.dispenser({
+      "method": "newOrder",
+      "params": {
+        "action": component,
+        "arguments": {
+          "method": "newOrder",
+          "data": {"type": json.encode(sku)}
+        }
+      }
+    });
+  }
+
 }

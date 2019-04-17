@@ -216,14 +216,10 @@ class RegisterState extends State<RegisterPage> {
                                         Bridge.showShortToast("请输入手机号");
                                         return;
                                       }
-                                      Future<String> future =
+                                      String future =
                                           AccountBridge.getSmsCode(
                                               "0", _controller.text);
-                                      future.then((result) {
-                                        //todo 短信验证码是否获取成功
-                                      }).catchError((e) {
-                                        print(e.toString());
-                                      });
+                                   print(future);
                                     },
                                   ),
                                 ],

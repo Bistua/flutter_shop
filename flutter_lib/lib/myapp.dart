@@ -17,6 +17,7 @@ import 'package:flutter_lib/ui/page/shop/shop_category_list.dart';
 import 'package:flutter_lib/ui/page/shop/shop_detail.dart';
 import 'package:flutter_lib/ui/page/shop/shop_list.dart';
 import 'package:flutter_lib/utils/uidata.dart';
+import 'package:flutter/rendering.dart';
 
 class MyApp extends StatelessWidget {
   final materialApp = MaterialApp(
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.grey,
           brightness: Brightness.light,
           hintColor: Colors.transparent),
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: true,
       showPerformanceOverlay: false,
       home: DashboardPage(),
 //      localizationsDelegates: [

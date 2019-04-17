@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_lib/bridge/cart_bridge.dart';
+import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/logic/viewmodel/shop_cart_manager.dart';
 import 'package:flutter_lib/ui/page/order/shop_order.dart';
 import 'package:flutter_lib/utils/uidata.dart';
@@ -11,6 +13,7 @@ class ShopCartListPage extends StatefulWidget {
     return _ShopCartListState();
   }
 }
+
 
 class _ShopCartListState extends State<ShopCartListPage> {
   @override
@@ -39,6 +42,8 @@ class _ShopCartListState extends State<ShopCartListPage> {
   }
 
   Container buildBody() {
+    Future future =  CartBridge.findCart();
+    print(future.toString());
     return Container(
       child: Stack(
         children: <Widget>[
@@ -126,6 +131,7 @@ class _ShopCartListState extends State<ShopCartListPage> {
                         );
                         return;
                       }
+
                       Navigator.push(
                           context,
                           new MaterialPageRoute(

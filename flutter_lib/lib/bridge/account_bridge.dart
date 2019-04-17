@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_lib/bridge/common_bridge.dart';
 
 class AccountBridge {
@@ -5,21 +7,34 @@ class AccountBridge {
   /*
   获取短信验证码   type=0 注册
    */
-  static Future<String> getSmsCode(String type, String phone) {
+  static  getSmsCode(String type, String phone) async {
     if (phone == null || phone.isEmpty) {
       return Future.value({"code": -1, "msg": "请输入手机号"}.toString());
     }
-    return Bridge.dispenser({
-      "method": "getSmsCode",
-      "params": {
-        "action": component,
-        "arguments": {
-          "method": "getSmsCode",
-          "data": {"type": type, "phone": phone}
-        }
-      }
-    });
+    String data = await distest();
+    print(data);
+    return data;
+
+//    return Bridge.dispenser({
+//      "method": "getSmsCode",
+//      "params": {
+//        "action": component,
+//        "arguments": {
+//          "method": "getSmsCode",
+//          "data": {"type": type, "phone": phone}
+//        }
+//      }
+//    });
   }
+
+
+
+  static distest()  {
+      return  json.encode({"code": 200});
+  }
+
+
+
 
 /*
   注册
