@@ -13,20 +13,8 @@ class AccountBridge {
 //    print(data);
 //    Map<String, dynamic> map = json.decode(data);
 //    return Result.fromJson(map);
-
-//    return await Bridge.dispenser({
-//      "method": "getSmsCode",
-//      "params": {
-//        "action": component,
-//        "arguments": {
-//          "method": "getSmsCode",
-//          "data": {"type": type, "phone": phone}
-//        }
-//      }
-//    });
-
     print("getSmsCode");
-    String data = await Bridge.dispenser({
+    return await Bridge.dispenser({
       "method": "getSmsCode",
       "params": {
         "action": component,
@@ -36,9 +24,6 @@ class AccountBridge {
         }
       }
     });
-    print(data);
-    Map<String, dynamic> map = json.decode(data);
-    return Result.fromJson(map);
   }
 
   static distest() {
@@ -51,7 +36,7 @@ class AccountBridge {
   static Future<Result> register(
       String phone, String smsCode, String inviteCode) async {
     print("register");
-    String data = await Bridge.dispenser({
+    return await Bridge.dispenser({
       "method": "register",
       "params": {
         "action": component,
@@ -65,9 +50,6 @@ class AccountBridge {
         }
       }
     });
-    print(data);
-    Map<String, dynamic> map = json.decode(data);
-    return Result.fromJson(map);
   }
 
   /*

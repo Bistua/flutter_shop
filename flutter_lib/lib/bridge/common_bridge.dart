@@ -1,18 +1,24 @@
 import 'package:flutter/services.dart';
+import 'package:flutter_lib/model/Result.dart';
 
 class Bridge {
   static const _bridgePlatform =
       const MethodChannel("com.ym.framework.plugins/bridge");
 
-  static Future<String> dispenser(var dispenser) async {
-
-      String method = dispenser['method'];
-      var params = dispenser['params'];
-      return await _bridgePlatform.invokeMethod(method, params);
-
+  static Future<Result> dispenser(var dispenser) async {
+    String method = dispenser['method'];
+    var params = dispenser['params'];
+    print(method);
+    print(params);
+    String data = await _bridgePlatform.invokeMethod(method, params);
+    if (data != null) {
+      print(data);
+      return Result.fromJson(data);
+    }
+    return Result.fromJson("出错了");
   }
 
-  static Future<String> showShortToast(String message) {
+  static Future<Result> showShortToast(String message) {
     message = message.replaceAll(" ", "");
     return dispenser({
       "method": "showShortToast",
@@ -45,14 +51,14 @@ class Bridge {
     });
   }
 
-  static Future<String> httpRequest(var requestType, String url) async {
+  static Future<Result> httpRequest(var requestType, String url) async {
     return dispenser({
       "method": "get",
       "params": {"action": "http", "message": url}
     });
   }
 
-  static Future<String> getBatteryLevel() async {
+  static Future<Result> getBatteryLevel() async {
     return dispenser({
       "method": "getBatteryLevel",
       "arguments": {"action": "battery", "message": "msg"}
