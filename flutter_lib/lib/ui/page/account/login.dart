@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lib/bridge/account_bridge.dart';
 import 'package:flutter_lib/myapp.dart';
 import 'package:flutter_lib/ui/page/account/perfectinfo.dart';
 import 'package:flutter_lib/ui/page/account/register.dart';
@@ -63,13 +64,13 @@ class LoginState extends State<LoginPage> {
               top: 188.0,
               left: 30.0,
               right: 30.0,
-              child: InputLayout(hint: "请输入手机号码"),
+              child: InputLayout(hint: "请输入手机号码",controller:_controller1),
             ),
             Positioned(
               top: 268.0,
               left: 30.0,
               right: 30.0,
-              child: InputLayout(hint: "请输入密码"),
+              child: InputLayout(hint: "请输入密码",controller:_controller2),
             ),
             Positioned(
               top: 348.0,
@@ -159,6 +160,7 @@ class LoginState extends State<LoginPage> {
                       ),
                       onPressed: () {
                         _navigateToPerfectInfo(context);
+
                       },
                     ),
                   ],
@@ -182,20 +184,19 @@ class LoginState extends State<LoginPage> {
   }
 
   _navigateToPerfectInfo(BuildContext context) async {
-    //async是启用异步方法
-    final result = await Navigator.push(
-        //等待
-        context,
-        MaterialPageRoute(builder: (context) => PerfectInfo()));
-    showSnackBar('$result');
+    AccountBridge.wxLogin();
   }
 }
+final TextEditingController _controller1 = new TextEditingController();
+
+final TextEditingController _controller2 = new TextEditingController();
 
 class InputLayout extends StatelessWidget {
-  final TextEditingController _controller = new TextEditingController();
-  final String hint;
 
-  InputLayout({Key key, @required this.hint}) : super(key: key);
+  final String hint;
+  final TextEditingController controller;
+
+  InputLayout({Key key, @required this.hint, this.controller}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -214,7 +215,7 @@ class InputLayout extends StatelessWidget {
           right: 10.0,
           child: TextField(
             keyboardType: TextInputType.number,
-            controller: _controller,
+            controller: controller,
             maxLength: 11,
             //最大长度，设置此项会让TextField右下角有一个输入数量的统计字符串
             maxLines: 1,

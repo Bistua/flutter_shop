@@ -89,14 +89,14 @@ class AccountBridge {
   /*
   微信登录
  */
-  static Future<String> wxLogin(String phone) {
+  static Future<String> wxLogin() {
     return Bridge.dispenser({
       "method": "wxlogin",
       "params": {
         "action": component,
         "arguments": {
           "method": "wxlogin",
-          "data": {"phone": phone},
+          "data": {"phone": "123"},
         }
       }
     });
