@@ -55,7 +55,7 @@ class AccountBridge {
   /*
   登录
  */
-  static Future<String> login(String type, String phone, String smsCode) {
+  static Future<Result> login(String type, String phone, String smsCode) {
     return Bridge.dispenser({
       "method": "login",
       "params": {
@@ -71,7 +71,7 @@ class AccountBridge {
   /*
   微信登录
  */
-  static Future<String> wxLogin() {
+  static Future<Result> wxLogin() {
     return Bridge.dispenser({
       "method": "wxlogin",
       "params": {
