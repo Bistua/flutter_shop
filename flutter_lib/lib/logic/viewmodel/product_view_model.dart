@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/bridge/product_bridge.dart';
+import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/address.dart';
 import 'package:flutter_lib/model/orderDetail.dart';
 
@@ -10,7 +11,7 @@ class ProductViewModel {
 
   ProductViewModel({this.productsItems});
 
-  Future<String> getProducts(type) {
+  Future<Result> getProducts(type) {
     return ProductBridge.getProducts(type);
   }
 

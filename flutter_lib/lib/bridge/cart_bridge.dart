@@ -11,7 +11,7 @@ class CartBridge {
    *
    *获取产品列表
    */
-  static Future<String> addSku(Sku sku) {
+  static Future<Result> addSku(Sku sku) {
     return Bridge.dispenser({
       "method": "add",
       "params": {
@@ -33,7 +33,7 @@ class CartBridge {
    *
    *从购物车移除
    */
-  static Future<String> delSku(String skuId, int amount) {
+  static Future<Result> delSku(String skuId, int amount) {
     return Bridge.dispenser({
       "method": "del",
       "params": {
@@ -50,7 +50,7 @@ class CartBridge {
    *
    *获取购物车信息
    */
-  static Future<String> findCart()  {
+  static Future<Result> findCart()  {
     return Bridge.dispenser({
       "method": "findCart",
       "params": {

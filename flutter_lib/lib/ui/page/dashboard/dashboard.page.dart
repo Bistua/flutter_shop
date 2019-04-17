@@ -51,13 +51,7 @@ class DashboardPageState extends State<DashboardPage> {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {}
 
-  Future post() async {
-    String result = await Bridge.httpRequest(1, "发送一个post请求");
-    setState(() {
-      print("TTT " + result);
-      Bridge.showShortToast(result);
-    });
-  }
+
 
   int currentIndex = 0;
   final List<Widget> _children = [
@@ -67,15 +61,8 @@ class DashboardPageState extends State<DashboardPage> {
     UserHomeListPage(),
   ];
 
-
-  Future showShortToast() async {
-    String future = await Bridge.showShortToast("test toast");
-    print("toast1:" + future);
-  }
-
   @override
   Widget build(BuildContext context) {
-//    showShortToast();
     return Scaffold(
       body: _children[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
