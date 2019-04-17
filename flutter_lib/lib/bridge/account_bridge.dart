@@ -9,11 +9,10 @@ class AccountBridge {
   获取短信验证码   type=0 注册
    */
   static Future<Result> getSmsCode(String type, String phone) async {
-    String data = await distest();
-    print(data);
-    Map<String, dynamic> map = json.decode(data);
-
-    return Result.fromJson(map);
+//    String data = await distest();
+//    print(data);
+//    Map<String, dynamic> map = json.decode(data);
+//    return Result.fromJson(map);
 
 //    return await Bridge.dispenser({
 //      "method": "getSmsCode",
@@ -25,6 +24,21 @@ class AccountBridge {
 //        }
 //      }
 //    });
+
+    print("getSmsCode");
+    String data = await Bridge.dispenser({
+      "method": "getSmsCode",
+      "params": {
+        "action": component,
+        "arguments": {
+          "method": "getSmsCode",
+          "data": {"type": type, "phone": phone}
+        }
+      }
+    });
+    print(data);
+    Map<String, dynamic> map = json.decode(data);
+    return Result.fromJson(map);
   }
 
   static distest() {
