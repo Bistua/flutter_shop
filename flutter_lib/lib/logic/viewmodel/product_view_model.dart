@@ -407,4 +407,65 @@ class ProductViewModel {
     orderList.add(orderDetail4);
     return orderList;
   }
+
+  getDiscountList() => <Product>[
+    new Product(
+        brand: "Levis",
+        description: "Print T-shirt",
+        image:
+        "https://mosaic02.ztat.net/vgs/media/pdp-zoom/LE/22/1D/02/2A/12/LE221D022-A12@16.1.jpg",
+        name: "THE PERFECT",
+        price: "¥19.99",
+        priceNum: 19.99,
+        rating: 4.0,
+        colors: [
+          ProductColor(
+            color: Colors.red,
+            colorName: "Red",
+          ),
+          ProductColor(
+            color: Colors.green,
+            colorName: "Green",
+          ),
+          ProductColor(
+            color: Colors.blue,
+            colorName: "Blue",
+          ),
+          ProductColor(
+            color: Colors.cyan,
+            colorName: "Cyan",
+          )
+        ],
+        quantity: 0,
+        sizes: ["S", "M", "L", "XL"],
+        totalReviews: 170),
+    new Product(
+        name: "情趣内衣蕾丝女仆极度诱惑性感女佣制服夜店兔女郎小胸激情套装骚",
+        image:
+        "https://gd2.alicdn.com/imgextra/i2/2873137436/TB2gX2DrDmWBKNjSZFBXXXxUFXa_!!2873137436.png_400x400.jpg",
+        price: "¥29.00",
+        brand: "MAI PIÙ SENZA",
+        description: "Awesome Heels",
+        rating: 4.1,
+        totalReviews: 22),
+    new Product(
+        name: "情趣内衣制服骚学生可爱套装激情水手服jk学院风女仆装性感老师",
+        image:
+        "https://gd2.alicdn.com/imgextra/i1/842112630/TB2Su1sxkKWBuNjy1zjXXcOypXa_!!842112630.jpg",
+        price: "¥89.00",
+        brand: "MAI PIÙ SENZA",
+        description: "Awesome Heels",
+        rating: 4.1,
+        totalReviews: 22),
+    new Product(
+        name: "Alice W花花家蝴蝶结一字肩抹胸上衣露肩性感打底内衣女无肩带",
+        image:
+        "https://img.alicdn.com/imgextra/i2/115232883/O1CN01EQXrw41XASMSEzjB9_!!115232883.jpg",
+        price: "¥59.00",
+        brand: "MAI PIÙ SENZA",
+        description: "Awesome Heels",
+        rating: 4.1,
+        totalReviews: 22),
+  ];
+
 }

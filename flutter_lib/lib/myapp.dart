@@ -8,6 +8,8 @@ import 'package:flutter_lib/ui/page/invite/invite_input.dart';
 import 'package:flutter_lib/ui/page/notfound/notfound_page.dart';
 import 'package:flutter_lib/ui/page/order/all_shop_order_list.dart';
 import 'package:flutter_lib/ui/page/order/mine_order.dart';
+import 'package:flutter_lib/ui/page/order/oder_comment.dart';
+import 'package:flutter_lib/ui/page/order/order_comment_list.dart';
 import 'package:flutter_lib/ui/page/shop/mine_collection.dart';
 import 'package:flutter_lib/ui/page/order/order_detail.dart';
 import 'package:flutter_lib/ui/page/shop/search_shop_list.dart';
@@ -50,8 +52,8 @@ class MyApp extends StatelessWidget {
         UIData.AllShopOrderPage: (BuildContext context) => AllShopOrderPage(),
         UIData.MineCollectionPage: (BuildContext context) => MineCollectionPage(),
         UIData.OrderDetailPage: (BuildContext context) => OrderDetailPage(),
-        UIData.MineOrderPage: (BuildContext context) => MineOrderPage(),
-
+        UIData.OrderCommentPage: (BuildContext context) => OrderCommentPage(),
+        UIData.OrderCommentListPage: (BuildContext context) => OrderCommentListPage(),
       },
       onGenerateRoute: (RouteSettings settings) {
         final arguments = settings.arguments;
@@ -78,6 +80,14 @@ class MyApp extends StatelessWidget {
                 settings: settings,
                 builder: (BuildContext context) =>
                     ShopListPage(title: arguments),
+              );
+            }
+            break;
+          case UIData.MineOrderPage:
+            if (arguments is int) {
+              return new MaterialPageRoute(
+                settings: settings,
+                builder: (BuildContext context) => MineOrderPage(arguments),
               );
             }
             break;

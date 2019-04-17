@@ -128,7 +128,7 @@ class MineOrderListItem extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 height: item.status == 0 ? 14.0 : 45.0,
                 child: Stack(
-                  children: <Widget>[buildBottomBar()],
+                  children: <Widget>[buildBottomBar(context)],
                 ),
               )
             ],
@@ -141,7 +141,7 @@ class MineOrderListItem extends StatelessWidget {
     );
   }
 
-  Positioned buildBottomBar() {
+  Positioned buildBottomBar(BuildContext context) {
     return item.status == 0
         ? Positioned(
             bottom: 0,
@@ -226,7 +226,13 @@ class MineOrderListItem extends StatelessWidget {
                                   alignment: Alignment.center,
                                 ),
                                 //圆角大小,与BoxDecoration保持一致，更美观
-                                onTap: () {},
+                                onTap: () {
+                                  if(item.status == 2){
+
+                                  }else{
+                                    Navigator.pushNamed(context, UIData.OrderCommentPage);
+                                  }
+                                },
                               ),
                             ],
                           ),
