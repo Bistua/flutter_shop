@@ -220,13 +220,14 @@ class RegisterState extends State<RegisterPage> {
                                       Future<Result> future =
                                           AccountBridge.getSmsCode(
                                               "0", _controller.text);
-                                      future.then((v){
-                                        if(v.code==200){
+                                      future.then((v) {
+                                        if (v.code == 200) {
                                           Bridge.showShortToast("短信发送成功");
+                                        } else {
+                                            Bridge.showShortToast(v.msg);
                                         }
                                         print(v);
                                       });
-
                                     },
                                   ),
                                 ],
@@ -294,14 +295,13 @@ class RegisterState extends State<RegisterPage> {
                                 _controller.text,
                                 smsCodeEditingController.text,
                                 inviteCodeEditingController.text);
-                            future.then((v){
-                              if(v.code==200){
+                            future.then((v) {
+                              if (v.code == 200) {
                                 Bridge.showShortToast("注册成功");
-                                Navigator.pop(context,false);
+                                Navigator.pop(context, false);
                               }
                               print(v);
                             });
-
                           },
                           textColor: _registercolor,
                         ),
