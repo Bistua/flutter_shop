@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/bridge/account_bridge.dart';
+import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class Register extends StatelessWidget {
@@ -216,10 +217,16 @@ class RegisterState extends State<RegisterPage> {
                                         Bridge.showShortToast("请输入手机号");
                                         return;
                                       }
-                                      String future =
+                                      Future<Result> future =
                                           AccountBridge.getSmsCode(
                                               "0", _controller.text);
-                                   print(future);
+                                      future.then((v){
+                                        if(v.code==200){
+                                          Bridge.showShortToast("短信发送成功");
+                                        }
+                                        print(v);
+                                      });
+
                                     },
                                   ),
                                 ],
@@ -278,19 +285,23 @@ class RegisterState extends State<RegisterPage> {
                           color: Color.fromARGB(255, 250, 72, 72),
                           //圆角大小,与BoxDecoration保持一致，更美观
                           onPressed: () {
-                            if (_phonenum != null &&
-                                _phonenum.length == 11 &&
-                                UIData.isPhone(_phonenum)) {
-                              Future<String> future = AccountBridge.register(
-                                  _controller.text,
-                                  smsCodeEditingController.text,
-                                  inviteCodeEditingController.text);
-                              future.then((result) {
-                                //todo 解析结果
-                              }).catchError((e) {
-                                print(e.toString());
-                              });
-                            } else {}
+//                            if (_phonenum != null &&
+////                                _phonenum.length == 11 &&
+////                                UIData.isPhone(_phonenum)) {
+////
+////                            } else {}
+                            Future<Result> future = AccountBridge.register(
+                                _controller.text,
+                                smsCodeEditingController.text,
+                                inviteCodeEditingController.text);
+                            future.then((v){
+                              if(v.code==200){
+                                Bridge.showShortToast("注册成功");
+                                Navigator.pop(context,false);
+                              }
+                              print(v);
+                            });
+
                           },
                           textColor: _registercolor,
                         ),

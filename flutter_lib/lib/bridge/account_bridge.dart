@@ -1,21 +1,21 @@
 import 'dart:convert';
 
 import 'package:flutter_lib/bridge/common_bridge.dart';
+import 'package:flutter_lib/model/Result.dart';
 
 class AccountBridge {
   static const String component = "account";
   /*
   获取短信验证码   type=0 注册
    */
-  static  getSmsCode(String type, String phone) async {
-    if (phone == null || phone.isEmpty) {
-      return Future.value({"code": -1, "msg": "请输入手机号"}.toString());
-    }
+  static Future<Result> getSmsCode(String type, String phone) async {
     String data = await distest();
     print(data);
-    return data;
+    Map<String, dynamic> map = json.decode(data);
 
-//    return Bridge.dispenser({
+    return Result.fromJson(map);
+
+//    return await Bridge.dispenser({
 //      "method": "getSmsCode",
 //      "params": {
 //        "action": component,
@@ -27,21 +27,17 @@ class AccountBridge {
 //    });
   }
 
-
-
-  static distest()  {
-      return  json.encode({"code": 200});
+  static distest() {
+    return json.encode({"code": 200});
   }
-
-
-
 
 /*
   注册
  */
-  static Future<String> register(
-      String phone, String smsCode, String inviteCode) {
-    return Bridge.dispenser({
+  static Future<Result> register(
+      String phone, String smsCode, String inviteCode) async {
+    print("register");
+    String data = await Bridge.dispenser({
       "method": "register",
       "params": {
         "action": component,
@@ -55,6 +51,9 @@ class AccountBridge {
         }
       }
     });
+    print(data);
+    Map<String, dynamic> map = json.decode(data);
+    return Result.fromJson(map);
   }
 
   /*

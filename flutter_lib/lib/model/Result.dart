@@ -6,4 +6,10 @@ class Result<T>{
   Result(this.code, this.msg, this.data);
 
 
+  Result.fromJson(Map<String, dynamic> json) {
+    data = json['data'] ;
+    msg = json['msg'];
+    code = json['code'];
+  }
+
 }

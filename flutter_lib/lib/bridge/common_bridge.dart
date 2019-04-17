@@ -5,13 +5,11 @@ class Bridge {
       const MethodChannel("com.ym.framework.plugins/bridge");
 
   static Future<String> dispenser(var dispenser) async {
-    try {
+
       String method = dispenser['method'];
       var params = dispenser['params'];
       return await _bridgePlatform.invokeMethod(method, params);
-    } on PlatformException catch (e) {
-      return e.message;
-    }
+
   }
 
   static Future<String> showShortToast(String message) {
