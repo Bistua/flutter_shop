@@ -15,14 +15,14 @@ class ProductBloc {
 
   ProductBloc();
 
-  getProduct(bool orderByAes) {
-    ProductBridge.getProducts("1").then((result) {
-      if (result.code == 200) {
+  getProduct(String type, bool orderByAes) {
+    ProductBridge.getProducts("1", orderByAes).then((result) {
+//      if (result.code == 200) {
         //todo 解析商品data 然后productController.add
-        productController.add(productViewModel.getProductTests());
-      }
+        productViewModel.productsItems = productViewModel.getProductTests();
+
+        productController.add(productViewModel.productsItems);
+//      }
     });
   }
-
-
 }

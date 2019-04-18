@@ -20,7 +20,7 @@ class ShopList extends StatelessWidget {
   }
 }
 
-
+//分页参考https://medium.com/saugo360/flutter-creating-a-listview-that-loads-one-page-at-a-time-c5c91b6fabd3
 class ShopListPage extends StatefulWidget {
 
   ShopListPage({Key key, this.title}) : super(key: key);

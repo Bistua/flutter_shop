@@ -11,9 +11,10 @@ class ProductViewModel {
 
   ProductViewModel({this.productsItems});
 
-  Future<Result> getProducts(type) {
-    return ProductBridge.getProducts(type);
-  }
+
+
+
+
 
   getProductTests() => <Product>[
         Product(
