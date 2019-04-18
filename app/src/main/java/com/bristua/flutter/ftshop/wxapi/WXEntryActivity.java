@@ -88,6 +88,7 @@ public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHan
                     if (resp instanceof SendAuth.Resp) {
                         SendAuth.Resp res = (SendAuth.Resp) resp;
                         String code = res.code;
+                        Log.d("WXEntryActivity", "code = " + code);
                         //RxBus.getDefault().send(AllContants.RxBusCode.RXBUS_CODE_WECHAT_LOGIN, code);
                     }
                 }
