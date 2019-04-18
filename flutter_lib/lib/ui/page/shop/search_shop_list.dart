@@ -58,7 +58,7 @@ class SearchShopListState extends State<SearchShopListPage> {
       centerTitle: false,
       title: buildTextField(),
       bottom: new PreferreSizeWidget((v) {
-        productBloc.getProduct(v);
+        productBloc.getProduct("1",v);
       }),
       leading: new IconButton(
         icon: UIData.back,
@@ -132,7 +132,7 @@ class SearchShopListState extends State<SearchShopListPage> {
         setState(() {});
       } else {
         setState(() {
-          productBloc.getProduct(true);
+          productBloc.getProduct("2",true);
         });
       }
     });
