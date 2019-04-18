@@ -32,16 +32,26 @@ class ShopListPage extends StatefulWidget {
 
 class ShopListState extends State<ShopListPage> {
   Widget appBarTitle;
+  ProductBloc productBloc = ProductBloc();
 
   @override
   Widget build(BuildContext context) {
+
+    print(productBloc.productItems);
+
     return DefaultTabController(
       length: 3,
       child: Scaffold(
         appBar: new AppBar(
           centerTitle: true,
           title: Text(widget.title),
-          bottom: new PreferreSizeWidget(),
+          bottom: new PreferreSizeWidget((v){
+            if(v){
+              productBloc.getProduct();
+            }else{
+
+            }
+          }),
           leading: new IconButton(
             icon: UIData.back,
             onPressed: () => Navigator.pop(context, false),
@@ -56,8 +66,7 @@ class ShopListState extends State<ShopListPage> {
   }
 
   Widget bodyData() {
-    ProductBloc productBloc = ProductBloc();
-    print(productBloc.productItems);
+    productBloc.getProduct();
     return StreamBuilder<List<Product>>(
         stream: productBloc.productItems,
         builder: (context, snapshot) {

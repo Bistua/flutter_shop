@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter_lib/bridge/product_bridge.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/model/product.dart';
@@ -12,13 +13,16 @@ class ProductBloc {
     return productController.stream;
   }
 
-  ProductBloc() {
-//    Future<String> future = productViewModel.getProducts("1");
-//    future.then((string) {
-//      productController.add(Product.parseProducts(string));
-//    }).catchError((error) {
-//      print(error);
-//    });
-    productController.add(productViewModel.getProductTests());
+  ProductBloc();
+
+  getProduct(bool orderByAes) {
+    ProductBridge.getProducts("1").then((result) {
+      if (result.code == 200) {
+        //todo 解析商品data 然后productController.add
+        productController.add(productViewModel.getProductTests());
+      }
+    });
   }
+
+
 }

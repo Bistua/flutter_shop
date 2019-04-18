@@ -22,6 +22,7 @@ class SearchShopListPage extends StatefulWidget {
 }
 
 class SearchShopListState extends State<SearchShopListPage> {
+  ProductBloc productBloc = ProductBloc();
   Widget appBarTitle;
   final TextEditingController _searchQuery = new TextEditingController();
 
@@ -40,7 +41,6 @@ class SearchShopListState extends State<SearchShopListPage> {
   }
 
   Widget bodyData() {
-    ProductBloc productBloc = ProductBloc();
     print(productBloc.productItems);
     return StreamBuilder<List<Product>>(
         stream: productBloc.productItems,
@@ -57,7 +57,9 @@ class SearchShopListState extends State<SearchShopListPage> {
     return new AppBar(
       centerTitle: false,
       title: buildTextField(),
-      bottom: new PreferreSizeWidget(),
+      bottom: new PreferreSizeWidget((v) {
+        productBloc.getProduct(v);
+      }),
       leading: new IconButton(
         icon: UIData.back,
         onPressed: () => Navigator.pop(context, false),
@@ -110,7 +112,7 @@ class SearchShopListState extends State<SearchShopListPage> {
                 borderRadius: new BorderRadius.circular(14.0),
                 borderSide: new BorderSide(color: Colors.red, width: 0),
               ),
-              suffixIcon:new IconButton(
+              suffixIcon: new IconButton(
                 color: UIData.ffcccccc,
                 icon: Icon(Icons.close),
                 onPressed: () {
@@ -129,7 +131,9 @@ class SearchShopListState extends State<SearchShopListPage> {
       if (searchQuery.text.isEmpty) {
         setState(() {});
       } else {
-        setState(() {});
+        setState(() {
+          productBloc.getProduct(true);
+        });
       }
     });
   }

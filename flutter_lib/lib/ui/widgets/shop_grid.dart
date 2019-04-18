@@ -15,7 +15,6 @@ class ShopGridPage extends StatefulWidget {
 }
 
 class ProductGridState extends State<ShopGridPage> {
-  var isArrowDown = true;
   List<Product> productList;
 
   ProductGridState(List<Product> productList) {

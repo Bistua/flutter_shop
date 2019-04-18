@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_lib/bridge/common_bridge.dart';
 
 class PreferreSizeWidget extends StatelessWidget implements PreferredSize {
+  final ValueChanged<bool> onChanged;
   @override
   Size get preferredSize => new Size.fromHeight(48);
 
@@ -10,17 +11,33 @@ class PreferreSizeWidget extends StatelessWidget implements PreferredSize {
 
   @override
   Widget build(BuildContext context) {
-    return new TabItemPage();
+    return new TabItemPage(
+      onChanged: onChanged,
+    );
   }
+
+  PreferreSizeWidget(this.onChanged);
 }
 
 class TabItemPage extends StatefulWidget {
+  final ValueChanged<bool> onChanged;
+
+  const TabItemPage({Key key, this.onChanged}) : super(key: key);
   @override
-  TabItemState createState() => TabItemState();
+  TabItemState createState() => TabItemState(onChanged);
 }
 
 class TabItemState extends State<TabItemPage> {
   var isArrowDown = true;
+
+  final ValueChanged<bool> onChanged;
+
+  TabItemState(this.onChanged);
+
+  void _handleTap() {
+    onChanged(!isArrowDown);
+  }
+
   @override
   Widget build(BuildContext context) {
     return buildContainer();
@@ -40,8 +57,6 @@ class TabItemState extends State<TabItemPage> {
     );
   }
 
-
-
   GestureDetector buildGestureDetector(String s) {
     return new GestureDetector(
       child: new Text(
@@ -50,48 +65,28 @@ class TabItemState extends State<TabItemPage> {
     );
   }
 
-
-
   GestureDetector buildArrowDownUpText(String s) {
-
     return new GestureDetector(
-      child:new Row(
+      child: new Row(
         children: <Widget>[
           new Text(
             s,
             style: TextStyle(color: Colors.red),
           ),
-          isArrowDown?new Icon(Icons.arrow_drop_down,color: Colors.red,):new Icon(Icons.arrow_drop_up,color: Colors.red,)
+          isArrowDown
+              ? new Icon(
+                  Icons.arrow_drop_down,
+                  color: Colors.red,
+                )
+              : new Icon(
+                  Icons.arrow_drop_up,
+                  color: Colors.red,
+                )
         ],
       ),
-      onTap: ()=>{
-      this.setState((){
-        isArrowDown = !isArrowDown;
-      })
+      onTap: () {
+        _handleTap();
       },
     );
   }
-
-//  String value = "综合";
-//
-//  Widget buildDropdownButton() {
-//    return DropdownButtonHideUnderline(
-//      child:  DropdownButton<String>(
-//        value: value,
-//        onChanged: (String newValue) {
-//          setState(() {
-//            value = newValue;
-//          });
-//        },
-//        items: <String>['综合', '价格', '热门']
-//            .map<DropdownMenuItem<String>>((String value) {
-//          return DropdownMenuItem<String>(
-//            value: value,
-//            child: Text(value),
-//          );
-//        }).toList(),
-//      ),
-//
-//    );
-//  }
 }
