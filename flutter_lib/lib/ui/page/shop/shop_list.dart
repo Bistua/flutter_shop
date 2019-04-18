@@ -46,11 +46,7 @@ class ShopListState extends State<ShopListPage> {
           centerTitle: true,
           title: Text(widget.title),
           bottom: new PreferreSizeWidget((v){
-            if(v){
-              productBloc.getProduct();
-            }else{
-
-            }
+            productBloc.getProduct(v);
           }),
           leading: new IconButton(
             icon: UIData.back,
@@ -66,7 +62,7 @@ class ShopListState extends State<ShopListPage> {
   }
 
   Widget bodyData() {
-    productBloc.getProduct();
+    productBloc.getProduct(true);
     return StreamBuilder<List<Product>>(
         stream: productBloc.productItems,
         builder: (context, snapshot) {

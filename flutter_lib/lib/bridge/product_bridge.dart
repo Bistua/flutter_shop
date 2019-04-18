@@ -10,14 +10,14 @@ class ProductBridge {
    *
    *获取产品列表
    */
-  static Future<Result> getProducts(String type) {
+  static Future<Result> getProducts(String type,bool orderBy) {
     return Bridge.dispenser({
       "method": "getProducts",
       "params": {
         "action": component,
         "arguments": {
           "method": "getProducts",
-          "data": {"type": type}
+          "data": {"type": type,"orderBy":orderBy}
         }
       }
     });
