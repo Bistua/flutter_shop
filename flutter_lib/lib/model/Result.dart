@@ -10,7 +10,9 @@ class Result<T> {
   Result.fromJson(String data) {
     Map<String, dynamic> map = json.decode(data);
     data = map['data'];
-    msg = map['msg'];
+    msg = map['messgae'];
     code = map['code'];
+
+    print("bridge result  msg:"+msg);
   }
 }

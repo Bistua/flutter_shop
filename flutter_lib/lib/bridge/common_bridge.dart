@@ -14,7 +14,7 @@ class Bridge {
     print(params);
     String data = await _bridgePlatform.invokeMethod(method, params);
     if (data != null) {
-      print(data);
+      print("bridge result:"+data);
       return Result.fromJson(data);
     }
     return Result.fromJson(json.encode({"code": -1, "msg": "无结果"}));

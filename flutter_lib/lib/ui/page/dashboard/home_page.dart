@@ -454,6 +454,7 @@ class _MyHomePageState extends State<MyHomePage> {
               case 8:
                 break;
               case 9:
+              Navigator.pushNamed(context, UIData.ShopCategoryList,arguments: "全部分类");
                 break;
             }
           },

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/bridge/account_bridge.dart';
+import 'package:flutter_lib/bridge/common_bridge.dart';
+import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/myapp.dart';
 import 'package:flutter_lib/ui/page/account/perfectinfo.dart';
 import 'package:flutter_lib/ui/page/account/register.dart';
@@ -70,7 +72,7 @@ class LoginState extends State<LoginPage> {
               top: 268.0,
               left: 30.0,
               right: 30.0,
-              child: InputLayout(hint: "请输入密码",controller:_controller2),
+              child: buildGetSms(),
             ),
             Positioned(
               top: 348.0,
@@ -173,6 +175,77 @@ class LoginState extends State<LoginPage> {
       ),
     );
   }
+
+  TextEditingController smsCodeEditingController = new TextEditingController();
+  TextEditingController inviteCodeEditingController =
+  new TextEditingController();
+  Color _verifycodecolor = Color(0xFF999999);
+  Color _verifybordercolor = Color(0xFFEEEEEE);
+  var _verifyborderwidth = 1.0;
+
+  Container buildGetSms() {
+    return Container(
+      height: 40,
+      margin: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+      child: Stack(
+        children: <Widget>[
+          InputLayout(controller: _controller2, hint: "请输入验证码",),
+          Positioned(
+            top: 0.0,
+            right: 0.0,
+            child: Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
+
+                Container(
+                  alignment: Alignment.center,
+                  width: 71.0,
+                  height: 22.0,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: _verifybordercolor,
+                        width: _verifyborderwidth),
+                    borderRadius: new BorderRadius.all(
+                        new Radius.circular(11.0)),
+                  ),
+                ),
+                FlatButton(
+                  child: new Container(
+                    width: 71.0,
+                    height: 22.0,
+                    child: new Text(
+                      "获取验证码",
+                      style: TextStyle(
+                          color: _verifycodecolor,
+                          fontSize: 10),
+                    ),
+                    alignment: Alignment.center,
+                  ),
+                  //圆角大小,与BoxDecoration保持一致，更美观
+                  onPressed: () {
+                    if (_controller1.text.isEmpty) {
+                      Bridge.showShortToast("请输入手机号");
+                      return;
+                    }
+                    Future<Result> future =
+                    AccountBridge.getSmsCode("0", _controller1.text);
+                    future.then((v) {
+                      if (v.code == 200) {
+                        Bridge.showShortToast("短信发送成功");
+                      } else {
+                        Bridge.showShortToast(v.msg);
+                      }
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
 
   _navigateToRegister(BuildContext context) async {
     //async是启用异步方法

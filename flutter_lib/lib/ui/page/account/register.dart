@@ -148,94 +148,7 @@ class RegisterState extends State<RegisterPage> {
                         ),
                       ),
                       Divider(),
-                      Container(
-                        height: 40,
-                        margin: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-                        child: Stack(
-                          children: <Widget>[
-                            TextField(
-                              controller: smsCodeEditingController,
-                              keyboardType: TextInputType.number,
-                              maxLength: 6,
-                              //最大长度，设置此项会让TextField右下角有一个输入数量的统计字符串
-                              maxLines: 1,
-                              //最大行数
-                              style: TextStyle(
-                                  fontSize: 15.0, color: Color(0xFF333333)),
-                              //输入文本的样式
-                              decoration: new InputDecoration(
-                                  //fillColor: Color(0xFFEEEEEE),
-                                  border: InputBorder.none,
-                                  counterStyle:
-                                      TextStyle(color: Colors.transparent),
-                                  hintText: '短信验证码',
-                                  hintStyle: TextStyle(
-                                      fontSize: 15.0,
-                                      color: Color(0xFFBBBBBB))),
-                              onChanged: (text) {
-                                //内容改变的回调
-                                //print('change $text');
-                              },
-                              onSubmitted: (text) {
-                                //内容提交(按回车)的回调
-                                //print('submit $text');
-                              },
-                            ),
-                            Positioned(
-                              top: 0.0,
-                              right: 0.0,
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: <Widget>[
-                                  Container(
-                                    alignment: Alignment.center,
-                                    width: 71.0,
-                                    height: 22.0,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: _verifybordercolor,
-                                          width: _verifyborderwidth),
-                                      borderRadius: new BorderRadius.all(
-                                          new Radius.circular(11.0)),
-                                    ),
-                                  ),
-                                  FlatButton(
-                                    child: new Container(
-                                      width: 71.0,
-                                      height: 22.0,
-                                      child: new Text(
-                                        "获取验证码",
-                                        style: TextStyle(
-                                            color: _verifycodecolor,
-                                            fontSize: 10),
-                                      ),
-                                      alignment: Alignment.center,
-                                    ),
-                                    //圆角大小,与BoxDecoration保持一致，更美观
-                                    onPressed: () {
-                                      if (_controller.text.isEmpty) {
-                                        Bridge.showShortToast("请输入手机号");
-                                        return;
-                                      }
-                                      Future<Result> future =
-                                          AccountBridge.getSmsCode(
-                                              "0", _controller.text);
-                                      future.then((v) {
-                                        if (v.code == 200) {
-                                          Bridge.showShortToast("短信发送成功");
-                                        } else {
-                                            Bridge.showShortToast(v.msg);
-                                        }
-                                        print(v);
-                                      });
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      buildGetSms(),
                       Divider(),
                       Container(
                         height: 40,
@@ -286,18 +199,13 @@ class RegisterState extends State<RegisterPage> {
                           color: Color.fromARGB(255, 250, 72, 72),
                           //圆角大小,与BoxDecoration保持一致，更美观
                           onPressed: () {
-//                            if (_phonenum != null &&
-////                                _phonenum.length == 11 &&
-////                                UIData.isPhone(_phonenum)) {
-////
-////                            } else {}
                             Future<Result> future = AccountBridge.register(
                                 _controller.text,
                                 smsCodeEditingController.text,
                                 inviteCodeEditingController.text);
                             future.then((v) {
                               if (v.code == 200) {
-                                Bridge.showShortToast("注册成功");
+                                Bridge.showShortToast("成功");
                                 Navigator.pop(context, false);
                               }
                               print(v);
@@ -311,5 +219,88 @@ class RegisterState extends State<RegisterPage> {
             ],
           ),
         ));
+  }
+
+  Container buildGetSms() {
+    return Container(
+      height: 40,
+      margin: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+      child: Stack(
+        children: <Widget>[
+          TextField(
+            controller: smsCodeEditingController,
+            keyboardType: TextInputType.number,
+            maxLength: 6,
+            //最大长度，设置此项会让TextField右下角有一个输入数量的统计字符串
+            maxLines: 1,
+            //最大行数
+            style: TextStyle(fontSize: 15.0, color: Color(0xFF333333)),
+            //输入文本的样式
+            decoration: new InputDecoration(
+                //fillColor: Color(0xFFEEEEEE),
+                border: InputBorder.none,
+                counterStyle: TextStyle(color: Colors.transparent),
+                hintText: '短信验证码',
+                hintStyle: TextStyle(fontSize: 15.0, color: Color(0xFFBBBBBB))),
+            onChanged: (text) {
+              //内容改变的回调
+              //print('change $text');
+            },
+            onSubmitted: (text) {
+              //内容提交(按回车)的回调
+              //print('submit $text');
+            },
+          ),
+          Positioned(
+            top: 0.0,
+            right: 0.0,
+            child: Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
+                Container(
+                  alignment: Alignment.center,
+                  width: 71.0,
+                  height: 22.0,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: _verifybordercolor, width: _verifyborderwidth),
+                    borderRadius:
+                        new BorderRadius.all(new Radius.circular(11.0)),
+                  ),
+                ),
+                FlatButton(
+                  child: new Container(
+                    width: 71.0,
+                    height: 22.0,
+                    child: new Text(
+                      "获取验证码",
+                      style: TextStyle(color: _verifycodecolor, fontSize: 10),
+                    ),
+                    alignment: Alignment.center,
+                  ),
+                  //圆角大小,与BoxDecoration保持一致，更美观
+                  onPressed: () {
+                    if (_controller.text.isEmpty) {
+                      Bridge.showShortToast("请输入手机号");
+                      return;
+                    }
+                    Future<Result> future =
+                        AccountBridge.getSmsCode("0", _controller.text);
+                    future.then((v) {
+                      if (v.code == 200) {
+                        Bridge.showShortToast("短信发送成功");
+                      } else {
+                        Bridge.showShortToast(v.msg);
+                      }
+                      print(v);
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -17,18 +17,18 @@ public class PluginDelegate {
         switch (methodCall.method) {
             case "showShortToast":
                 Toast.makeText(context, jsonObject.optString("message"), Toast.LENGTH_SHORT).show();
-                result.success("success from native result", 0, "success from native message");
+//                result.success("success from native toast", 0, "success from native message");
 //                result.error("message",-1);
 //                result.notImplemented();
                 break;
             case "showLongToast":
                 Toast.makeText(context, jsonObject.optString("message"), Toast.LENGTH_LONG).show();
-                result.success(null, 0, "");
+//                result.success(null, 0, "");
                 break;
 
             case "showToast":
                 Toast.makeText(context, jsonObject.optString("message"), jsonObject.optInt("duration")).show();
-                result.success(null, 0, "");
+//                result.success(null, 0, "");
                 break;
             default:
                 String action = jsonObject.optString("action");
