@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lib/logic/bloc/category_bloc.dart';
 import 'package:flutter_lib/logic/viewmodel/category_view_model.dart';
 import 'package:flutter_lib/logic/viewmodel/sub_category_view_model.dart';
 import 'package:flutter_lib/model/category.dart';
@@ -36,7 +37,7 @@ class ShopCategoryListPage extends StatefulWidget {
 
 class ShopCategoryListState extends State<ShopCategoryListPage> {
   Widget appBarTitle;
-
+  CategoryBloc categoryBloc = new CategoryBloc();
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -50,7 +51,7 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
                   icon: UIData.back,
                   onPressed: () => Navigator.pop(context, false),
                 )
-              :null,
+              : null,
         ),
         body: Container(
           color: UIData.fff,
@@ -61,14 +62,21 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
     );
   }
 
+  Widget bodyData() {
+    categoryBloc.getCategories();
+    return StreamBuilder<List<Category>>(
+        stream: categoryBloc.categoryItems,
+        builder: (context, snapshot) {
+          return snapshot.hasData
+              ? body(snapshot.data)
+              : Center(child: CircularProgressIndicator());
+        });
+  }
+
   int selectIndex = 0;
 
-  Widget bodyData() {
-    CategoryViewModel categoryViewModel = new CategoryViewModel();
-    List<Category> categories = categoryViewModel.getCategory();
-
-    SubCategoryViewModel productViewModel = new SubCategoryViewModel();
-    List<Category> data = productViewModel.getCategory();
+  Widget body(List<Category> categories) {
+    List<Category> data = categories[selectIndex].categories;
     return Container(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -101,13 +109,14 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
                     onTap: () {
                       setState(() {
                         this.selectIndex = index;
+                        data = categories[selectIndex].categories;
                       });
                     },
                   );
                 },
               ),
             ),
-            flex:2,
+            flex: 2,
           ),
           Expanded(
             child: Padding(
