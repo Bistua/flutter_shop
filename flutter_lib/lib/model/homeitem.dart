@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class HomeItem {
-  IconData icon;
+  String icon;
   String title;
   String subTitle;
   IconData arrowIcon;

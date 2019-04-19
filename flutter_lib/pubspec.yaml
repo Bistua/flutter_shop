@@ -62,6 +62,19 @@ flutter:
     - images/shop_type_education.png
     - images/shop_type_classification.png
     - images/icon_home_hot_shop.png
+    - images/order1.png
+    - images/order2.png
+    - images/order3.png
+    - images/order4.png
+    - images/vip_label.png
+    - images/vip.png
+    - images/setting.png
+    - images/invite_code.png
+    - images/logout.png
+    - images/invite.png
+    - images/favor.png
+    - images/coin.png
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
