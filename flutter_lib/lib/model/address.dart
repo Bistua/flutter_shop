@@ -1,4 +1,12 @@
 import 'package:flutter/material.dart';
+//
+//"createTime": "xxxxxxxxxxxx",
+//"receiveAddressName": "xxxxxxxxxxxx",
+//"receiveGoodsName": "xxxxxxxxxxxx",
+//"receivePhone": "xxxxxxxxxxxx",
+//"status": "xxxxxxxxxxxx",
+//"userAddressId": "xxxxxxxxxxxx",
+//"userId": "xxxxxxxxxxxx"
 
 class Address {
   String name;

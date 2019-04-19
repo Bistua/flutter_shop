@@ -30,39 +30,21 @@ class AccountBridge {
     return json.encode({"code": 200});
   }
 
-/*
-  注册
- */
-  static Future<Result> register(
-      String phone, String smsCode, String inviteCode) async {
-    print("register");
-    return await Bridge.dispenser({
-      "method": "register",
-      "params": {
-        "action": component,
-        "arguments": {
-          "method": "register",
-          "data": {
-            "phone": phone,
-            "smsCode": smsCode,
-            "inviteCode": inviteCode
-          },
-        }
-      }
-    });
-  }
-
   /*
   登录
  */
-  static Future<Result> login(String type, String phone, String smsCode) {
+  static Future<Result> login(String phone, String smsCode, String inviteCode) {
     return Bridge.dispenser({
       "method": "login",
       "params": {
         "action": component,
         "arguments": {
           "method": "login",
-          "data": {"phone": phone, "smsCode": smsCode},
+          "data": {
+            "phone": phone,
+            "smsCode": smsCode,
+            "inviteCode": inviteCode
+          },
         }
       }
     });
@@ -84,7 +66,7 @@ class AccountBridge {
     });
   }
 
-  static Future<Result> getUserInfo(){
+  static Future<Result> getUserInfo() {
     return Bridge.dispenser({
       "method": "getUserInfo",
       "params": {

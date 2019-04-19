@@ -199,7 +199,7 @@ class RegisterState extends State<RegisterPage> {
                           color: Color.fromARGB(255, 250, 72, 72),
                           //圆角大小,与BoxDecoration保持一致，更美观
                           onPressed: () {
-                            Future<Result> future = AccountBridge.register(
+                            Future<Result> future = AccountBridge.login(
                                 _controller.text,
                                 smsCodeEditingController.text,
                                 inviteCodeEditingController.text);

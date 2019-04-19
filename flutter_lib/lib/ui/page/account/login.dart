@@ -96,8 +96,8 @@ class LoginState extends State<LoginPage> {
 //                  Navigator.pop(context, false);
 ////                  Navigator.push(context,
 ////                      MaterialPageRoute(builder: (context) => MyApp()));
-                  Future<Result> future =
-                  AccountBridge.login("0", _controller1.text,_controller2.text);
+                  Future<Result> future = AccountBridge.login(
+                      _controller1.text, _controller2.text, "");
                   future.then((v) {
                     if (v.code == 200) {
                       Bridge.showShortToast("短信发送成功");
