@@ -6,7 +6,6 @@ class ShopCartManager {
   static ShopCartManager _instance;
   List<Product> products = new List();
 
-
   static ShopCartManager _getInstance() {
     if (_instance == null) {
       _instance = new ShopCartManager._internal();
@@ -19,8 +18,6 @@ class ShopCartManager {
     products = new List();
   }
 
-
-
   int size() {
     int totalCount = 0;
     products.forEach((f) {
@@ -32,14 +29,16 @@ class ShopCartManager {
   void addProduct(Product product) {
     print("0" + product.toString());
     if (products.isEmpty) {
-      product.count = 1;
+      if (product.count == 0) {
+        product.count = 1;
+      }
       products.add(product);
       return;
     }
     bool has = false;
     products.forEach((f) {
       if (f == product) {
-        f.count++;
+        f.count = product.count + f.count;
         has = true;
         print("1" + product.toString());
       } else {
@@ -47,7 +46,7 @@ class ShopCartManager {
         product.count = 1;
       }
     });
-    if(!has){
+    if (!has) {
       products.add(product);
     }
   }

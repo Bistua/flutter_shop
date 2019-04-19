@@ -16,7 +16,8 @@ class Product {
   int quantity = 0;
   int count = 0;
   bool isChecked = false;
-  List<int> guige;
+  List<int> size;
+  List<String> color;
 
   Product(
       {this.name,
@@ -31,7 +32,8 @@ class Product {
       this.colors,
       this.quantity,
       this.count,
-      this.guige});
+      this.size,
+      this.color,});
 
   @override
   bool operator ==(other) {

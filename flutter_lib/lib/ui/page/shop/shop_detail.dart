@@ -229,7 +229,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
                                     height: 13,
                                     child: Center(
                                       child: UIData.getTextWidget(
-                                          count.toString(), UIData.fff, 10),
+                                          cartCount.toString(), UIData.fff, 10),
                                     ),
                                     decoration: UIData.getCircleBoxDecoration(
                                         UIData.fffa4848)),
@@ -372,11 +372,9 @@ class ShopDetailPageState extends State<ShopDetailPage>
 
   _updateShopCartCount() {
     setState(() {
-      count = ShopCartManager.instance.size();
+      cartCount = ShopCartManager.instance.size();
     });
   }
-
-  int count = ShopCartManager.instance.size();
 
   Widget buildFriendsPayInfoList() {
     return Container(
@@ -447,8 +445,13 @@ class ShopDetailPageState extends State<ShopDetailPage>
     );
   }
 
+  int sizeIndex = 0;
+  int colorIndex = 0;
+  int chooseCount = 1;
+  String chooseCountStr = "1";
+  int cartCount = ShopCartManager.instance.size();
+
   Padding buildVipInfo() {
-    product.count = 1;
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
       child: new Container(
@@ -463,7 +466,13 @@ class ShopDetailPageState extends State<ShopDetailPage>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      "规格数量选择(黑色,大号，1件)",
+                      "规格数量选择（大小:" +
+                          product.size[sizeIndex].toString() +
+                          "  颜色:" +
+                          product.color[colorIndex] +
+                          "  数量:" +
+                          chooseCount.toString() +
+                          "）",
                       style: TextStyle(color: UIData.ff353535, fontSize: 15),
                     ),
                     Icon(Icons.arrow_forward_ios),
@@ -506,7 +515,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
                 color: Colors.black12,
                 elevation: 5.0,
                 child: Container(
-                  height: 400,
+                  height: 450,
                   color: UIData.fff,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -518,31 +527,34 @@ class ShopDetailPageState extends State<ShopDetailPage>
                           children: <Widget>[
                             Image.network(
                               this.product.image,
-                              width: 60,
-                              height: 60,
+                              width: 90,
+                              height: 90,
                             ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    product.name,
-                                    maxLines: 3,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 15),
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      product.name,
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          color: Colors.black, fontSize: 15),
+                                    ),
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "￥" + product.price,
-                                    style: TextStyle(
-                                        color: UIData.fffa4848, fontSize: 15),
-                                  ),
-                                )
-                              ],
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      product.price,
+                                      style: TextStyle(
+                                          color: UIData.fffa4848, fontSize: 15),
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           ],
                         ),
@@ -565,12 +577,40 @@ class ShopDetailPageState extends State<ShopDetailPage>
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
-                          children: product.guige.map((index) {
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
+                          children: product.size.map((size) {
+                            return GestureDetector(
                               child: Card(
-                                child: Text(index.toString()),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Text(size.toString()),
+                                ),
                               ),
+                              onTap: () {
+                                setState(() {
+                                  this.sizeIndex = product.size.indexOf(size);
+                                });
+                              },
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: product.color.map((color) {
+                            return GestureDetector(
+                              child: Card(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Text(color.toString()),
+                                ),
+                              ),
+                              onTap: () {
+                                setState(() {
+                                  this.colorIndex =
+                                      product.color.indexOf(color);
+                                });
+                              },
                             );
                           }).toList(),
                         ),
@@ -609,7 +649,12 @@ class ShopDetailPageState extends State<ShopDetailPage>
                                 ),
                                 onTap: () {
                                   setState(() {
-                                    product.count = product.count - 1;
+                                    print("-");
+                                    chooseCount --;
+                                    setState(() {
+                                      chooseCountStr = chooseCount.toString();
+                                    });
+
                                   });
                                 },
                               ),
@@ -620,10 +665,11 @@ class ShopDetailPageState extends State<ShopDetailPage>
                                 width: 50,
                                 height: 40,
                                 child: Center(
-                                  child: UIData.getTextWidget(
-                                      product.count.toString(),
-                                      UIData.ff999999,
-                                      11),
+                                  child: Text(
+                                    chooseCountStr,
+                                    style: TextStyle(
+                                        color: UIData.ff666666, fontSize: 15),
+                                  ),
                                 ),
                                 decoration: BoxDecoration(
                                   border: Border.all(
@@ -650,7 +696,10 @@ class ShopDetailPageState extends State<ShopDetailPage>
                                 ),
                                 onTap: () {
                                   setState(() {
-                                    product.count = product.count + 1;
+                                    chooseCount++;
+                                    setState(() {
+                                      chooseCountStr = chooseCount.toString();
+                                    });
                                   });
                                 },
                               ),
@@ -668,6 +717,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
                         5,
                         () {
                           product.isChecked = true;
+                          product.count = chooseCount;
                           ShopCartManager.instance.addProduct(product);
                           _updateShopCartCount();
                         },
