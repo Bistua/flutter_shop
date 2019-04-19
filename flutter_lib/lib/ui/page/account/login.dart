@@ -93,9 +93,6 @@ class LoginState extends State<LoginPage> {
                 color: Color.fromARGB(255, 250, 72, 72),
                 //圆角大小,与BoxDecoration保持一致，更美观
                 onPressed: () {
-//                  Navigator.pop(context, false);
-////                  Navigator.push(context,
-////                      MaterialPageRoute(builder: (context) => MyApp()));
                   Future<Result> future = AccountBridge.login(
                       _controller1.text, _controller2.text, "");
                   future.then((v) {
