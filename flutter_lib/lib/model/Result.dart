@@ -9,10 +9,10 @@ class Result<T> {
 
   Result.fromJson(String data) {
     Map<String, dynamic> map = json.decode(data);
-    data = map['data'];
-    msg = map['messgae'];
+    data = map['data'] == null ? "" : map['data'];
+    msg = map['messgae'] == null ? "" : map['messgae'];
     code = map['code'];
 
-    print("bridge result  msg:"+msg);
+    print("bridge result  msg:" + msg);
   }
 }

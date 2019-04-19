@@ -36,9 +36,6 @@ class ShopListState extends State<ShopListPage> {
 
   @override
   Widget build(BuildContext context) {
-
-    print(productBloc.productItems);
-
     return DefaultTabController(
       length: 3,
       child: Scaffold(
