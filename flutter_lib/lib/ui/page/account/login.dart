@@ -100,7 +100,8 @@ class LoginState extends State<LoginPage> {
                       _controller1.text, _controller2.text, "");
                   future.then((v) {
                     if (v.code == 200) {
-                      Bridge.showShortToast("短信发送成功");
+                      Bridge.showShortToast("登录成功");
+                      Navigator.pop(context, false);
                     } else {
                       Bridge.showShortToast(v.msg);
                     }
