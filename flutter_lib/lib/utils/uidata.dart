@@ -90,6 +90,8 @@ class UIData {
   static const Color ff666666 = Color(0xff666666);
   static const Color fff7f7f7 = Color(0xfff7f7f7);
 
+  static const  Color ff33333 = Color(0xff333333);
+
 
   static const Icon back = Icon(Icons.arrow_back_ios, color: UIData.ff353535);
   static const Icon back_white = Icon(Icons.arrow_back_ios, color: UIData.fff);
@@ -109,6 +111,8 @@ class UIData {
 
   //randomcolor
   static final Random _random = new Random();
+
+
 
   static Text getTextWidget(String text, Color color, double fontSize) {
     return Text(text, style: TextStyle(fontSize: fontSize, color: color));
