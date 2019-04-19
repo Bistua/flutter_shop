@@ -66,7 +66,7 @@ class LoginState extends State<LoginPage> {
               top: 188.0,
               left: 30.0,
               right: 30.0,
-              child: InputLayout(hint: "请输入手机号码",controller:_controller1),
+              child: InputLayout(hint: "请输入手机号码", controller: _controller1),
             ),
             Positioned(
               top: 268.0,
@@ -162,7 +162,6 @@ class LoginState extends State<LoginPage> {
                       ),
                       onPressed: () {
                         _navigateToPerfectInfo(context);
-
                       },
                     ),
                   ],
@@ -178,7 +177,7 @@ class LoginState extends State<LoginPage> {
 
   TextEditingController smsCodeEditingController = new TextEditingController();
   TextEditingController inviteCodeEditingController =
-  new TextEditingController();
+      new TextEditingController();
   Color _verifycodecolor = Color(0xFF999999);
   Color _verifybordercolor = Color(0xFFEEEEEE);
   var _verifyborderwidth = 1.0;
@@ -189,24 +188,25 @@ class LoginState extends State<LoginPage> {
       margin: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
       child: Stack(
         children: <Widget>[
-          InputLayout(controller: _controller2, hint: "请输入验证码",),
+          InputLayout(
+            controller: _controller2,
+            hint: "请输入验证码",
+          ),
           Positioned(
             top: 0.0,
             right: 0.0,
             child: Stack(
               alignment: Alignment.center,
               children: <Widget>[
-
                 Container(
                   alignment: Alignment.center,
                   width: 71.0,
                   height: 22.0,
                   decoration: BoxDecoration(
                     border: Border.all(
-                        color: _verifybordercolor,
-                        width: _verifyborderwidth),
-                    borderRadius: new BorderRadius.all(
-                        new Radius.circular(11.0)),
+                        color: _verifybordercolor, width: _verifyborderwidth),
+                    borderRadius:
+                        new BorderRadius.all(new Radius.circular(11.0)),
                   ),
                 ),
                 FlatButton(
@@ -215,9 +215,7 @@ class LoginState extends State<LoginPage> {
                     height: 22.0,
                     child: new Text(
                       "获取验证码",
-                      style: TextStyle(
-                          color: _verifycodecolor,
-                          fontSize: 10),
+                      style: TextStyle(color: _verifycodecolor, fontSize: 10),
                     ),
                     alignment: Alignment.center,
                   ),
@@ -228,7 +226,7 @@ class LoginState extends State<LoginPage> {
                       return;
                     }
                     Future<Result> future =
-                    AccountBridge.getSmsCode("0", _controller1.text);
+                        AccountBridge.getSmsCode("0", _controller1.text);
                     future.then((v) {
                       if (v.code == 200) {
                         Bridge.showShortToast("短信发送成功");
@@ -246,7 +244,6 @@ class LoginState extends State<LoginPage> {
     );
   }
 
-
   _navigateToRegister(BuildContext context) async {
     //async是启用异步方法
     final result = await Navigator.push(
@@ -257,19 +254,27 @@ class LoginState extends State<LoginPage> {
   }
 
   _navigateToPerfectInfo(BuildContext context) async {
-    AccountBridge.wxLogin();
+    Future<Result> future = AccountBridge.wxLogin();
+    future.then((v) {
+      if (v.code == 200) {
+        Navigator.pop(context, false);
+      } else {
+        Bridge.showShortToast(v.msg);
+      }
+    });
   }
 }
+
 final TextEditingController _controller1 = new TextEditingController();
 
 final TextEditingController _controller2 = new TextEditingController();
 
 class InputLayout extends StatelessWidget {
-
   final String hint;
   final TextEditingController controller;
 
-  InputLayout({Key key, @required this.hint, this.controller}) : super(key: key);
+  InputLayout({Key key, @required this.hint, this.controller})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
