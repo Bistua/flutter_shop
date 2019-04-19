@@ -35,7 +35,7 @@ class TabItemState extends State<TabItemPage> {
   TabItemState(this.onChanged);
 
   void _handleTap() {
-    onChanged(!isArrowDown);
+    onChanged(isArrowDown);
   }
 
   @override
@@ -85,7 +85,12 @@ class TabItemState extends State<TabItemPage> {
         ],
       ),
       onTap: () {
-        _handleTap();
+        this.setState(() {
+          print("点击前：" + isArrowDown.toString());
+          isArrowDown = !this.isArrowDown;
+          print("点击后：" + isArrowDown.toString());
+          _handleTap();
+        });
       },
     );
   }

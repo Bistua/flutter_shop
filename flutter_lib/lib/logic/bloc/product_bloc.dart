@@ -20,8 +20,18 @@ class ProductBloc {
     ProductBridge.getProducts("1", orderByAes).then((result) {
       if (result.code == 200) {
         //todo 解析data
-        productViewModel.productsItems = productViewModel.getProductTests();
+
+        productController.add(null);
+        if (orderByAes) {
+          print("点击回调 getProduct：" + orderByAes.toString());
+          productViewModel.productsItems = productViewModel.getProduct1Tests();
+        } else {
+          print("点击回调 getProduct：" + orderByAes.toString());
+          productViewModel.productsItems = productViewModel.getProductTests();
+        }
+
         //然后add  每次add相当于发送了一次事件
+
         productController.add(productViewModel.productsItems);
       } else {
         Fluttertoast.showToast(
@@ -35,4 +45,35 @@ class ProductBloc {
       }
     });
   }
-}
+
+
+
+  queryProduct(String query, bool orderByAes) {
+    ProductBridge.getProducts(query, orderByAes).then((result) {
+      if (result.code == 200) {
+        //todo 解析data
+
+        productController.add(null);
+        if (orderByAes) {
+          print("点击回调 getProduct：" + orderByAes.toString());
+          productViewModel.productsItems = productViewModel.getProduct1Tests();
+        } else {
+          print("点击回调 getProduct：" + orderByAes.toString());
+          productViewModel.productsItems = productViewModel.getProductTests();
+        }
+
+        //然后add  每次add相当于发送了一次事件
+
+        productController.add(productViewModel.productsItems);
+      } else {
+        Fluttertoast.showToast(
+            msg: result.msg,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIos: 1,
+            textColor: UIData.fffa4848,
+            backgroundColor: UIData.fffa4848,
+            fontSize: 16.0);
+      }
+    });
+  }}

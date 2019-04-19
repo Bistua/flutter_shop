@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_lib/logic/bloc/product_bloc.dart';
 import 'package:flutter_lib/logic/viewmodel/tab_view_model.dart';
 import 'package:flutter_lib/model/product.dart';
-import 'package:flutter_lib/ui/widgets/shop_grid.dart';
+import 'package:flutter_lib/ui/page/shop/shop_detail.dart';
 import 'package:flutter_lib/ui/widgets/shop_tab_item.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
@@ -46,9 +46,80 @@ class SearchShopListState extends State<SearchShopListPage> {
         stream: productBloc.productItems,
         builder: (context, snapshot) {
           return snapshot.hasData
-              ? new ShopGridPage(snapshot.data)
+              ? productGrid(snapshot.data)
               : Center(child: CircularProgressIndicator());
         });
+  }
+
+  Widget productGrid(List<Product> data) {
+    return new Padding(
+      padding: EdgeInsets.all(5),
+      child: new GridView.builder(
+          itemCount: data.length,
+          gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: (0.7), //item长宽比
+            mainAxisSpacing: 5.0,
+            crossAxisSpacing: 5.0, // add some space
+          ),
+          itemBuilder: (BuildContext context, int index) {
+            return new GestureDetector(
+              child: new Card(
+                elevation: 5.0,
+                child: new Container(
+                  alignment: Alignment.center,
+                  child: new Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      new Stack(
+                        children: <Widget>[
+                          Image.network(
+                            data[index].image,
+                            fit: BoxFit.cover,
+                          ),
+                          Positioned(
+                              bottom: 0,
+                              left: 0,
+                              right: 0,
+                              child: new Container(
+                                color: Colors.white,
+                                child: new Column(
+                                  children: <Widget>[
+                                    new Padding(
+                                      padding: EdgeInsets.fromLTRB(0, 12, 0, 6),
+                                      child: new Text(
+                                        data[index].name,
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color: UIData.ff353535),
+                                      ),
+                                    ),
+                                    new Padding(
+                                      padding: EdgeInsets.fromLTRB(0, 6, 0, 12),
+                                      child: new Text(
+                                        data[index].price,
+                                        style: TextStyle(
+                                            color: Colors.red, fontSize: 16),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) => new ShopDetailPage(data[index])));
+              },
+            );
+          }),
+    );
   }
 
   AppBar buildSearchAppBar(BuildContext context) {
@@ -58,7 +129,7 @@ class SearchShopListState extends State<SearchShopListPage> {
       centerTitle: false,
       title: buildTextField(),
       bottom: new PreferreSizeWidget((v) {
-        productBloc.getProduct("1",v);
+        productBloc.getProduct("1", v);
       }),
       leading: new IconButton(
         icon: UIData.back,
@@ -131,9 +202,7 @@ class SearchShopListState extends State<SearchShopListPage> {
       if (searchQuery.text.isEmpty) {
         setState(() {});
       } else {
-        setState(() {
-          productBloc.getProduct("2",true);
-        });
+        productBloc.queryProduct(searchQuery.text, true);
       }
     });
   }
