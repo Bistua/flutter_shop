@@ -83,4 +83,17 @@ class AccountBridge {
       }
     });
   }
+
+  static Future<Result> getUserInfo(){
+    return Bridge.dispenser({
+      "method": "getUserInfo",
+      "params": {
+        "action": component,
+        "arguments": {
+          "method": "getUserInfo",
+          "data": {"phone": "123"},
+        }
+      }
+    });
+  }
 }
