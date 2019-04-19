@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:convert';
 
 class Product {
+  String skuId;
   String name;
   String image;
   double rating;
@@ -19,21 +20,23 @@ class Product {
   List<int> size;
   List<String> color;
 
-  Product(
-      {this.name,
-      this.image,
-      this.brand,
-      this.price,
-      this.priceNum,
-      this.rating,
-      this.description,
-      this.totalReviews,
-      this.sizes,
-      this.colors,
-      this.quantity,
-      this.count,
-      this.size,
-      this.color,});
+  Product({
+    this.skuId,
+    this.name,
+    this.image,
+    this.brand,
+    this.price,
+    this.priceNum,
+    this.rating,
+    this.description,
+    this.totalReviews,
+    this.sizes,
+    this.colors,
+    this.quantity,
+    this.count,
+    this.size,
+    this.color,
+  });
 
   @override
   bool operator ==(other) {
