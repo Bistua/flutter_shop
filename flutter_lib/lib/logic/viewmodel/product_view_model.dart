@@ -22,7 +22,9 @@ class ProductViewModel {
             brand: "MAI PIÙ SENZA",
             description: "Awesome Heels",
             rating: 4.1,
-            totalReviews: 22),
+            totalReviews: 22,
+            guige: [37,40,41],
+          ),
         new Product(
             name: "Alice W花花家蝴蝶结一字肩抹胸上衣露肩性感打底内衣女无肩带",
             image:
@@ -32,7 +34,8 @@ class ProductViewModel {
             brand: "MAI PIÙ SENZA",
             description: "Awesome Heels",
             rating: 4.1,
-            totalReviews: 22),
+            totalReviews: 22,
+          guige: [37,40,41],),
         new Product(
             name: "性感夜店情趣内衣女秘书ol紧身包臀短裙制服诱惑白领职业装睡衣裙",
             image:
@@ -42,7 +45,8 @@ class ProductViewModel {
             brand: "MAI PIÙ SENZA",
             description: "Awesome Heels",
             rating: 4.1,
-            totalReviews: 22),
+            totalReviews: 22,
+          guige: [37,40,41],),
         new Product(
             name: "情趣内衣蕾丝女仆极度诱惑性感女佣制服夜店兔女郎小胸激情套装骚",
             image:
@@ -52,7 +56,8 @@ class ProductViewModel {
             brand: "MAI PIÙ SENZA",
             description: "Awesome Heels",
             rating: 4.1,
-            totalReviews: 22),
+            totalReviews: 22,
+          guige: [37,40,41],),
         new Product(
             name: "情趣内衣制服骚学生可爱套装激情水手服jk学院风女仆装性感老师",
             image:
@@ -62,7 +67,8 @@ class ProductViewModel {
             brand: "MAI PIÙ SENZA",
             description: "Awesome Heels",
             rating: 4.1,
-            totalReviews: 22),
+            totalReviews: 22,
+          guige: [37,40,41],),
         new Product(
             name: "jk学生制服女套装软妹服装内衣情趣水手服性感骚短可爱学生妹女装",
             image:
@@ -72,7 +78,8 @@ class ProductViewModel {
             brand: "MAI PIÙ SENZA",
             description: "Awesome Heels",
             rating: 4.1,
-            totalReviews: 22),
+            totalReviews: 22,
+          guige: [37,40,41],),
         new Product(
             name: "性感女仆情趣内衣服小胸激情套装血滴子透视开档紧身夜店制服诱惑",
             image:
@@ -82,7 +89,8 @@ class ProductViewModel {
             brand: "MAI PIÙ SENZA",
             description: "Awesome Heels",
             rating: 4.1,
-            totalReviews: 22),
+            totalReviews: 22,
+          guige: [37,40,41],),
         new Product(
             name: "大moss 露肩性感裹胸内衣打底韩版外穿针织黑色抹胸上衣女无肩带",
             image:
@@ -92,7 +100,8 @@ class ProductViewModel {
             brand: "MAI PIÙ SENZA",
             description: "Awesome Heels",
             rating: 4.1,
-            totalReviews: 22),
+            totalReviews: 22,
+          guige: [37,40,41],),
         new Product(
             name: "情趣性感内衣cosplay女佣制服诱惑围裙女仆装洛丽塔撩汉可爱套装",
             image:
@@ -102,7 +111,8 @@ class ProductViewModel {
             brand: "MAI PIÙ SENZA",
             description: "Awesome Heels",
             rating: 4.1,
-            totalReviews: 22)
+            totalReviews: 22,
+          guige: [37,40,41],)
       ];
 
   getProductTests() => <Product>[
@@ -135,7 +145,8 @@ class ProductViewModel {
             ],
             quantity: 0,
             sizes: ["S", "M", "L", "XL"],
-            totalReviews: 170),
+            totalReviews: 170,
+          guige: [37,40,41],),
         Product(
             brand: "adidas Performance",
             description: "Pool sliders",
@@ -145,7 +156,8 @@ class ProductViewModel {
             price: "£13.49",
             priceNum: 13.49,
             rating: 5.0,
-            totalReviews: 10),
+            totalReviews: 10,
+          guige: [37,40,41],),
         Product(
             brand: "Produkt",
             description: "Men's Shirt",
@@ -155,7 +167,8 @@ class ProductViewModel {
             price: "£16.49",
             priceNum: 34.99,
             rating: 4.5,
-            totalReviews: 0),
+            totalReviews: 0,
+          guige: [37,40,41],),
         Product(
             brand: "adidas Originals",
             description: "Hoodie",
@@ -165,7 +178,8 @@ class ProductViewModel {
             price: "£34.99",
             priceNum: 34.99,
             rating: 4.0,
-            totalReviews: 5),
+            totalReviews: 5,
+          guige: [37,40,41],),
         Product(
             brand: "ION",
             description: "Hydration rucksack",
@@ -175,7 +189,8 @@ class ProductViewModel {
             price: "£34.99",
             priceNum: 55.99,
             rating: 4.8,
-            totalReviews: 12),
+            totalReviews: 12,
+          guige: [37,40,41],),
         Product(
             brand: "Diesel",
             description: "Straight leg jeans",
@@ -185,7 +200,8 @@ class ProductViewModel {
             price: "£83.99",
             priceNum: 83.99,
             rating: 4.2,
-            totalReviews: 28),
+            totalReviews: 28,
+          guige: [37,40,41],),
         Product(
             brand: "YOURTURN",
             description: "Watch in budget",
@@ -195,7 +211,8 @@ class ProductViewModel {
             price: "£11.99",
             priceNum: 11.99,
             rating: 4.7,
-            totalReviews: 120),
+            totalReviews: 120,
+          guige: [37,40,41],),
         Product(
             brand: "Vero Moda",
             description: "Day dress - black/off",
@@ -205,7 +222,8 @@ class ProductViewModel {
             price: "£26.59",
             priceNum: 26.59,
             rating: 4.0,
-            totalReviews: 33),
+            totalReviews: 33,
+          guige: [37,40,41],),
         Product(
             brand: "ONLY",
             description: "A-line skirt",
@@ -215,7 +233,8 @@ class ProductViewModel {
             price: "£25.59",
             priceNum: 25.59,
             rating: 4.4,
-            totalReviews: 44),
+            totalReviews: 44,
+          guige: [37,40,41],),
         Product(
             image:
                 "https://mosaic01.ztat.net/vgs/media/pdp-zoom/M6/61/1B/02/9A/11/M6611B029-A11@13.jpg",
@@ -225,7 +244,8 @@ class ProductViewModel {
             brand: "MAI PIÙ SENZA",
             description: "Awesome Heels",
             rating: 4.1,
-            totalReviews: 22),
+            totalReviews: 22,
+          guige: [37,40,41],),
       ];
 
   getOderDetailProducts() => <Product>[
@@ -258,7 +278,8 @@ class ProductViewModel {
             ],
             quantity: 0,
             sizes: ["S", "M", "L", "XL"],
-            totalReviews: 170),
+            totalReviews: 170,
+          guige: [37,40,41],),
         new Product(
             name: "情趣内衣蕾丝女仆极度诱惑性感女佣制服夜店兔女郎小胸激情套装骚",
             image:
@@ -267,7 +288,8 @@ class ProductViewModel {
             brand: "MAI PIÙ SENZA",
             description: "Awesome Heels",
             rating: 4.1,
-            totalReviews: 22),
+            totalReviews: 22,
+          guige: [37,40,41],),
         new Product(
             name: "情趣内衣制服骚学生可爱套装激情水手服jk学院风女仆装性感老师",
             image:
@@ -276,7 +298,8 @@ class ProductViewModel {
             brand: "MAI PIÙ SENZA",
             description: "Awesome Heels",
             rating: 4.1,
-            totalReviews: 22)
+            totalReviews: 22,
+          guige: [37,40,41],)
       ];
 
   List<OrderDetail> getOrderDetailList() {
@@ -316,7 +339,8 @@ class ProductViewModel {
           brand: "MAI PIÙ SENZA",
           description: "Awesome Heels",
           rating: 4.1,
-          totalReviews: 22)
+          totalReviews: 22,
+        guige: [37,40,41],)
     ];
     orderDetail1.orderNumber = "2539129895";
     orderDetail1.orderTime = "2018.12.22 09:32";
@@ -343,7 +367,8 @@ class ProductViewModel {
           brand: "MAI PIÙ SENZA",
           description: "Awesome Heels",
           rating: 4.1,
-          totalReviews: 22)
+          totalReviews: 22,
+        guige: [37,40,41],)
     ];
     orderDetail2.orderNumber = "2539129895";
     orderDetail2.orderTime = "2018.12.22 09:32";
@@ -370,7 +395,8 @@ class ProductViewModel {
           brand: "MAI PIÙ SENZA",
           description: "Awesome Heels",
           rating: 4.1,
-          totalReviews: 22)
+          totalReviews: 22,
+        guige: [37,40,41],)
     ];
     orderDetail3.orderNumber = "2539129895";
     orderDetail3.orderTime = "2018.12.22 09:32";
@@ -397,7 +423,8 @@ class ProductViewModel {
           brand: "MAI PIÙ SENZA",
           description: "Awesome Heels",
           rating: 4.1,
-          totalReviews: 22)
+          totalReviews: 22,
+        guige: [37,40,41],)
     ];
     orderDetail4.orderNumber = "2539129895";
     orderDetail4.orderTime = "2018.12.22 09:32";
@@ -439,7 +466,8 @@ class ProductViewModel {
             ],
             quantity: 0,
             sizes: ["S", "M", "L", "XL"],
-            totalReviews: 170),
+            totalReviews: 170,
+          guige: [37,40,41],),
         new Product(
             name: "情趣内衣蕾丝女仆极度诱惑性感女佣制服夜店兔女郎小胸激情套装骚",
             image:
@@ -457,7 +485,8 @@ class ProductViewModel {
             brand: "MAI PIÙ SENZA",
             description: "Awesome Heels",
             rating: 4.1,
-            totalReviews: 22),
+            totalReviews: 22,
+          guige: [37,40,41],),
         new Product(
             name: "Alice W花花家蝴蝶结一字肩抹胸上衣露肩性感打底内衣女无肩带",
             image:
@@ -466,6 +495,7 @@ class ProductViewModel {
             brand: "MAI PIÙ SENZA",
             description: "Awesome Heels",
             rating: 4.1,
-            totalReviews: 22),
+            totalReviews: 22,
+          guige: [37,40,41],),
       ];
 }

@@ -250,16 +250,18 @@ class ShopDetailPageState extends State<ShopDetailPage>
                           ShopCartManager.instance.addProduct(product);
                           _updateShopCartCount();
                         }),
-                        UIData.getShapeButton(UIData.ffffa517, UIData.fff, 110,
-                            50, "立即购买", 16, 0, () {
-                              product.isChecked = true;
-                              ShopCartManager.instance.addProduct(product);
-                              _updateShopCartCount();
-                              Navigator.push(
-                                  context,
-                                  new MaterialPageRoute(
-                                      builder: (context) => new ShopOrderListPage()));
-                            }),
+                        UIData.getShapeButton(
+                            UIData.ffffa517, UIData.fff, 110, 50, "立即购买", 16, 0,
+                            () {
+                          product.isChecked = true;
+                          ShopCartManager.instance.addProduct(product);
+                          _updateShopCartCount();
+                          Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                  builder: (context) =>
+                                      new ShopOrderListPage()));
+                        }),
                       ],
                     ),
                   ),
@@ -313,9 +315,11 @@ class ShopDetailPageState extends State<ShopDetailPage>
                                 padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
                                 child: Row(
                                   children: <Widget>[
-                                    UIData.getTextWidget(
-                                        rankList[index].name, UIData.ff666666, 12),
-                                    Container(width: 8.0,),
+                                    UIData.getTextWidget(rankList[index].name,
+                                        UIData.ff666666, 12),
+                                    Container(
+                                      width: 8.0,
+                                    ),
                                     StaticRatingBar(
                                       size: 10.0,
                                       rate: rankList[index].star,
@@ -324,9 +328,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
                                 ),
                               ),
                               UIData.getTextWidget(
-                                  rankList[index].time,
-                                  UIData.ff999999,
-                                  10),
+                                  rankList[index].time, UIData.ff999999, 10),
                             ],
                           ),
                         ],
@@ -390,7 +392,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
               style: TextStyle(color: UIData.ff353535, fontSize: 15),
             ),
             InkWell(
-              child:  Text(
+              child: Text(
                 "查看全部>",
                 style: TextStyle(color: UIData.ff999999, fontSize: 12),
               ),
@@ -446,6 +448,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
   }
 
   Padding buildVipInfo() {
+    product.count = 1;
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
       child: new Container(
@@ -455,15 +458,20 @@ class ShopDetailPageState extends State<ShopDetailPage>
           children: <Widget>[
             Padding(
               padding: EdgeInsets.all(15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "规格数量选择(黑色,大号，1件)",
-                    style: TextStyle(color: UIData.ff353535, fontSize: 15),
-                  ),
-                  Icon(Icons.arrow_forward_ios),
-                ],
+              child: GestureDetector(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "规格数量选择(黑色,大号，1件)",
+                      style: TextStyle(color: UIData.ff353535, fontSize: 15),
+                    ),
+                    Icon(Icons.arrow_forward_ios),
+                  ],
+                ),
+                onTap: () {
+                  showChooseDialog(context);
+                },
               ),
             ),
             Padding(
@@ -476,7 +484,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    "在线支付运费10元",
+                    "在线支付运费0元",
                     style: TextStyle(color: UIData.ff353535, fontSize: 15),
                   ),
                   Icon(Icons.arrow_forward_ios),
@@ -487,5 +495,187 @@ class ShopDetailPageState extends State<ShopDetailPage>
         ),
       ),
     );
+  }
+
+  showChooseDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) => Center(
+              child: Material(
+                borderRadius: BorderRadius.circular(8.0),
+                color: Colors.black12,
+                elevation: 5.0,
+                child: Container(
+                  height: 400,
+                  color: UIData.fff,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Image.network(
+                              this.product.image,
+                              width: 60,
+                              height: 60,
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    product.name,
+                                    maxLines: 3,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 15),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "￥" + product.price,
+                                    style: TextStyle(
+                                        color: UIData.fffa4848, fontSize: 15),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                        padding: EdgeInsets.fromLTRB(14, 14, 14, 14),
+                      ),
+                      Divider(),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "规格",
+                              style: TextStyle(
+                                  color: UIData.ff666666, fontSize: 15),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: product.guige.map((index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Card(
+                                child: Text(index.toString()),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                      Divider(),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Text(
+                                  "使用数量",
+                                  style: TextStyle(
+                                      color: UIData.ff666666, fontSize: 15),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: GestureDetector(
+                                child: Container(
+                                  width: 40,
+                                  height: 40,
+                                  child: Center(
+                                    child: UIData.getTextWidget(
+                                        "-", UIData.ff999999, 11),
+                                  ),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: UIData.fff7f7f7, width: 1.0),
+                                    shape: BoxShape.rectangle,
+                                  ),
+                                ),
+                                onTap: () {
+                                  setState(() {
+                                    product.count = product.count - 1;
+                                  });
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Container(
+                                width: 50,
+                                height: 40,
+                                child: Center(
+                                  child: UIData.getTextWidget(
+                                      product.count.toString(),
+                                      UIData.ff999999,
+                                      11),
+                                ),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: UIData.fff7f7f7, width: 1.0),
+                                  shape: BoxShape.rectangle,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: GestureDetector(
+                                child: Container(
+                                  width: 40,
+                                  height: 40,
+                                  child: Center(
+                                    child: UIData.getTextWidget(
+                                        "+", UIData.ff999999, 11),
+                                  ),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: UIData.fff7f7f7, width: 1.0),
+                                    shape: BoxShape.rectangle,
+                                  ),
+                                ),
+                                onTap: () {
+                                  setState(() {
+                                    product.count = product.count + 1;
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      UIData.getShapeButton(
+                        UIData.fffa4848,
+                        UIData.fff,
+                        345,
+                        45,
+                        "加入购物车",
+                        18,
+                        5,
+                        () {
+                          product.isChecked = true;
+                          ShopCartManager.instance.addProduct(product);
+                          _updateShopCartCount();
+                        },
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ));
   }
 }
