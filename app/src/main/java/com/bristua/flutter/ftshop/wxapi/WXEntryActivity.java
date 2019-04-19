@@ -10,10 +10,17 @@ package com.bristua.flutter.ftshop.wxapi;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.bristua.framework.define.IFlutterResult;
+import com.bristua.framework.router.BRouter;
+import com.bristua.ft.component.userlogin.UserLoginConstant;
+import com.bristua.ft.protocol.Protocol;
+import com.bristua.ft.protocol.ProtocolFactory;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
@@ -28,7 +35,7 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 /**
  * 微信客户端回调activity示例
  */
-public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHandler {
+public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHandler, IFlutterResult {
 
 
     // IWXAPI 是第三方app和微信通信的openapi接口
@@ -88,8 +95,16 @@ public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHan
                     if (resp instanceof SendAuth.Resp) {
                         SendAuth.Resp res = (SendAuth.Resp) resp;
                         String code = res.code;
-                        Log.d("WXEntryActivity", "code = " + code);
                         //RxBus.getDefault().send(AllContants.RxBusCode.RXBUS_CODE_WECHAT_LOGIN, code);
+                        Protocol protocol=new Protocol();
+                        protocol.setData(code);
+                        protocol.setMethod(UserLoginConstant.WX_AWAKEN_MODULE);
+                        String json = JSON.toJSONString(protocol);
+                        try {
+                            BRouter.getInstance().build(UserLoginConstant.USER_LOGIN_MODULE).setProtocol(json).setResult(this).navigation();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
                 break;
@@ -147,4 +162,18 @@ public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHan
         }
     }
 
+    @Override
+    public void success(@Nullable String pResult, int pErrorCode, @Nullable String pMessage) {
+        //此处接收回调
+    }
+
+    @Override
+    public void error(@Nullable String pMessage, int pErrorCode) {
+
+    }
+
+    @Override
+    public void notImplemented() {
+
+    }
 }
