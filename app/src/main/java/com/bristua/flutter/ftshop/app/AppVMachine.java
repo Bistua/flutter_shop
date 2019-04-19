@@ -19,6 +19,7 @@ import com.bristua.framework.router.BRouter;
 import com.bristua.framework.system.AppContext;
 import com.bristua.framework.system.ISharePrefense;
 import com.bristua.ft.interceptor.response.HttpResponseInterceptor;
+import com.nd.adhoc.framework.ssl.cert.HttpsSSLContext;
 
 /**
  * 应用模拟器
@@ -28,36 +29,37 @@ import com.bristua.ft.interceptor.response.HttpResponseInterceptor;
 public class AppVMachine {
 
 
-    private  final String pDATA="ftshop";
+    private final String pDATA = "ftshop";
 
-    private  IComponentManager compManager;
+    private IComponentManager compManager;
 
     private static AppVMachine mInstance;
 
-    private AppVMachine(){
+    private AppVMachine() {
 
     }
 
-    public static AppVMachine getInstance(){
+    public static AppVMachine getInstance() {
 
-        if(mInstance==null){
-            mInstance=new AppVMachine();
+        if (mInstance == null) {
+            mInstance = new AppVMachine();
         }
         return mInstance;
     }
 
     /**
      * 虚拟机创建
+     *
      * @param pContext
      */
-    public  void init(@Nullable Context pContext) {
+    public void init(@Nullable Context pContext) {
         AppConfig.getInstance().init();
         //创建上下文环境
         initContext(pContext);
         IEnviromentManager envManager = AppConfig.getInstance().getEnvirmonetManager();
         envManager.init();
         //设置当前环境为开发环境
-        envManager.setEnv(EnvConstants.ENVIROMENT_PRODUCT);
+        envManager.setEnv(EnvConstants.ENVIROMENT_RPRODUCT);
         initHttpsModule(envManager);
         //初始化加载模组，对retrofit进行初始化
         initBRouter();
@@ -65,11 +67,12 @@ public class AppVMachine {
 
     /**
      * 执行业务模组启动
+     *
      * @throws VMachineException
      */
     public void start(@Nullable Context pContext) throws VMachineException {
 
-        if(compManager==null){
+        if (compManager == null) {
             throw new VMachineException(pContext.getResources().getString(R.string.vm_init_exception));
         }
         compManager.start();
@@ -77,11 +80,12 @@ public class AppVMachine {
 
     /**
      * 停止模组初始化
+     *
      * @throws VMachineException
      */
-    public void stop(@Nullable Context pContext) throws VMachineException{
+    public void stop(@Nullable Context pContext) throws VMachineException {
 
-        if(compManager==null){
+        if (compManager == null) {
             throw new VMachineException(pContext.getResources().getString(R.string.vm_stop_exception));
         }
         compManager.release();
@@ -90,19 +94,23 @@ public class AppVMachine {
     /**
      * 初始化https模组
      */
-    private void initHttpsModule(@Nullable IEnviromentManager pEnvManager){
+    private void initHttpsModule(@Nullable IEnviromentManager pEnvManager) {
         HttpsModule.getInstance().init(pEnvManager);
-        HttpsModule.getInstance().addInterceptor(new HttpResponseInterceptor()).build();
+        HttpsModule.getInstance().addInterceptor(new HttpResponseInterceptor())
+                .setSSL(new HttpsSSLContext())
+                .setHostNameVerifier(true)
+                .build();
     }
 
     /**
      * 创建系统全局的上下文
+     *
      * @param pContext
      */
-    private void initContext(@Nullable Context pContext){
+    private void initContext(@Nullable Context pContext) {
         //装载context
         AppContext context = new AppContextWrapper(pContext);
-        AppConfig appConfig=AppConfig.getInstance();
+        AppConfig appConfig = AppConfig.getInstance();
         ISharePrefense sharePrefense = new ShareprefenseImpl(pContext, pDATA);
         ((AppContextWrapper) context).setSharePrenfense(sharePrefense);
         appConfig.setAppContext(context);
@@ -112,7 +120,7 @@ public class AppVMachine {
         appConfig.setUIHandler(new Handler());
     }
 
-    private void initBRouter(){
+    private void initBRouter() {
         compManager = new CompManager();
         //创建路由模组初始化
         BRouter.getInstance().create(compManager);
