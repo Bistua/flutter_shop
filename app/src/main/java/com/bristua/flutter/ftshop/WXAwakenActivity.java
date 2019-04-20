@@ -33,7 +33,13 @@ public class WXAwakenActivity extends Activity {
         }
         String result = getIntent().getStringExtra(UserPayConstant.USER_WX_PAY_RESULT);
         WXPayResult wxPayResult = JSON.parseObject(result, WXPayResult.class);
-        if (wxPayResult == null) {
+        if (wxPayResult == null || wxPayResult.data == null || wxPayResult.code != 0) {
+            Toast.makeText(this, "用户支付失败，通讯模组没有初始化", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+        if (wxPayResult.data.appid == null || wxPayResult.data.partnerid == null
+                || wxPayResult.data.prepayid == null || wxPayResult.data.packages == null || wxPayResult.data.noncestr == null || wxPayResult.data.timestamp == null || wxPayResult.data.sign == null) {
             Toast.makeText(this, "用户支付失败，通讯模组没有初始化", Toast.LENGTH_SHORT).show();
             finish();
             return;

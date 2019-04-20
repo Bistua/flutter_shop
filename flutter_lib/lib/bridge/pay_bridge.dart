@@ -23,7 +23,8 @@ class PayBridge {
           "data": {
             "tradeOrderId": tradeOrderId,
             "spbillCreateIp": spbillCreateIp,
-            "attach": attach
+            "attach": attach,
+            "goodsDesc": goodsDesc
           },
         }
       }

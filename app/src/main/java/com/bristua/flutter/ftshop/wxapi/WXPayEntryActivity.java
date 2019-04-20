@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.bristua.flutter.ftshop.plugin.PluginProvider;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
@@ -47,7 +48,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
         }
         switch (resp.errCode) {
             case BaseResp.ErrCode.ERR_OK:
-                Log.e(TAG, "微信支付 ------ 支付成功");
+                PluginProvider.resultCallBack(200,"微信支付成功");
                 break;
             case BaseResp.ErrCode.ERR_COMM:// 支付失败
                 Log.e(TAG, "微信支付 ------ 支付失败");
