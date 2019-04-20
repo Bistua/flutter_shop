@@ -2,7 +2,6 @@ import 'dart:async' show Future;
 import 'dart:convert';
 
 import 'package:flutter_lib/logic/viewmodel/category_view_model.dart';
-import 'package:flutter_lib/model/CategoryList.dart';
 import 'package:flutter_lib/model/Result.dart';
 
 class CategoryBridge {
@@ -37,7 +36,7 @@ class CategoryBridge {
    *获取产品列表
    */
   static Future<Result> getSubCategories(int categoryId) async {
-    String data = await CategoryViewModel.distest();
+    String data = await CategoryViewModel.distest1();
     if (data != null) {
       print("bridge result:" + data);
       return Result.fromJson(data);
