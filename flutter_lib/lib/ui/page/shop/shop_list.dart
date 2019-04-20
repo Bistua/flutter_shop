@@ -7,8 +7,10 @@ import 'package:flutter_lib/utils/uidata.dart';
 
 class ShopList extends StatelessWidget {
   String title;
-  ShopList(String title){
+  int categoryId;
+  ShopList(String title,int categoryId){
     this.title = title;
+    this.categoryId = categoryId;
   }
 
 
@@ -22,8 +24,9 @@ class ShopList extends StatelessWidget {
 //分页参考https://medium.com/saugo360/flutter-creating-a-listview-that-loads-one-page-at-a-time-c5c91b6fabd3
 class ShopListPage extends StatefulWidget {
 
-  ShopListPage({Key key, this.title}) : super(key: key);
+  ShopListPage({Key key, this.title,this.categoryId}) : super(key: key);
   final String title;
+  final int categoryId;
 
   @override
   ShopListState createState() => ShopListState();
@@ -35,7 +38,7 @@ class ShopListState extends State<ShopListPage> {
 
   @override
   Widget build(BuildContext context) {
-    productBloc.getProduct("1",true);
+    productBloc.getProduct(widget.categoryId,true);
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -44,7 +47,7 @@ class ShopListState extends State<ShopListPage> {
           title: Text(widget.title),
           bottom: new PreferreSizeWidget((v){
             print("点击回调：" + v.toString());
-            productBloc.getProduct("1",v);
+            productBloc.getProduct(widget.categoryId,v);
           }),
           leading: new IconButton(
             icon: UIData.back,

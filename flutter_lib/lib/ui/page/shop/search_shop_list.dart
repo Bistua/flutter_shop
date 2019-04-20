@@ -129,7 +129,7 @@ class SearchShopListState extends State<SearchShopListPage> {
       centerTitle: false,
       title: buildTextField(),
       bottom: new PreferreSizeWidget((v) {
-        productBloc.getProduct("1", v);
+        productBloc.queryProduct(_searchQuery.text, v);
       }),
       leading: new IconButton(
         icon: UIData.back,
@@ -144,7 +144,7 @@ class SearchShopListState extends State<SearchShopListPage> {
   GestureDetector buildSearchBtn() {
     return new GestureDetector(
       onTap: () {
-        _doSearch(_searchQuery);
+        _doSearch();
       },
       child: Container(
         padding: new EdgeInsets.fromLTRB(16.0, 7, 15.0, 8),
@@ -197,12 +197,12 @@ class SearchShopListState extends State<SearchShopListPage> {
     );
   }
 
-  void _doSearch(TextEditingController searchQuery) {
-    searchQuery.addListener(() {
-      if (searchQuery.text.isEmpty) {
+  void _doSearch() {
+    _searchQuery.addListener(() {
+      if (_searchQuery.text.isEmpty) {
         setState(() {});
       } else {
-        productBloc.queryProduct(searchQuery.text, true);
+        productBloc.queryProduct(_searchQuery.text, true);
       }
     });
   }

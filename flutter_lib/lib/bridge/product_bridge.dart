@@ -11,7 +11,7 @@ class ProductBridge {
    *
    *获取产品列表
    */
-  static Future<Result> getProducts(String type,bool orderBy)async {
+  static Future<Result> getProducts(int categoryId,bool orderBy)async {
     String data =  await distest();
     if (data != null) {
       print("bridge result:"+data);

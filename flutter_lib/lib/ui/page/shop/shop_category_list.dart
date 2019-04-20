@@ -217,7 +217,7 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
               Navigator.push(
                   context,
                   new MaterialPageRoute(
-                      builder: (context) => new ShopList(data[index].name)));
+                      builder: (context) => new ShopList(data[index].name,data[index].id)));
             },
           );
         },

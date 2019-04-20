@@ -16,8 +16,8 @@ class ProductBloc {
 
   ProductBloc();
 
-  getProduct(String type, bool orderByAes) {
-    ProductBridge.getProducts("1", orderByAes).then((result) {
+  getProduct(int categoryId, bool orderByAes) {
+    ProductBridge.getProducts(categoryId, orderByAes).then((result) {
       if (result.code == 200) {
         //todo 解析data
 
@@ -49,7 +49,7 @@ class ProductBloc {
 
 
   queryProduct(String query, bool orderByAes) {
-    ProductBridge.getProducts(query, orderByAes).then((result) {
+    ProductBridge.queryProduct(query, orderByAes).then((result) {
       if (result.code == 200) {
         //todo 解析data
 
