@@ -1,22 +1,26 @@
 package com.bristua.flutter.ftshop;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 
 import com.bristua.flutter.ftshop.wxapi.WXEntryActivity;
-import com.bristua.flutter.ftshop.wxapi.WXPayEntryActivity;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
-public class WXAwakenActivity extends AppCompatActivity {
+public class WXAwakenActivity extends Activity {
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         wxLogin();
         finish();
+
+//        WXPayResult wxPayResult = JSON.parseObject(pResult, WXPayResult.class);
+//                        wxPay(wxPayResult.data.appid, wxPayResult.data.partnerid, wxPayResult.data.prepayid,
+//                                wxPayResult.data.packages, wxPayResult.data.noncestr, wxPayResult.data.timestamp, wxPayResult.data.sign);
     }
 
     //微信登录
@@ -49,7 +53,7 @@ public class WXAwakenActivity extends AppCompatActivity {
      * @param timestamp 时间戳
      * @param sign
      */
-    private void wxPay(String appid, String partnerid, String prepayid, String noncestr,
+    private void wxPay(String appid, String partnerid, String prepayid, String packages, String noncestr,
                        String timestamp, String sign) {
         IWXAPI api = null;
         try {
@@ -68,7 +72,7 @@ public class WXAwakenActivity extends AppCompatActivity {
         req.prepayId = prepayid;
         req.nonceStr = noncestr;
         req.timeStamp = timestamp;
-        req.packageValue = "Sign=WXPay";
+        req.packageValue = packages;
         req.sign = sign;
         req.extData = "app data"; // optional
         // Toast.makeText(mActivity, "正常调起支付", Toast.LENGTH_SHORT).show();

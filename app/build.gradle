@@ -62,9 +62,10 @@ dependencies {
     implementation 'com.bristua.framework:sp_manager:1.0.4-SNAPHOST'
     //全局APP Context
     implementation 'com.bristua.framework:context:2.0.0-SNAPHOST'
-    implementation 'com.ft.business.interceptor:response:1.0.2-SNAPHOST'
+    implementation 'com.ft.business.interceptor:response:1.0.3-SNAPHOST'
     implementation 'com.ft.business.component:user_login:5.0.4-SNAPHOST'
-    implementation 'com.ft.business.component:enviroment:1.0.7-SNAPHOST'
+    implementation 'com.ft.business.component:user_pay:1.0.9-SNAPHOST'
+    implementation 'com.ft.business.component:enviroment:1.0.8-SNAPHOST'
     implementation 'com.bristua.framework:ssl_cert:1.0.5-SNAPHOST'
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:5.1.6'
     annotationProcessor 'com.nd.sdp.android.serviceloader:service-loader-compiler-app:1.0.9'

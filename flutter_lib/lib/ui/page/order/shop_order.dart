@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_lib/bridge/common_bridge.dart';
+import 'package:flutter_lib/bridge/pay_bridge.dart';
 import 'package:flutter_lib/logic/viewmodel/deliver_address_manager.dart';
 import 'package:flutter_lib/logic/viewmodel/shop_cart_manager.dart';
+import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/address.dart';
 import 'package:flutter_lib/ui/page/address/add_edit_address.dart';
 import 'package:flutter_lib/ui/page/address/address_list.dart';
@@ -219,7 +222,12 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                         18,
                         5,
                         () {
-                          goToPay();
+                          goToPay(
+                              context,
+                              "5345435345434534",
+                              "123.12.12.123",
+                              "商品描述",
+                              "附加数据，在查询API和支付通知中原样返回，该字段主要用于商户携带订单的自定义数据");
                         },
                       )
                     ],
@@ -494,5 +502,16 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
     );
   }
 
-  void goToPay() {}
+  goToPay(BuildContext context, String tradeOrderId, String spbillCreateIp,
+      String goodsDesc, String attach) async {
+    Future<Result> future =
+        PayBridge.wxPay(tradeOrderId, spbillCreateIp, goodsDesc, attach);
+    future.then((v) {
+      if (v.code == 200) {
+        Navigator.pop(context, false);
+      } else {
+        Bridge.showShortToast(v.msg);
+      }
+    });
+  }
 }

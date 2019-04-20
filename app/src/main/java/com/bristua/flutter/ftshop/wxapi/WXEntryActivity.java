@@ -20,7 +20,6 @@ import com.bristua.framework.define.IFlutterResult;
 import com.bristua.framework.router.BRouter;
 import com.bristua.ft.component.userlogin.UserLoginConstant;
 import com.bristua.ft.protocol.Protocol;
-import com.bristua.ft.protocol.ProtocolFactory;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
@@ -96,8 +95,10 @@ public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHan
                         SendAuth.Resp res = (SendAuth.Resp) resp;
                         String code = res.code;
                         //RxBus.getDefault().send(AllContants.RxBusCode.RXBUS_CODE_WECHAT_LOGIN, code);
-                        Protocol protocol=new Protocol();
-                        protocol.setData(code);
+                        Protocol protocol = new Protocol();
+                        WXCode wxCode = new WXCode();
+                        wxCode.setCode(code);
+                        protocol.setData(wxCode);
                         protocol.setMethod(UserLoginConstant.WX_AWAKEN_MODULE);
                         String json = JSON.toJSONString(protocol);
                         try {
