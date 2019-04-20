@@ -60,10 +60,10 @@ class MyApp extends StatelessWidget {
         final arguments = settings.arguments;
         switch (settings.name) {
           case UIData.ShopDetailPage:
-            if (arguments is Product) {
+            if (arguments is String) {
               return new MaterialPageRoute(
                 settings: settings,
-                builder: (BuildContext context) => ShopDetailPage(arguments),
+                builder: (BuildContext context) => ShopDetailPage(int.parse(arguments)),
               );
             }
             break;

@@ -12,6 +12,123 @@ class ProductViewModel {
 
   ProductViewModel({this.productsItems});
 
+  getProductItems() => json.encode({
+        "code": 200,
+        "msg": "s",
+        "data": {
+          "totalCount": "4",
+          "list": [
+            {
+              "id": 3,
+              "skuId": 3,
+              "name": "Hoppin' Hot Sauce",
+              "description":
+                  "Tangy, ripe cayenne peppes flow together with garlic, onion, tomato paste and a hint of cane sugar to make this a smooth sauce with a bite.  Wonderful on eggs, poultry, pork, or fish, this sauce blends to make rich marinades and soups.",
+              "metaTitle": null,
+              "price": 4.99,
+              "medias": {
+                "alt1": {
+                  "id": 302,
+                  "url": "/cmsstatic/img/sauces/Hoppin-Hot-Sauce-Close.jpg",
+                  "title": "Hoppin Hot Sauce Close-up",
+                  "altText": "alt1",
+                  "tags": null
+                },
+                "primary": {
+                  "id": 301,
+                  "url": "/cmsstatic/img/sauces/Hoppin-Hot-Sauce-Bottle.jpg",
+                  "title": "Hoppin Hot Sauce Bottle",
+                  "altText": "primary",
+                  "tags": null
+                }
+              }
+            },
+            {
+              "id": 6,
+              "skuId": 6,
+              "name": "Day of the Dead Scotch Bonnet Hot Sauce",
+              "description":
+                  "Often mistaken for the Habanero, the Scotch Bonnet has a deeply inverted tip as opposed to the pointed end of the Habanero. Ranging in many colors from green to yellow-orange, the Scotch Bonnet is a staple in West Indies and Barbados style pepper sauces.",
+              "metaTitle": null,
+              "price": 6.99,
+              "medias": {
+                "alt1": {
+                  "id": 602,
+                  "url":
+                      "/cmsstatic/img/sauces/Day-of-the-Dead-Scotch-Bonnet-Hot-Sauce-Close.jpg",
+                  "title": "Day of the Dead Scotch Bonnet Hot Sauce Close-up",
+                  "altText": "alt1",
+                  "tags": null
+                },
+                "primary": {
+                  "id": 601,
+                  "url":
+                      "/cmsstatic/img/sauces/Day-of-the-Dead-Scotch-Bonnet-Hot-Sauce-Bottle.jpg",
+                  "title": "Day of the Dead Scotch Bonnet Hot Sauce Bottle",
+                  "altText": "primary",
+                  "tags": null
+                }
+              }
+            },
+            {
+              "id": 9,
+              "skuId": 9,
+              "name": "Armageddon The Hot Sauce To End All",
+              "description":
+                  "All Hell is breaking loose, fire & brimstone rain down? prepare to meet your maker.",
+              "metaTitle": null,
+              "price": 12.99,
+              "medias": {
+                "alt1": {
+                  "id": 902,
+                  "url":
+                      "/cmsstatic/img/sauces/Armageddon-The-Hot-Sauce-To-End-All-Close.jpg",
+                  "title": "Armageddon The Hot Sauce To End All Close-up",
+                  "altText": "alt1",
+                  "tags": null
+                },
+                "primary": {
+                  "id": 901,
+                  "url":
+                      "/cmsstatic/img/sauces/Armageddon-The-Hot-Sauce-To-End-All-Bottle.jpg",
+                  "title": "Armageddon The Hot Sauce To End All Bottle",
+                  "altText": "primary",
+                  "tags": null
+                }
+              }
+            },
+            {
+              "id": 12,
+              "skuId": 12,
+              "name": "Cafe Louisiane Sweet Cajun Blackening Sauce",
+              "description":
+                  "One of the more unusual sauces we sell. The original was an old style Cajun sauce and this is it's updated blackening version. It's sweet but you get a great hit of cinnamon and cloves with a nice kick of cayenne heat. Use on all foods to give that Cajun flair!",
+              "metaTitle": null,
+              "price": 4.99,
+              "medias": {
+                "alt1": {
+                  "id": 1202,
+                  "url":
+                      "/cmsstatic/img/sauces/Cafe-Louisiane-Sweet-Cajun-Blackening-Sauce-Close.jpg",
+                  "title":
+                      "Cafe Louisiane Sweet Cajun Blackening Sauce Close-up",
+                  "altText": "alt1",
+                  "tags": null
+                },
+                "primary": {
+                  "id": 1201,
+                  "url":
+                      "/cmsstatic/img/sauces/Cafe-Louisiane-Sweet-Cajun-Blackening-Sauce-Bottle.jpg",
+                  "title": "Cafe Louisiane Sweet Cajun Blackening Sauce Bottle",
+                  "altText": "primary",
+                  "tags": null
+                }
+              }
+            }
+          ]
+        }
+      });
+
   getProduct1Tests() => <Product>[
         new Product(
             name: "情趣内衣服女性感小胸兔女郎女仆装开档制服诱惑午夜魅力激情套装",

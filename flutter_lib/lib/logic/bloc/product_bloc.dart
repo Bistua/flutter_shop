@@ -3,59 +3,49 @@ import 'dart:async';
 import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/bridge/product_bridge.dart';
 import 'package:flutter_lib/logic/viewmodel/product_view_model.dart';
-import 'package:flutter_lib/model/product.dart';
+
+import 'package:flutter_lib/model/productitem.dart';
+import 'package:flutter_lib/model/productlist.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class ProductBloc {
   final ProductViewModel productViewModel = ProductViewModel();
-  final productController = StreamController<List<Product>>();
+  final productController = StreamController<List<ProductItem>>();
 
-  Stream<List<Product>> get productItems {
+  Stream<List<ProductItem>> get productItems {
     return productController.stream;
   }
 
   ProductBloc();
 
-  getProduct(int categoryId, bool orderByAes) {
+  getProducts(int categoryId, bool orderByAes) {
     ProductBridge.getProducts(categoryId, orderByAes).then((result) {
       if (result.code == 200) {
-        //todo 解析data
-
-        productController.add(null);
-        if (orderByAes) {
-          print("点击回调 getProduct：" + orderByAes.toString());
-          productViewModel.productsItems = productViewModel.getProduct1Tests();
-        } else {
-          print("点击回调 getProduct：" + orderByAes.toString());
-          productViewModel.productsItems = productViewModel.getProductTests();
-        }
-
-        //然后add  每次add相当于发送了一次事件
-
-        productController.add(productViewModel.productsItems);
+        ProductList productList = ProductList.fromJson(result.data);
+        productController.add(productList.list);
       } else {
         Bridge.showLongToast(result.msg);
       }
     });
   }
 
-  queryProduct(String query, bool orderByAes) {
+  queryProducts(String query, bool orderByAes) {
     ProductBridge.queryProduct(query, orderByAes).then((result) {
       if (result.code == 200) {
-        //todo 解析data
-
         productController.add(null);
-        if (orderByAes) {
-          print("点击回调 getProduct：" + orderByAes.toString());
-          productViewModel.productsItems = productViewModel.getProduct1Tests();
-        } else {
-          print("点击回调 getProduct：" + orderByAes.toString());
-          productViewModel.productsItems = productViewModel.getProductTests();
-        }
+        ProductList productList = ProductList.fromJson(result.data);
+        productController.add(productList.list);
+      } else {
+        Bridge.showLongToast(result.msg);
+      }
+    });
+  }
 
-        //然后add  每次add相当于发送了一次事件
-
-        productController.add(productViewModel.productsItems);
+  getProduct(int productId){
+    ProductBridge.getProduct(productId).then((result) {
+      if (result.code == 200) {
+        ProductList productList = ProductList.fromJson(result.data);
+        productController.add(productList.list);
       } else {
         Bridge.showLongToast(result.msg);
       }

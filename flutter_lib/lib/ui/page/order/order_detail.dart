@@ -519,7 +519,7 @@ class ProductItem extends StatelessWidget {
         ),
       ),
       onTap: () {
-        Navigator.pushNamed(context, UIData.ShopDetailPage, arguments: item);
+        Navigator.pushNamed(context, UIData.ShopDetailPage, arguments: item.skuId);
       },
     );
   }

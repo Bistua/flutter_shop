@@ -516,7 +516,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         onTap: () {
           Navigator.pushNamed(context, UIData.ShopDetailPage,
-              arguments: product);
+              arguments: product.skuId);
         },
       ),
     );
@@ -859,7 +859,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         onTap: () {
           Navigator.pushNamed(context, UIData.ShopDetailPage,
-              arguments: product);
+              arguments: product.skuId);
         },
       ),
     );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/logic/bloc/product_bloc.dart';
 import 'package:flutter_lib/logic/viewmodel/tab_view_model.dart';
-import 'package:flutter_lib/model/product.dart';
+import 'package:flutter_lib/model/productitem.dart';
 import 'package:flutter_lib/ui/page/shop/shop_detail.dart';
 import 'package:flutter_lib/ui/widgets/shop_tab_item.dart';
 import 'package:flutter_lib/utils/uidata.dart';
@@ -42,7 +42,7 @@ class SearchShopListState extends State<SearchShopListPage> {
 
   Widget bodyData() {
     print(productBloc.productItems);
-    return StreamBuilder<List<Product>>(
+    return StreamBuilder<List<ProductItem>>(
         stream: productBloc.productItems,
         builder: (context, snapshot) {
           return snapshot.hasData
@@ -51,7 +51,7 @@ class SearchShopListState extends State<SearchShopListPage> {
         });
   }
 
-  Widget productGrid(List<Product> data) {
+  Widget productGrid(List<ProductItem> data) {
     return new Padding(
       padding: EdgeInsets.all(5),
       child: new GridView.builder(
@@ -63,6 +63,7 @@ class SearchShopListState extends State<SearchShopListPage> {
             crossAxisSpacing: 5.0, // add some space
           ),
           itemBuilder: (BuildContext context, int index) {
+           ProductItem prodcutItem =  data[index];
             return new GestureDetector(
               child: new Card(
                 elevation: 5.0,
@@ -74,7 +75,7 @@ class SearchShopListState extends State<SearchShopListPage> {
                       new Stack(
                         children: <Widget>[
                           Image.network(
-                            data[index].image,
+                            prodcutItem.medias.alt1.url,
                             fit: BoxFit.cover,
                           ),
                           Positioned(
@@ -88,7 +89,7 @@ class SearchShopListState extends State<SearchShopListPage> {
                                     new Padding(
                                       padding: EdgeInsets.fromLTRB(0, 12, 0, 6),
                                       child: new Text(
-                                        data[index].name,
+                                        prodcutItem.name,
                                         style: TextStyle(
                                             fontSize: 12,
                                             color: UIData.ff353535),
@@ -97,7 +98,7 @@ class SearchShopListState extends State<SearchShopListPage> {
                                     new Padding(
                                       padding: EdgeInsets.fromLTRB(0, 6, 0, 12),
                                       child: new Text(
-                                        data[index].price,
+                                        prodcutItem.price.toString(),
                                         style: TextStyle(
                                             color: Colors.red, fontSize: 16),
                                       ),
@@ -115,7 +116,7 @@ class SearchShopListState extends State<SearchShopListPage> {
                 Navigator.push(
                     context,
                     new MaterialPageRoute(
-                        builder: (context) => new ShopDetailPage(data[index])));
+                        builder: (context) => new ShopDetailPage(prodcutItem.id)));
               },
             );
           }),
@@ -129,7 +130,7 @@ class SearchShopListState extends State<SearchShopListPage> {
       centerTitle: false,
       title: buildTextField(),
       bottom: new PreferreSizeWidget((v) {
-        productBloc.queryProduct(_searchQuery.text, v);
+        productBloc.queryProducts(_searchQuery.text, v);
       }),
       leading: new IconButton(
         icon: UIData.back,
@@ -202,7 +203,7 @@ class SearchShopListState extends State<SearchShopListPage> {
       if (_searchQuery.text.isEmpty) {
         setState(() {});
       } else {
-        productBloc.queryProduct(_searchQuery.text, true);
+        productBloc.queryProducts(_searchQuery.text, true);
       }
     });
   }

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lib/logic/bloc/product_bloc.dart';
 import 'package:flutter_lib/logic/viewmodel/comment_view_model.dart';
-import 'package:flutter_lib/model/product.dart';
 import 'package:flutter_lib/model/comment.dart';
+import 'package:flutter_lib/model/productitem.dart';
 import 'package:flutter_lib/ui/page/order/shop_order.dart';
 import 'package:flutter_lib/ui/widgets/rating_bar.dart';
 import 'package:flutter_lib/utils/uidata.dart';
@@ -9,23 +10,23 @@ import 'package:flutter_lib/logic/viewmodel/shop_cart_manager.dart';
 import 'package:flutter_lib/ui/page/shop/shop_cart_list.dart';
 
 class ShopDetailPage extends StatefulWidget {
-  Product product;
+  int productId;
 
-  ShopDetailPage(Product data, {Key key}) : super(key: key) {
-    this.product = data;
+  ShopDetailPage(int productId, {Key key}) : super(key: key) {
+    this.productId = productId;
   }
 
   @override
-  ShopDetailPageState createState() => new ShopDetailPageState(product);
+  ShopDetailPageState createState() => new ShopDetailPageState(productId);
 }
 
 class ShopDetailPageState extends State<ShopDetailPage>
     with WidgetsBindingObserver {
-  BuildContext _context;
-  Product product;
+  int productId;
+  ProductBloc productBloc = ProductBloc();
 
-  ShopDetailPageState(Product product) {
-    this.product = product;
+  ShopDetailPageState(int productId) {
+    this.productId = productId;
   }
   @override
   void initState() {
@@ -39,12 +40,6 @@ class ShopDetailPageState extends State<ShopDetailPage>
     super.dispose();
   }
 
-  @override
-  void didChangeDependencies() {
-    print("didChangeDependencies");
-
-    super.didChangeDependencies();
-  }
 
   @override
   Future<bool> didPopRoute() {
@@ -53,25 +48,6 @@ class ShopDetailPageState extends State<ShopDetailPage>
       _updateShopCartCount();
     });
     return super.didPopRoute();
-  }
-
-  @override
-  Future<bool> didPushRoute(String route) {
-    print("didPushRoute");
-    return super.didPushRoute(route);
-  }
-
-  @override
-  void didUpdateWidget(ShopDetailPage oldWidget) {
-    print("didUpdateWidget");
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
-  void deactivate() {
-    print("deactivate");
-
-    super.deactivate();
   }
 
   @override
@@ -91,7 +67,147 @@ class ShopDetailPageState extends State<ShopDetailPage>
     });
   }
 
-  Padding buildHeader() {
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: UIData.getCenterTitleAppBar("商品名称", context),
+      body: bodyData(),
+    );
+  }
+
+  Widget bodyData() {
+    return StreamBuilder<List<ProductItem>>(
+        stream: productBloc.productItems,
+        builder: (context, snapshot) {
+          return snapshot.hasData
+              ? buidBody(snapshot.data[0])
+              : Center(child: CircularProgressIndicator());
+        });
+  }
+
+  Container buidBody(ProductItem product) {
+    return Container(
+      child: Stack(
+        children: <Widget>[
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: new Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                Expanded(
+                  flex: 1,
+                  child: Stack(
+                    children: <Widget>[
+                      Center(
+                          child: IconButton(
+                              icon: Icon(
+                                Icons.shopping_cart,
+                                color: Colors.black,
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (context) =>
+                                            new ShopCartListPage()));
+                              })),
+                      Positioned(
+                        right: 8,
+                        top: 8,
+                        child: new Container(
+                            width: 13,
+                            height: 13,
+                            child: Center(
+                              child: UIData.getTextWidget(
+                                  cartCount.toString(), UIData.fff, 10),
+                            ),
+                            decoration:
+                                UIData.getCircleBoxDecoration(UIData.fffa4848)),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: IconButton(
+                    icon: Icon(Icons.star, color: Colors.black),
+                    onPressed: () {},
+                  ),
+                ),
+                UIData.getShapeButton(UIData.fffa4848, UIData.fff, 125, 50,
+                    "加入购物车", 16, 0, () {}),
+                UIData.getShapeButton(
+                    UIData.ffffa517, UIData.fff, 110, 50, "立即购买", 16, 0, () {
+                  Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                          builder: (context) => new ShopOrderListPage()));
+                }),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 50,
+            left: 0,
+            right: 0,
+            top: 0,
+            child: buildCustomScrollView(product),
+          ),
+        ],
+      ),
+    );
+  }
+
+  CustomScrollView buildCustomScrollView(ProductItem product) {
+    return CustomScrollView(
+      slivers: <Widget>[
+        SliverList(
+          delegate: SliverChildListDelegate(
+            [
+              buildHeader(product),
+            ],
+          ),
+        ),
+        SliverList(
+          delegate: SliverChildListDelegate(
+            [
+              buildVipInfo(product),
+            ],
+          ),
+        ),
+        SliverList(
+          delegate: SliverChildListDelegate(
+            [
+              buildFriendsPayInfoList(),
+            ],
+          ),
+        ),
+        buildCommentSliverList(),
+        SliverList(
+          delegate: SliverChildListDelegate(
+            [
+              Container(
+                color: UIData.fff,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(15, 17, 15, 12),
+                  child: Text(
+                    "商品详情",
+                    style: TextStyle(color: UIData.ff353535, fontSize: 15),
+                  ),
+                ),
+              ),
+              Image.network(product.medias.alt1.url),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Padding buildHeader(ProductItem product) {
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
       child: new Container(
@@ -99,7 +215,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
         child: new Center(
           child: new Column(
             children: <Widget>[
-              Image.network(this.product.image),
+              Image.network(product.medias.alt1.url),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -115,7 +231,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
                             text: new TextSpan(
                               children: <TextSpan>[
                                 TextSpan(
-                                  text: product.price,
+                                  text: product.price.toString(),
                                   style: TextStyle(
                                       color: UIData.fffa4848, fontSize: 18),
                                 ),
@@ -129,7 +245,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
                             text: new TextSpan(
                               children: <TextSpan>[
                                 new TextSpan(
-                                  text: product.price,
+                                  text: product.price.toString(),
                                   style: new TextStyle(
                                     color: UIData.ff999999,
                                     decoration: TextDecoration.lineThrough,
@@ -184,189 +300,65 @@ class ShopDetailPageState extends State<ShopDetailPage>
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    _context = context;
-    CommentViewModel rankViewModel = CommentViewModel();
-    List<Comment> rankList = rankViewModel.getMenuItems();
-    return new Scaffold(
-      appBar: UIData.getCenterTitleAppBar(product.name, context),
-      body: product == null
-          ? CircularProgressIndicator()
-          : Container(
-              child: Stack(
+  SliverList buildCommentSliverList() {
+    List<Comment> rankList = CommentViewModel().getMenuItems();
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) => Container(
+              color: UIData.fff,
+              child: new Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Positioned(
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: new Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      mainAxisSize: MainAxisSize.max,
-                      children: <Widget>[
-                        Expanded(
-                          flex: 1,
-                          child: Stack(
-                            children: <Widget>[
-                              Center(
-                                  child: IconButton(
-                                      icon: Icon(
-                                        Icons.shopping_cart,
-                                        color: Colors.black,
-                                      ),
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            new MaterialPageRoute(
-                                                builder: (context) =>
-                                                    new ShopCartListPage()));
-                                      })),
-                              Positioned(
-                                right: 8,
-                                top: 8,
-                                child: new Container(
-                                    width: 13,
-                                    height: 13,
-                                    child: Center(
-                                      child: UIData.getTextWidget(
-                                          cartCount.toString(), UIData.fff, 10),
-                                    ),
-                                    decoration: UIData.getCircleBoxDecoration(
-                                        UIData.fffa4848)),
-                              ),
-                            ],
-                          ),
+                  Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(15, 15, 9, 11),
+                        child: CircleAvatar(
+                          radius: 15,
+                          backgroundImage: NetworkImage(rankList[index].avator),
+                          backgroundColor: Colors.transparent,
                         ),
-                        Expanded(
-                          flex: 1,
-                          child: IconButton(
-                            icon: Icon(Icons.star, color: Colors.black),
-                            onPressed: () {},
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                            child: Row(
+                              children: <Widget>[
+                                UIData.getTextWidget(
+                                    rankList[index].name, UIData.ff666666, 12),
+                                Container(
+                                  width: 8.0,
+                                ),
+                                StaticRatingBar(
+                                  size: 10.0,
+                                  rate: rankList[index].star,
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                        UIData.getShapeButton(UIData.fffa4848, UIData.fff, 125,
-                            50, "加入购物车", 16, 0, () {
-                          product.isChecked = true;
-                          ShopCartManager.instance.addProduct(product);
-                          _updateShopCartCount();
-                        }),
-                        UIData.getShapeButton(
-                            UIData.ffffa517, UIData.fff, 110, 50, "立即购买", 16, 0,
-                            () {
-                          product.isChecked = true;
-                          ShopCartManager.instance.addProduct(product);
-                          _updateShopCartCount();
-                          Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                  builder: (context) =>
-                                      new ShopOrderListPage()));
-                        }),
-                      ],
-                    ),
+                          UIData.getTextWidget(
+                              rankList[index].time, UIData.ff999999, 10),
+                        ],
+                      ),
+                    ],
                   ),
-                  Positioned(
-                    bottom: 50,
-                    left: 0,
-                    right: 0,
-                    top: 0,
-                    child: buildCustomScrollView(rankList),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(15, 0, 15, 11),
+                    child: UIData.getTextWidget(
+                        rankList[index].comment, UIData.ff353535, 12),
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
+                    height: 1.0,
+                    color: Color(0xFFEAEAEA),
                   ),
                 ],
               ),
             ),
-    );
-  }
-
-  CustomScrollView buildCustomScrollView(List<Comment> rankList) {
-    return CustomScrollView(
-      slivers: <Widget>[
-        SliverList(
-          delegate: SliverChildListDelegate(
-            [
-              buildHeader(),
-              buildVipInfo(),
-              buildFriendsPayInfoList(),
-            ],
-          ),
-        ),
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) => Container(
-                  color: UIData.fff,
-                  child: new Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(15, 15, 9, 11),
-                            child: CircleAvatar(
-                              radius: 15,
-                              backgroundImage:
-                                  NetworkImage(rankList[index].avator),
-                              backgroundColor: Colors.transparent,
-                            ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
-                                child: Row(
-                                  children: <Widget>[
-                                    UIData.getTextWidget(rankList[index].name,
-                                        UIData.ff666666, 12),
-                                    Container(
-                                      width: 8.0,
-                                    ),
-                                    StaticRatingBar(
-                                      size: 10.0,
-                                      rate: rankList[index].star,
-                                    )
-                                  ],
-                                ),
-                              ),
-                              UIData.getTextWidget(
-                                  rankList[index].time, UIData.ff999999, 10),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(15, 0, 15, 11),
-                        child: UIData.getTextWidget(
-                            rankList[index].comment, UIData.ff353535, 12),
-                      ),
-                      Container(
-                        margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
-                        height: 1.0,
-                        color: Color(0xFFEAEAEA),
-                      ),
-                    ],
-                  ),
-                ),
-            childCount: rankList.length,
-          ),
-        ),
-        SliverList(
-          delegate: SliverChildListDelegate(
-            [
-              Container(
-                color: UIData.fff,
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(15, 17, 15, 12),
-                  child: Text(
-                    "商品详情",
-                    style: TextStyle(color: UIData.ff353535, fontSize: 15),
-                  ),
-                ),
-              ),
-              Image.network(this.product.image),
-            ],
-          ),
-        ),
-      ],
+        childCount: rankList.length,
+      ),
     );
   }
 
@@ -451,7 +443,10 @@ class ShopDetailPageState extends State<ShopDetailPage>
   String chooseCountStr = "1";
   int cartCount = ShopCartManager.instance.size();
 
-  Padding buildVipInfo() {
+  List<int> size = [37, 40, 41];
+  List<String> color = ["红色", "黑色", "蓝色"];
+
+  Padding buildVipInfo(ProductItem product) {
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
       child: new Container(
@@ -467,9 +462,9 @@ class ShopDetailPageState extends State<ShopDetailPage>
                   children: <Widget>[
                     Text(
                       "规格数量选择（大小:" +
-                          product.size[sizeIndex].toString() +
+                          "1" +
                           "  颜色:" +
-                          product.color[colorIndex] +
+                          "写死的黑丝" +
                           "  数量:" +
                           chooseCount.toString() +
                           "）",
@@ -479,7 +474,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
                   ],
                 ),
                 onTap: () {
-                  showChooseDialog(context);
+                  showChooseDialog(product);
                 },
               ),
             ),
@@ -506,7 +501,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
     );
   }
 
-  showChooseDialog(BuildContext context) {
+  showChooseDialog(ProductItem product) {
     showDialog(
         context: context,
         builder: (context) => Center(
@@ -526,7 +521,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
                             Image.network(
-                              this.product.image,
+                              product.medias.alt1.url,
                               width: 90,
                               height: 90,
                             ),
@@ -548,7 +543,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(
-                                      product.price,
+                                      product.price.toString(),
                                       style: TextStyle(
                                           color: UIData.fffa4848, fontSize: 15),
                                     ),
@@ -577,17 +572,17 @@ class ShopDetailPageState extends State<ShopDetailPage>
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
-                          children: product.size.map((size) {
+                          children: size.map((s) {
                             return GestureDetector(
                               child: Card(
                                 child: Padding(
                                   padding: const EdgeInsets.all(12.0),
-                                  child: Text(size.toString()),
+                                  child: Text(s.toString()),
                                 ),
                               ),
                               onTap: () {
                                 setState(() {
-                                  this.sizeIndex = product.size.indexOf(size);
+                                  this.sizeIndex = size.indexOf(s);
                                 });
                               },
                             );
@@ -597,7 +592,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
-                          children: product.color.map((color) {
+                          children: color.map((color) {
                             return GestureDetector(
                               child: Card(
                                 child: Padding(
@@ -607,8 +602,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
                               ),
                               onTap: () {
                                 setState(() {
-                                  this.colorIndex =
-                                      product.color.indexOf(color);
+                                  this.colorIndex = color.indexOf(color);
                                 });
                               },
                             );
@@ -650,11 +644,10 @@ class ShopDetailPageState extends State<ShopDetailPage>
                                 onTap: () {
                                   setState(() {
                                     print("-");
-                                    chooseCount --;
+                                    chooseCount--;
                                     setState(() {
                                       chooseCountStr = chooseCount.toString();
                                     });
-
                                   });
                                 },
                               ),
@@ -715,12 +708,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
                         "加入购物车",
                         18,
                         5,
-                        () {
-                          product.isChecked = true;
-                          product.count = chooseCount;
-                          ShopCartManager.instance.addProduct(product);
-                          _updateShopCartCount();
-                        },
+                        () {},
                       )
                     ],
                   ),

@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 /// This allows the `Category` class to access private members in
@@ -12,10 +9,7 @@ import 'package:json_annotation/json_annotation.dart';
 ///生成category.dart的另一部分 category.g.dart
 part 'category.g.dart';
 
-/// An annotation for the code generator to know that this class needs the
-/// JSON serialization logic to be generated.
 @JsonSerializable()
-
 class Category {
   @JsonKey(name: 'id')
   int id;
@@ -25,6 +19,7 @@ class Category {
   String image;
 
   Category({this.id, this.name, this.image});
+
 
 
   /// A necessary factory constructor for creating a new Category instance

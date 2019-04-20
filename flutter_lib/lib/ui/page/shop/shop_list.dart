@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/logic/bloc/product_bloc.dart';
 import 'package:flutter_lib/model/product.dart';
+import 'package:flutter_lib/model/productitem.dart';
 import 'package:flutter_lib/ui/page/shop/shop_detail.dart';
 import 'package:flutter_lib/ui/widgets/shop_tab_item.dart';
 import 'package:flutter_lib/utils/uidata.dart';
@@ -8,23 +9,22 @@ import 'package:flutter_lib/utils/uidata.dart';
 class ShopList extends StatelessWidget {
   String title;
   int categoryId;
-  ShopList(String title,int categoryId){
+  ShopList(String title, int categoryId) {
     this.title = title;
     this.categoryId = categoryId;
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-    return ShopListPage(title: title,);
+    return ShopListPage(
+      title: title,
+    );
   }
 }
 
 //分页参考https://medium.com/saugo360/flutter-creating-a-listview-that-loads-one-page-at-a-time-c5c91b6fabd3
 class ShopListPage extends StatefulWidget {
-
-  ShopListPage({Key key, this.title,this.categoryId}) : super(key: key);
+  ShopListPage({Key key, this.title, this.categoryId}) : super(key: key);
   final String title;
   final int categoryId;
 
@@ -38,16 +38,16 @@ class ShopListState extends State<ShopListPage> {
 
   @override
   Widget build(BuildContext context) {
-    productBloc.getProduct(widget.categoryId,true);
+    productBloc.getProducts(widget.categoryId, true);
     return DefaultTabController(
       length: 3,
       child: Scaffold(
         appBar: new AppBar(
           centerTitle: true,
           title: Text(widget.title),
-          bottom: new PreferreSizeWidget((v){
+          bottom: new PreferreSizeWidget((v) {
             print("点击回调：" + v.toString());
-            productBloc.getProduct(widget.categoryId,v);
+            productBloc.getProducts(widget.categoryId, v);
           }),
           leading: new IconButton(
             icon: UIData.back,
@@ -63,18 +63,33 @@ class ShopListState extends State<ShopListPage> {
   }
 
   Widget bodyData() {
-    return StreamBuilder<List<Product>>(
+    return StreamBuilder<List<ProductItem>>(
         stream: productBloc.productItems,
         builder: (context, snapshot) {
           return snapshot.hasData
-              ? productGrid(snapshot.data)
+              ? (snapshot.data.isEmpty ? empty() : productGrid(snapshot.data))
               : Center(child: CircularProgressIndicator());
         });
   }
 
+  Widget empty() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: GestureDetector(
+          child: Padding(
+            padding: const EdgeInsets.all(32.0),
+            child: Text("无数据,点击重试"),
+          ),
+          onTap: () {
+            productBloc.getProducts(widget.categoryId, true);
+          },
+        ),
+      ),
+    );
+  }
 
-
-  Widget productGrid(List<Product> data) {
+  Widget productGrid(List<ProductItem> data) {
     return new Padding(
       padding: EdgeInsets.all(5),
       child: new GridView.builder(
@@ -86,6 +101,7 @@ class ShopListState extends State<ShopListPage> {
             crossAxisSpacing: 5.0, // add some space
           ),
           itemBuilder: (BuildContext context, int index) {
+            ProductItem productItem = data[index];
             return new GestureDetector(
               child: new Card(
                 elevation: 5.0,
@@ -96,7 +112,7 @@ class ShopListState extends State<ShopListPage> {
                       new Stack(
                         children: <Widget>[
                           Image.network(
-                            data[index].image,
+                            productItem.medias.alt1.url,
                             fit: BoxFit.contain,
                           ),
                           Positioned(
@@ -119,7 +135,7 @@ class ShopListState extends State<ShopListPage> {
                                     new Padding(
                                       padding: EdgeInsets.fromLTRB(0, 6, 0, 12),
                                       child: new Text(
-                                        data[index].price,
+                                        productItem.price.toString(),
                                         style: TextStyle(
                                             color: Colors.red, fontSize: 16),
                                       ),
@@ -137,12 +153,11 @@ class ShopListState extends State<ShopListPage> {
                 Navigator.push(
                     context,
                     new MaterialPageRoute(
-                        builder: (context) => new ShopDetailPage(data[index])));
+                        builder: (context) =>
+                            new ShopDetailPage(productItem.id)));
               },
             );
           }),
     );
   }
-
 }
-

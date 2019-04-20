@@ -255,7 +255,7 @@ class _ShopCartListState extends State<AllShopOrderPage> {
         ),
       ),
       onTap: () {
-        Navigator.pushNamed(context, UIData.ShopDetailPage,arguments: product);
+        Navigator.pushNamed(context, UIData.ShopDetailPage,arguments: product.skuId);
       },
     );
   }

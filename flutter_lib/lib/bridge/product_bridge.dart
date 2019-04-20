@@ -33,7 +33,7 @@ class ProductBridge {
 
   static distest() {
     ProductViewModel productViewModel = ProductViewModel();
-    return json.encode({"code": 200});
+    return productViewModel.getProductItems();
 
   }
 
@@ -75,6 +75,19 @@ class ProductBridge {
         "arguments": {
           "method": "newOrder",
           "data": {"type": json.encode(sku)}
+        }
+      }
+    });
+  }
+
+  static Future<Result> getProduct(int productId) {
+    return Bridge.dispenser({
+      "method": "detail",
+      "params": {
+        "action": component,
+        "arguments": {
+          "method": "detail",
+          "data": {"productId": productId}
         }
       }
     });

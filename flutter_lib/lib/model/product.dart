@@ -1,7 +1,34 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
-
+///
+///   {
+//                "id": 3,
+//                "skuId": 3,
+//                "name": "Hoppin' Hot Sauce",
+//                "description": "Tangy, ripe cayenne peppes flow together with garlic, onion, tomato paste and a hint of cane sugar to make this a smooth sauce with a bite.  Wonderful on eggs, poultry, pork, or fish, this sauce blends to make rich marinades and soups.",
+//                "metaTitle": null,
+//                "price": 4.99,
+//                "medias": {
+//                    "alt1": {
+//                        "id": 302,
+//                        "url": "/cmsstatic/img/sauces/Hoppin-Hot-Sauce-Close.jpg",
+//                        "title": "Hoppin Hot Sauce Close-up",
+//                        "altText": "alt1",
+//                        "tags": null
+//                    },
+//                    "primary": {
+//                        "id": 301,
+//                        "url": "/cmsstatic/img/sauces/Hoppin-Hot-Sauce-Bottle.jpg",
+//                        "title": "Hoppin Hot Sauce Bottle",
+//                        "altText": "primary",
+//                        "tags": null
+//                    }
+//                }
+//            },
+///
+///
+///
 class Product {
   String skuId;
   String name;
