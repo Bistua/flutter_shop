@@ -16,6 +16,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.bristua.flutter.ftshop.plugin.PluginProvider;
 import com.bristua.framework.define.IFlutterResult;
 import com.bristua.framework.router.BRouter;
 import com.bristua.ft.component.userlogin.UserLoginConstant;
@@ -166,11 +167,12 @@ public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHan
     @Override
     public void success(@Nullable String pResult, int pErrorCode, @Nullable String pMessage) {
         //此处接收回调
+        PluginProvider.resultCallBack(200,"微信登录成功");
     }
 
     @Override
     public void error(@Nullable String pMessage, int pErrorCode) {
-
+        PluginProvider.resultCallBack(pErrorCode,pMessage);
     }
 
     @Override

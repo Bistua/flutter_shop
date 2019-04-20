@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 
 class UIData {
   //routes
+
+
+  static const String Login = "/Login";
   static const String homeRoute = "/home";
   static const String notFoundRoute = "/No Search Result";
 

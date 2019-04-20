@@ -18,9 +18,11 @@ import io.flutter.plugin.common.MethodChannel;
  */
 public class PluginProvider {
     private static final String CHANNEL = "com.ym.framework.plugins/bridge";
+    private static MethodChannel.Result flutterResult;
 
     public static void registerPlugin(final Context context, BinaryMessenger messenger, final PluginDelegate iDelegate) {
         new MethodChannel(messenger, CHANNEL).setMethodCallHandler((methodCall, result) -> {
+            flutterResult = result;
             try {
                 JSONObject jsonObject;
                 if (!TextUtils.isEmpty(methodCall.arguments.toString())) {
@@ -54,8 +56,12 @@ public class PluginProvider {
                 e.printStackTrace();
             }
         });
+    }
 
-
+    public static void resultCallBack(int code, String msg) {
+        if (flutterResult != null) {
+            callbackError(flutterResult, code, msg);
+        }
     }
 
     private static void callbackError(MethodChannel.Result result, int code, String e) {

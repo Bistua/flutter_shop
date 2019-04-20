@@ -6,21 +6,7 @@ import 'package:flutter_lib/myapp.dart';
 import 'package:flutter_lib/ui/page/account/perfectinfo.dart';
 import 'package:flutter_lib/ui/page/account/register.dart';
 
-class Login extends StatelessWidget {
-//  const ShopList({Key key, this.title}) : super(key: key);
-//  final title;
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: LoginPage(),
-    );
-  }
-}
-
 class LoginPage extends StatefulWidget {
-//  ShopListPage({Key key, this.title}) : super(key: key);
-//  final String title;
 
   @override
   LoginState createState() => LoginState();
