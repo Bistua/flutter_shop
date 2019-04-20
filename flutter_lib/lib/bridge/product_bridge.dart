@@ -11,14 +11,14 @@ class ProductBridge {
    *
    *获取产品列表
    */
-  static Future<Result> getProducts(int categoryId,bool orderBy)async {
-    String data =  await distest();
+  static Future<Result> getProducts(int categoryId, bool orderBy) async {
+    String data = await distest();
     if (data != null) {
-      print("bridge result:"+data);
+      print("bridge result:" + data);
       return Result.fromJson(data);
     }
     return Result.fromJson(json.encode({"code": -1, "msg": "无结果"}));
-      //todo 接口通了后使用下面的方法替换上面的假数据
+    //todo 接口通了后使用下面的方法替换上面的假数据
 //    return Bridge.dispenser({
 //      "method": "getProducts",
 //      "params": {
@@ -34,18 +34,16 @@ class ProductBridge {
   static distest() {
     ProductViewModel productViewModel = ProductViewModel();
     return productViewModel.getProductItems();
-
   }
-
 
   /*
    *
    *获取产品列表
    */
-  static Future<Result> queryProduct(String query,bool orderBy)async {
-    String data =  await distest();
+  static Future<Result> queryProduct(String query, bool orderBy) async {
+    String data = await distest();
     if (data != null) {
-      print("bridge result:"+data);
+      print("bridge result:" + data);
       return Result.fromJson(data);
     }
     return Result.fromJson(json.encode({"code": -1, "msg": "无结果"}));
@@ -62,12 +60,11 @@ class ProductBridge {
 //    });
   }
 
-
   /*
    *
    *创建订单
    */
-  static Future<Result> newOrder(List<Sku> sku) {
+  static Future<Result> newOrder(List<Sku> sku)  {
     return Bridge.dispenser({
       "method": "newOrder",
       "params": {
@@ -80,17 +77,22 @@ class ProductBridge {
     });
   }
 
-  static Future<Result> getProduct(int productId) {
-    return Bridge.dispenser({
-      "method": "detail",
-      "params": {
-        "action": component,
-        "arguments": {
-          "method": "detail",
-          "data": {"productId": productId}
-        }
-      }
-    });
+  static Future<Result> getProduct(int productId) async {
+    String data = await distest();
+    if (data != null) {
+      print("bridge result:" + data);
+      return Result.fromJson(data);
+    }
+//
+//    return Bridge.dispenser({
+//      "method": "detail",
+//      "params": {
+//        "action": component,
+//        "arguments": {
+//          "method": "detail",
+//          "data": {"productId": productId}
+//        }
+//      }
+//    });
   }
-
 }

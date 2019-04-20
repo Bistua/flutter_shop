@@ -76,6 +76,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
   }
 
   Widget bodyData() {
+    productBloc.getProduct(productId);
     return StreamBuilder<List<ProductItem>>(
         stream: productBloc.productItems,
         builder: (context, snapshot) {

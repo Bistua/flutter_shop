@@ -29,7 +29,7 @@ class ProductViewModel {
               "medias": {
                 "alt1": {
                   "id": 302,
-                  "url": "/cmsstatic/img/sauces/Hoppin-Hot-Sauce-Close.jpg",
+                  "url":    "https://gd1.alicdn.com/imgextra/i4/842112630/TB2HDRvjb1YBuNjSszeXXablFXa_!!842112630.jpg",
                   "title": "Hoppin Hot Sauce Close-up",
                   "altText": "alt1",
                   "tags": null
@@ -54,16 +54,14 @@ class ProductViewModel {
               "medias": {
                 "alt1": {
                   "id": 602,
-                  "url":
-                      "/cmsstatic/img/sauces/Day-of-the-Dead-Scotch-Bonnet-Hot-Sauce-Close.jpg",
+                  "url":    "https://gd1.alicdn.com/imgextra/i4/842112630/TB2HDRvjb1YBuNjSszeXXablFXa_!!842112630.jpg",
                   "title": "Day of the Dead Scotch Bonnet Hot Sauce Close-up",
                   "altText": "alt1",
                   "tags": null
                 },
                 "primary": {
                   "id": 601,
-                  "url":
-                      "/cmsstatic/img/sauces/Day-of-the-Dead-Scotch-Bonnet-Hot-Sauce-Bottle.jpg",
+                  "url":    "https://gd1.alicdn.com/imgextra/i4/842112630/TB2HDRvjb1YBuNjSszeXXablFXa_!!842112630.jpg",
                   "title": "Day of the Dead Scotch Bonnet Hot Sauce Bottle",
                   "altText": "primary",
                   "tags": null
@@ -81,8 +79,7 @@ class ProductViewModel {
               "medias": {
                 "alt1": {
                   "id": 902,
-                  "url":
-                      "/cmsstatic/img/sauces/Armageddon-The-Hot-Sauce-To-End-All-Close.jpg",
+                  "url":    "https://gd1.alicdn.com/imgextra/i4/842112630/TB2HDRvjb1YBuNjSszeXXablFXa_!!842112630.jpg",
                   "title": "Armageddon The Hot Sauce To End All Close-up",
                   "altText": "alt1",
                   "tags": null
@@ -108,8 +105,7 @@ class ProductViewModel {
               "medias": {
                 "alt1": {
                   "id": 1202,
-                  "url":
-                      "/cmsstatic/img/sauces/Cafe-Louisiane-Sweet-Cajun-Blackening-Sauce-Close.jpg",
+                  "url":    "https://gd1.alicdn.com/imgextra/i4/842112630/TB2HDRvjb1YBuNjSszeXXablFXa_!!842112630.jpg",
                   "title":
                       "Cafe Louisiane Sweet Cajun Blackening Sauce Close-up",
                   "altText": "alt1",
