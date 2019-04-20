@@ -728,7 +728,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
 
   void add2Cart(ProductItem product) {
     Future<Result> future = CartBridge.addSku(
-        productId, product.skuId, chooseCount, product.price, 0, "规格");
+        productId, product.skuId, chooseCount, product.price, 0, "规格",product.name,product.medias.alt1.url);
     future.then((result) {
       if (result.code == 200) {
         Cart categoryList = Cart.fromJson(result.data);

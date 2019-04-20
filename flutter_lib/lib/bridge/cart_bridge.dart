@@ -11,24 +11,24 @@ class CartBridge {
    *添加购物车
    */
   static Future<Result> addSku(int productId, String skuId, int amount,
-      double price, double freight, String norms,String name,String url) {
+      double price, double freight, String norms, String name, String url) {
     return Bridge.dispenser({
       "method": "add",
       "params": {
         "action": component,
         "arguments": {
           "method": "add",
-          "data": {
+          "data": json.encode({
             "productId": productId,
             "skuId": skuId,
             "amount": amount,
             "price": price,
             "freight": freight,
             "norms": norms,
-            "name":name,
-            "img":url,
-          }
-        }
+            "name": name,
+            "img": url,
+          }),
+        },
       }
     });
   }
@@ -50,50 +50,58 @@ class CartBridge {
     });
   }
 
-  static getcarts(){
-    return json.encode( {
+  static getcarts() {
+    return json.encode({
       "code": 200,
       "msg": null,
-      "data": [{
-        "totalCounts": 10,
-        " totalMoney": 1000.12,
-        "products": [{
-          "skuId": 2001213,
-          "amount": 2,
-          "price": 37.33,
-          "freight": 0,
-          "name":"test",
-          "img":"图片地址",
-        },{
-          "skuId": 2001213,
-          "amount": 2,
-          "price": 37.33,
-          "freight": 0,
-          "name":"test",
-          "img":"图片地址",
-        },{
-          "skuId": 2001213,
-          "amount": 2,
-          "price": 37.33,
-          "freight": 0,
-          "name":"test",
-          "img":"图片地址",
-        },{
-          "skuId": 2001213,
-          "amount": 2,
-          "price": 37.33,
-          "freight": 0,
-          "name":"test",
-          "img":"图片地址",
-        }]
-      }]});
+      "data": [
+        {
+          "totalCounts": 10,
+          " totalMoney": 1000.12,
+          "products": [
+            {
+              "skuId": 2001213,
+              "amount": 2,
+              "price": 37.33,
+              "freight": 0,
+              "name": "test",
+              "img": "图片地址",
+            },
+            {
+              "skuId": 2001213,
+              "amount": 2,
+              "price": 37.33,
+              "freight": 0,
+              "name": "test",
+              "img": "图片地址",
+            },
+            {
+              "skuId": 2001213,
+              "amount": 2,
+              "price": 37.33,
+              "freight": 0,
+              "name": "test",
+              "img": "图片地址",
+            },
+            {
+              "skuId": 2001213,
+              "amount": 2,
+              "price": 37.33,
+              "freight": 0,
+              "name": "test",
+              "img": "图片地址",
+            }
+          ]
+        }
+      ]
+    });
   }
 
   /*
    *
    *获取购物车信息
    */
-  static Future<Result> findCart() async{
+  static Future<Result> findCart() async {
     return await getcarts();
 
 //    return Bridge.dispenser({
