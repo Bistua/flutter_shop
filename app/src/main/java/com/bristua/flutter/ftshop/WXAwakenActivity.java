@@ -46,6 +46,7 @@ public class WXAwakenActivity extends Activity {
         }
         wxPay(wxPayResult.data.appid, wxPayResult.data.partnerid, wxPayResult.data.prepayid,
                 wxPayResult.data.packages, wxPayResult.data.noncestr, wxPayResult.data.timestamp, wxPayResult.data.sign);
+        finish();
     }
 
     //微信登录
@@ -59,7 +60,6 @@ public class WXAwakenActivity extends Activity {
         // 是否安装微信客户端
         if (api == null || !api.isWXAppInstalled()) {
             Toast.makeText(this, "检查到手机未安装微信客户端", Toast.LENGTH_SHORT).show();
-            finish();
             return;
         }
         SendAuth.Req req = new SendAuth.Req();
@@ -90,7 +90,6 @@ public class WXAwakenActivity extends Activity {
         // 是否安装微信客户端
         if (api == null || !api.isWXAppInstalled()) {
             Toast.makeText(this, "检查到手机未安装微信客户端", Toast.LENGTH_SHORT).show();
-            finish();
             return;
         }
         PayReq req = new PayReq();
