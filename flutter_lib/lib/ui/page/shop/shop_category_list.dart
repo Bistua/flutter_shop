@@ -69,13 +69,30 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
         stream: categoryBloc.categoryItems,
         builder: (context, snapshot) {
           return snapshot.hasData
-              ? body(snapshot.data)
+              ? (snapshot.data.isEmpty ? empty() : body(snapshot.data))
               : Center(child: CircularProgressIndicator());
         });
   }
 
   int selectIndex = 0;
   int categoryId = 0;
+
+  Widget empty() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: GestureDetector(
+          child: Padding(
+            padding: const EdgeInsets.all(32.0),
+            child: Text("无数据,点击重试"),
+          ),
+          onTap: () {
+            categoryBloc.getCategories();
+          },
+        ),
+      ),
+    );
+  }
 
   Widget body(List<Category> categories) {
     categoryId = categories[selectIndex].id;
@@ -156,7 +173,7 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
         stream: categoryBloc.suCategoryItems,
         builder: (context, snapshot) {
           return snapshot.hasData
-              ? sliverGrid(snapshot.data)
+              ? (snapshot.data.isEmpty ? empty() : sliverGrid(snapshot.data))
               : SliverList(
                   delegate: SliverChildListDelegate(
                     [
@@ -217,7 +234,8 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
               Navigator.push(
                   context,
                   new MaterialPageRoute(
-                      builder: (context) => new ShopList(data[index].name,data[index].id)));
+                      builder: (context) =>
+                          new ShopList(data[index].name, data[index].id)));
             },
           );
         },

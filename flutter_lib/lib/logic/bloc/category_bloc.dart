@@ -31,6 +31,7 @@ class CategoryBloc {
         categoryController.add(categoryViewModel.categorysItems);
       } else {
         Bridge.showLongToast(result.msg);
+        categoryController.add(List());
       }
     });
   }
@@ -42,6 +43,7 @@ class CategoryBloc {
         subCategoryController.add(subCategoryList.list);
       } else {
         Bridge.showLongToast(result.msg);
+        categoryController.add(List());
       }
     });
   }
