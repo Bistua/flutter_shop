@@ -6,6 +6,10 @@ import 'package:json_annotation/json_annotation.dart';
 /// This allows the `Category` class to access private members in
 /// the generated file. The value for this is *.g.dart, where
 /// the star denotes the source file name.
+///
+///在flutter_lib 下使用命令 flutter packages pub run build_runner build
+///下面两个报错引用的是  category.g.dart 中生成的代码
+///生成category.dart的另一部分 category.g.dart
 part 'category.g.dart';
 
 /// An annotation for the code generator to know that this class needs the
