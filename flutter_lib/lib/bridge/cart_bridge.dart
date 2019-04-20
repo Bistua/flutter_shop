@@ -12,6 +12,7 @@ class CartBridge {
    */
   static Future<Result> addSku(int productId, String skuId, int amount,
       double price, double freight, String norms, String name, String url) {
+    //todo  "data": json.encode 待测试
     return Bridge.dispenser({
       "method": "add",
       "params": {
