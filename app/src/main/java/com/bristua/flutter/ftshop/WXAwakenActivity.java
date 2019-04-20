@@ -33,13 +33,20 @@ public class WXAwakenActivity extends Activity {
         }
         String result = getIntent().getStringExtra(UserPayConstant.USER_WX_PAY_RESULT);
         WXPayResult wxPayResult = JSON.parseObject(result, WXPayResult.class);
-        if (wxPayResult == null) {
+        if (wxPayResult == null || wxPayResult.data == null || wxPayResult.code != 0) {
+            Toast.makeText(this, "用户支付失败，通讯模组没有初始化", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+        if (wxPayResult.data.appid == null || wxPayResult.data.partnerid == null
+                || wxPayResult.data.prepayid == null || wxPayResult.data.packages == null || wxPayResult.data.noncestr == null || wxPayResult.data.timestamp == null || wxPayResult.data.sign == null) {
             Toast.makeText(this, "用户支付失败，通讯模组没有初始化", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
         wxPay(wxPayResult.data.appid, wxPayResult.data.partnerid, wxPayResult.data.prepayid,
                 wxPayResult.data.packages, wxPayResult.data.noncestr, wxPayResult.data.timestamp, wxPayResult.data.sign);
+        finish();
     }
 
     //微信登录
@@ -53,7 +60,6 @@ public class WXAwakenActivity extends Activity {
         // 是否安装微信客户端
         if (api == null || !api.isWXAppInstalled()) {
             Toast.makeText(this, "检查到手机未安装微信客户端", Toast.LENGTH_SHORT).show();
-            finish();
             return;
         }
         SendAuth.Req req = new SendAuth.Req();
@@ -84,7 +90,6 @@ public class WXAwakenActivity extends Activity {
         // 是否安装微信客户端
         if (api == null || !api.isWXAppInstalled()) {
             Toast.makeText(this, "检查到手机未安装微信客户端", Toast.LENGTH_SHORT).show();
-            finish();
             return;
         }
         PayReq req = new PayReq();

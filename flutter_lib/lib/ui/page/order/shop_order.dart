@@ -224,7 +224,7 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                         () {
                           goToPay(
                               context,
-                              "5345435345434534",
+                              "1555746236014000",
                               "123.12.12.123",
                               "商品描述",
                               "附加数据，在查询API和支付通知中原样返回，该字段主要用于商户携带订单的自定义数据");
