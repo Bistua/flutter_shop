@@ -5,7 +5,6 @@ import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/logic/viewmodel/shop_cart_manager.dart';
 import 'package:flutter_lib/ui/page/order/shop_order.dart';
 import 'package:flutter_lib/utils/uidata.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class ShopCartListPage extends StatefulWidget {
   @override
@@ -120,15 +119,8 @@ class _ShopCartListState extends State<ShopCartListPage> {
                       if (ShopCartManager.instance
                           .getCheckedProducts()
                           .isEmpty) {
-                        Fluttertoast.showToast(
-                            msg: "请至少选择一个商品",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.CENTER,
-                            timeInSecForIos: 1,
-                            backgroundColor: Colors.red,
-                            textColor: Colors.white,
-                            fontSize: 16.0
-                        );
+
+                        Bridge.showShortToast( "请至少选择一个商品");
                         return;
                       }
 

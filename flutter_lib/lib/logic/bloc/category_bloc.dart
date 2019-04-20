@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter_lib/bridge/category_bridge.dart';
+import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/logic/viewmodel/category_view_model.dart';
 import 'package:flutter_lib/model/category.dart';
 import 'package:flutter_lib/model/categorylist.dart';
 import 'package:flutter_lib/utils/uidata.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class CategoryBloc {
   final CategoryViewModel categoryViewModel = CategoryViewModel();
@@ -30,14 +30,7 @@ class CategoryBloc {
         categoryViewModel.categorysItems = categoryList.list;
         categoryController.add(categoryViewModel.categorysItems);
       } else {
-        Fluttertoast.showToast(
-            msg: result.msg,
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIos: 1,
-            textColor: UIData.fffa4848,
-            backgroundColor: UIData.fffa4848,
-            fontSize: 16.0);
+        Bridge.showLongToast(result.msg);
       }
     });
   }
@@ -48,14 +41,7 @@ class CategoryBloc {
         CategoryList subCategoryList = CategoryList.fromJson(result.data);
         subCategoryController.add(subCategoryList.list);
       } else {
-        Fluttertoast.showToast(
-            msg: result.msg,
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIos: 1,
-            textColor: UIData.fffa4848,
-            backgroundColor: UIData.fffa4848,
-            fontSize: 16.0);
+        Bridge.showLongToast(result.msg);
       }
     });
   }

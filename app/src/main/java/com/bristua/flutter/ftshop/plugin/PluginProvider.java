@@ -38,7 +38,7 @@ public class PluginProvider {
 
                         @Override
                         public void error(@Nullable String pMessage, int pErrorCode) {
-                            result.error(pMessage, String.valueOf(pErrorCode),null);
+                            callbackError(result, pErrorCode, pMessage);
                         }
 
                         @Override
@@ -48,6 +48,7 @@ public class PluginProvider {
                     });
                 } catch (Exception e) {
                     e.printStackTrace();
+                    callbackError(result, -1, e.getMessage());
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -57,6 +58,16 @@ public class PluginProvider {
 
     }
 
+    private static void callbackError(MethodChannel.Result result, int code, String e) {
+        JSONObject jsonObject1 = new JSONObject();
+        try {
+            jsonObject1.put("code", code);
+            jsonObject1.put("msg", e);
+            result.success(jsonObject1.toString());
+        } catch (JSONException e1) {
+            e1.printStackTrace();
+        }
+    }
 
 
 }

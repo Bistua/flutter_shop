@@ -1,10 +1,10 @@
 import 'dart:async';
 
+import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/bridge/product_bridge.dart';
 import 'package:flutter_lib/logic/viewmodel/product_view_model.dart';
 import 'package:flutter_lib/model/product.dart';
 import 'package:flutter_lib/utils/uidata.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class ProductBloc {
   final ProductViewModel productViewModel = ProductViewModel();
@@ -34,19 +34,10 @@ class ProductBloc {
 
         productController.add(productViewModel.productsItems);
       } else {
-        Fluttertoast.showToast(
-            msg: result.msg,
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIos: 1,
-            textColor: UIData.fffa4848,
-            backgroundColor: UIData.fffa4848,
-            fontSize: 16.0);
+        Bridge.showLongToast(result.msg);
       }
     });
   }
-
-
 
   queryProduct(String query, bool orderByAes) {
     ProductBridge.queryProduct(query, orderByAes).then((result) {
@@ -66,14 +57,8 @@ class ProductBloc {
 
         productController.add(productViewModel.productsItems);
       } else {
-        Fluttertoast.showToast(
-            msg: result.msg,
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIos: 1,
-            textColor: UIData.fffa4848,
-            backgroundColor: UIData.fffa4848,
-            fontSize: 16.0);
+        Bridge.showLongToast(result.msg);
       }
     });
-  }}
+  }
+}
