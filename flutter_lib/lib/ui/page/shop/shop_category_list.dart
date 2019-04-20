@@ -79,6 +79,7 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
 
   Widget body(List<Category> categories) {
     categoryId = categories[selectIndex].id;
+    categoryBloc.getSubCategories(categoryId);
     return Container(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -139,7 +140,7 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
                       ],
                     ),
                   ),
-                  buildSliverGrid(categoryId),
+                  buildSliverGrid(),
                 ],
               ),
             ),
@@ -150,14 +151,19 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
     );
   }
 
-  Widget buildSliverGrid(int categoryId) {
-    categoryBloc.getSubCategories(categoryId);
+  Widget buildSliverGrid() {
     return StreamBuilder<List<Category>>(
         stream: categoryBloc.suCategoryItems,
         builder: (context, snapshot) {
           return snapshot.hasData
               ? sliverGrid(snapshot.data)
-              : Center(child: CircularProgressIndicator());
+              : SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      Center(child: CircularProgressIndicator()),
+                    ],
+                  ),
+                );
         });
   }
 
