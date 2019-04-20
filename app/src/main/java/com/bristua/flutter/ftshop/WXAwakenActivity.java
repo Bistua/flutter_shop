@@ -3,8 +3,12 @@ package com.bristua.flutter.ftshop;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.bristua.flutter.ftshop.wxapi.WXEntryActivity;
+import com.bristua.flutter.ftshop.wxapi.WXPayResult;
+import com.bristua.ft.component.userpay.UserPayConstant;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
@@ -15,12 +19,27 @@ public class WXAwakenActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        wxLogin();
-        finish();
-
-//        WXPayResult wxPayResult = JSON.parseObject(pResult, WXPayResult.class);
-//                        wxPay(wxPayResult.data.appid, wxPayResult.data.partnerid, wxPayResult.data.prepayid,
-//                                wxPayResult.data.packages, wxPayResult.data.noncestr, wxPayResult.data.timestamp, wxPayResult.data.sign);
+        boolean isWxPay = getIntent().getBooleanExtra(UserPayConstant.USER_IS_WX_PAY, false);
+        if (!isWxPay) {
+            wxLogin();
+            finish();
+            return;
+        }
+        int code = getIntent().getIntExtra(UserPayConstant.USER_WX_PAY_CODE, 500);
+        if (code != 200) {
+            Toast.makeText(this, "用户支付失败，通讯模组没有初始化", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+        String result = getIntent().getStringExtra(UserPayConstant.USER_WX_PAY_RESULT);
+        WXPayResult wxPayResult = JSON.parseObject(result, WXPayResult.class);
+        if (wxPayResult == null) {
+            Toast.makeText(this, "用户支付失败，通讯模组没有初始化", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+        wxPay(wxPayResult.data.appid, wxPayResult.data.partnerid, wxPayResult.data.prepayid,
+                wxPayResult.data.packages, wxPayResult.data.noncestr, wxPayResult.data.timestamp, wxPayResult.data.sign);
     }
 
     //微信登录
@@ -33,7 +52,8 @@ public class WXAwakenActivity extends Activity {
         }
         // 是否安装微信客户端
         if (api == null || !api.isWXAppInstalled()) {
-            //ToastUtils.showToast(mView, "检查到手机未安装微信客户端");
+            Toast.makeText(this, "检查到手机未安装微信客户端", Toast.LENGTH_SHORT).show();
+            finish();
             return;
         }
         SendAuth.Req req = new SendAuth.Req();
@@ -63,7 +83,8 @@ public class WXAwakenActivity extends Activity {
         }
         // 是否安装微信客户端
         if (api == null || !api.isWXAppInstalled()) {
-            //ToastUtils.showToast(mView, "检查到手机未安装微信客户端");
+            Toast.makeText(this, "检查到手机未安装微信客户端", Toast.LENGTH_SHORT).show();
+            finish();
             return;
         }
         PayReq req = new PayReq();
