@@ -20,7 +20,7 @@ class ProductViewModel {
           "list": [
             {
               "id": 3,
-              "skuId": 3,
+              "skuId": "3",
               "name": "Hoppin' Hot Sauce",
               "description":
                   "Tangy, ripe cayenne peppes flow together with garlic, onion, tomato paste and a hint of cane sugar to make this a smooth sauce with a bite.  Wonderful on eggs, poultry, pork, or fish, this sauce blends to make rich marinades and soups.",
@@ -45,7 +45,7 @@ class ProductViewModel {
             },
             {
               "id": 6,
-              "skuId": 6,
+              "skuId": "3",
               "name": "Day of the Dead Scotch Bonnet Hot Sauce",
               "description":
                   "Often mistaken for the Habanero, the Scotch Bonnet has a deeply inverted tip as opposed to the pointed end of the Habanero. Ranging in many colors from green to yellow-orange, the Scotch Bonnet is a staple in West Indies and Barbados style pepper sauces.",
@@ -70,7 +70,7 @@ class ProductViewModel {
             },
             {
               "id": 9,
-              "skuId": 9,
+              "skuId": "9",
               "name": "Armageddon The Hot Sauce To End All",
               "description":
                   "All Hell is breaking loose, fire & brimstone rain down? prepare to meet your maker.",
@@ -96,7 +96,7 @@ class ProductViewModel {
             },
             {
               "id": 12,
-              "skuId": 12,
+              "skuId": "12",
               "name": "Cafe Louisiane Sweet Cajun Blackening Sauce",
               "description":
                   "One of the more unusual sauces we sell. The original was an old style Cajun sauce and this is it's updated blackening version. It's sweet but you get a great hit of cinnamon and cloves with a nice kick of cayenne heat. Use on all foods to give that Cajun flair!",

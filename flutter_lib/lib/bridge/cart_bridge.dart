@@ -2,16 +2,16 @@ import 'dart:convert';
 
 import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/model/Result.dart';
-import 'package:flutter_lib/model/product.dart';
-import 'package:flutter_lib/model/sku.dart';
 
 class CartBridge {
   static const String component = "shop_cart";
+
   /*
    *
-   *获取产品列表
+   *添加购物车
    */
-  static Future<Result> addSku(Sku sku) {
+  static Future<Result> addSku(int productId, String skuId, int amount,
+      double price, double freight, String norms,String name,String url) {
     return Bridge.dispenser({
       "method": "add",
       "params": {
@@ -19,10 +19,14 @@ class CartBridge {
         "arguments": {
           "method": "add",
           "data": {
-            "skuId": sku.skuId,
-            "amount": sku.amount,
-            "price": sku.price,
-            "freight": sku.freight
+            "productId": productId,
+            "skuId": skuId,
+            "amount": amount,
+            "price": price,
+            "freight": freight,
+            "norms": norms,
+            "name":name,
+            "img":url,
           }
         }
       }
@@ -46,19 +50,60 @@ class CartBridge {
     });
   }
 
+  static getcarts(){
+    return json.encode( {
+      "code": 200,
+      "msg": null,
+      "data": [{
+        "totalCounts": 10,
+        " totalMoney": 1000.12,
+        "products": [{
+          "skuId": 2001213,
+          "amount": 2,
+          "price": 37.33,
+          "freight": 0,
+          "name":"test",
+          "img":"图片地址",
+        },{
+          "skuId": 2001213,
+          "amount": 2,
+          "price": 37.33,
+          "freight": 0,
+          "name":"test",
+          "img":"图片地址",
+        },{
+          "skuId": 2001213,
+          "amount": 2,
+          "price": 37.33,
+          "freight": 0,
+          "name":"test",
+          "img":"图片地址",
+        },{
+          "skuId": 2001213,
+          "amount": 2,
+          "price": 37.33,
+          "freight": 0,
+          "name":"test",
+          "img":"图片地址",
+        }]
+      }]});
+  }
+
   /*
    *
    *获取购物车信息
    */
-  static Future<Result> findCart()  {
-    return Bridge.dispenser({
-      "method": "findCart",
-      "params": {
-        "action": component,
-        "arguments": {
-          "method": "findCart",
-        }
-      }
-    });
+  static Future<Result> findCart() async{
+    return await getcarts();
+
+//    return Bridge.dispenser({
+//      "method": "findCart",
+//      "params": {
+//        "action": component,
+//        "arguments": {
+//          "method": "findCart",
+//        }
+//      }
+//    });
   }
 }

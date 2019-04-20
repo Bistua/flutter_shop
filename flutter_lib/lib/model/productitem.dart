@@ -42,7 +42,7 @@ part 'productitem.g.dart';
 
 class ProductItem {
   int id;
-  int skuId;
+  String skuId;
   String name;
   String description;
   String metaTitle;

@@ -9,7 +9,7 @@ part of 'productitem.dart';
 ProductItem _$ProductItemFromJson(Map<String, dynamic> json) {
   return ProductItem(
       id: json['id'] as int,
-      skuId: json['skuId'] as int,
+      skuId: json['skuId'] as String,
       name: json['name'] as String,
       description: json['description'] as String,
       metaTitle: json['metaTitle'] as String,

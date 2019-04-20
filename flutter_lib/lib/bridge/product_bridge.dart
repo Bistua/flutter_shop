@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/logic/viewmodel/product_view_model.dart';
 import 'package:flutter_lib/model/Result.dart';
-import 'package:flutter_lib/model/sku.dart';
 
 class ProductBridge {
   static const String component = "product";
@@ -60,22 +59,22 @@ class ProductBridge {
 //    });
   }
 
-  /*
-   *
-   *创建订单
-   */
-  static Future<Result> newOrder(List<Sku> sku)  {
-    return Bridge.dispenser({
-      "method": "newOrder",
-      "params": {
-        "action": component,
-        "arguments": {
-          "method": "newOrder",
-          "data": {"type": json.encode(sku)}
-        }
-      }
-    });
-  }
+//  /*
+//   *
+//   *创建订单
+//   */
+//  static Future<Result> newOrder()  {
+//    return Bridge.dispenser({
+//      "method": "newOrder",
+//      "params": {
+//        "action": component,
+//        "arguments": {
+//          "method": "newOrder",
+//          "data": {"type": json.encode(sku)}
+//        }
+//      }
+//    });
+//  }
 
   static Future<Result> getProduct(int productId) async {
     String data = await distest();

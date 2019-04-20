@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lib/bridge/cart_bridge.dart';
+import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/logic/bloc/product_bloc.dart';
 import 'package:flutter_lib/logic/viewmodel/comment_view_model.dart';
+import 'package:flutter_lib/model/Result.dart';
+import 'package:flutter_lib/model/cart.dart';
 import 'package:flutter_lib/model/comment.dart';
 import 'package:flutter_lib/model/productitem.dart';
 import 'package:flutter_lib/ui/page/order/shop_order.dart';
@@ -28,6 +32,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
   ShopDetailPageState(int productId) {
     this.productId = productId;
   }
+
   @override
   void initState() {
     super.initState();
@@ -39,7 +44,6 @@ class ShopDetailPageState extends State<ShopDetailPage>
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
-
 
   @override
   Future<bool> didPopRoute() {
@@ -138,8 +142,10 @@ class ShopDetailPageState extends State<ShopDetailPage>
                     onPressed: () {},
                   ),
                 ),
-                UIData.getShapeButton(UIData.fffa4848, UIData.fff, 125, 50,
-                    "加入购物车", 16, 0, () {}),
+                UIData.getShapeButton(
+                    UIData.fffa4848, UIData.fff, 125, 50, "加入购物车", 16, 0, () {
+                  add2Cart(product);
+                }),
                 UIData.getShapeButton(
                     UIData.ffffa517, UIData.fff, 110, 50, "立即购买", 16, 0, () {
                   Navigator.push(
@@ -709,12 +715,29 @@ class ShopDetailPageState extends State<ShopDetailPage>
                         "加入购物车",
                         18,
                         5,
-                        () {},
+                        () {
+                          add2Cart(product);
+                        },
                       )
                     ],
                   ),
                 ),
               ),
             ));
+  }
+
+  void add2Cart(ProductItem product) {
+    Future<Result> future = CartBridge.addSku(
+        productId, product.skuId, chooseCount, product.price, 0, "规格");
+    future.then((result) {
+      if (result.code == 200) {
+        Cart categoryList = Cart.fromJson(result.data);
+        setState(() {
+          cartCount = categoryList.totalCounts;
+        });
+      } else {
+        Bridge.showLongToast(result.msg);
+      }
+    });
   }
 }
