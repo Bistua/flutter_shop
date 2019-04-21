@@ -8,11 +8,15 @@ import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.alibaba.fastjson.JSON;
 import com.bristua.flutter.ftshop.plugin.PluginDelegate;
 import com.bristua.flutter.ftshop.plugin.PluginProvider;
+import com.bristua.flutter.ftshop.wxapi.WXCode;
 import com.bristua.framework.define.IFlutterResult;
 import com.bristua.framework.router.BRouter;
+import com.bristua.ft.component.CategoryConstant;
 import com.bristua.ft.component.userlogin.UserLoginConstant;
+import com.bristua.ft.protocol.Protocol;
 
 import io.flutter.facade.Flutter;
 import io.flutter.view.FlutterView;
@@ -42,7 +46,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void testLogin(){
         try {
-            BRouter.getInstance().build(UserLoginConstant.USER_LOGIN_MODULE).setProtocol("hello").setResult(new IFlutterResult() {
+            Protocol protocol = new Protocol();
+            WXCode wxCode = new WXCode();
+            wxCode.setCode("12312313");
+            protocol.setData(wxCode);
+            protocol.setMethod(CategoryConstant.CATEGORY_TYPE_ROOT);
+            String json = JSON.toJSONString(protocol);
+            BRouter.getInstance().build(CategoryConstant.CATEGORY_MODULE).setProtocol(json).setResult(new IFlutterResult() {
                 @Override
                 public void success(@Nullable String pResult, int pErrorCode, @Nullable String pMessage) {
 
