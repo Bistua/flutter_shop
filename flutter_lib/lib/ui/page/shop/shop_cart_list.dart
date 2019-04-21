@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_lib/bridge/cart_bridge.dart';
 import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/logic/bloc/cart_bloc.dart';
-import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/cart.dart';
 import 'package:flutter_lib/ui/page/order/shop_order.dart';
 import 'package:flutter_lib/utils/uidata.dart';
@@ -100,25 +98,6 @@ class _ShopCartListState extends State<ShopCartListPage> {
               height: 50,
               child: Row(
                 children: <Widget>[
-//                  Row(
-//                    children: <Widget>[
-//                      Checkbox(
-//                        activeColor: UIData.fffa4848,
-//                        value: ShopCartManager.instance.isAllChecked(),
-//                        onChanged: (bool value) {
-//                          setState(() {
-//                            ShopCartManager.instance.products.forEach((f) {
-//                              f.isChecked = value;
-//                            });
-//                          });
-//                        },
-//                      ),
-//                      Text(
-//                        "全选",
-//                        style: TextStyle(color: UIData.ff353535, fontSize: 15),
-//                      ),
-//                    ],
-//                  ),
                   Expanded(
                     child: Center(
                       child: Row(

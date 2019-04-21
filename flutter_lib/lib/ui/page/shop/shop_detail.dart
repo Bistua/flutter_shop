@@ -10,8 +10,6 @@ import 'package:flutter_lib/model/productitem.dart';
 import 'package:flutter_lib/ui/page/order/shop_order.dart';
 import 'package:flutter_lib/ui/widgets/rating_bar.dart';
 import 'package:flutter_lib/utils/uidata.dart';
-import 'package:flutter_lib/ui/page/shop/shop_cart_list.dart';
-import 'dart:convert';
 
 class ShopDetailPage extends StatefulWidget {
   int productId;
@@ -25,56 +23,57 @@ class ShopDetailPage extends StatefulWidget {
 }
 
 class ShopDetailPageState extends State<ShopDetailPage>
-    with WidgetsBindingObserver {
-  int productId;
+   {
+//     with WidgetsBindingObserver
+     int productId;
   ProductBloc productBloc = ProductBloc();
 
   ShopDetailPageState(int productId) {
     this.productId = productId;
   }
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  Future<bool> didPopRoute() {
-    print("didPopRoute");
-    setState(() {
-
-    });
-    return super.didPopRoute();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    print("didChangeAppLifecycleState");
-    setState(() {
-      switch (state) {
-        case AppLifecycleState.inactive:
-        case AppLifecycleState.paused:
-        case AppLifecycleState.suspending:
-          break;
-        case AppLifecycleState.resumed:
-          print("1resumed");
-
-          break;
-      }
-    });
-  }
+//
+//  @override
+//  void initState() {
+//    super.initState();
+//    WidgetsBinding.instance.addObserver(this);
+//  }
+//
+//  @override
+//  void dispose() {
+//    WidgetsBinding.instance.removeObserver(this);
+//    super.dispose();
+//  }
+//
+//  @override
+//  Future<bool> didPopRoute() {
+//    print("didPopRoute");
+//    setState(() {
+//
+//    });
+//    return super.didPopRoute();
+//  }
+//
+//  @override
+//  void didChangeAppLifecycleState(AppLifecycleState state) {
+//    print("didChangeAppLifecycleState");
+//    setState(() {
+//      switch (state) {
+//        case AppLifecycleState.inactive:
+//        case AppLifecycleState.paused:
+//        case AppLifecycleState.suspending:
+//          break;
+//        case AppLifecycleState.resumed:
+//          print("1resumed");
+//
+//          break;
+//      }
+//    });
+//  }
 
   @override
   Widget build(BuildContext context) {
     productBloc.getProduct(productId);
-    print("build");
+    print("shopdetail build");
     return new Scaffold(
       appBar: UIData.getCenterTitleAppBar("商品名称", context),
       body: bodyData(),

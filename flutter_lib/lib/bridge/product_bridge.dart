@@ -24,7 +24,7 @@ class ProductBridge {
 //        "action": component,
 //        "arguments": {
 //          "method": "getProducts",
-//          "data": {"type": type,"orderBy":orderBy}
+//          "data": {"categoryId": categoryId,"orderBy":orderBy}
 //        }
 //      }
 //    });
@@ -53,28 +53,11 @@ class ProductBridge {
 //        "action": component,
 //        "arguments": {
 //          "method": "queryProduct",
-//          "data": {"query": type,"orderBy":orderBy}
+//          "data": {"query": query,"orderBy":orderBy}
 //        }
 //      }
 //    });
   }
-
-//  /*
-//   *
-//   *创建订单
-//   */
-//  static Future<Result> newOrder()  {
-//    return Bridge.dispenser({
-//      "method": "newOrder",
-//      "params": {
-//        "action": component,
-//        "arguments": {
-//          "method": "newOrder",
-//          "data": {"type": json.encode(sku)}
-//        }
-//      }
-//    });
-//  }
 
   static Future<Result> getProduct(int productId) async {
     String data = await distest();

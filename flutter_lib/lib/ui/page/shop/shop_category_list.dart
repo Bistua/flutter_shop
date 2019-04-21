@@ -62,6 +62,7 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
   }
 
   Widget bodyData() {
+    print("shop category build");
     categoryBloc.getCategories();
     return StreamBuilder<List<Category>>(
         stream: categoryBloc.categoryItems,
