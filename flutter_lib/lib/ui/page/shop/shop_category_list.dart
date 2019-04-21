@@ -79,17 +79,14 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
 
   Widget empty() {
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32.0),
-        child: GestureDetector(
-          child: Padding(
-            padding: const EdgeInsets.all(32.0),
-            child: Text("无数据,点击重试"),
-          ),
-          onTap: () {
-            categoryBloc.getCategories();
-          },
+      child: GestureDetector(
+        child: Padding(
+          padding: const EdgeInsets.all(32.0),
+          child: Text("无数据,点击重试"),
         ),
+        onTap: () {
+          categoryBloc.getCategories();
+        },
       ),
     );
   }
@@ -173,7 +170,7 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
         stream: categoryBloc.suCategoryItems,
         builder: (context, snapshot) {
           return snapshot.hasData
-              ? (snapshot.data.isEmpty ? empty() : sliverGrid(snapshot.data))
+              ? (snapshot.data.isEmpty ? emptySub() : sliverGrid(snapshot.data))
               : SliverList(
                   delegate: SliverChildListDelegate(
                     [
@@ -182,6 +179,26 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
                   ),
                 );
         });
+  }
+
+  Widget emptySub() {
+    return SliverList(
+      delegate: SliverChildListDelegate(
+        [
+          Center(
+            child: GestureDetector(
+              child: Padding(
+                padding: const EdgeInsets.all(32.0),
+                child: Text("无子分类数据,点击重试"),
+              ),
+              onTap: () {
+                categoryBloc.getSubCategories(categoryId);
+              },
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   SliverGrid sliverGrid(List<Category> data) {

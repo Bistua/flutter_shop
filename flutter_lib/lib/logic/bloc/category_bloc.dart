@@ -30,7 +30,7 @@ class CategoryBloc {
         categoryViewModel.categorysItems = categoryList.list;
         categoryController.add(categoryViewModel.categorysItems);
       } else {
-        Bridge.showLongToast(result.msg);
+        Bridge.showLongToast(result.msg==null?"未返回错误信息":result.msg);
         categoryController.add(List());
       }
     });
@@ -42,8 +42,8 @@ class CategoryBloc {
         CategoryList subCategoryList = CategoryList.fromJson(result.data);
         subCategoryController.add(subCategoryList.list);
       } else {
-        Bridge.showLongToast(result.msg);
-        categoryController.add(List());
+        Bridge.showLongToast(result.msg==null?"未返回错误信息":result.msg);
+        subCategoryController.add(List());
       }
     });
   }

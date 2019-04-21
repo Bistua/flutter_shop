@@ -14,35 +14,42 @@ class Bridge {
     print(params);
     String data = await _bridgePlatform.invokeMethod(method, params);
     if (data != null) {
-      print("bridge result:"+data);
+      print("bridge result:" + data);
       return Result.fromJson(data);
     }
     return Result.fromJson(json.encode({"code": -1, "msg": "无结果"}));
   }
 
   static Future<Result> showShortToast(String message) {
+    message = "" + message;
     message = message.replaceAll(" ", "");
     return dispenser({
       "method": "showShortToast",
-      "params": {
+      "params": json.encode({
         "message": message,
-      },
+      }),
     });
   }
 
   static void showLongToast(String message) {
+    message = "" + message;
     message = message.replaceAll(" ", "");
     dispenser({
       "method": "showLongToast",
-      "params": {"action": "toast", "message": message}
+      "params": json.encode({
+        "message": message,
+      }),
     });
   }
 
   static void showToast(String message, int duration) {
+    message = "" + message;
     message = message.replaceAll(" ", "");
     dispenser({
       "method": "showToast",
-      "params": {"action": "toast", "message": message, "duration": duration}
+      "params": json.encode({
+        "message": message,
+      }),
     });
   }
 
