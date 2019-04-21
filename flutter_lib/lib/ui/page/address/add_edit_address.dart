@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_lib/bridge/address_bridge.dart';
+import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/logic/viewmodel/deliver_address_manager.dart';
 import 'package:flutter_lib/logic/viewmodel/shop_cart_manager.dart';
+import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/address.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class AddAddressListPage extends StatefulWidget {
   Address address;
+
   AddAddressListPage(this.address) {}
 
   @override
@@ -17,6 +21,7 @@ class AddAddressListPage extends StatefulWidget {
 
 class _AddAddressListState extends State<AddAddressListPage> {
   Address address;
+
   _AddAddressListState(Address address);
 
   double get deliverPrice => 10;
@@ -51,6 +56,7 @@ class _AddAddressListState extends State<AddAddressListPage> {
   TextEditingController addressEditingController = new TextEditingController();
 
   bool isDefalut = false;
+
   Widget buildBody() {
     if (address != null) {
       nameEditingController.text = address.name;
@@ -62,7 +68,6 @@ class _AddAddressListState extends State<AddAddressListPage> {
     return Padding(
       padding: EdgeInsets.only(top: 10),
       child: Container(
-
         child: new Column(
           children: <Widget>[
             buildInput(nameEditingController, "请输入收货人姓名"),
@@ -93,26 +98,42 @@ class _AddAddressListState extends State<AddAddressListPage> {
               height: 50,
               child: UIData.getShapeButton(
                   UIData.fffa4848, UIData.fff, 345, 45, "保存", 18, 5, () {
-                setState(() {
-                  if (address == null) {
-                    address = new Address(
-                        name: nameEditingController.text,
-                        phone: phoneEditingController.text,
-                        area: areaEditingController.text,
-                        address: addressEditingController.text);
-                  } else {
-                    address.name = nameEditingController.text;
-                    address.phone = phoneEditingController.text;
-                    address.area = areaEditingController.text;
-                    address.address = addressEditingController.text;
-                  }
+                if (address == null) {
+                  address = new Address(
+                      name: nameEditingController.text,
+                      phone: phoneEditingController.text,
+                      area: areaEditingController.text,
+                      address: addressEditingController.text);
+                } else {
+                  address.name = nameEditingController.text;
+                  address.phone = phoneEditingController.text;
+                  address.area = areaEditingController.text;
+                  address.address = addressEditingController.text;
+                }
 
-                  if (this.isDefalut) {
-                    address.isDefault = true;
-                  }
-                  AddressManager.instance.addAddress(address);
-                });
-                Navigator.of(context).pop();
+                if (this.isDefalut) {
+                  address.isDefault = true;
+                }
+                goToAdd(context, address);
+//                setState(() {
+//                  if (address == null) {
+//                    address = new Address(
+//                        name: nameEditingController.text,
+//                        phone: phoneEditingController.text,
+//                        area: areaEditingController.text,
+//                        address: addressEditingController.text);
+//                  } else {
+//                    address.name = nameEditingController.text;
+//                    address.phone = phoneEditingController.text;
+//                    address.area = areaEditingController.text;
+//                    address.address = addressEditingController.text;
+//                  }
+//
+//                  if (this.isDefalut) {
+//                    address.isDefault = true;
+//                  }
+//                  //AddressManager.instance.addAddress(address);
+//                });
               }),
             )
           ],
@@ -123,7 +144,6 @@ class _AddAddressListState extends State<AddAddressListPage> {
 
   Widget buildInput(TextEditingController textController, String hinttxt) {
     return Padding(
-
       padding: EdgeInsets.fromLTRB(15, 0, 15, 1),
       child: Container(
         height: 48,
@@ -165,5 +185,20 @@ class _AddAddressListState extends State<AddAddressListPage> {
         ),
       ),
     );
+  }
+
+  goToAdd(BuildContext context, Address address) async {
+    Future<Result> future = AddressBridge.addAddress(
+        address.phone,
+        address.name,
+        address.area + address.address,
+        address.isDefault ? 1 : 0);
+    future.then((v) {
+      if (v.code == 200) {
+        Navigator.pop(context, false);
+      } else {
+        Bridge.showShortToast(v.msg);
+      }
+    });
   }
 }
