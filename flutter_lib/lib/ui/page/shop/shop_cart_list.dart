@@ -181,12 +181,8 @@ class _ShopCartListState extends State<ShopCartListPage> {
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.fromLTRB(14, 0, 12, 0),
-                    child: Image.network(
-                      products[index].sku.img,
-                      fit: BoxFit.cover,
-                      width: 88,
-                      height: 88,
-                    ),
+                    child:
+                    UIData.getImageWithWHFit(products[index].sku.img,BoxFit.cover, 88, 88),
                   ),
                   Expanded(
                     child: Column(

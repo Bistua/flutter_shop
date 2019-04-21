@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 class UIData {
   //routes
 
-
   static const String Login = "/Login";
   static const String homeRoute = "/home";
   static const String notFoundRoute = "/No Search Result";
@@ -94,8 +93,7 @@ class UIData {
   static const Color ff666666 = Color(0xff666666);
   static const Color fff7f7f7 = Color(0xfff7f7f7);
 
-  static const  Color ff33333 = Color(0xff333333);
-
+  static const Color ff33333 = Color(0xff333333);
 
   static const Icon back = Icon(Icons.arrow_back_ios, color: UIData.ff353535);
   static const Icon back_white = Icon(Icons.arrow_back_ios, color: UIData.fff);
@@ -115,8 +113,6 @@ class UIData {
 
   //randomcolor
   static final Random _random = new Random();
-
-
 
   static Text getTextWidget(String text, Color color, double fontSize) {
     return Text(text, style: TextStyle(fontSize: fontSize, color: color));
@@ -141,7 +137,8 @@ class UIData {
     );
   }
 
-  static AppBar getCenterTitleAppBarWithColor(String title,Color color, BuildContext context) {
+  static AppBar getCenterTitleAppBarWithColor(
+      String title, Color color, BuildContext context) {
     return new AppBar(
       backgroundColor: color,
       centerTitle: true,
@@ -153,8 +150,7 @@ class UIData {
     );
   }
 
-
-  static Widget getNoShapeButton(double w,double h,Color color,String text) {
+  static Widget getNoShapeButton(double w, double h, Color color, String text) {
     return new Center(
       child: Container(
         alignment: Alignment.center,
@@ -177,14 +173,14 @@ class UIData {
     );
   }
 
-  static Widget getNoElevationShapeButton(Color shapeColor,
+  static Widget getNoElevationShapeButton(
+      Color shapeColor,
       Color textColor,
-
       String text,
       double fontSize,
       double radius,
       double elevation,
-      VoidCallback onPressed){
+      VoidCallback onPressed) {
     if (radius == 0) {
       return new Center(
         child: RaisedButton(
@@ -194,7 +190,6 @@ class UIData {
           highlightElevation: elevation,
           disabledElevation: elevation,
           child: new Container(
-
             child: Center(
               child: UIData.getTextWidget(text, textColor, fontSize),
             ),
@@ -211,7 +206,6 @@ class UIData {
           highlightElevation: elevation,
           disabledElevation: elevation,
           child: new Container(
-
             child: Center(
               child: UIData.getTextWidget(text, textColor, fontSize),
             ),
@@ -273,7 +267,8 @@ class UIData {
     }
   }
 
-  static Widget getMaxWidthButtonWithRadius(String text,double radius, VoidCallback onPressed) {
+  static Widget getMaxWidthButtonWithRadius(
+      String text, double radius, VoidCallback onPressed) {
     return getShapeButton(
         UIData.fffa4848, UIData.fff, 315, 50, text, 18, radius, onPressed);
   }
@@ -305,6 +300,49 @@ class UIData {
 
   //验证手机号
   static bool isPhone(String str) {
-    return new RegExp('^((13[0-9])|(15[^4])|(166)|(17[0-8])|(18[0-9])|(19[8-9])|(147,145))\\d{8}\$').hasMatch(str);
+    return new RegExp(
+            '^((13[0-9])|(15[^4])|(166)|(17[0-8])|(18[0-9])|(19[8-9])|(147,145))\\d{8}\$')
+        .hasMatch(str);
   }
+
+  static Widget getImage(String image) {
+    if (image == null || !image.startsWith("http")) {
+      return Image.asset("images/shop_type_hat.png");
+    } else {
+      return FadeInImage.assetNetwork(
+        placeholder: 'assets/images/shop_type_hat.png',
+        fit: BoxFit.contain,
+        image: image,
+      );
+    }
+  }
+
+  static Widget getImageWithWH(String image,double w,double h) {
+    if (image == null || !image.startsWith("http")) {
+      return Image.asset("images/shop_type_hat.png",width: w,height: h,);
+    } else {
+      return FadeInImage.assetNetwork(
+        placeholder: 'assets/images/shop_type_hat.png',
+        fit: BoxFit.contain,
+        image: image,
+        width: w,
+        height: h,
+      );
+    }
+  }
+
+  static Widget getImageWithWHFit(String image,BoxFit fit,double w,double h) {
+    if (image == null || !image.startsWith("http")) {
+      return Image.asset("images/shop_type_hat.png",width: w,height: h,);
+    } else {
+      return FadeInImage.assetNetwork(
+        placeholder: 'assets/images/shop_type_hat.png',
+        fit: fit,
+        image: image,
+        width: w,
+        height: h,
+      );
+    }
+  }
+
 }

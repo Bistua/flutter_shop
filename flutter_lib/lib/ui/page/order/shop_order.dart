@@ -246,11 +246,11 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.fromLTRB(16, 15, 0, 16),
-                child: Image.network(
+                child: UIData.getImageWithWHFit(
                   ShopCartManager.instance.getCheckedProducts()[index].image,
-                  fit: BoxFit.cover,
-                  width: 88,
-                  height: 88,
+                  BoxFit.cover,
+                88,
+                  88,
                 ),
               ),
               Expanded(

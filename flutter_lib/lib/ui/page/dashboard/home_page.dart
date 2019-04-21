@@ -51,19 +51,19 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Model> data = [
     new Model(
         imgUrl:
-        'https://img1.360buyimg.com/da/jfs/t1/26933/21/15251/101018/5cae9e2fEb2d18145/ce92ccee53fc3e62.jpg'),
+            'https://img1.360buyimg.com/da/jfs/t1/26933/21/15251/101018/5cae9e2fEb2d18145/ce92ccee53fc3e62.jpg'),
     new Model(
         imgUrl:
-        'https://img1.360buyimg.com/pop/jfs/t1/33615/26/2942/67787/5cb2db16E190d1438/f87d36b439a01bb4.jpg'),
+            'https://img1.360buyimg.com/pop/jfs/t1/33615/26/2942/67787/5cb2db16E190d1438/f87d36b439a01bb4.jpg'),
     new Model(
         imgUrl:
-        'https://m.360buyimg.com/babel/jfs/t1/32943/39/11194/86395/5cb44a60Eacbc1baf/d15986655530b38a.jpg'),
+            'https://m.360buyimg.com/babel/jfs/t1/32943/39/11194/86395/5cb44a60Eacbc1baf/d15986655530b38a.jpg'),
     new Model(
         imgUrl:
-        'https://m.360buyimg.com/babel/jfs/t1/35770/34/1817/46457/5cb43c53E9c28780e/b05442df5d5ba2c3.jpg'),
+            'https://m.360buyimg.com/babel/jfs/t1/35770/34/1817/46457/5cb43c53E9c28780e/b05442df5d5ba2c3.jpg'),
     new Model(
         imgUrl:
-        'https://m.360buyimg.com/babel/jfs/t1/25888/33/15004/99699/5caca583E85bc0c4b/0144e355305c5946.jpg'),
+            'https://m.360buyimg.com/babel/jfs/t1/25888/33/15004/99699/5caca583E85bc0c4b/0144e355305c5946.jpg'),
   ];
 
   final List<Product> discountList = ProductViewModel().getDiscountList();
@@ -81,8 +81,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {}
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
           childAspectRatio: 1.88,
         ),
         delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
+          (BuildContext context, int index) {
             return Container(
               color: Colors.white,
               child: buildDiscountItem(index, discountList[index]),
@@ -165,7 +163,7 @@ class _MyHomePageState extends State<MyHomePage> {
           childAspectRatio: 0.74,
         ),
         delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
+          (BuildContext context, int index) {
             return Container(
               color: Color(0xFFF6F6F6),
               child: buildHotShopItem(index, hotShopList[index]),
@@ -236,7 +234,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     decoration: BoxDecoration(
                       border: Border.all(color: Color(0xFFF5F5F5), width: 15.0),
                       borderRadius:
-                      new BorderRadius.all(new Radius.circular(15.0)),
+                          new BorderRadius.all(new Radius.circular(15.0)),
                     ),
                   ),
                   Container(
@@ -317,7 +315,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Expanded(
                 child:
-                buildTypeChild(3, "家具家装", "images/shop_type_furniture.png"),
+                    buildTypeChild(3, "家具家装", "images/shop_type_furniture.png"),
               ),
               Expanded(
                 child: buildTypeChild(4, "生活服务", "images/shop_type_life.png"),
@@ -337,7 +335,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Expanded(
                 child:
-                buildTypeChild(8, "教育培训", "images/shop_type_education.png"),
+                    buildTypeChild(8, "教育培训", "images/shop_type_education.png"),
               ),
               Expanded(
                 child: buildTypeChild(
@@ -355,7 +353,7 @@ class _MyHomePageState extends State<MyHomePage> {
       padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
       color: Color(0xFFF6F6F6),
       child: InkWell(
-        child: Image.network(imageUrl, height: 100.0, fit: BoxFit.cover),
+        child: UIData.getImageWithWHFit(imageUrl, BoxFit.cover, 100, 100),
         onTap: () {},
       ),
     );
@@ -416,49 +414,50 @@ class _MyHomePageState extends State<MyHomePage> {
   Container buildTypeChild(int type, String typeName, String typeImg) {
     return Container(
         child: InkWell(
-          child: Column(
-            children: <Widget>[
-              Image.asset(
-                typeImg,
-                width: 43.0,
-                height: 43.0,
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 16.0),
-                child: Text(
-                  typeName,
-                  style: TextStyle(color: Color(0xFF666666), fontSize: 11),
-                ),
-              ),
-            ],
+      child: Column(
+        children: <Widget>[
+          Image.asset(
+            typeImg,
+            width: 43.0,
+            height: 43.0,
           ),
-          //每一个类别点击事件
-          onTap: () {
-            switch (type) {
-              case 0:
-                break;
-              case 1:
-                break;
-              case 2:
-                break;
-              case 3:
-                break;
-              case 4:
-                break;
-              case 5:
-                break;
-              case 6:
-                break;
-              case 7:
-                break;
-              case 8:
-                break;
-              case 9:
-              Navigator.pushNamed(context, UIData.ShopCategoryList,arguments: "全部分类");
-                break;
-            }
-          },
-        ));
+          Padding(
+            padding: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 16.0),
+            child: Text(
+              typeName,
+              style: TextStyle(color: Color(0xFF666666), fontSize: 11),
+            ),
+          ),
+        ],
+      ),
+      //每一个类别点击事件
+      onTap: () {
+        switch (type) {
+          case 0:
+            break;
+          case 1:
+            break;
+          case 2:
+            break;
+          case 3:
+            break;
+          case 4:
+            break;
+          case 5:
+            break;
+          case 6:
+            break;
+          case 7:
+            break;
+          case 8:
+            break;
+          case 9:
+            Navigator.pushNamed(context, UIData.ShopCategoryList,
+                arguments: "全部分类");
+            break;
+        }
+      },
+    ));
   }
 
   Container buildDiscountItem(int index, Product product) {
@@ -499,11 +498,11 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(3.0, 12.0, 6.0, 0.0),
-              child: Image.network(
+              child: UIData.getImageWithWHFit(
                 product.image,
-                fit: BoxFit.cover,
-                height: 75.0,
-                width: 75.0,
+                BoxFit.cover,
+                75.0,
+                75.0,
               ),
             ),
 //            index % 2 == 0
@@ -529,40 +528,40 @@ class _MyHomePageState extends State<MyHomePage> {
         children: <Widget>[
           Expanded(
               child: Stack(
-                children: <Widget>[
-                  Image.network(
-                    leftImage,
-                    width: double.infinity,
-                    height: 130.0,
-                    fit: BoxFit.cover,
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    width: 80.0,
-                    height: 25.0,
-                    child: Text(
-                      "必买清单",
-                      style: TextStyle(color: Colors.white, fontSize: 12),
-                    ),
-                    decoration: new BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(15.0),
-                            bottomRight: Radius.circular(15.0)),
-                        gradient: RadialGradient(
-                            colors: [Color(0xFF2CB4B9), Color(0xFF82E6D0)],
-                            radius: 12.5,
-                            tileMode: TileMode.mirror)),
-                  ),
-                ],
-              )),
+            children: <Widget>[
+              UIData.getImageWithWHFit(
+                leftImage,
+                BoxFit.cover,
+                double.infinity,
+                130.0,
+              ),
+              Container(
+                alignment: Alignment.center,
+                width: 80.0,
+                height: 25.0,
+                child: Text(
+                  "必买清单",
+                  style: TextStyle(color: Colors.white, fontSize: 12),
+                ),
+                decoration: new BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(15.0),
+                        bottomRight: Radius.circular(15.0)),
+                    gradient: RadialGradient(
+                        colors: [Color(0xFF2CB4B9), Color(0xFF82E6D0)],
+                        radius: 12.5,
+                        tileMode: TileMode.mirror)),
+              ),
+            ],
+          )),
           Container(
             color: Colors.white,
             padding: EdgeInsets.fromLTRB(2.0, 0.0, 0.0, 0.0),
-            child: Image.network(
+            child: UIData.getImageWithWHFit(
               rightImage,
-              fit: BoxFit.cover,
-              width: 166.0,
-              height: 130.0,
+               BoxFit.cover,
+            166.0,
+               130.0,
             ),
           ),
         ],
@@ -661,20 +660,20 @@ class _MyHomePageState extends State<MyHomePage> {
           padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
           child: Row(
             children: <Widget>[
-              Image.network(
+              UIData.getImageWithWHFit(
                 "https://img13.360buyimg.com/mobilecms/s140x140_jfs/t1/5542/25/10695/184499/5bcc0adcE903a8a97/c43423eedf3039cf.jpg!q90.webp",
-                fit: BoxFit.cover,
-                height: 70.0,
-                width: 70.0,
+                 BoxFit.cover,
+                70.0,
+                70.0,
               ),
               Expanded(
                 child: Container(),
               ),
-              Image.network(
+              UIData.getImageWithWHFit(
                 "https://img12.360buyimg.com/mobilecms/s140x140_jfs/t28132/336/144040487/125605/531bc317/5be9427dN7a38cc7f.jpg!q90.webp",
-                fit: BoxFit.cover,
-                height: 70.0,
-                width: 70.0,
+                 BoxFit.cover,
+              70.0,
+                70.0,
               ),
             ],
           ),
@@ -712,20 +711,20 @@ class _MyHomePageState extends State<MyHomePage> {
           padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
           child: Row(
             children: <Widget>[
-              Image.network(
+              UIData.getImageWithWHFit(
                 "https://img11.360buyimg.com/mobilecms/s140x140_jfs/t1/36973/38/1895/117319/5cb453e9E93fc31a1/6edd54fcfd32ce9c.png!q90.webp",
-                fit: BoxFit.cover,
-                height: 70.0,
-                width: 70.0,
+              BoxFit.cover,
+                70.0,
+              70.0,
               ),
               Expanded(
                 child: Container(),
               ),
-              Image.network(
+              UIData.getImageWithWHFit(
                 "https://img11.360buyimg.com/mobilecms/s140x140_jfs/t1/9339/14/3383/296696/5bd69f43E5078db49/40af3283649c059e.jpg!q90.webp",
-                fit: BoxFit.cover,
-                height: 70.0,
-                width: 70.0,
+               BoxFit.cover,
+               70.0,
+                70.0,
               ),
             ],
           ),
@@ -763,11 +762,11 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           Container(
             alignment: Alignment.center,
-            child: Image.network(
+            child: UIData.getImageWithWHFit(
               imageUrl,
-              fit: BoxFit.cover,
-              height: 70.0,
-              width: 70.0,
+             BoxFit.cover,
+               70.0,
+             70.0,
             ),
           ),
         ],
@@ -831,7 +830,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         product.name,
                         maxLines: 1,
                         style:
-                        TextStyle(color: Color(0xFF353535), fontSize: 12.0),
+                            TextStyle(color: Color(0xFF353535), fontSize: 12.0),
                       ),
                     ),
                     Padding(
@@ -839,7 +838,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: Text(
                         product.price,
                         style:
-                        TextStyle(color: Color(0xFFFA4848), fontSize: 16.0),
+                            TextStyle(color: Color(0xFFFA4848), fontSize: 16.0),
                       ),
                     ),
                   ],

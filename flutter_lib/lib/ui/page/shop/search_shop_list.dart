@@ -38,13 +38,19 @@ class SearchShopListState extends State<SearchShopListPage> {
     );
   }
 
+  var chips = [];
+
   Widget bodyData() {
     print(productBloc.productItems);
     return StreamBuilder<List<ProductItem>>(
         stream: productBloc.productItems,
         builder: (context, snapshot) {
           if (showHistory) {
-            return buildWrapChips();
+            if (chips.isEmpty) {
+              return empty();
+            } else {
+              return buildWrapChips();
+            }
           } else {
             return snapshot.hasData
                 ? productGrid(snapshot.data)
@@ -53,7 +59,20 @@ class SearchShopListState extends State<SearchShopListPage> {
         });
   }
 
-  var chips = ["213", "dsadasd", "dart", "flutter"];
+  Widget empty() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: GestureDetector(
+          child: Padding(
+            padding: const EdgeInsets.all(32.0),
+            child: Text("热门搜索,可以补充任何东西?"),
+          ),
+          onTap: () {},
+        ),
+      ),
+    );
+  }
 
   Column buildWrapChips() {
     return Column(
@@ -68,12 +87,19 @@ class SearchShopListState extends State<SearchShopListPage> {
                 style: TextStyle(fontSize: 12, color: UIData.ff353535),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16.0, 16, 16, 11),
-              child: Text(
-                "清空搜索记录",
-                style: TextStyle(fontSize: 12, color: UIData.ff999999),
+            GestureDetector(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16.0, 16, 16, 11),
+                child: Text(
+                  "清空搜索记录",
+                  style: TextStyle(fontSize: 12, color: UIData.ff999999),
+                ),
               ),
+              onTap: () {
+                setState(() {
+                  chips.clear();
+                });
+              },
             ),
           ],
         ),
@@ -84,12 +110,16 @@ class SearchShopListState extends State<SearchShopListPage> {
                 padding: const EdgeInsets.fromLTRB(16, 5, 10, 5),
                 child: Chip(
                   backgroundColor: UIData.fff6f6f6,
-                  label: Text(chip,  style: TextStyle(fontSize: 12, color: UIData.ff666666),),
+                  label: Text(
+                    chip,
+                    style: TextStyle(fontSize: 12, color: UIData.ff666666),
+                  ),
                 ),
               ),
-              onTap: (){
+              onTap: () {
                 setState(() {
                   _searchQuery.text = chip;
+                  chips.add(_searchQuery.text);
                   _doSearch();
                 });
               },
@@ -124,9 +154,8 @@ class SearchShopListState extends State<SearchShopListPage> {
                     children: <Widget>[
                       new Stack(
                         children: <Widget>[
-                          Image.network(
+                          UIData.getImage(
                             prodcutItem.medias.alt1.url,
-                            fit: BoxFit.cover,
                           ),
                           Positioned(
                               bottom: 0,
@@ -214,40 +243,54 @@ class SearchShopListState extends State<SearchShopListPage> {
         ),
       ),
       onTap: () {
+        chips.add(_searchQuery.text);
         _doSearch();
       },
     );
   }
 
   Widget buildTextField() {
-    return new Container(
-      alignment: Alignment.centerLeft,
-      height: 28,
-      child: new Center(
-        child: new TextField(
-          textAlign: TextAlign.start,
-          controller: _searchQuery,
-          cursorColor: Colors.transparent,
-          cursorWidth: 0,
-          style: new TextStyle(color: UIData.ff353535, fontSize: 12),
-          decoration: new InputDecoration(
-              fillColor: Color(0xfff5f5f5),
-              contentPadding: new EdgeInsets.fromLTRB(10.0, 4, 10.0, 4),
-              filled: true,
-              border: new OutlineInputBorder(
-                borderRadius: new BorderRadius.circular(14.0),
-                borderSide: new BorderSide(color: Colors.red, width: 0),
+    return Center(
+      child: Stack(
+        children: <Widget>[
+          Center(
+            child: Container(
+              alignment: Alignment.center,
+              height: 30.0,
+              decoration: BoxDecoration(
+                border: Border.all(color: Color(0xFFF5F5F5), width: 15.0),
+                borderRadius: new BorderRadius.all(new Radius.circular(15.0)),
               ),
-              suffixIcon: new IconButton(
-                color: UIData.ffcccccc,
-                icon: Icon(Icons.close),
-                onPressed: () {
-                  _searchQuery.clear();
-                },
+            ),
+          ),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+              child: TextField(
+                maxLines: 1,
+                controller: _searchQuery,
+                cursorColor: Colors.transparent,
+                style: new TextStyle(color: UIData.ff353535, fontSize: 12),
+                decoration: new InputDecoration(
+                    focusedBorder: null,
+                    errorBorder: null,
+                    disabledBorder: null,
+                    focusedErrorBorder: null,
+                    border: null,
+                    fillColor: Color(0xfff5f5f5),
+                    suffixIcon: new IconButton(
+                      color: UIData.ffcccccc,
+                      icon: Icon(Icons.close),
+                      onPressed: () {
+                        _searchQuery.clear();
+                      },
+                    ),
+                    hintText: "请输入搜索内容",
+                    hintStyle: new TextStyle(color: UIData.ffcccccc)),
               ),
-              hintText: "请输入搜索内容",
-              hintStyle: new TextStyle(color: UIData.ffcccccc)),
-        ),
+            ),
+          )
+        ],
       ),
     );
   }

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/logic/bloc/category_bloc.dart';
-import 'package:flutter_lib/logic/viewmodel/category_view_model.dart';
-import 'package:flutter_lib/logic/viewmodel/sub_category_view_model.dart';
 import 'package:flutter_lib/model/category.dart';
 import 'package:flutter_lib/ui/page/shop/shop_list.dart';
 import 'package:flutter_lib/utils/uidata.dart';
@@ -218,10 +216,7 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
                 children: <Widget>[
                   new Stack(
                     children: <Widget>[
-                      Image.network(
-                        data[index].image,
-                        fit: BoxFit.contain,
-                      ),
+                      UIData.getImage(data[index].image),
                       Positioned(
                           bottom: 0,
                           left: 0,
@@ -260,4 +255,6 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
       ),
     );
   }
+
+
 }

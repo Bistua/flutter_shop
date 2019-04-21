@@ -204,7 +204,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
                   ),
                 ),
               ),
-              Image.network(product.medias.alt1.url),
+              UIData.getImage(product.medias.alt1.url),
             ],
           ),
         ),
@@ -220,7 +220,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
         child: new Center(
           child: new Column(
             children: <Widget>[
-              Image.network(product.medias.alt1.url),
+              UIData.getImage(product.medias.alt1.url),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -520,10 +520,10 @@ class ShopDetailPageState extends State<ShopDetailPage>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
-                            Image.network(
+                            UIData.getImageWithWH(
                               product.medias.alt1.url,
-                              width: 90,
-                              height: 90,
+                              90,
+                              90,
                             ),
                             Expanded(
                               child: Column(
