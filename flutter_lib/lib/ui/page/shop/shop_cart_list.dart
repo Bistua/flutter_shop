@@ -122,7 +122,7 @@ class _ShopCartListState extends State<ShopCartListPage> {
                   Expanded(
                     child: Center(
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           Padding(
                             child: Text(
@@ -130,7 +130,7 @@ class _ShopCartListState extends State<ShopCartListPage> {
                               style: TextStyle(
                                   color: UIData.fffa4848, fontSize: 18),
                             ),
-                            padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                            padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                           ),
                         ],
                       ),
