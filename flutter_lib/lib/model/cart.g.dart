@@ -19,6 +19,17 @@ Map<String, dynamic> _$CartToJson(Cart instance) => <String, dynamic>{
       'products': instance.products
     };
 
+SkuWapper _$SkuWapperFromJson(Map<String, dynamic> json) {
+  return SkuWapper(
+      skuId: json['skuId'] as String,
+      sku: json['sku'] == null
+          ? null
+          : CartProduct.fromJson(json['sku'] as Map<String, dynamic>));
+}
+
+Map<String, dynamic> _$SkuWapperToJson(SkuWapper instance) =>
+    <String, dynamic>{'skuId': instance.skuId, 'sku': instance.sku};
+
 CartProduct _$CartProductFromJson(Map<String, dynamic> json) {
   return CartProduct(
       skuId: json['skuId'] as String,

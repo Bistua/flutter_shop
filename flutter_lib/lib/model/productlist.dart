@@ -1,5 +1,9 @@
 import 'package:flutter_lib/model/productitem.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'productlist.g.dart';
+
+@JsonSerializable()
 class ProductList{
 
 
@@ -8,16 +12,8 @@ class ProductList{
 
   ProductList({this.totalCount, this.list});
 
-  factory ProductList.fromJson(dynamic result) {
-    print("ProductList");
-    print(result);
-    String total = result["totalCount"];
-    List<dynamic> parsedJson = result["list"];
-    var list = parsedJson.map((i) => ProductItem.fromJson(i)).toList();
+  factory ProductList.fromJson(Map<String, dynamic> json) => _$ProductListFromJson(json);
 
-    return ProductList(
-      totalCount:total,
-      list: list,
-    );
-  }
+
+  Map<String, dynamic> toJson() => _$ProductListToJson(this);
 }

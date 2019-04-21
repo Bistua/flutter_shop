@@ -9,8 +9,8 @@ class Cart {
   dynamic products;
 
 
+ Cart({this.totalCounts, this.totalMoney, this.products});
 
-  Cart({this.totalCounts, this.totalMoney, this.products});
 
 
   /// A necessary factory constructor for creating a new Category instance
@@ -25,6 +25,30 @@ class Cart {
   Map<String, dynamic> toJson() => _$CartToJson(this);
 }
 
+//"freight": 0
+
+@JsonSerializable()
+class SkuWapper {
+  String skuId;
+  CartProduct sku;
+
+
+
+  SkuWapper({this.skuId, this.sku});
+
+
+  /// A necessary factory constructor for creating a new Category instance
+  /// from a map. Pass the map to the generated `_$CategoryFromJson()` constructor.
+  /// The constructor is named after the source class, in this case Category.
+  ///
+  factory SkuWapper.fromJson(Map<String, dynamic> json) => _$SkuWapperFromJson(json);
+
+  /// `toJson` is the convention for a class to declare support for serialization
+  /// to JSON. The implementation simply calls the private, generated
+  /// helper method `_$CategoryToJson`.
+  Map<String, dynamic> toJson() => _$SkuWapperToJson(this);
+
+}
 
 
 //"skuId": 2001213,

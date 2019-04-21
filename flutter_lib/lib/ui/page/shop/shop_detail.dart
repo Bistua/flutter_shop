@@ -12,6 +12,7 @@ import 'package:flutter_lib/ui/widgets/rating_bar.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 import 'package:flutter_lib/logic/viewmodel/shop_cart_manager.dart';
 import 'package:flutter_lib/ui/page/shop/shop_cart_list.dart';
+import 'dart:convert';
 
 class ShopDetailPage extends StatefulWidget {
   int productId;
@@ -175,13 +176,14 @@ class ShopDetailPageState extends State<ShopDetailPage>
           delegate: SliverChildListDelegate(
             [
               buildHeader(product),
+              buildVipInfo(product),
             ],
           ),
         ),
         SliverList(
           delegate: SliverChildListDelegate(
             [
-              buildVipInfo(product),
+
             ],
           ),
         ),
@@ -731,8 +733,9 @@ class ShopDetailPageState extends State<ShopDetailPage>
         productId, product.skuId, chooseCount, product.price, 0, "规格",product.name,product.medias.alt1.url);
     future.then((result) {
       if (result.code == 200) {
-        Cart categoryList = Cart.fromJson(result.data);
+        Cart categoryList = Cart.fromJson(json.decode(result.data));
         setState(() {
+          print("setState"+categoryList.totalCounts.toString());
           cartCount = categoryList.totalCounts;
         });
       } else {
