@@ -10,7 +10,10 @@ Cart _$CartFromJson(Map<String, dynamic> json) {
   return Cart(
       totalCounts: json['totalCounts'] as int,
       totalMoney: (json['totalMoney'] as num)?.toDouble(),
-      products: json['products']);
+      products: (json['products'] as List)
+          ?.map((e) =>
+              e == null ? null : SkuWapper.fromJson(e as Map<String, dynamic>))
+          ?.toList());
 }
 
 Map<String, dynamic> _$CartToJson(Cart instance) => <String, dynamic>{
@@ -35,10 +38,10 @@ CartProduct _$CartProductFromJson(Map<String, dynamic> json) {
       skuId: json['skuId'] as String,
       amount: json['amount'] as int,
       price: (json['price'] as num)?.toDouble(),
-      freight: json['freight'] as int,
+      freight: (json['freight'] as num)?.toDouble(),
       norms: json['norms'] as String,
       name: json['name'] as String,
-      url: json['url'] as String);
+      img: json['img'] as String);
 }
 
 Map<String, dynamic> _$CartProductToJson(CartProduct instance) =>
@@ -49,5 +52,5 @@ Map<String, dynamic> _$CartProductToJson(CartProduct instance) =>
       'freight': instance.freight,
       'norms': instance.norms,
       'name': instance.name,
-      'url': instance.url
+      'img': instance.img
     };

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_lib/model/product.dart';
 import 'package:flutter_lib/ui/page/account/login.dart';
 import 'package:flutter_lib/ui/page/dashboard/dashboard.page.dart';
 import 'package:flutter_lib/ui/page/dashboard/home_page.dart';
@@ -14,11 +13,11 @@ import 'package:flutter_lib/ui/page/order/order_comment_list.dart';
 import 'package:flutter_lib/ui/page/shop/mine_collection.dart';
 import 'package:flutter_lib/ui/page/order/order_detail.dart';
 import 'package:flutter_lib/ui/page/shop/search_shop_list.dart';
+import 'package:flutter_lib/ui/page/shop/shop_cart_list.dart';
 import 'package:flutter_lib/ui/page/shop/shop_category_list.dart';
 import 'package:flutter_lib/ui/page/shop/shop_detail.dart';
 import 'package:flutter_lib/ui/page/shop/shop_list.dart';
 import 'package:flutter_lib/utils/uidata.dart';
-import 'package:flutter/rendering.dart';
 
 class MyApp extends StatelessWidget {
   final materialApp = MaterialApp(
@@ -45,6 +44,7 @@ class MyApp extends StatelessWidget {
 
       //routes
       routes: <String, WidgetBuilder>{
+        UIData.ShopCartListPage: (BuildContext context) => ShopCartListPage(),
         UIData.Login: (BuildContext context) => LoginPage(),
         UIData.homeRoute: (BuildContext context) => MyHomePage(),
         UIData.SearchShopList: (BuildContext context) => SearchShopList(),
@@ -53,10 +53,12 @@ class MyApp extends StatelessWidget {
         UIData.InviteInputPage: (BuildContext context) => InviteInputPage(),
         UIData.UserHomeListPage: (BuildContext context) => UserHomeListPage(),
         UIData.AllShopOrderPage: (BuildContext context) => AllShopOrderPage(),
-        UIData.MineCollectionPage: (BuildContext context) => MineCollectionPage(),
+        UIData.MineCollectionPage: (BuildContext context) =>
+            MineCollectionPage(),
         UIData.OrderDetailPage: (BuildContext context) => OrderDetailPage(),
         UIData.OrderCommentPage: (BuildContext context) => OrderCommentPage(),
-        UIData.OrderCommentListPage: (BuildContext context) => OrderCommentListPage(),
+        UIData.OrderCommentListPage: (BuildContext context) =>
+            OrderCommentListPage(),
       },
       onGenerateRoute: (RouteSettings settings) {
         final arguments = settings.arguments;
@@ -65,7 +67,8 @@ class MyApp extends StatelessWidget {
             if (arguments is String) {
               return new MaterialPageRoute(
                 settings: settings,
-                builder: (BuildContext context) => ShopDetailPage(int.parse(arguments)),
+                builder: (BuildContext context) =>
+                    ShopDetailPage(int.parse(arguments)),
               );
             }
             break;
@@ -73,7 +76,8 @@ class MyApp extends StatelessWidget {
             if (arguments is String) {
               return new MaterialPageRoute(
                 settings: settings,
-                builder: (BuildContext context) => ShopCategoryList(arguments,true),
+                builder: (BuildContext context) =>
+                    ShopCategoryList(arguments, true),
               );
             }
             break;

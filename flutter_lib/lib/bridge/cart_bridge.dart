@@ -10,26 +10,74 @@ class CartBridge {
    *
    *添加购物车
    */
-  static Future<Result> addSku(int productId, String skuId, int amount,
-      double price, double freight, String norms, String name, String url) {
+  static Future<Result> addSku(
+      int productId,
+      String skuId,
+      int amount,
+      double price,
+      double freight,
+      String norms,
+      String name,
+      String url) async {
     //todo  "data": json.encode 待测试
-    return Bridge.dispenser({
-      "method": "add",
-      "params": {
-        "action": component,
-        "arguments": {
-          "method": "add",
-          "data": json.encode({
-            "productId": productId,
-            "skuId": skuId,
-            "amount": amount,
-            "price": price,
-            "freight": freight,
-            "norms": norms,
-            "name": name,
-            "img": url,
-          }),
-        },
+    String data = await getCart();
+    return Result.fromJson(data);
+//    return Bridge.dispenser({
+//      "method": "add",
+//      "params": {
+//        "action": component,
+//        "arguments": {
+//          "method": "add",
+//          "data": json.encode({
+//            "productId": productId,
+//            "skuId": skuId,
+//            "amount": amount,
+//            "price": price,
+//            "freight": freight,
+//            "norms": norms,
+//            "name": name,
+//            "img": url,
+//          }),
+//        },
+//      }
+//    });
+  }
+
+  static getCart() async {
+    return json.encode({
+      "code": 200,
+      "msg": "s",
+      "data": {
+        "products": [
+          {
+            "sku": {
+              "amount": 1,
+              "freight": 0.0,
+              "img":
+                  "https://gd1.alicdn.com/imgextra/i4/842112630/TB2HDRvjb1YBuNjSszeXXablFXa_!!842112630.jpg",
+              "name": "Hoppin' Hot Sauce",
+              "price": 4.99,
+              "productId": "3",
+              "skuId": "3"
+            },
+            "skuId": "3"
+          },
+          {
+            "sku": {
+              "amount": 1,
+              "freight": 0.0,
+              "img":
+              "https://gd2.alicdn.com/imgextra/i2/2873137436/TB2gX2DrDmWBKNjSZFBXXXxUFXa_!!2873137436.png_400x400.jpg",
+              "name": "Hoppin' Hot Sauce",
+              "price": 4.99,
+              "productId": "3",
+              "skuId": "3"
+            },
+            "skuId": "5"
+          }
+        ],
+        "totalCounts": 10,
+        "totalMoney": 10.0
       }
     });
   }
@@ -51,60 +99,13 @@ class CartBridge {
     });
   }
 
-  static getcarts() {
-    return json.encode({
-      "code": 200,
-      "msg": null,
-      "data": [
-        {
-          "totalCounts": 10,
-          " totalMoney": 1000.12,
-          "products": [
-            {
-              "skuId": 2001213,
-              "amount": 2,
-              "price": 37.33,
-              "freight": 0,
-              "name": "test",
-              "img": "图片地址",
-            },
-            {
-              "skuId": 2001213,
-              "amount": 2,
-              "price": 37.33,
-              "freight": 0,
-              "name": "test",
-              "img": "图片地址",
-            },
-            {
-              "skuId": 2001213,
-              "amount": 2,
-              "price": 37.33,
-              "freight": 0,
-              "name": "test",
-              "img": "图片地址",
-            },
-            {
-              "skuId": 2001213,
-              "amount": 2,
-              "price": 37.33,
-              "freight": 0,
-              "name": "test",
-              "img": "图片地址",
-            }
-          ]
-        }
-      ]
-    });
-  }
-
   /*
    *
    *获取购物车信息
    */
   static Future<Result> findCart() async {
-    return await getcarts();
-
+    return  Result.fromJson( await getCart());
+//
 //    return Bridge.dispenser({
 //      "method": "findCart",
 //      "params": {

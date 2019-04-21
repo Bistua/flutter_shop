@@ -10,7 +10,6 @@ import 'package:flutter_lib/model/productitem.dart';
 import 'package:flutter_lib/ui/page/order/shop_order.dart';
 import 'package:flutter_lib/ui/widgets/rating_bar.dart';
 import 'package:flutter_lib/utils/uidata.dart';
-import 'package:flutter_lib/logic/viewmodel/shop_cart_manager.dart';
 import 'package:flutter_lib/ui/page/shop/shop_cart_list.dart';
 import 'dart:convert';
 
@@ -50,7 +49,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
   Future<bool> didPopRoute() {
     print("didPopRoute");
     setState(() {
-      _updateShopCartCount();
+
     });
     return super.didPopRoute();
   }
@@ -66,7 +65,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
           break;
         case AppLifecycleState.resumed:
           print("1resumed");
-          _updateShopCartCount();
+
           break;
       }
     });
@@ -74,6 +73,8 @@ class ShopDetailPageState extends State<ShopDetailPage>
 
   @override
   Widget build(BuildContext context) {
+    productBloc.getProduct(productId);
+    print("build");
     return new Scaffold(
       appBar: UIData.getCenterTitleAppBar("商品名称", context),
       body: bodyData(),
@@ -81,7 +82,6 @@ class ShopDetailPageState extends State<ShopDetailPage>
   }
 
   Widget bodyData() {
-    productBloc.getProduct(productId);
     return StreamBuilder<List<ProductItem>>(
         stream: productBloc.productItems,
         builder: (context, snapshot) {
@@ -114,11 +114,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
                                 color: Colors.black,
                               ),
                               onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    new MaterialPageRoute(
-                                        builder: (context) =>
-                                            new ShopCartListPage()));
+                                Navigator.pushNamed(context,UIData.ShopCartListPage);
                               })),
                       Positioned(
                         right: 8,
@@ -371,11 +367,6 @@ class ShopDetailPageState extends State<ShopDetailPage>
     );
   }
 
-  _updateShopCartCount() {
-    setState(() {
-      cartCount = ShopCartManager.instance.size();
-    });
-  }
 
   Widget buildFriendsPayInfoList() {
     return Container(
@@ -450,7 +441,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
   int colorIndex = 0;
   int chooseCount = 1;
   String chooseCountStr = "1";
-  int cartCount = ShopCartManager.instance.size();
+  int cartCount = 0;
 
   List<int> size = [37, 40, 41];
   List<String> color = ["红色", "黑色", "蓝色"];
@@ -733,7 +724,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
         productId, product.skuId, chooseCount, product.price, 0, "规格",product.name,product.medias.alt1.url);
     future.then((result) {
       if (result.code == 200) {
-        Cart categoryList = Cart.fromJson(json.decode(result.data));
+        Cart categoryList = Cart.fromJson(result.data);
         setState(() {
           print("setState"+categoryList.totalCounts.toString());
           cartCount = categoryList.totalCounts;

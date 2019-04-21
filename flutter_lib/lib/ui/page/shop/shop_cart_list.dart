@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_lib/bridge/cart_bridge.dart';
 import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/logic/bloc/cart_bloc.dart';
 import 'package:flutter_lib/model/cart.dart';
@@ -48,7 +47,7 @@ class _ShopCartListState extends State<ShopCartListPage> {
         builder: (context, snapshot) {
           Cart cart = snapshot.data;
           return snapshot.hasData
-              ? (cart.products.isEmpty ? empty() : buildBody(cart.products))
+              ? (cart==null ? empty() : buildBody(cart))
               : Center(child: CircularProgressIndicator());
         });
   }
@@ -168,7 +167,7 @@ class _ShopCartListState extends State<ShopCartListPage> {
   }
 
   ListView buildListView(Cart cart) {
-    List<CartProduct> products = cart.products;
+    List<SkuWapper> products = cart.products;
     return ListView.builder(
       itemCount: products.length,
       itemBuilder: (context, index) {
@@ -178,11 +177,14 @@ class _ShopCartListState extends State<ShopCartListPage> {
               color: UIData.fff,
               child: Row(
                 children: <Widget>[
-                  Image.network(
-                    products[index].url,
-                    fit: BoxFit.cover,
-                    width: 88,
-                    height: 88,
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(14, 0, 12, 0),
+                    child: Image.network(
+                      products[index].sku.img,
+                      fit: BoxFit.cover,
+                      width: 88,
+                      height: 88,
+                    ),
                   ),
                   Expanded(
                     child: Column(
@@ -192,7 +194,7 @@ class _ShopCartListState extends State<ShopCartListPage> {
                       children: <Widget>[
                         Padding(
                           padding: EdgeInsets.fromLTRB(12, 18, 12, 8),
-                          child: Text(products[index].name,
+                          child: Text(products[index].sku.name,
                               style: TextStyle(
                                   fontSize: 12, color: UIData.ff353535)),
                         ),
@@ -207,7 +209,7 @@ class _ShopCartListState extends State<ShopCartListPage> {
                                   borderRadius: BorderRadius.circular(3)),
                               child: Center(
                                 child: UIData.getTextWidget(
-                                    products[index].name, UIData.ff999999, 11),
+                                    products[index].sku.name, UIData.ff999999, 11),
                               )),
                         ),
                         Padding(
@@ -220,7 +222,7 @@ class _ShopCartListState extends State<ShopCartListPage> {
                               Expanded(
                                 child: Text(
                                   "￥" +
-                                      products[index].price.toStringAsFixed(2),
+                                      products[index].sku.price.toStringAsFixed(2),
                                   style: TextStyle(
                                       color: UIData.fffa4848, fontSize: 15),
                                 ),
@@ -241,7 +243,7 @@ class _ShopCartListState extends State<ShopCartListPage> {
                                 ),
                                 onTap: () {
                                   setState(() {
-                                    products[index].amount--;
+                                    products[index].sku.amount--;
                                   });
                                 },
                               ),
@@ -252,7 +254,7 @@ class _ShopCartListState extends State<ShopCartListPage> {
                                   height: 20,
                                   child: Center(
                                     child: UIData.getTextWidget(
-                                        products[index].amount.toString(),
+                                        products[index].sku.amount.toString(),
                                         UIData.ff999999,
                                         11),
                                   ),
@@ -279,7 +281,7 @@ class _ShopCartListState extends State<ShopCartListPage> {
                                 ),
                                 onTap: () {
                                   setState(() {
-                                    products[index].amount++;
+                                    products[index].sku.amount++;
                                   });
                                 },
                               ),

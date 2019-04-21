@@ -6,7 +6,7 @@ part 'cart.g.dart';
 class Cart {
   int totalCounts;
   double totalMoney;
-  dynamic products;
+  List<SkuWapper> products;
 
 
  Cart({this.totalCounts, this.totalMoney, this.products});
@@ -62,13 +62,13 @@ class CartProduct {
 
   int amount;
   double price;
-  int freight;
+  double freight;
   String norms;
   String name;
-  String url;
+  String img;
 
 
-  CartProduct({this.skuId, this.amount, this.price,this.freight, this.norms,this.name,this.url});
+  CartProduct({this.skuId, this.amount, this.price,this.freight, this.norms,this.name,this.img});
 
 
   /// A necessary factory constructor for creating a new Category instance
