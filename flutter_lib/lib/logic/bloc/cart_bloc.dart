@@ -14,13 +14,10 @@ class CartBloc {
 
   CartBloc();
 
-  /*
-   *
-   *添加购物车
-   */
-  findCart() {
-    Future<Result> future =
-    CartBridge.findCart();
+  addSku(int productId, String skuId, int amount, double price, double freight,
+      String norms, String name, String url) async {
+    Future<Result> future = CartBridge.addSku(
+        productId, skuId, amount, price, freight, norms, name, url);
     future.then((result) {
       if (result.code == 200) {
         Cart categoryList = Cart.fromJson(result.data);
@@ -31,21 +28,41 @@ class CartBloc {
     });
   }
 
-//  /*
-//   *
-//   *添加购物车
-//   */
-//  addSku(int productId, String skuId, int amount, double price, double freight,
-//      String norms) {
-//    Future<Result> future =
-//        CartBridge.addSku(productId, skuId, amount, price, 0, norms);
-//    future.then((result) {
-//      if (result.code == 200) {
-//        Cart categoryList = Cart.fromJson(result.data);
-//        cartController.add(categoryList);
-//      } else {
-//        Bridge.showLongToast(result.msg);
-//      }
-//    });
-//  }
+  findCart() {
+    Future<Result> future = CartBridge.findCart();
+    future.then((result) {
+      if (result.code == 200) {
+        Cart categoryList = Cart.fromJson(result.data);
+        cartController.add(categoryList);
+      } else {
+        Bridge.showLongToast(result.msg);
+      }
+    });
+  }
+
+  del2Cart(SkuWapper sku, int amount) {
+    Future<Result> future =
+        CartBridge.delSku(sku.sku.productId, sku.skuId, amount);
+    future.then((result) {
+      if (result.code == 200) {
+        Cart categoryList = Cart.fromJson(result.data);
+        cartController.add(categoryList);
+      } else {
+        Bridge.showLongToast(result.msg);
+      }
+    });
+  }
+
+  addSkuAmount(SkuWapper sku, int amount) {
+    Future<Result> future =
+        CartBridge.delSku(sku.sku.productId, sku.skuId, amount);
+    future.then((result) {
+      if (result.code == 200) {
+        Cart categoryList = Cart.fromJson(result.data);
+        cartController.add(categoryList);
+      } else {
+        Bridge.showLongToast(result.msg);
+      }
+    });
+  }
 }

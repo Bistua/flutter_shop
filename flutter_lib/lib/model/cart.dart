@@ -58,6 +58,7 @@ class SkuWapper {
 
 @JsonSerializable()
 class CartProduct {
+  String productId;
   String skuId;
 
   int amount;
@@ -68,7 +69,7 @@ class CartProduct {
   String img;
 
 
-  CartProduct({this.skuId, this.amount, this.price,this.freight, this.norms,this.name,this.img});
+  CartProduct({this.productId,this.skuId, this.amount, this.price,this.freight, this.norms,this.name,this.img});
 
 
   /// A necessary factory constructor for creating a new Category instance

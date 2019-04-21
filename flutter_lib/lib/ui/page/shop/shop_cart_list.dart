@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_lib/bridge/cart_bridge.dart';
 import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/logic/bloc/cart_bloc.dart';
+import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/cart.dart';
 import 'package:flutter_lib/ui/page/order/shop_order.dart';
 import 'package:flutter_lib/utils/uidata.dart';
@@ -47,7 +49,7 @@ class _ShopCartListState extends State<ShopCartListPage> {
         builder: (context, snapshot) {
           Cart cart = snapshot.data;
           return snapshot.hasData
-              ? (cart==null ? empty() : buildBody(cart))
+              ? (cart == null ? empty() : buildBody(cart))
               : Center(child: CircularProgressIndicator());
         });
   }
@@ -209,7 +211,9 @@ class _ShopCartListState extends State<ShopCartListPage> {
                                   borderRadius: BorderRadius.circular(3)),
                               child: Center(
                                 child: UIData.getTextWidget(
-                                    products[index].sku.name, UIData.ff999999, 11),
+                                    products[index].sku.name,
+                                    UIData.ff999999,
+                                    11),
                               )),
                         ),
                         Padding(
@@ -222,7 +226,10 @@ class _ShopCartListState extends State<ShopCartListPage> {
                               Expanded(
                                 child: Text(
                                   "￥" +
-                                      products[index].sku.price.toStringAsFixed(2),
+                                      products[index]
+                                          .sku
+                                          .price
+                                          .toStringAsFixed(2),
                                   style: TextStyle(
                                       color: UIData.fffa4848, fontSize: 15),
                                 ),
@@ -242,9 +249,7 @@ class _ShopCartListState extends State<ShopCartListPage> {
                                   ),
                                 ),
                                 onTap: () {
-                                  setState(() {
-                                    products[index].sku.amount--;
-                                  });
+                                  cartBloc.del2Cart(products[index], 1);
                                 },
                               ),
                               Padding(
@@ -281,7 +286,7 @@ class _ShopCartListState extends State<ShopCartListPage> {
                                 ),
                                 onTap: () {
                                   setState(() {
-                                    products[index].sku.amount++;
+                                    cartBloc.addSkuAmount(products[index], 1);
                                   });
                                 },
                               ),

@@ -67,7 +67,7 @@ class CartBridge {
               "amount": 1,
               "freight": 0.0,
               "img":
-              "https://gd2.alicdn.com/imgextra/i2/2873137436/TB2gX2DrDmWBKNjSZFBXXXxUFXa_!!2873137436.png_400x400.jpg",
+                  "https://gd2.alicdn.com/imgextra/i2/2873137436/TB2gX2DrDmWBKNjSZFBXXXxUFXa_!!2873137436.png_400x400.jpg",
               "name": "Hoppin' Hot Sauce",
               "price": 4.99,
               "productId": "3",
@@ -86,17 +86,36 @@ class CartBridge {
    *
    *从购物车移除
    */
-  static Future<Result> delSku(String skuId, int amount) {
-    return Bridge.dispenser({
-      "method": "del",
-      "params": {
-        "action": component,
-        "arguments": {
-          "method": "del",
-          "data": {"skuId": skuId, "amount": amount}
-        }
-      }
-    });
+  static Future<Result> delSku(String productId,String skuId, int amount) async {
+    return Result.fromJson(await getCart());
+//    return Bridge.dispenser({
+//      "method": "del",
+//      "params": {
+//        "action": component,
+//        "arguments": {
+//          "method": "del",
+//          "data": {"productId":productId,"skuId": skuId, "distinct": amount}
+//        }
+//      }
+//    });
+  }
+
+  /*
+   *
+   *从购物车数量添加
+   */
+  static Future<Result> addSkuAmount(String productId,String skuId, int amount) async {
+    return Result.fromJson(await getCart());
+//    return Bridge.dispenser({
+//      "method": "addAmount",
+//      "params": {
+//        "action": component,
+//        "arguments": {
+//          "method": "addAmount",
+//          "data": {"productId":productId,"skuId": skuId, "distinct": amount}
+//        }
+//      }
+//    });
   }
 
   /*
@@ -104,7 +123,7 @@ class CartBridge {
    *获取购物车信息
    */
   static Future<Result> findCart() async {
-    return  Result.fromJson( await getCart());
+    return Result.fromJson(await getCart());
 //
 //    return Bridge.dispenser({
 //      "method": "findCart",
