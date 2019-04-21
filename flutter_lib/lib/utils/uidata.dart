@@ -310,19 +310,23 @@ class UIData {
       return Image.asset("images/shop_type_hat.png");
     } else {
       return FadeInImage.assetNetwork(
-        placeholder: 'assets/images/shop_type_hat.png',
+        placeholder: 'images/shop_type_hat.png',
         fit: BoxFit.contain,
         image: image,
       );
     }
   }
 
-  static Widget getImageWithWH(String image,double w,double h) {
+  static Widget getImageWithWH(String image, double w, double h) {
     if (image == null || !image.startsWith("http")) {
-      return Image.asset("images/shop_type_hat.png",width: w,height: h,);
+      return Image.asset(
+        "images/shop_type_hat.png",
+        width: w,
+        height: h,
+      );
     } else {
       return FadeInImage.assetNetwork(
-        placeholder: 'assets/images/shop_type_hat.png',
+        placeholder: 'images/shop_type_hat.png',
         fit: BoxFit.contain,
         image: image,
         width: w,
@@ -331,12 +335,17 @@ class UIData {
     }
   }
 
-  static Widget getImageWithWHFit(String image,BoxFit fit,double w,double h) {
+  static Widget getImageWithWHFit(
+      String image, BoxFit fit, double w, double h) {
     if (image == null || !image.startsWith("http")) {
-      return Image.asset("images/shop_type_hat.png",width: w,height: h,);
+      return Image.asset(
+        "images/shop_type_hat.png",
+        width: w,
+        height: h,
+      );
     } else {
       return FadeInImage.assetNetwork(
-        placeholder: 'assets/images/shop_type_hat.png',
+        placeholder: 'images/shop_type_hat.png',
         fit: fit,
         image: image,
         width: w,
@@ -344,5 +353,4 @@ class UIData {
       );
     }
   }
-
 }
