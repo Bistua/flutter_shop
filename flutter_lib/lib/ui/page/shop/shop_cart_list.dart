@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_lib/bridge/common_bridge.dart';
+import 'package:flutter_lib/bridge/order_bridge.dart';
 import 'package:flutter_lib/logic/bloc/cart_bloc.dart';
 import 'package:flutter_lib/model/cart.dart';
 import 'package:flutter_lib/ui/page/order/shop_order.dart';
@@ -68,7 +69,7 @@ class _ShopCartListState extends State<ShopCartListPage> {
       ),
     );
   }
-
+  String userAddressId="12";
   Container buildBody(Cart cart) {
     return Container(
       child: Stack(
@@ -125,7 +126,6 @@ class _ShopCartListState extends State<ShopCartListPage> {
                         Bridge.showShortToast("请至少选择一个商品");
                         return;
                       }
-
                       Navigator.push(
                           context,
                           new MaterialPageRoute(

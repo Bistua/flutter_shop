@@ -22,10 +22,9 @@ class ShopDetailPage extends StatefulWidget {
   ShopDetailPageState createState() => new ShopDetailPageState(productId);
 }
 
-class ShopDetailPageState extends State<ShopDetailPage>
-   {
+class ShopDetailPageState extends State<ShopDetailPage> {
 //     with WidgetsBindingObserver
-     int productId;
+  int productId;
   ProductBloc productBloc = ProductBloc();
 
   ShopDetailPageState(int productId) {
@@ -113,7 +112,8 @@ class ShopDetailPageState extends State<ShopDetailPage>
                                 color: Colors.black,
                               ),
                               onPressed: () {
-                                Navigator.pushNamed(context,UIData.ShopCartListPage);
+                                Navigator.pushNamed(
+                                    context, UIData.ShopCartListPage);
                               })),
                       Positioned(
                         right: 8,
@@ -177,9 +177,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
         ),
         SliverList(
           delegate: SliverChildListDelegate(
-            [
-
-            ],
+            [],
           ),
         ),
         SliverList(
@@ -235,7 +233,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
                             text: new TextSpan(
                               children: <TextSpan>[
                                 TextSpan(
-                                  text: product.price.toString(),
+                                  text: "￥" + product.price.toString(),
                                   style: TextStyle(
                                       color: UIData.fffa4848, fontSize: 18),
                                 ),
@@ -249,7 +247,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
                             text: new TextSpan(
                               children: <TextSpan>[
                                 new TextSpan(
-                                  text: product.price.toString(),
+                                  text: "￥" + product.price.toString(),
                                   style: new TextStyle(
                                     color: UIData.ff999999,
                                     decoration: TextDecoration.lineThrough,
@@ -365,7 +363,6 @@ class ShopDetailPageState extends State<ShopDetailPage>
       ),
     );
   }
-
 
   Widget buildFriendsPayInfoList() {
     return Container(
@@ -720,12 +717,19 @@ class ShopDetailPageState extends State<ShopDetailPage>
 
   void add2Cart(ProductItem product) {
     Future<Result> future = CartBridge.addSku(
-        productId, product.skuId, chooseCount, product.price, 0, "规格",product.name,product.medias.alt1.url);
+        productId,
+        product.skuId,
+        chooseCount,
+        product.price,
+        0,
+        "规格",
+        product.name,
+        product.medias.alt1.url);
     future.then((result) {
       if (result.code == 200) {
         Cart categoryList = Cart.fromJson(result.data);
         setState(() {
-          print("setState"+categoryList.totalCounts.toString());
+          print("setState" + categoryList.totalCounts.toString());
           cartCount = categoryList.totalCounts;
         });
       } else {

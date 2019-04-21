@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_lib/bridge/common_bridge.dart';
+import 'package:flutter_lib/bridge/order_bridge.dart';
 import 'package:flutter_lib/bridge/pay_bridge.dart';
+import 'package:flutter_lib/logic/bloc/cart_bloc.dart';
 import 'package:flutter_lib/logic/viewmodel/deliver_address_manager.dart';
-import 'package:flutter_lib/logic/viewmodel/shop_cart_manager.dart';
 import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/address.dart';
+import 'package:flutter_lib/model/cart.dart';
+import 'package:flutter_lib/model/order_result.dart';
+import 'package:flutter_lib/model/ordergoods.dart';
 import 'package:flutter_lib/ui/page/address/add_edit_address.dart';
 import 'package:flutter_lib/ui/page/address/address_list.dart';
 import 'package:flutter_lib/utils/uidata.dart';
@@ -19,6 +23,9 @@ class ShopOrderListPage extends StatefulWidget {
 
 class _ShopOrderListState extends State<ShopOrderListPage> {
   double get deliverPrice => 10;
+  CartBloc cartBloc = CartBloc();
+
+  String userAddressId = "123123";
 
   @override
   Widget build(BuildContext context) {
@@ -40,11 +47,40 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
           onPressed: () => Navigator.pop(context, false),
         ),
       ),
-      body: buildBody(),
+      body: bodyData(),
     );
   }
 
-  Container buildBody() {
+  Widget bodyData() {
+    cartBloc.findCart();
+    return StreamBuilder<Cart>(
+        stream: cartBloc.productItems,
+        builder: (context, snapshot) {
+          Cart cart = snapshot.data;
+          return snapshot.hasData
+              ? (cart == null ? empty() : buildBody(cart))
+              : Center(child: CircularProgressIndicator());
+        });
+  }
+
+  Widget empty() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: GestureDetector(
+          child: Padding(
+            padding: const EdgeInsets.all(32.0),
+            child: Text("无数据,点击重试"),
+          ),
+          onTap: () {
+            cartBloc.findCart();
+          },
+        ),
+      ),
+    );
+  }
+
+  Container buildBody(Cart cart) {
     return Container(
       child: Stack(
         children: <Widget>[
@@ -65,15 +101,14 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                 SliverFixedExtentList(
                   itemExtent: 111,
                   delegate: SliverChildBuilderDelegate(
-                    (context, index) => buildListIItem(index),
-                    childCount:
-                        ShopCartManager.instance.getCheckedProducts().length,
+                    (context, index) => buildListIItem(cart.products[index]),
+                    childCount: cart.products.length,
                   ),
                 ),
                 SliverList(
                   delegate: SliverChildListDelegate(
                     [
-                      buildDeliverPrive(),
+                      buildDeliverPrive(cart),
                     ],
                   ),
                 ),
@@ -107,11 +142,7 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                         children: <Widget>[
                           Padding(
                             child: Text(
-                              "￥" +
-                                  (deliverPrice +
-                                          ShopCartManager.instance
-                                              .getTotalPrice())
-                                      .toStringAsFixed(2),
+                              "￥" + cart.totalMoney.toStringAsFixed(2),
                               style: TextStyle(
                                   color: UIData.fffa4848, fontSize: 18),
                             ),
@@ -125,7 +156,24 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                     padding: EdgeInsets.fromLTRB(0, 0, 15, 0),
                     child: UIData.getShapeButton(
                         UIData.fffa4848, UIData.fff, 90, 33, "提交订单", 15, 0, () {
-                      showPayDialog(context);
+                      List<OrderGoods> orderGoodses = cart.products
+                          .map((sku) => new OrderGoods(
+                              sku.skuId, sku.sku.amount.toString()))
+                          .toList();
+                      Future<Result> future = OrderBridge.submitOrder(
+                          userAddressId, true, orderGoodses);
+                      future.then((result) {
+                        if (result.code == 200) {
+                          if (result.data == null) {
+                            Bridge.showLongToast("订单号获取失败");
+                            return;
+                          }
+                          showPayDialog(
+                              context, cart, OrderResult.fromJson(result.data));
+                        } else {
+                          Bridge.showLongToast(result.msg);
+                        }
+                      });
                     }),
                   ),
                 ],
@@ -143,7 +191,7 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
     );
   }
 
-  showPayDialog(BuildContext context) {
+  showPayDialog(BuildContext context, Cart cart, OrderResult orderResult) {
     showDialog(
         context: context,
         builder: (context) => Center(
@@ -165,10 +213,7 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 46, 0, 59),
                         child: Text(
-                          "￥" +
-                              (deliverPrice +
-                                      ShopCartManager.instance.getTotalPrice())
-                                  .toStringAsFixed(2),
+                          "￥" + cart.totalMoney.toStringAsFixed(2),
                           style:
                               TextStyle(color: UIData.ff353535, fontSize: 33),
                         ),
@@ -222,11 +267,13 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                         18,
                         5,
                         () {
+                          //"1555746236014000",
+                          //"商品描述",
                           goToPay(
                               context,
-                              "1555746236014000",
+                              orderResult.tradeOrderId,
                               "123.12.12.123",
-                              "商品描述",
+                              orderResult.goodsDesc,
                               "附加数据，在查询API和支付通知中原样返回，该字段主要用于商户携带订单的自定义数据");
                         },
                       )
@@ -237,7 +284,8 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
             ));
   }
 
-  GestureDetector buildListIItem(int index) {
+  GestureDetector buildListIItem(SkuWapper sku) {
+    CartProduct cartProduct = sku.sku;
     return GestureDetector(
       child: Container(
         child: Card(
@@ -247,9 +295,9 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
               Padding(
                 padding: EdgeInsets.fromLTRB(16, 15, 0, 16),
                 child: UIData.getImageWithWHFit(
-                  ShopCartManager.instance.getCheckedProducts()[index].image,
+                  cartProduct.img,
                   BoxFit.cover,
-                88,
+                  88,
                   88,
                 ),
               ),
@@ -261,10 +309,7 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.fromLTRB(12, 18, 12, 8),
-                      child: Text(
-                          ShopCartManager.instance
-                              .getCheckedProducts()[index]
-                              .name,
+                      child: Text(cartProduct.name,
                           style:
                               TextStyle(fontSize: 12, color: UIData.ff353535)),
                     ),
@@ -279,11 +324,7 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                               borderRadius: BorderRadius.circular(3)),
                           child: Center(
                             child: UIData.getTextWidget(
-                                ShopCartManager.instance
-                                    .getCheckedProducts()[index]
-                                    .name,
-                                UIData.ff999999,
-                                11),
+                                cartProduct.name, UIData.ff999999, 11),
                           )),
                     ),
                     Padding(
@@ -295,80 +336,54 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                         children: <Widget>[
                           Expanded(
                             child: Text(
-                              "￥" +
-                                  ShopCartManager.instance
-                                      .getCheckedProducts()[index]
-                                      .priceNum
-                                      .toStringAsFixed(2),
+                              "￥" + cartProduct.price.toStringAsFixed(2),
                               style: TextStyle(
                                   color: UIData.fffa4848, fontSize: 15),
                             ),
                           ),
-                          GestureDetector(
-                            child: Container(
-                              width: 20,
-                              height: 20,
-                              child: Center(
-                                child: UIData.getTextWidget(
-                                    "-", UIData.ff999999, 11),
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: UIData.fff7f7f7, width: 1.0),
-                                shape: BoxShape.rectangle,
-                              ),
-                            ),
-                            onTap: () {
-                              setState(() {
-                                ShopCartManager.instance.remove(ShopCartManager
-                                    .instance
-                                    .getCheckedProducts()[index]);
-                              });
-                            },
-                          ),
+//                          GestureDetector(
+//                            child: Container(
+//                              width: 20,
+//                              height: 20,
+//                              child: Center(
+//                                child: UIData.getTextWidget(
+//                                    "-", UIData.ff999999, 11),
+//                              ),
+//                              decoration: BoxDecoration(
+//                                border: Border.all(
+//                                    color: UIData.fff7f7f7, width: 1.0),
+//                                shape: BoxShape.rectangle,
+//                              ),
+//                            ),
+//                            onTap: () {
+//                              cartBloc.del2Cart(sku, 1);
+//                            },
+//                          ),
                           Padding(
                             padding: EdgeInsets.fromLTRB(3, 0, 3, 0),
-                            child: Container(
-                              width: 50,
-                              height: 20,
-                              child: Center(
-                                child: UIData.getTextWidget(
-                                    ShopCartManager.instance
-                                        .getCheckedProducts()[index]
-                                        .count
-                                        .toString(),
-                                    UIData.ff999999,
-                                    11),
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: UIData.fff7f7f7, width: 1.0),
-                                shape: BoxShape.rectangle,
-                              ),
-                            ),
+                            child: UIData.getTextWidget(
+                                cartProduct.amount.toString(),
+                                UIData.ff999999,
+                                11),
                           ),
-                          GestureDetector(
-                            child: Container(
-                              width: 20,
-                              height: 20,
-                              child: Center(
-                                child: UIData.getTextWidget(
-                                    "+", UIData.ff999999, 11),
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: UIData.fff7f7f7, width: 1.0),
-                                shape: BoxShape.rectangle,
-                              ),
-                            ),
-                            onTap: () {
-                              setState(() {
-                                ShopCartManager.instance.addProduct(
-                                    ShopCartManager.instance
-                                        .getCheckedProducts()[index]);
-                              });
-                            },
-                          ),
+//                          GestureDetector(
+//                            child: Container(
+//                              width: 20,
+//                              height: 20,
+//                              child: Center(
+//                                child: UIData.getTextWidget(
+//                                    "+", UIData.ff999999, 11),
+//                              ),
+//                              decoration: BoxDecoration(
+//                                border: Border.all(
+//                                    color: UIData.fff7f7f7, width: 1.0),
+//                                shape: BoxShape.rectangle,
+//                              ),
+//                            ),
+//                            onTap: () {
+//                              cartBloc.addSkuAmount(sku, 1);
+//                            },
+//                          ),
                         ],
                       ),
                     ),
@@ -446,7 +461,7 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
     );
   }
 
-  Widget buildDeliverPrive() {
+  Widget buildDeliverPrive(Cart cart) {
     return GestureDetector(
       child: Card(
         child: Padding(
@@ -465,10 +480,7 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                   ),
                   Padding(
                     child: Text(
-                      "￥" +
-                          ShopCartManager.instance
-                              .getTotalPrice()
-                              .toStringAsFixed(2),
+                      "￥" + cart.totalMoney.toStringAsFixed(2),
                       style: TextStyle(color: UIData.fffa4848, fontSize: 18),
                     ),
                     padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
