@@ -14,9 +14,6 @@ class SearchShopList extends StatelessWidget {
 }
 
 class SearchShopListPage extends StatefulWidget {
-//  ShopListPage({Key key, this.title}) : super(key: key);
-//  final String title;
-
   @override
   SearchShopListState createState() => SearchShopListState();
 }
@@ -24,6 +21,7 @@ class SearchShopListPage extends StatefulWidget {
 class SearchShopListState extends State<SearchShopListPage> {
   ProductBloc productBloc = ProductBloc();
   Widget appBarTitle;
+  bool showHistory = true;
   final TextEditingController _searchQuery = new TextEditingController();
 
   @override
@@ -45,10 +43,62 @@ class SearchShopListState extends State<SearchShopListPage> {
     return StreamBuilder<List<ProductItem>>(
         stream: productBloc.productItems,
         builder: (context, snapshot) {
-          return snapshot.hasData
-              ? productGrid(snapshot.data)
-              : Center(child: CircularProgressIndicator());
+          if (showHistory) {
+            return buildWrapChips();
+          } else {
+            return snapshot.hasData
+                ? productGrid(snapshot.data)
+                : Center(child: CircularProgressIndicator());
+          }
         });
+  }
+
+  var chips = ["213", "dsadasd", "dart", "flutter"];
+
+  Column buildWrapChips() {
+    return Column(
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16.0, 16, 16, 11),
+              child: Text(
+                "搜索记录",
+                style: TextStyle(fontSize: 12, color: UIData.ff353535),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16.0, 16, 16, 11),
+              child: Text(
+                "清空搜索记录",
+                style: TextStyle(fontSize: 12, color: UIData.ff999999),
+              ),
+            ),
+          ],
+        ),
+        Wrap(
+          children: chips.map((chip) {
+            return GestureDetector(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 5, 10, 5),
+                child: Chip(
+                  backgroundColor: UIData.fff6f6f6,
+                  label: Text(chip,  style: TextStyle(fontSize: 12, color: UIData.ff666666),),
+                ),
+              ),
+              onTap: (){
+                setState(() {
+                  _searchQuery.text = chip;
+                  _doSearch();
+                });
+              },
+            );
+          }).toList(),
+          alignment: WrapAlignment.start,
+        )
+      ],
+    );
   }
 
   Widget productGrid(List<ProductItem> data) {
@@ -63,7 +113,7 @@ class SearchShopListState extends State<SearchShopListPage> {
             crossAxisSpacing: 5.0, // add some space
           ),
           itemBuilder: (BuildContext context, int index) {
-           ProductItem prodcutItem =  data[index];
+            ProductItem prodcutItem = data[index];
             return new GestureDetector(
               child: new Card(
                 elevation: 5.0,
@@ -116,7 +166,8 @@ class SearchShopListState extends State<SearchShopListPage> {
                 Navigator.push(
                     context,
                     new MaterialPageRoute(
-                        builder: (context) => new ShopDetailPage(prodcutItem.id)));
+                        builder: (context) =>
+                            new ShopDetailPage(prodcutItem.id)));
               },
             );
           }),
@@ -143,10 +194,10 @@ class SearchShopListState extends State<SearchShopListPage> {
   }
 
   GestureDetector buildSearchBtn() {
+    _searchQuery.addListener(() {
+      _doSearch();
+    });
     return new GestureDetector(
-      onTap: () {
-        _doSearch();
-      },
       child: Container(
         padding: new EdgeInsets.fromLTRB(16.0, 7, 15.0, 8),
         child: new Center(
@@ -162,6 +213,9 @@ class SearchShopListState extends State<SearchShopListPage> {
           ),
         ),
       ),
+      onTap: () {
+        _doSearch();
+      },
     );
   }
 
@@ -199,12 +253,17 @@ class SearchShopListState extends State<SearchShopListPage> {
   }
 
   void _doSearch() {
-    _searchQuery.addListener(() {
-      if (_searchQuery.text.isEmpty) {
-        setState(() {});
-      } else {
-        productBloc.queryProducts(_searchQuery.text, true);
-      }
-    });
+    if (_searchQuery.text.isEmpty) {
+      setState(() {
+        showHistory = true;
+        print("showHistory:" + showHistory.toString());
+      });
+    } else {
+      productBloc.queryProducts(_searchQuery.text, true);
+      setState(() {
+        showHistory = false;
+        print("showHistory:" + showHistory.toString());
+      });
+    }
   }
 }
