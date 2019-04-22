@@ -153,6 +153,13 @@ class _ShopCartListState extends State<ShopCartListPage> {
     return ListView.builder(
       itemCount: products.length,
       itemBuilder: (context, index) {
+        String name =
+            (products[index].sku.name != null) ? products[index].sku.name : "";
+        String price = "￥" +
+            ((products[index].sku.price != null)
+                ? products[index].sku.price.toStringAsFixed(2)
+                : "0.00");
+
         return GestureDetector(
           child: Container(
             child: Card(
@@ -172,10 +179,7 @@ class _ShopCartListState extends State<ShopCartListPage> {
                       children: <Widget>[
                         Padding(
                           padding: EdgeInsets.fromLTRB(12, 18, 12, 8),
-                          child: Text(
-                              (products[index].sku.name != null)
-                                  ? products[index].sku.name
-                                  : "",
+                          child: Text(name,
                               style: TextStyle(
                                   fontSize: 12, color: UIData.ff353535)),
                         ),
@@ -190,11 +194,7 @@ class _ShopCartListState extends State<ShopCartListPage> {
                                   borderRadius: BorderRadius.circular(3)),
                               child: Center(
                                 child: UIData.getTextWidget(
-                                    (products[index].sku.name != null)
-                                        ? products[index].sku.name
-                                        : "",
-                                    UIData.ff999999,
-                                    11),
+                                    name, UIData.ff999999, 11),
                               )),
                         ),
                         Padding(
@@ -206,11 +206,7 @@ class _ShopCartListState extends State<ShopCartListPage> {
                             children: <Widget>[
                               Expanded(
                                 child: Text(
-                                  "￥" +
-                                      products[index]
-                                          .sku
-                                          .price
-                                          .toStringAsFixed(2),
+                                  price,
                                   style: TextStyle(
                                       color: UIData.fffa4848, fontSize: 15),
                                 ),
