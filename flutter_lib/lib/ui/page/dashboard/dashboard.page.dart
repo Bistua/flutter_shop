@@ -57,7 +57,7 @@ class DashboardPageState extends State<DashboardPage> {
   final List<Widget> _children = [
     MyHomePage(),
     ShopCategoryList("全部分类", false),
-    ShopCartListPage(),
+    ShopCartListPage(false),
     UserHomeListPage(),
   ];
 

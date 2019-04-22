@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_lib/bridge/common_bridge.dart';
-import 'package:flutter_lib/bridge/order_bridge.dart';
 import 'package:flutter_lib/logic/bloc/cart_bloc.dart';
 import 'package:flutter_lib/model/cart.dart';
 import 'package:flutter_lib/ui/page/order/shop_order.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class ShopCartListPage extends StatefulWidget {
+  bool showBackBtn = false;
+
+  ShopCartListPage(bool showBackBtn) {
+    this.showBackBtn = showBackBtn;
+  }
+
   @override
   State<StatefulWidget> createState() {
     return _ShopCartListState();
@@ -31,11 +36,13 @@ class _ShopCartListState extends State<ShopCartListPage> {
           style: TextStyle(color: UIData.fff, fontSize: 18),
         ),
         elevation: 0,
-        leading: new IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: UIData.fff),
-          color: UIData.fff,
-          onPressed: () => Navigator.pop(context, false),
-        ),
+        leading: widget.showBackBtn == true
+            ? new IconButton(
+                icon: Icon(Icons.arrow_back_ios, color: UIData.fff),
+                color: UIData.fff,
+                onPressed: () => Navigator.pop(context, false),
+              )
+            : null,
       ),
       body: bodyData(),
     );
@@ -48,7 +55,12 @@ class _ShopCartListState extends State<ShopCartListPage> {
         builder: (context, snapshot) {
           Cart cart = snapshot.data;
           return snapshot.hasData
-              ? (cart == null ? empty() : buildBody(cart))
+              ? ((cart == null ||
+                      cart.products == null ||
+                      cart.products.isEmpty ||
+                      cart.totalCounts == 0)
+                  ? empty()
+                  : buildBody(cart))
               : Center(child: CircularProgressIndicator());
         });
   }
@@ -60,10 +72,14 @@ class _ShopCartListState extends State<ShopCartListPage> {
         child: GestureDetector(
           child: Padding(
             padding: const EdgeInsets.all(32.0),
-            child: Text("无数据,点击重试"),
+            child: Text(widget.showBackBtn?"快去添加商品":"可前往首页选购商品"),
           ),
           onTap: () {
-            cartBloc.findCart();
+            if (widget.showBackBtn) {
+              Navigator.pop(context, true);
+            } else {
+              cartBloc.findCart();
+            }
           },
         ),
       ),

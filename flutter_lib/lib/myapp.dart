@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
 
       //routes
       routes: <String, WidgetBuilder>{
-        UIData.ShopCartListPage: (BuildContext context) => ShopCartListPage(),
+        UIData.ShopCartListPage: (BuildContext context) => ShopCartListPage(true),
         UIData.Login: (BuildContext context) => LoginPage(),
         UIData.homeRoute: (BuildContext context) => MyHomePage(),
         UIData.SearchShopList: (BuildContext context) => SearchShopList(),

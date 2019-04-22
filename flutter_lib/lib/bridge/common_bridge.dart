@@ -20,10 +20,13 @@ class Bridge {
     return Result.fromJson(json.encode({"code": -1, "msg": "无结果"}));
   }
 
-  static Future<Result> showShortToast(String message) {
+  static showShortToast(String message) {
+    if (message == null || message.isEmpty) {
+      return;
+    }
     message = "" + message;
     message = message.replaceAll(" ", "");
-    return dispenser({
+    dispenser({
       "method": "showShortToast",
       "params": json.encode({
         "message": message,
@@ -32,7 +35,9 @@ class Bridge {
   }
 
   static void showLongToast(String message) {
-    message = "" + message;
+    if (message == null || message.isEmpty) {
+      return;
+    }
     message = message.replaceAll(" ", "");
     dispenser({
       "method": "showLongToast",
@@ -43,6 +48,9 @@ class Bridge {
   }
 
   static void showToast(String message, int duration) {
+    if (message == null || message.isEmpty) {
+      return;
+    }
     message = "" + message;
     message = message.replaceAll(" ", "");
     dispenser({

@@ -32,8 +32,13 @@ class CartBloc {
     Future<Result> future = CartBridge.findCart();
     future.then((result) {
       if (result.code == 200) {
-        Cart categoryList = Cart.fromJson(result.data);
-        cartController.add(categoryList);
+        if (result.data != null && result.data is Map<String, dynamic>) {
+          Cart categoryList = Cart.fromJson(result.data);
+          cartController.add(categoryList);
+        } else {
+          Cart categoryList = new Cart(totalCounts: 0);
+          cartController.add(categoryList);
+        }
       } else {
         Bridge.showLongToast(result.msg);
       }
