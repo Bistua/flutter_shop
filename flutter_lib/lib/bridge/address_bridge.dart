@@ -14,17 +14,33 @@ class AddressBridge {
   static Future<Result> addAddress(String receivePhone, String receiveGoodsName,
       String receiveAddressName, int status) {
     return Bridge.dispenser({
-      "method": "add",
+      "method": "address_add",
       "params": {
         "action": component,
         "arguments": {
-          "method": "add",
+          "method": "address_add",
           "data": {
             "receivePhone": receivePhone,
             "receiveGoodsName": receiveGoodsName,
             "receiveAddressName": receiveAddressName,
             "status": status
           },
+        }
+      }
+    });
+  }
+
+  /*
+  获取地址
+ */
+  static Future<Result> findAddress(int pageNo, int pageSize) {
+    return Bridge.dispenser({
+      "method": "address_find",
+      "params": {
+        "action": component,
+        "arguments": {
+          "method": "address_find",
+          "data": {"pageNo": pageNo, "pageSize": pageSize},
         }
       }
     });

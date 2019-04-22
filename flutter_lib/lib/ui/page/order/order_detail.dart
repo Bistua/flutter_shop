@@ -3,6 +3,8 @@ import 'package:flutter_lib/logic/viewmodel/product_view_model.dart';
 import 'package:flutter_lib/model/address.dart';
 import 'package:flutter_lib/model/orderDetail.dart';
 import 'package:flutter_lib/model/product.dart';
+import 'package:flutter_lib/ui/page/address/add_edit_address.dart';
+import 'package:flutter_lib/ui/page/address/address_list.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class OrderDetailPage extends StatefulWidget {
@@ -158,9 +160,7 @@ class OrderDetailPageState extends State<OrderDetailPage> {
                     style: TextStyle(color: UIData.ff353535, fontSize: 13),
                   ),
                   Text(
-                    "地址：" +
-                        _orderDetail.address.area +
-                        _orderDetail.address.address,
+                    "地址：" + _orderDetail.address.address,
                     style: TextStyle(color: UIData.ff999999, fontSize: 12),
                   ),
                 ],
@@ -397,7 +397,13 @@ class OrderDetailPageState extends State<OrderDetailPage> {
                                   alignment: Alignment.center,
                                 ),
                                 //圆角大小,与BoxDecoration保持一致，更美观
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      new MaterialPageRoute(
+                                          builder: (context) =>
+                                              new AddressListPage()));
+                                },
                               ),
                             ],
                           ),
@@ -415,7 +421,6 @@ class OrderDetailPageState extends State<OrderDetailPage> {
     Address address = new Address();
     address.name = "王大锤";
     address.phone = "12345678901";
-    address.area = "金牛区";
     address.address = "四川省成都市金牛区西雅图";
     orderDetail.address = address;
     orderDetail.products = ProductViewModel().getOderDetailProducts();
@@ -519,7 +524,8 @@ class ProductItem extends StatelessWidget {
         ),
       ),
       onTap: () {
-        Navigator.pushNamed(context, UIData.ShopDetailPage, arguments: item.skuId);
+        Navigator.pushNamed(context, UIData.ShopDetailPage,
+            arguments: item.skuId);
       },
     );
   }

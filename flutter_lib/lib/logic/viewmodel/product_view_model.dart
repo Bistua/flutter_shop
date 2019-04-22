@@ -444,7 +444,6 @@ class ProductViewModel {
     Address address = new Address();
     address.name = "王大锤";
     address.phone = "12345678901";
-    address.area = "金牛区";
     address.address = "四川省成都市金牛区西雅图";
     orderDetail.address = address;
     orderDetail.products = ProductViewModel().getOderDetailProducts();
@@ -461,7 +460,6 @@ class ProductViewModel {
     address = new Address();
     address.name = "王大锤";
     address.phone = "12345678901";
-    address.area = "金牛区";
     address.address = "四川省成都市金牛区西雅图";
     orderDetail1.address = address;
     orderDetail1.products = <Product>[
@@ -490,7 +488,6 @@ class ProductViewModel {
     address = new Address();
     address.name = "王大锤";
     address.phone = "12345678901";
-    address.area = "金牛区";
     address.address = "四川省成都市金牛区西雅图";
     orderDetail2.address = address;
     orderDetail2.products = <Product>[
@@ -519,7 +516,6 @@ class ProductViewModel {
     address = new Address();
     address.name = "王大锤";
     address.phone = "12345678901";
-    address.area = "金牛区";
     address.address = "四川省成都市金牛区西雅图";
     orderDetail3.address = address;
     orderDetail3.products = <Product>[
@@ -548,7 +544,6 @@ class ProductViewModel {
     address = new Address();
     address.name = "王大锤";
     address.phone = "12345678901";
-    address.area = "金牛区";
     address.address = "四川省成都市金牛区西雅图";
     orderDetail4.address = address;
     orderDetail4.products = <Product>[

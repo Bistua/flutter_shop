@@ -430,7 +430,7 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                                 TextStyle(color: UIData.ff353535, fontSize: 13),
                           ),
                           Text(
-                            address.area + address.address,
+                            address.address,
                             style:
                                 TextStyle(color: UIData.ff999999, fontSize: 12),
                           ),

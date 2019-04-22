@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_lib/bridge/address_bridge.dart';
+import 'package:flutter_lib/bridge/common_bridge.dart';
+import 'package:flutter_lib/logic/bloc/address_bloc.dart';
 import 'package:flutter_lib/logic/viewmodel/deliver_address_manager.dart';
+import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/address.dart';
 import 'package:flutter_lib/ui/page/address/add_edit_address.dart';
 import 'package:flutter_lib/utils/uidata.dart';
@@ -14,13 +18,14 @@ class AddressListPage extends StatefulWidget {
 
 class _AddressListState extends State<AddressListPage> {
   double get deliverPrice => 10;
+  AddressBloc addressBloc = new AddressBloc();
 
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
       statusBarColor: UIData.fffa4848, //or set color with: Color(0xFF0000FF)
     ));
-
+    findAddress();
     return Scaffold(
       appBar: new AppBar(
         centerTitle: true,
@@ -35,11 +40,20 @@ class _AddressListState extends State<AddressListPage> {
           onPressed: () => Navigator.pop(context, false),
         ),
       ),
-      body: buildBody(),
+      body: bodyData(),
     );
   }
 
-  Container buildBody() {
+  Widget bodyData() {
+    addressBloc.getAddressList();
+    return StreamBuilder<List<Address>>(
+        stream: addressBloc.productItems,
+        builder: (context, snapshot) {
+          return buildBody(snapshot.data);
+        });
+  }
+
+  Container buildBody(List<Address> list) {
     return Container(
       child: Stack(
         children: <Widget>[
@@ -48,7 +62,7 @@ class _AddressListState extends State<AddressListPage> {
             bottom: 67,
             left: 10,
             right: 10,
-            child: buildListView(),
+            child: buildListView(list),
           ),
           Positioned(
             bottom: 17,
@@ -56,24 +70,21 @@ class _AddressListState extends State<AddressListPage> {
             right: 0,
             child: Container(
               height: 50,
-              child:  UIData.getShapeButton(UIData.fffa4848, UIData.fff, 345,
-                  45, "添加地址", 18, 5, () {
-                    Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                            builder: (context) => new AddAddressListPage(null)));
-                  }),
+              child: UIData.getShapeButton(
+                  UIData.fffa4848, UIData.fff, 345, 45, "添加地址", 18, 5, () {
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) => new AddAddressListPage(null)));
+              }),
             ),
           ),
-
         ],
       ),
     );
   }
 
-  Widget buildItem(int index) {
-    Address address =   AddressManager.instance.getAddresss()[index];
-
+  Widget buildItem(Address address) {
     return GestureDetector(
       child: Card(
         child: Padding(
@@ -81,34 +92,37 @@ class _AddressListState extends State<AddressListPage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-             Checkbox(
-               value: address.isDefault, onChanged: (bool value) {setState(() {
-                 address.isDefault = value;
-               });},
-             ),
+              Checkbox(
+                value: address.status == 1,
+                onChanged: (bool value) {
+                  setState(() {
+                    address.status = value ? 1 : 0;
+                  });
+                },
+              ),
               Expanded(
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          address.name+address.phone,
-                          style: TextStyle(color: UIData.ff353535, fontSize: 13),
-                        ),
-                        Text(
-                          address.area+address.address,
-                          style: TextStyle(color: UIData.ff999999, fontSize: 12),
-                        ),
-                      ],
+                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      address.name + address.phone,
+                      style: TextStyle(color: UIData.ff353535, fontSize: 13),
                     ),
-                  )),
+                    Text(
+                      address.address,
+                      style: TextStyle(color: UIData.ff999999, fontSize: 12),
+                    ),
+                  ],
+                ),
+              )),
             ],
           ),
         ),
       ),
-      onTap: (){
+      onTap: () {
         Navigator.push(
             context,
             new MaterialPageRoute(
@@ -117,14 +131,24 @@ class _AddressListState extends State<AddressListPage> {
     );
   }
 
-
-  ListView buildListView() {
+  ListView buildListView(List<Address> list) {
     return ListView.builder(
-      itemCount: AddressManager.instance.addresss.length,
+      itemCount: list.length,
       itemBuilder: (context, index) {
-        return buildItem(index);
+        return buildItem(list[index]);
       },
     );
   }
 
+  findAddress() async {
+    Future<Result> future = AddressBridge.findAddress(1, 2000);
+    future.then((v) {
+      if (v.code == 200) {
+        return null;
+      } else {
+        Bridge.showShortToast(v.msg);
+        return null;
+      }
+    });
+  }
 }

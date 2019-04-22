@@ -3,6 +3,7 @@ import 'package:flutter_lib/model/product.dart';
 
 class AddressManager {
   factory AddressManager() => _getInstance();
+
   static AddressManager get instance => _getInstance();
   static AddressManager _instance;
 
@@ -32,12 +33,12 @@ class AddressManager {
   void remove(Address product) {}
 
   void setDefault(Address product) {
-    product.isDefault = true;
+    product.status = 1;
   }
 
   Address getDefaultAddress() {
     addresss.forEach((f) {
-      if (f.isDefault) {
+      if (f.status == 1) {
         return f;
       }
     });
@@ -49,7 +50,6 @@ class AddressManager {
   }
 
   List<Address> getAddresss() {
-
     return addresss;
   }
 }

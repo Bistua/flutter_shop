@@ -14,7 +14,6 @@ class OrderViewModel {
           address: new Address(
               name: "dsda地址",
               phone: "154xxxxxxx",
-              area: "xxxx",
               address: "xxx号"),
           products: <Product>[
             Product(
@@ -52,7 +51,6 @@ class OrderViewModel {
           address: new Address(
               name: "dsda地址",
               phone: "154xxxxxxx",
-              area: "xxxx",
               address: "xxx号"),
           products: <Product>[
             Product(
@@ -101,7 +99,6 @@ class OrderViewModel {
           address: new Address(
               name: "dsda地址",
               phone: "154xxxxxxx",
-              area: "xxxx",
               address: "xxx号"),
           products: <Product>[
             Product(
@@ -161,7 +158,6 @@ class OrderViewModel {
           address: new Address(
               name: "dsda地址",
               phone: "154xxxxxxx",
-              area: "xxxx",
               address: "xxx号"),
           products: <Product>[
             Product(

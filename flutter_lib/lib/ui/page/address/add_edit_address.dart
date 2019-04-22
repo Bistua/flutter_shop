@@ -61,9 +61,9 @@ class _AddAddressListState extends State<AddAddressListPage> {
     if (address != null) {
       nameEditingController.text = address.name;
       phoneEditingController.text = address.phone;
-      areaEditingController.text = address.area;
+      //areaEditingController.text = address.area;
       addressEditingController.text = address.address;
-      isDefalut = address.isDefault;
+      isDefalut = address.status == 1;
     }
     return Padding(
       padding: EdgeInsets.only(top: 10),
@@ -102,18 +102,16 @@ class _AddAddressListState extends State<AddAddressListPage> {
                   address = new Address(
                       name: nameEditingController.text,
                       phone: phoneEditingController.text,
-                      area: areaEditingController.text,
+                      //area: areaEditingController.text,
                       address: addressEditingController.text);
                 } else {
                   address.name = nameEditingController.text;
                   address.phone = phoneEditingController.text;
-                  address.area = areaEditingController.text;
+                  //address.area = areaEditingController.text;
                   address.address = addressEditingController.text;
                 }
 
-                if (this.isDefalut) {
-                  address.isDefault = true;
-                }
+                address.status = this.isDefalut ? 1 : 0;
                 goToAdd(context, address);
 //                setState(() {
 //                  if (address == null) {
@@ -189,10 +187,7 @@ class _AddAddressListState extends State<AddAddressListPage> {
 
   goToAdd(BuildContext context, Address address) async {
     Future<Result> future = AddressBridge.addAddress(
-        address.phone,
-        address.name,
-        address.area + address.address,
-        address.isDefault ? 1 : 0);
+        address.phone, address.name, address.address, address.status);
     future.then((v) {
       if (v.code == 200) {
         Navigator.pop(context, false);
