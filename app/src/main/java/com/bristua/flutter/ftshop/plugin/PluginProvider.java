@@ -24,37 +24,27 @@ public class PluginProvider {
         new MethodChannel(messenger, CHANNEL).setMethodCallHandler((methodCall, result) -> {
             flutterResult = result;
             try {
-                JSONObject jsonObject;
-                if (!TextUtils.isEmpty(methodCall.arguments.toString())) {
-                    jsonObject = new JSONObject(methodCall.arguments.toString());
-                } else {
-                    result.notImplemented();
-                    return;
-                }
-                try {
-                    iDelegate.call(context, methodCall, jsonObject, new IFlutterResult() {
-                        @Override
-                        public void success(@Nullable String pResult, int pErrorCode, @Nullable String pMessage) {
-                            result.success(pResult);
-                        }
+                iDelegate.call(context, methodCall, methodCall.arguments.toString(), new IFlutterResult() {
+                    @Override
+                    public void success(@Nullable String pResult, int pErrorCode, @Nullable String pMessage) {
+                        result.success(pResult);
+                    }
 
-                        @Override
-                        public void error(@Nullable String pMessage, int pErrorCode) {
-                            callbackError(result, pErrorCode, pMessage);
-                        }
+                    @Override
+                    public void error(@Nullable String pMessage, int pErrorCode) {
+                        callbackError(result, pErrorCode, pMessage);
+                    }
 
-                        @Override
-                        public void notImplemented() {
-                            result.notImplemented();
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    callbackError(result, -1, e.getMessage());
-                }
-            } catch (JSONException e) {
+                    @Override
+                    public void notImplemented() {
+                        result.notImplemented();
+                    }
+                });
+            } catch (Exception e) {
                 e.printStackTrace();
+                callbackError(result, -1, e.getMessage());
             }
+
         });
     }
 

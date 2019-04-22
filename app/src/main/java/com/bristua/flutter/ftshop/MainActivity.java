@@ -45,33 +45,33 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void testLogin(){
-        try {
-            Protocol protocol = new Protocol();
-            WXCode wxCode = new WXCode();
-            wxCode.setCode("12312313");
-            protocol.setData(wxCode);
-            protocol.setMethod(CategoryConstant.CATEGORY_TYPE_ROOT);
-            String json = JSON.toJSONString(protocol);
-            BRouter.getInstance().build(CategoryConstant.CATEGORY_MODULE).setProtocol(json).setResult(new IFlutterResult() {
-                @Override
-                public void success(@Nullable String pResult, int pErrorCode, @Nullable String pMessage) {
-
-                    Log.i(TAG,String.format("pResult:%s,code:%d,message:%s",pResult,pErrorCode,pMessage));
-                }
-
-                @Override
-                public void error(@Nullable String pMessage, int pErrorCode) {
-                    Log.i(TAG,String.format("pMessage:%s,code:%d",pMessage,pErrorCode));
-                }
-
-                @Override
-                public void notImplemented() {
-
-                }
-            }).navigation();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Protocol protocol = new Protocol();
+//            WXCode wxCode = new WXCode();
+//            wxCode.setCode("12312313");
+//            protocol.setData(wxCode);
+//            protocol.setMethod(CategoryConstant.CATEGORY_TYPE_ROOT);
+//            String json = JSON.toJSONString(protocol);
+//            BRouter.getInstance().build(CategoryConstant.CATEGORY_MODULE).setProtocol(json).setResult(new IFlutterResult() {
+//                @Override
+//                public void success(@Nullable String pResult, int pErrorCode, @Nullable String pMessage) {
+//
+//                    Log.i(TAG,String.format("pResult:%s,code:%d,message:%s",pResult,pErrorCode,pMessage));
+//                }
+//
+//                @Override
+//                public void error(@Nullable String pMessage, int pErrorCode) {
+//                    Log.i(TAG,String.format("pMessage:%s,code:%d",pMessage,pErrorCode));
+//                }
+//
+//                @Override
+//                public void notImplemented() {
+//
+//                }
+//            }).navigation();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
 

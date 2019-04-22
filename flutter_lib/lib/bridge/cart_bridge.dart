@@ -131,6 +131,7 @@ class CartBridge {
         "action": component,
         "arguments": {
           "method": "shop_cart_findCart",
+          "data": {"productId":"xxx",}
         }
       }
     });

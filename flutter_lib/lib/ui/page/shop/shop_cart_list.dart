@@ -69,7 +69,8 @@ class _ShopCartListState extends State<ShopCartListPage> {
       ),
     );
   }
-  String userAddressId="12";
+
+  String userAddressId = "12";
   Container buildBody(Cart cart) {
     return Container(
       child: Stack(
@@ -160,8 +161,8 @@ class _ShopCartListState extends State<ShopCartListPage> {
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.fromLTRB(14, 0, 12, 0),
-                    child:
-                    UIData.getImageWithWHFit(products[index].sku.img,BoxFit.cover, 88, 88),
+                    child: UIData.getImageWithWHFit(
+                        products[index].sku.img, BoxFit.cover, 88, 88),
                   ),
                   Expanded(
                     child: Column(
@@ -171,7 +172,10 @@ class _ShopCartListState extends State<ShopCartListPage> {
                       children: <Widget>[
                         Padding(
                           padding: EdgeInsets.fromLTRB(12, 18, 12, 8),
-                          child: Text(products[index].sku.name,
+                          child: Text(
+                              (products[index].sku.name != null)
+                                  ? products[index].sku.name
+                                  : "",
                               style: TextStyle(
                                   fontSize: 12, color: UIData.ff353535)),
                         ),
@@ -186,7 +190,9 @@ class _ShopCartListState extends State<ShopCartListPage> {
                                   borderRadius: BorderRadius.circular(3)),
                               child: Center(
                                 child: UIData.getTextWidget(
-                                    products[index].sku.name,
+                                    (products[index].sku.name != null)
+                                        ? products[index].sku.name
+                                        : "",
                                     UIData.ff999999,
                                     11),
                               )),

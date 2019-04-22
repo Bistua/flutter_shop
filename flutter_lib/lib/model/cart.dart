@@ -65,7 +65,7 @@ class CartProduct {
   double price;
   double freight;
   String norms;
-  String name;
+  String name="";
   String img;
 
 
