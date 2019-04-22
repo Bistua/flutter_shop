@@ -27,7 +27,7 @@ class CartBridge {
       "params": {
         "action": component,
         "arguments": {
-          "method": "add",
+          "method": "shop_cart_add",
           "data": json.encode({
             "productId": productId,
             "skuId": skuId,
@@ -89,7 +89,7 @@ class CartBridge {
   static Future<Result> delSku(String productId,String skuId, int amount) async {
 //    return Result.fromJson(await getCart());
     return Bridge.dispenser({
-      "method": "del",
+      "method": "shop_cart_del",
       "params": {
         "action": component,
         "arguments": {
@@ -107,7 +107,7 @@ class CartBridge {
   static Future<Result> addSkuAmount(String productId,String skuId, int amount) async {
 //    return Result.fromJson(await getCart());
     return Bridge.dispenser({
-      "method": "addAmount",
+      "method": "shop_cart_addAmount",
       "params": {
         "action": component,
         "arguments": {
@@ -126,7 +126,7 @@ class CartBridge {
 //    return Result.fromJson(await getCart());
 
     return Bridge.dispenser({
-      "method": "findCart",
+      "method": "shop_cart_findCart",
       "params": {
         "action": component,
         "arguments": {
