@@ -21,11 +21,11 @@ class OrderBridge {
   print(orderGoods);
   print(json.encode(orderGoods));
     return Bridge.dispenser({
-      "method": "submit",
+      "method": "order_submit",
       "params": {
         "action": component,
         "arguments": {
-          "method": "submit",
+          "method": "order_submit",
           "data": {
             "userAddressId": userAddressId,
             "freight": freight ? "1" : "",
