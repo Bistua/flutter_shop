@@ -165,12 +165,11 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                           )
                           .toList();
 
-                   var orders =   orderGoodses.map((f)=>(
-                          f.toJson()
-                      )).toList();
+                      var orders =
+                          orderGoodses.map((f) => (f.toJson())).toList();
 
-                      Future<Result> future = OrderBridge.submitOrder(
-                          userAddressId, true, orders);
+                      Future<Result> future =
+                          OrderBridge.submitOrder(userAddressId, true, orders);
                       future.then((result) {
                         if (result.code == 200) {
                           if (result.data == null) {
