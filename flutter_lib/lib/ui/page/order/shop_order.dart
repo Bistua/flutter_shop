@@ -157,11 +157,20 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                     child: UIData.getShapeButton(
                         UIData.fffa4848, UIData.fff, 90, 33, "提交订单", 15, 0, () {
                       List<OrderGoods> orderGoodses = cart.products
-                          .map((sku) => new OrderGoods(
-                              sku.skuId, sku.sku.amount.toString()))
+                          .map(
+                            (sku) => new OrderGoods(
+                                  sku.skuId,
+                                  sku.sku.amount.toString(),
+                                ),
+                          )
                           .toList();
+
+                   var orders =   orderGoodses.map((f)=>(
+                          f.toJson()
+                      )).toList();
+
                       Future<Result> future = OrderBridge.submitOrder(
-                          userAddressId, true, orderGoodses);
+                          userAddressId, true, orders);
                       future.then((result) {
                         if (result.code == 200) {
                           if (result.data == null) {
@@ -286,6 +295,12 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
 
   GestureDetector buildListIItem(SkuWapper sku) {
     CartProduct cartProduct = sku.sku;
+    String name = (cartProduct.name != null) ? cartProduct.name : "";
+    String price = "￥" +
+        ((cartProduct.price != null)
+            ? cartProduct.price.toStringAsFixed(2)
+            : "0.00");
+
     return GestureDetector(
       child: Container(
         child: Card(
@@ -309,7 +324,7 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.fromLTRB(12, 18, 12, 8),
-                      child: Text(cartProduct.name,
+                      child: Text(name,
                           style:
                               TextStyle(fontSize: 12, color: UIData.ff353535)),
                     ),
@@ -323,8 +338,8 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                               shape: BoxShape.rectangle,
                               borderRadius: BorderRadius.circular(3)),
                           child: Center(
-                            child: UIData.getTextWidget(
-                                cartProduct.name, UIData.ff999999, 11),
+                            child:
+                                UIData.getTextWidget(name, UIData.ff999999, 11),
                           )),
                     ),
                     Padding(
@@ -336,7 +351,7 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                         children: <Widget>[
                           Expanded(
                             child: Text(
-                              "￥" + cartProduct.price.toStringAsFixed(2),
+                              price,
                               style: TextStyle(
                                   color: UIData.fffa4848, fontSize: 15),
                             ),
