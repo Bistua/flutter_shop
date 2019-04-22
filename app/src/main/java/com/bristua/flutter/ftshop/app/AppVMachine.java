@@ -59,7 +59,7 @@ public class AppVMachine {
         IEnviromentManager envManager = AppConfig.getInstance().getEnvirmonetManager();
         envManager.init();
         //设置当前环境为开发环境
-        envManager.setEnv(EnvConstants.ENVIROMENT_DEVELOP);
+        envManager.setEnv(EnvConstants.ENVIROMENT_RPRODUCT);
         initHttpsModule(envManager);
         //初始化加载模组，对retrofit进行初始化
         initBRouter();
