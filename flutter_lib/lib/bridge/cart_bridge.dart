@@ -19,28 +19,28 @@ class CartBridge {
       String norms,
       String name,
       String url) async {
-    //todo  "data": json.encode 待测试
-    String data = await getCart();
-    return Result.fromJson(data);
-//    return Bridge.dispenser({
-//      "method": "add",
-//      "params": {
-//        "action": component,
-//        "arguments": {
-//          "method": "add",
-//          "data": json.encode({
-//            "productId": productId,
-//            "skuId": skuId,
-//            "amount": amount,
-//            "price": price,
-//            "freight": freight,
-//            "norms": norms,
-//            "name": name,
-//            "img": url,
-//          }),
-//        },
-//      }
-//    });
+//    //todo  "data": json.encode 待测试
+//    String data = await getCart();
+//    return Result.fromJson(data);
+    return Bridge.dispenser({
+      "method": "shop_cart_add",
+      "params": {
+        "action": component,
+        "arguments": {
+          "method": "add",
+          "data": json.encode({
+            "productId": productId,
+            "skuId": skuId,
+            "amount": amount,
+            "price": price,
+            "freight": freight,
+            "norms": norms,
+            "name": name,
+            "img": url,
+          }),
+        },
+      }
+    });
   }
 
   static getCart() async {
@@ -87,17 +87,17 @@ class CartBridge {
    *从购物车移除
    */
   static Future<Result> delSku(String productId,String skuId, int amount) async {
-    return Result.fromJson(await getCart());
-//    return Bridge.dispenser({
-//      "method": "del",
-//      "params": {
-//        "action": component,
-//        "arguments": {
-//          "method": "del",
-//          "data": {"productId":productId,"skuId": skuId, "distinct": amount}
-//        }
-//      }
-//    });
+//    return Result.fromJson(await getCart());
+    return Bridge.dispenser({
+      "method": "del",
+      "params": {
+        "action": component,
+        "arguments": {
+          "method": "shop_cart_del",
+          "data": {"productId":productId,"skuId": skuId, "distinct": amount}
+        }
+      }
+    });
   }
 
   /*
@@ -105,17 +105,17 @@ class CartBridge {
    *从购物车数量添加
    */
   static Future<Result> addSkuAmount(String productId,String skuId, int amount) async {
-    return Result.fromJson(await getCart());
-//    return Bridge.dispenser({
-//      "method": "addAmount",
-//      "params": {
-//        "action": component,
-//        "arguments": {
-//          "method": "addAmount",
-//          "data": {"productId":productId,"skuId": skuId, "distinct": amount}
-//        }
-//      }
-//    });
+//    return Result.fromJson(await getCart());
+    return Bridge.dispenser({
+      "method": "addAmount",
+      "params": {
+        "action": component,
+        "arguments": {
+          "method": "shop_cart_addAmount",
+          "data": {"productId":productId,"skuId": skuId, "distinct": amount}
+        }
+      }
+    });
   }
 
   /*
@@ -123,16 +123,16 @@ class CartBridge {
    *获取购物车信息
    */
   static Future<Result> findCart() async {
-    return Result.fromJson(await getCart());
-//
-//    return Bridge.dispenser({
-//      "method": "findCart",
-//      "params": {
-//        "action": component,
-//        "arguments": {
-//          "method": "findCart",
-//        }
-//      }
-//    });
+//    return Result.fromJson(await getCart());
+
+    return Bridge.dispenser({
+      "method": "findCart",
+      "params": {
+        "action": component,
+        "arguments": {
+          "method": "shop_cart_findCart",
+        }
+      }
+    });
   }
 }
