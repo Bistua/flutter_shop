@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_lib/bridge/address_bridge.dart';
 import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/logic/bloc/address_bloc.dart';
-import 'package:flutter_lib/logic/viewmodel/deliver_address_manager.dart';
 import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/address.dart';
 import 'package:flutter_lib/ui/page/address/add_edit_address.dart';
@@ -54,6 +53,9 @@ class _AddressListState extends State<AddressListPage> {
   }
 
   Container buildBody(List<Address> list) {
+    if(list == null){
+      list = new List();
+    }
     return Container(
       child: Stack(
         children: <Widget>[

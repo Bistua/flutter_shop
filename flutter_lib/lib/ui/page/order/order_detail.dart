@@ -398,11 +398,6 @@ class OrderDetailPageState extends State<OrderDetailPage> {
                                 ),
                                 //圆角大小,与BoxDecoration保持一致，更美观
                                 onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      new MaterialPageRoute(
-                                          builder: (context) =>
-                                              new AddressListPage()));
                                 },
                               ),
                             ],
