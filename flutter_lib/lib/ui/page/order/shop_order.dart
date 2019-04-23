@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/bridge/order_bridge.dart';
 import 'package:flutter_lib/bridge/pay_bridge.dart';
+import 'package:flutter_lib/logic/bloc/address_bloc.dart';
 import 'package:flutter_lib/logic/bloc/cart_bloc.dart';
-import 'package:flutter_lib/logic/viewmodel/deliver_address_manager.dart';
 import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/address.dart';
 import 'package:flutter_lib/model/cart.dart';
@@ -24,6 +24,7 @@ class ShopOrderListPage extends StatefulWidget {
 class _ShopOrderListState extends State<ShopOrderListPage> {
   double get deliverPrice => 10;
   CartBloc cartBloc = CartBloc();
+  AddressBloc addressBloc = AddressBloc();
 
   String userAddressId = "123123";
 
@@ -94,7 +95,7 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                 SliverList(
                   delegate: SliverChildListDelegate(
                     [
-                      buildHeader(),
+                      buildHeaderBody(),
                     ],
                   ),
                 ),
@@ -102,7 +103,9 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                   itemExtent: 111,
                   delegate: SliverChildBuilderDelegate(
                     (context, index) => buildListIItem(cart.products[index]),
-                    childCount: cart.products.length,
+                    childCount: (cart == null || cart.products == null)
+                        ? 0
+                        : cart.products.length,
                   ),
                 ),
                 SliverList(
@@ -412,9 +415,24 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
     );
   }
 
-  Widget buildHeader() {
-    Address address = AddressManager.instance.getDefaultAddress();
+  Widget buildHeaderBody() {
+    addressBloc.getAddressList();
+    return StreamBuilder<List<Address>>(
+        stream: addressBloc.productItems,
+        builder: (context, snapshot) {
+          Address address = (snapshot.data != null && snapshot.data.length > 1)
+              ? snapshot.data[0]
+              : null;
+          return snapshot.hasData
+              ? buildHeader(address)
+              : Center(child: CircularProgressIndicator());
+        });
+  }
 
+  Widget buildHeader(Address address) {
+    if (address != null) {
+      userAddressId = address.userAddressId;
+    }
     return GestureDetector(
       child: Card(
         child: Padding(

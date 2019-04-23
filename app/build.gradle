@@ -66,7 +66,7 @@ dependencies {
     implementation 'com.ft.business.component:user_login:5.0.6-SNAPHOST'
     implementation 'com.ft.business.component:user_pay:1.1.1-SNAPHOST'
     implementation 'com.ft.business.component:enviroment:1.0.8-SNAPHOST'
-    implementation 'com.ft.business.component:shop_cart:1.2.3-SNAPHOST'
+    implementation 'com.ft.business.component:shop_cart:1.2.4-SNAPHOST'
     implementation 'com.ft.business.component:address:1.1.1-SNAPHOST'
     implementation 'com.ft.business.component:order:1.0.3-SNAPHOST'
     implementation 'com.bristua.framework:ssl_cert:1.0.5-SNAPHOST'
