@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
+
+import 'package:json_annotation/json_annotation.dart';
 ///
 ///   {
 //                "id": 3,
@@ -29,6 +31,7 @@ import 'dart:convert';
 ///
 ///
 ///
+@JsonSerializable()
 class Product {
   String skuId;
   String name;
@@ -40,7 +43,7 @@ class Product {
   String description;
   int totalReviews;
   List<String> sizes;
-  List<ProductColor> colors;
+  //List<ProductColor> colors;
   int quantity = 0;
   int count = 0;
   bool isChecked = false;
@@ -58,7 +61,7 @@ class Product {
     this.description,
     this.totalReviews,
     this.sizes,
-    this.colors,
+    //this.colors,
     this.quantity,
     this.count,
     this.size,

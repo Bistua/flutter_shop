@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_lib/logic/bloc/oder_list_bloc.dart';
 import 'package:flutter_lib/logic/viewmodel/order_view_model.dart';
 import 'package:flutter_lib/model/orderListItem.dart';
 import 'package:flutter_lib/model/product.dart';
@@ -13,6 +14,8 @@ class AllShopOrderPage extends StatefulWidget {
 }
 
 class _ShopCartListState extends State<AllShopOrderPage> {
+  OrderListBloc orderListBloc = OrderListBloc();
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
@@ -75,9 +78,10 @@ class _ShopCartListState extends State<AllShopOrderPage> {
         ),
         body: TabBarView(
           children: [
+            //1:待付款，2:待发货，3:待收货，4:待评价,0:全部
             Container(child: getOrderList(0)),
-            Container(child: getOrderList(0)),
-            Container(child: getOrderList(0)),
+            Container(child: getOrderList(2)),
+            Container(child: getOrderList(4)),
           ],
         ),
       ),
@@ -92,17 +96,37 @@ class _ShopCartListState extends State<AllShopOrderPage> {
   }
 
   Widget getOrderList(int type) {
-    OrderViewModel orderViewModel = OrderViewModel();
-    List<OrderItem> orders = orderViewModel.getOrders();
+    orderListBloc.getOrderListList(type);
+    return StreamBuilder<List<OrderItem>>(
+        stream: orderListBloc.productItems,
+        builder: (context, snapshot) {
+          List<OrderItem> list = snapshot.data;
+          return snapshot.hasData
+              ? (list == null ? empty(type) : buildListView(list))
+              : Center(child: CircularProgressIndicator());
+        });
+  }
 
-    if (type == 0) {
-      return buildListView(orders);
-    }
+  Widget empty(int type) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: GestureDetector(
+          child: Padding(
+            padding: const EdgeInsets.all(32.0),
+            child: Text("无数据,点击重试"),
+          ),
+          onTap: () {
+            orderListBloc.getOrderListList(type);
+          },
+        ),
+      ),
+    );
   }
 
   Widget buildListView(List<OrderItem> orders) {
     return ListView.builder(
-      itemCount: orders.length,
+      itemCount: orders == null ? 0 : orders.length,
       itemBuilder: (context, index) {
         return buildOrderItem(orders, index);
       },
@@ -141,7 +165,6 @@ class _ShopCartListState extends State<AllShopOrderPage> {
                     itemBuilder: (BuildContext context, int index) {
                       return buildListIItem(prducts[index]);
                     },
-
                     itemCount: prducts.length,
                   ),
                   Row(
@@ -188,7 +211,7 @@ class _ShopCartListState extends State<AllShopOrderPage> {
                 product.image,
                 BoxFit.cover,
                 88,
-               88,
+                88,
               ),
             ),
             Expanded(
@@ -255,7 +278,8 @@ class _ShopCartListState extends State<AllShopOrderPage> {
         ),
       ),
       onTap: () {
-        Navigator.pushNamed(context, UIData.ShopDetailPage,arguments: product.skuId);
+        Navigator.pushNamed(context, UIData.ShopDetailPage,
+            arguments: product.skuId);
       },
     );
   }

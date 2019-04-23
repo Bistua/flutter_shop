@@ -246,24 +246,24 @@ class ProductViewModel {
             price: "£19.99",
             priceNum: 19.99,
             rating: 4.0,
-            colors: [
-              ProductColor(
-                color: Colors.red,
-                colorName: "Red",
-              ),
-              ProductColor(
-                color: Colors.green,
-                colorName: "Green",
-              ),
-              ProductColor(
-                color: Colors.blue,
-                colorName: "Blue",
-              ),
-              ProductColor(
-                color: Colors.cyan,
-                colorName: "Cyan",
-              )
-            ],
+//            colors: [
+//              ProductColor(
+//                color: Colors.red,
+//                colorName: "Red",
+//              ),
+//              ProductColor(
+//                color: Colors.green,
+//                colorName: "Green",
+//              ),
+//              ProductColor(
+//                color: Colors.blue,
+//                colorName: "Blue",
+//              ),
+//              ProductColor(
+//                color: Colors.cyan,
+//                colorName: "Cyan",
+//              )
+//            ],
             quantity: 0,
             sizes: ["S", "M", "L", "XL"],
             totalReviews: 170,
@@ -389,24 +389,24 @@ class ProductViewModel {
             price: "¥19.99",
             priceNum: 19.99,
             rating: 4.0,
-            colors: [
-              ProductColor(
-                color: Colors.red,
-                colorName: "Red",
-              ),
-              ProductColor(
-                color: Colors.green,
-                colorName: "Green",
-              ),
-              ProductColor(
-                color: Colors.blue,
-                colorName: "Blue",
-              ),
-              ProductColor(
-                color: Colors.cyan,
-                colorName: "Cyan",
-              )
-            ],
+//            colors: [
+//              ProductColor(
+//                color: Colors.red,
+//                colorName: "Red",
+//              ),
+//              ProductColor(
+//                color: Colors.green,
+//                colorName: "Green",
+//              ),
+//              ProductColor(
+//                color: Colors.blue,
+//                colorName: "Blue",
+//              ),
+//              ProductColor(
+//                color: Colors.cyan,
+//                colorName: "Cyan",
+//              )
+//            ],
             quantity: 0,
             sizes: ["S", "M", "L", "XL"],
             totalReviews: 170,
@@ -579,24 +579,24 @@ class ProductViewModel {
             price: "¥19.99",
             priceNum: 19.99,
             rating: 4.0,
-            colors: [
-              ProductColor(
-                color: Colors.red,
-                colorName: "Red",
-              ),
-              ProductColor(
-                color: Colors.green,
-                colorName: "Green",
-              ),
-              ProductColor(
-                color: Colors.blue,
-                colorName: "Blue",
-              ),
-              ProductColor(
-                color: Colors.cyan,
-                colorName: "Cyan",
-              )
-            ],
+//            colors: [
+//              ProductColor(
+//                color: Colors.red,
+//                colorName: "Red",
+//              ),
+//              ProductColor(
+//                color: Colors.green,
+//                colorName: "Green",
+//              ),
+//              ProductColor(
+//                color: Colors.blue,
+//                colorName: "Blue",
+//              ),
+//              ProductColor(
+//                color: Colors.cyan,
+//                colorName: "Cyan",
+//              )
+//            ],
             quantity: 0,
             sizes: ["S", "M", "L", "XL"],
             totalReviews: 170,
