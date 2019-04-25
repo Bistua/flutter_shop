@@ -29,7 +29,7 @@ class OrderBridge {
           "data": {
             "userAddressId": userAddressId,
             "freight": freight ? "1" : "",
-            "data": json.encode(orderGoods)
+            "goods": json.encode(orderGoods)
           }
         }
       }

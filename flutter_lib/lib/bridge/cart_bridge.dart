@@ -30,7 +30,7 @@ class CartBridge {
           "method": "shop_cart_add",
           "data": json.encode({
             "productId": productId,
-            "skuId": skuId,
+            "goodsId": skuId,
             "amount": amount,
             "price": price,
             "freight": freight,

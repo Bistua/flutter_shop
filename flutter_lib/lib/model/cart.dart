@@ -29,12 +29,12 @@ class Cart {
 
 @JsonSerializable()
 class SkuWapper {
-  String skuId;
+  String goodsId;
   CartProduct sku;
 
 
 
-  SkuWapper({this.skuId, this.sku});
+  SkuWapper({this.goodsId, this.sku});
 
 
   /// A necessary factory constructor for creating a new Category instance
@@ -59,7 +59,7 @@ class SkuWapper {
 @JsonSerializable()
 class CartProduct {
   String productId;
-  String skuId;
+  String goodsId;
 
   int amount;
   double price;
@@ -69,7 +69,7 @@ class CartProduct {
   String img;
 
 
-  CartProduct({this.productId,this.skuId, this.amount, this.price,this.freight, this.norms,this.name,this.img});
+  CartProduct({this.productId,this.goodsId, this.amount, this.price,this.freight, this.norms,this.name,this.img});
 
 
   /// A necessary factory constructor for creating a new Category instance

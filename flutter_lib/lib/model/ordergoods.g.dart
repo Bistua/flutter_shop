@@ -7,8 +7,8 @@ part of 'ordergoods.dart';
 // **************************************************************************
 
 OrderGoods _$OrderGoodsFromJson(Map<String, dynamic> json) {
-  return OrderGoods(json['skuId'] as String, json['buyNum'] as String);
+  return OrderGoods(json['goodsId'] as String, json['buyNum'] as String);
 }
 
 Map<String, dynamic> _$OrderGoodsToJson(OrderGoods instance) =>
-    <String, dynamic>{'skuId': instance.skuId, 'buyNum': instance.buyNum};
+    <String, dynamic>{'goodsId': instance.goodsId, 'buyNum': instance.buyNum};

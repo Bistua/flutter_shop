@@ -47,7 +47,7 @@ class CartBloc {
 
   del2Cart(SkuWapper sku, int amount) {
     Future<Result> future =
-        CartBridge.delSku(sku.sku.productId, sku.skuId, amount);
+        CartBridge.delSku(sku.sku.productId, sku.goodsId, amount);
     future.then((result) {
       if (result.code == 200) {
         Cart categoryList = Cart.fromJson(result.data);
@@ -60,7 +60,7 @@ class CartBloc {
 
   addSkuAmount(SkuWapper sku, int amount) {
     Future<Result> future =
-        CartBridge.delSku(sku.sku.productId, sku.skuId, amount);
+        CartBridge.delSku(sku.sku.productId, sku.goodsId, amount);
     future.then((result) {
       if (result.code == 200) {
         Cart categoryList = Cart.fromJson(result.data);

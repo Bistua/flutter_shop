@@ -4,10 +4,10 @@ part 'ordergoods.g.dart';
 
 @JsonSerializable()
 class OrderGoods {
-  String skuId;
+  String goodsId;
   String buyNum;
 
-  OrderGoods(this.skuId, this.buyNum);
+  OrderGoods(this.goodsId, this.buyNum);
 
   factory OrderGoods.fromJson(Map<String, dynamic> json) => _$OrderGoodsFromJson(json);
 
