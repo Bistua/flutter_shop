@@ -470,7 +470,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                 ),
                 onTap: () {
                   showChooseDialog(product);
-  },
+                },
               ),
             ),
             Padding(
@@ -515,7 +515,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
 
   Widget buildBody(ProductItem product) {
     productBloc.getProductSkuInfo(productId);
-   return Stack(
+    return Stack(
       children: <Widget>[
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -548,7 +548,8 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
                             product.price.toString(),
-                            style: TextStyle(color: UIData.fffa4848, fontSize: 15),
+                            style:
+                                TextStyle(color: UIData.fffa4848, fontSize: 15),
                           ),
                         )
                       ],
@@ -566,15 +567,13 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                       ? buildSkuInfoWidget(snapshot.data)
                       : Center(child: CircularProgressIndicator());
                 }),
-
-
           ],
         ),
         Positioned(
           bottom: 20,
           left: 0,
           right: 0,
-          child:  UIData.getShapeButton(
+          child: UIData.getShapeButton(
             UIData.fffa4848,
             UIData.fff,
             345,
@@ -582,20 +581,19 @@ class ShopDetailPageState extends State<ShopDetailPage> {
             "加入购物车",
             18,
             5,
-                () {
+            () {
               add2Cart(product);
             },
           ),
         ),
       ],
     );
-
   }
 
   Column buildSkuInfoWidget(SkuInfo data) {
-    return  Column(
+    return Column(
       children: data.options.map(
-            (option) {
+        (option) {
           return Row(
             children: option.values.map((value) {
               return GestureDetector(
@@ -617,8 +615,6 @@ class ShopDetailPageState extends State<ShopDetailPage> {
       ).toList(),
     );
   }
-
-
 
   void add2Cart(ProductItem product) {
     Future<Result> future = CartBridge.addSku(
