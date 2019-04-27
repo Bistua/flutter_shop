@@ -203,7 +203,7 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
   }
 
   showPayDialog(BuildContext context, Cart cart, OrderResult orderResult) {
-    showDialog(
+    showModalBottomSheet(
         context: context,
         builder: (context) => Center(
               child: Material(

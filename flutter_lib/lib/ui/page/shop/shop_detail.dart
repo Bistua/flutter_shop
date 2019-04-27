@@ -23,37 +23,36 @@ class ShopDetailPage extends StatefulWidget {
   ShopDetailPageState createState() => new ShopDetailPageState(productId);
 }
 
-class ShopDetailPageState extends State<ShopDetailPage> {
-//     with WidgetsBindingObserver
+class ShopDetailPageState extends State<ShopDetailPage>
+    with WidgetsBindingObserver {
   int productId;
-  ProductBloc productBloc = ProductBloc();
-  SkuInfo skuInfo = null;
+  ProductBloc productBloc;
 
   ShopDetailPageState(int productId) {
     this.productId = productId;
   }
-//
-//  @override
-//  void initState() {
-//    super.initState();
-//    WidgetsBinding.instance.addObserver(this);
-//  }
-//
-//  @override
-//  void dispose() {
-//    WidgetsBinding.instance.removeObserver(this);
-//    super.dispose();
-//  }
-//
-//  @override
-//  Future<bool> didPopRoute() {
-//    print("didPopRoute");
-//    setState(() {
-//
-//    });
-//    return super.didPopRoute();
-//  }
-//
+
+  @override
+  void initState() {
+    super.initState();
+    productBloc = ProductBloc();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    productBloc.close();
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  Future<bool> didPopRoute() {
+    print("didPopRoute");
+
+    return super.didPopRoute();
+  }
+
 //  @override
 //  void didChangeAppLifecycleState(AppLifecycleState state) {
 //    print("didChangeAppLifecycleState");
@@ -469,7 +468,9 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                   ],
                 ),
                 onTap: () {
-                  showChooseDialog(product);
+                  showChooseDialog(product).then((v) => {
+                        debugPrint("dialog关闭"),
+                      });
                 },
               ),
             ),
@@ -496,8 +497,8 @@ class ShopDetailPageState extends State<ShopDetailPage> {
     );
   }
 
-  showChooseDialog(ProductItem product) {
-    showDialog(
+  Future<Null> showChooseDialog(ProductItem product) async {
+    return await showModalBottomSheet(
         context: context,
         builder: (context) => Center(
               child: Material(

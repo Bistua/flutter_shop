@@ -12,7 +12,7 @@ import 'package:flutter_lib/model/skuinfo.dart';
 class ProductBloc {
   final ProductViewModel productViewModel = ProductViewModel();
   final productController = StreamController<List<ProductItem>>();
-  final skuInfoController = StreamController<SkuInfo>();
+  final skuInfoController = StreamController<SkuInfo>.broadcast();
 
   Stream<List<ProductItem>> get productItems {
     return productController.stream;
@@ -47,7 +47,7 @@ class ProductBloc {
     });
   }
 
-  getProduct(int productId){
+  getProduct(int productId) {
     ProductBridge.getProduct(productId).then((result) {
       if (result.code == 200) {
         ProductList productList = ProductList.fromJson(result.data);
@@ -58,7 +58,7 @@ class ProductBloc {
     });
   }
 
-  getProductSkuInfo(int productId){
+  getProductSkuInfo(int productId) {
     SkuBridge.findGoodsSku(productId.toString()).then((result) {
       if (result.code == 200) {
         ProductList productList = ProductList.fromJson(result.data);
@@ -67,5 +67,14 @@ class ProductBloc {
         Bridge.showLongToast(result.msg);
       }
     });
+  }
+
+  close() {
+    if (skuInfoController != null) {
+      skuInfoController.close();
+    }
+    if (productController != null) {
+      productController.close();
+    }
   }
 }
