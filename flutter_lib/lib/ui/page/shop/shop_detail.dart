@@ -448,11 +448,13 @@ class ShopDetailPageState extends State<ShopDetailPage>
         SkuInfo skuResult = SkuInfo.fromJson(result.data);
         this.skuInfo = skuResult;
         this.skuInfo.options.map((option) {
-          return option.values.map((value) {
-            map[option.key] = value.id;
-            return value.id;
-          });
-        });
+          option.values.map((value) {
+           setState(() {
+             map[option.key] = value.name;
+           });
+          }).toList();
+        }).toList();
+
       } else {
         Bridge.showLongToast(result.msg);
       }
@@ -628,6 +630,9 @@ class ShopDetailPageState extends State<ShopDetailPage>
                     onTap: () {
                       setState(() {
                         set.add(value.id);
+                        setState(() {
+                          map[option.key] = value.name;
+                        });
                       });
                     },
                   );
