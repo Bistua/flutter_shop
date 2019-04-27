@@ -61,8 +61,9 @@ class ProductBloc {
   getProductSkuInfo(int productId) {
     SkuBridge.findGoodsSku(productId.toString()).then((result) {
       if (result.code == 200) {
-        ProductList productList = ProductList.fromJson(result.data);
-        productController.add(productList.list);
+        print(result.toString());
+        SkuInfo productList = SkuInfo.fromJson(result.data);
+        skuInfoController.add(productList);
       } else {
         Bridge.showLongToast(result.msg);
       }

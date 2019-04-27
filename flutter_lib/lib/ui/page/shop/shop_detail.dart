@@ -620,7 +620,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
   void add2Cart(ProductItem product) {
     Future<Result> future = CartBridge.addSku(
         productId,
-        product.skuId,
+        product.skuId.toString(),
         chooseCount,
         product.price,
         0,

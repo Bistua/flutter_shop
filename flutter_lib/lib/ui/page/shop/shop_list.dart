@@ -18,6 +18,7 @@ class ShopList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ShopListPage(
       title: title,
+      categoryId: categoryId,
     );
   }
 }

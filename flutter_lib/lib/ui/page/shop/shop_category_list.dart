@@ -244,6 +244,7 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
               ),
             ),
             onTap: () {
+              print(data[index].toString());
               Navigator.push(
                   context,
                   new MaterialPageRoute(

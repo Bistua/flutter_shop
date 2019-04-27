@@ -19,4 +19,11 @@ class Result {
     print("bridge result  msg:" + msg);
     print("bridge result  data:" + s.toString());
   }
+
+  @override
+  String toString() {
+    return 'Result{code: $code, msg: $msg, data: $data}';
+  }
+
+
 }

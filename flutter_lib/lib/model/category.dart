@@ -33,6 +33,10 @@ class Category {
   /// helper method `_$CategoryToJson`.
   Map<String, dynamic> toJson() => _$CategoryToJson(this);
 
+  @override
+  String toString() {
+    return 'Category{id: $id, name: $name, image: $image}';
+  }
 
 
 }
