@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_lib/bridge/info_bridge.dart';
 import 'package:flutter_lib/logic/viewmodel/homeitem_view_model.dart';
 import 'package:flutter_lib/model/homeitem.dart';
 import 'package:flutter_lib/utils/uidata.dart';
@@ -22,7 +23,7 @@ class _UserHomeState extends State<UserHomeListPage> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
       statusBarColor: UIData.fffa4848, //or set color with: Color(0xFF0000FF)
     ));
-
+    //InfoBridge.wxInfo();
     return Scaffold(
       body: buildBody(),
     );
