@@ -1,5 +1,6 @@
 package com.bristua.flutter.ftshop;
 import android.app.Application;
+import android.support.multidex.MultiDexApplication;
 
 import com.bristua.flutter.ftshop.app.AppVMachine;
 import com.bristua.flutter.ftshop.exception.VMachineException;
@@ -8,7 +9,7 @@ import com.bristua.flutter.ftshop.exception.VMachineException;
  * 系统入口
  * @author richsjeson
  */
-public class AppApplication extends Application {
+public class AppApplication extends MultiDexApplication {
 
     @Override
     public void onCreate() {

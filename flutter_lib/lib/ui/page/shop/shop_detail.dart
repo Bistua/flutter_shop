@@ -7,6 +7,7 @@ import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/cart.dart';
 import 'package:flutter_lib/model/comment.dart';
 import 'package:flutter_lib/model/productitem.dart';
+import 'package:flutter_lib/model/skuinfo.dart';
 import 'package:flutter_lib/ui/page/order/shop_order.dart';
 import 'package:flutter_lib/ui/widgets/rating_bar.dart';
 import 'package:flutter_lib/utils/uidata.dart';
@@ -26,6 +27,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
 //     with WidgetsBindingObserver
   int productId;
   ProductBloc productBloc = ProductBloc();
+  SkuInfo skuInfo = null;
 
   ShopDetailPageState(int productId) {
     this.productId = productId;
@@ -439,9 +441,6 @@ class ShopDetailPageState extends State<ShopDetailPage> {
   String chooseCountStr = "1";
   int cartCount = 0;
 
-  List<int> size = [37, 40, 41];
-  List<String> color = ["红色", "黑色", "蓝色"];
-
   Padding buildVipInfo(ProductItem product) {
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
@@ -471,7 +470,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                 ),
                 onTap: () {
                   showChooseDialog(product);
-                },
+  },
               ),
             ),
             Padding(
@@ -508,211 +507,98 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                 child: Container(
                   height: 450,
                   color: UIData.fff,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            UIData.getImageWithWH(
-                              product.medias.alt1.url,
-                              90,
-                              90,
-                            ),
-                            Expanded(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      product.name,
-                                      maxLines: 3,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 15),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      product.price.toString(),
-                                      style: TextStyle(
-                                          color: UIData.fffa4848, fontSize: 15),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        padding: EdgeInsets.fromLTRB(14, 14, 14, 14),
-                      ),
-                      Divider(),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              "规格",
-                              style: TextStyle(
-                                  color: UIData.ff666666, fontSize: 15),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: size.map((s) {
-                            return GestureDetector(
-                              child: Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: Text(s.toString()),
-                                ),
-                              ),
-                              onTap: () {
-                                setState(() {
-                                  this.sizeIndex = size.indexOf(s);
-                                });
-                              },
-                            );
-                          }).toList(),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: color.map((color) {
-                            return GestureDetector(
-                              child: Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: Text(color.toString()),
-                                ),
-                              ),
-                              onTap: () {
-                                setState(() {
-                                  this.colorIndex = color.indexOf(color);
-                                });
-                              },
-                            );
-                          }).toList(),
-                        ),
-                      ),
-                      Divider(),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: Text(
-                                  "使用数量",
-                                  style: TextStyle(
-                                      color: UIData.ff666666, fontSize: 15),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: GestureDetector(
-                                child: Container(
-                                  width: 40,
-                                  height: 40,
-                                  child: Center(
-                                    child: UIData.getTextWidget(
-                                        "-", UIData.ff999999, 11),
-                                  ),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: UIData.fff7f7f7, width: 1.0),
-                                    shape: BoxShape.rectangle,
-                                  ),
-                                ),
-                                onTap: () {
-                                  setState(() {
-                                    print("-");
-                                    chooseCount--;
-                                    setState(() {
-                                      chooseCountStr = chooseCount.toString();
-                                    });
-                                  });
-                                },
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Container(
-                                width: 50,
-                                height: 40,
-                                child: Center(
-                                  child: Text(
-                                    chooseCountStr,
-                                    style: TextStyle(
-                                        color: UIData.ff666666, fontSize: 15),
-                                  ),
-                                ),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: UIData.fff7f7f7, width: 1.0),
-                                  shape: BoxShape.rectangle,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: GestureDetector(
-                                child: Container(
-                                  width: 40,
-                                  height: 40,
-                                  child: Center(
-                                    child: UIData.getTextWidget(
-                                        "+", UIData.ff999999, 11),
-                                  ),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: UIData.fff7f7f7, width: 1.0),
-                                    shape: BoxShape.rectangle,
-                                  ),
-                                ),
-                                onTap: () {
-                                  setState(() {
-                                    chooseCount++;
-                                    setState(() {
-                                      chooseCountStr = chooseCount.toString();
-                                    });
-                                  });
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      UIData.getShapeButton(
-                        UIData.fffa4848,
-                        UIData.fff,
-                        345,
-                        45,
-                        "加入购物车",
-                        18,
-                        5,
-                        () {
-                          add2Cart(product);
-                        },
-                      )
-                    ],
-                  ),
+                  child: StreamBuilder<SkuInfo>(
+                      stream: productBloc.skuInfo,
+                      builder: (context, snapshot) {
+                        return snapshot.hasData
+                            ? buildSkuInfoWidget(product, snapshot.data)
+                            : Center(child: CircularProgressIndicator());
+                      }),
                 ),
               ),
             ));
+  }
+
+  Column buildSkuInfoWidget(ProductItem product, SkuInfo data) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              UIData.getImageWithWH(
+                product.medias.alt1.url,
+                90,
+                90,
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        product.name,
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(color: Colors.black, fontSize: 15),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        product.price.toString(),
+                        style: TextStyle(color: UIData.fffa4848, fontSize: 15),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+          padding: EdgeInsets.fromLTRB(14, 14, 14, 14),
+        ),
+        Divider(),
+        Column(
+          children: data.options.map(
+            (option) {
+              return Row(
+                children: option.values.map((value) {
+                  return GestureDetector(
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Text(value.name),
+                      ),
+                    ),
+                    onTap: () {
+                      setState(() {
+                        this.colorIndex = value.id;
+                      });
+                    },
+                  );
+                }).toList(),
+              );
+            },
+          ).toList(),
+        ),
+        UIData.getShapeButton(
+          UIData.fffa4848,
+          UIData.fff,
+          345,
+          45,
+          "加入购物车",
+          18,
+          5,
+          () {
+            add2Cart(product);
+          },
+        )
+      ],
+    );
   }
 
   void add2Cart(ProductItem product) {

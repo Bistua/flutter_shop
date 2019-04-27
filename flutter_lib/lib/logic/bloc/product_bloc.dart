@@ -2,18 +2,24 @@ import 'dart:async';
 
 import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/bridge/product_bridge.dart';
+import 'package:flutter_lib/bridge/sku_bridge.dart';
 import 'package:flutter_lib/logic/viewmodel/product_view_model.dart';
 
 import 'package:flutter_lib/model/productitem.dart';
 import 'package:flutter_lib/model/productlist.dart';
-import 'package:flutter_lib/utils/uidata.dart';
+import 'package:flutter_lib/model/skuinfo.dart';
 
 class ProductBloc {
   final ProductViewModel productViewModel = ProductViewModel();
   final productController = StreamController<List<ProductItem>>();
+  final skuInfoController = StreamController<SkuInfo>();
 
   Stream<List<ProductItem>> get productItems {
     return productController.stream;
+  }
+
+  Stream<SkuInfo> get skuInfo {
+    return skuInfoController.stream;
   }
 
   ProductBloc();
@@ -43,6 +49,17 @@ class ProductBloc {
 
   getProduct(int productId){
     ProductBridge.getProduct(productId).then((result) {
+      if (result.code == 200) {
+        ProductList productList = ProductList.fromJson(result.data);
+        productController.add(productList.list);
+      } else {
+        Bridge.showLongToast(result.msg);
+      }
+    });
+  }
+
+  getProductSkuInfo(int productId){
+    SkuBridge.findGoodsSku(productId.toString()).then((result) {
       if (result.code == 200) {
         ProductList productList = ProductList.fromJson(result.data);
         productController.add(productList.list);
