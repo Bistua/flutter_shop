@@ -507,99 +507,118 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                 child: Container(
                   height: 450,
                   color: UIData.fff,
-                  child: StreamBuilder<SkuInfo>(
-                      stream: productBloc.skuInfo,
-                      builder: (context, snapshot) {
-                        return snapshot.hasData
-                            ? buildSkuInfoWidget(product, snapshot.data)
-                            : Center(child: CircularProgressIndicator());
-                      }),
+                  child: buildBody(product),
                 ),
               ),
             ));
   }
 
-  Column buildSkuInfoWidget(ProductItem product, SkuInfo data) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
+  Widget buildBody(ProductItem product) {
+    productBloc.getProductSkuInfo(productId);
+   return Stack(
       children: <Widget>[
-        Padding(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              UIData.getImageWithWH(
-                product.medias.alt1.url,
-                90,
-                90,
-              ),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        product.name,
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(color: Colors.black, fontSize: 15),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        product.price.toString(),
-                        style: TextStyle(color: UIData.fffa4848, fontSize: 15),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),
-          padding: EdgeInsets.fromLTRB(14, 14, 14, 14),
-        ),
-        Divider(),
         Column(
-          children: data.options.map(
-            (option) {
-              return Row(
-                children: option.values.map((value) {
-                  return GestureDetector(
-                    child: Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Text(value.name),
-                      ),
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  UIData.getImageWithWH(
+                    product.medias.alt1.url,
+                    90,
+                    90,
+                  ),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            product.name,
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(color: Colors.black, fontSize: 15),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            product.price.toString(),
+                            style: TextStyle(color: UIData.fffa4848, fontSize: 15),
+                          ),
+                        )
+                      ],
                     ),
-                    onTap: () {
-                      setState(() {
-                        this.colorIndex = value.id;
-                      });
-                    },
-                  );
-                }).toList(),
-              );
-            },
-          ).toList(),
+                  ),
+                ],
+              ),
+              padding: EdgeInsets.fromLTRB(14, 14, 14, 14),
+            ),
+            Divider(),
+            StreamBuilder<SkuInfo>(
+                stream: productBloc.skuInfo,
+                builder: (context, snapshot) {
+                  return snapshot.hasData
+                      ? buildSkuInfoWidget(snapshot.data)
+                      : Center(child: CircularProgressIndicator());
+                }),
+
+
+          ],
         ),
-        UIData.getShapeButton(
-          UIData.fffa4848,
-          UIData.fff,
-          345,
-          45,
-          "加入购物车",
-          18,
-          5,
-          () {
-            add2Cart(product);
-          },
-        )
+        Positioned(
+          bottom: 20,
+          left: 0,
+          right: 0,
+          child:  UIData.getShapeButton(
+            UIData.fffa4848,
+            UIData.fff,
+            345,
+            45,
+            "加入购物车",
+            18,
+            5,
+                () {
+              add2Cart(product);
+            },
+          ),
+        ),
       ],
     );
+
   }
+
+  Column buildSkuInfoWidget(SkuInfo data) {
+    return  Column(
+      children: data.options.map(
+            (option) {
+          return Row(
+            children: option.values.map((value) {
+              return GestureDetector(
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Text(value.name),
+                  ),
+                ),
+                onTap: () {
+                  setState(() {
+                    this.colorIndex = value.id;
+                  });
+                },
+              );
+            }).toList(),
+          );
+        },
+      ).toList(),
+    );
+  }
+
+
 
   void add2Cart(ProductItem product) {
     Future<Result> future = CartBridge.addSku(
