@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/bridge/cart_bridge.dart';
 import 'package:flutter_lib/bridge/common_bridge.dart';
+import 'package:flutter_lib/bridge/sku_bridge.dart';
 import 'package:flutter_lib/logic/bloc/product_bloc.dart';
 import 'package:flutter_lib/logic/viewmodel/comment_view_model.dart';
 import 'package:flutter_lib/model/Result.dart';
+import 'package:flutter_lib/model/SkuResult.dart';
 import 'package:flutter_lib/model/cart.dart';
 import 'package:flutter_lib/model/comment.dart';
 import 'package:flutter_lib/model/productitem.dart';
@@ -28,6 +30,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
   int productId;
   ProductBloc productBloc;
 
+  SkuInfo skuInfo;
   ShopDetailPageState(int productId) {
     this.productId = productId;
   }
@@ -73,7 +76,6 @@ class ShopDetailPageState extends State<ShopDetailPage>
   @override
   Widget build(BuildContext context) {
     productBloc.getProduct(productId);
-    print("shopdetail build");
     return new Scaffold(
       appBar: UIData.getCenterTitleAppBar("商品名称", context),
       body: bodyData(),
@@ -141,7 +143,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
                 ),
                 UIData.getShapeButton(
                     UIData.fffa4848, UIData.fff, 125, 50, "加入购物车", 16, 0, () {
-                  add2Cart(product);
+                  addCart(product, product.skuId.toString());
                 }),
                 UIData.getShapeButton(
                     UIData.ffffa517, UIData.fff, 110, 50, "立即购买", 16, 0, () {
@@ -434,13 +436,28 @@ class ShopDetailPageState extends State<ShopDetailPage>
     );
   }
 
-  int sizeIndex = 0;
-  int colorIndex = 0;
   int chooseCount = 1;
   String chooseCountStr = "1";
   int cartCount = 0;
 
   Padding buildVipInfo(ProductItem product) {
+
+    Future<Result> skuFuture = SkuBridge.findGoodsSku(productId.toString());
+    skuFuture.then((result) {
+      if (result.code == 200) {
+        SkuInfo skuResult = SkuInfo.fromJson(result.data);
+        this.skuInfo = skuResult;
+        this.skuInfo.options.map((option) {
+          return option.values.map((value) {
+            map[option.key] = value.id;
+            return value.id;
+          });
+        });
+      } else {
+        Bridge.showLongToast(result.msg);
+      }
+    });
+
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
       child: new Container(
@@ -455,19 +472,17 @@ class ShopDetailPageState extends State<ShopDetailPage>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      "规格数量选择（大小:" +
-                          "1" +
-                          "  颜色:" +
-                          "写死的黑丝" +
-                          "  数量:" +
-                          chooseCount.toString() +
-                          "）",
+                      map.toString() + "  数量:" + chooseCount.toString() + "）",
                       style: TextStyle(color: UIData.ff353535, fontSize: 15),
                     ),
                     Icon(Icons.arrow_forward_ios),
                   ],
                 ),
                 onTap: () {
+                  if (skuInfo == null) {
+                    addCart(product, product.skuId.toString());
+                    return;
+                  }
                   showChooseDialog(product).then((v) => {
                         debugPrint("dialog关闭"),
                       });
@@ -496,6 +511,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
       ),
     );
   }
+  Map map = new Map<String, dynamic>();
 
   Future<Null> showChooseDialog(ProductItem product) async {
     return await showModalBottomSheet(
@@ -514,8 +530,10 @@ class ShopDetailPageState extends State<ShopDetailPage>
             ));
   }
 
+
   Widget buildBody(ProductItem product) {
-    productBloc.getProductSkuInfo(productId);
+
+
     return Stack(
       children: <Widget>[
         Column(
@@ -561,13 +579,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
               padding: EdgeInsets.fromLTRB(14, 14, 14, 14),
             ),
             Divider(),
-            StreamBuilder<SkuInfo>(
-                stream: productBloc.skuInfo,
-                builder: (context, snapshot) {
-                  return snapshot.hasData
-                      ? buildSkuInfoWidget(snapshot.data)
-                      : Center(child: CircularProgressIndicator());
-                }),
+            buildSkuInfoWidget(skuInfo)
           ],
         ),
         Positioned(
@@ -583,7 +595,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
             18,
             5,
             () {
-              add2Cart(product);
+              addCart(product, product.skuId.toString());
             },
           ),
         ),
@@ -591,33 +603,72 @@ class ShopDetailPageState extends State<ShopDetailPage>
     );
   }
 
+  Set set = new Set<int>();
   Column buildSkuInfoWidget(SkuInfo data) {
     return Column(
       children: data.options.map(
         (option) {
           return Row(
-            children: option.values.map((value) {
-              return GestureDetector(
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Text(value.name),
-                  ),
+            children: <Widget>[
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Text(option.key),
                 ),
-                onTap: () {
-                  setState(() {
-                    this.colorIndex = value.id;
-                  });
-                },
-              );
-            }).toList(),
+              ),
+              Row(
+                children: option.values.map((value) {
+                  return GestureDetector(
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Text(value.name),
+                      ),
+                    ),
+                    onTap: () {
+                      setState(() {
+                        set.add(value.id);
+                      });
+                    },
+                  );
+                }).toList(),
+              )
+            ],
           );
         },
       ).toList(),
     );
   }
 
-  void add2Cart(ProductItem product) {
+  void getSkuList(int productId) {
+    Future<Result> skuFuture = SkuBridge.findGoodsSku(productId.toString());
+    skuFuture.then((result) {
+      if (result.code == 200) {
+        SkuInfo skuResult = SkuInfo.fromJson(result.data);
+        this.skuInfo = skuResult;
+      } else {
+        Bridge.showLongToast(result.msg);
+      }
+    });
+  }
+
+  void getSkuResult(ProductItem product) {
+    if (skuInfo != null) {
+      Future<Result> skuFuture =
+          SkuBridge.findGoodsSkuInfo(productId.toString(), set.toList());
+
+      skuFuture.then((result) {
+        if (result.code == 200) {
+          SkuResult skuResult = SkuResult.fromJson(result.data);
+          addCart(product, skuResult.id.toString());
+        } else {
+          Bridge.showLongToast(result.msg);
+        }
+      });
+    }
+  }
+
+  void addCart(ProductItem product, String skuId) {
     Future<Result> future = CartBridge.addSku(
         productId,
         product.skuId.toString(),
