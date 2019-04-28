@@ -12,10 +12,20 @@ class OrderListBloc {
     return orderListController.stream;
   }
 
+
+  Stream<List<OrderItem>> get productItems1 {
+    return orderListController.stream;
+  }
+
+  Stream<List<OrderItem>> get productItems2 {
+    return orderListController.stream;
+  }
+
+
   OrderListBloc();
 
   getOrderListList(int type) {
-    OrderListBridge.getOrderList(1, 2, type).then((result) {
+    OrderListBridge.getOrderList(1, 50, type).then((result) {
       if (result.code == 200) {
         OrderList orderList = OrderList.fromJson(result.data);
         orderListController.add(orderList.list);

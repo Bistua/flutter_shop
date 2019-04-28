@@ -80,8 +80,8 @@ class _ShopCartListState extends State<AllShopOrderPage> {
           children: [
             //1:待付款，2:待发货，3:待收货，4:待评价,0:全部
             Container(child: getOrderList(0)),
+            Container(child: getOrderList(1)),
             Container(child: getOrderList(2)),
-            Container(child: getOrderList(4)),
           ],
         ),
       ),
@@ -96,7 +96,8 @@ class _ShopCartListState extends State<AllShopOrderPage> {
   }
 
   Widget getOrderList(int type) {
-    orderListBloc.getOrderListList(type);
+//    todo type
+    orderListBloc.getOrderListList(0);
     return StreamBuilder<List<OrderItem>>(
         stream: orderListBloc.productItems,
         builder: (context, snapshot) {
@@ -136,6 +137,28 @@ class _ShopCartListState extends State<AllShopOrderPage> {
   GestureDetector buildOrderItem(List<OrderItem> orders, int index) {
     OrderItem orderItem = orders[index];
     List<Good> prducts = orderItem.products;
+//    0已取消，1等待发货，2已发货，3已收货，4完成交易
+    String status = "无状态";
+    String action = "无动作";
+    switch(orderItem.status){
+      case 0:
+        status= "已取消";
+        break;
+      case 1:
+        status= "等待发货";
+        break;
+      case 2:
+        status= "已发货";
+        break;
+      case 3:
+        status= "已收货";
+        break;
+      case 4:
+        status= "完成交易";
+        break;
+
+    }
+
     return GestureDetector(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -153,7 +176,7 @@ class _ShopCartListState extends State<AllShopOrderPage> {
                         style: TextStyle(color: UIData.ff353535, fontSize: 14),
                       ),
                       Text(
-                        "待发货",
+                        status,
                         style: TextStyle(color: UIData.fffa4848, fontSize: 14),
                       ),
                     ],
@@ -183,7 +206,7 @@ class _ShopCartListState extends State<AllShopOrderPage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       Text(
-                        "取消订单",
+                        action,
                         style: TextStyle(color: UIData.ff353535, fontSize: 14),
                       ),
                     ],
@@ -201,7 +224,7 @@ class _ShopCartListState extends State<AllShopOrderPage> {
   }
 
   GestureDetector buildListIItem(Good product) {
-    String img =  "";
+    String img = "";
     String description = "没有";
     String price = product.goodsPrice;
     String count = product.buyNum;
@@ -252,7 +275,7 @@ class _ShopCartListState extends State<AllShopOrderPage> {
                       children: <Widget>[
                         Expanded(
                           child: Text(
-                            "￥" +price,
+                            "￥" + price,
                             style:
                                 TextStyle(color: UIData.fffa4848, fontSize: 15),
                           ),
@@ -262,9 +285,7 @@ class _ShopCartListState extends State<AllShopOrderPage> {
                           height: 20,
                           child: Center(
                             child: UIData.getTextWidget(
-                                "x" + count.toString(),
-                                UIData.ff999999,
-                                11),
+                                "x" + count.toString(), UIData.ff999999, 11),
                           ),
                           decoration: BoxDecoration(
                             border:
