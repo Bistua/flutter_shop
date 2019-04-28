@@ -4,14 +4,14 @@ part 'order_result.g.dart';
 
 @JsonSerializable()
 class OrderResult {
-  String tradeOrderId;
-  String goodsDesc;
-  String attach;
+  String orderId;
 
-  OrderResult({this.tradeOrderId, this.goodsDesc, this.attach});
+  OrderResult({this.orderId});
 
   factory OrderResult.fromJson(Map<String, dynamic> json) =>
       _$OrderResultFromJson(json);
 
   Map<String, dynamic> toJson() => _$OrderResultToJson(this);
+
+
 }

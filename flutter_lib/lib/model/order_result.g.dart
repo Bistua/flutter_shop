@@ -8,14 +8,11 @@ part of 'order_result.dart';
 
 OrderResult _$OrderResultFromJson(Map<String, dynamic> json) {
   return OrderResult(
-      tradeOrderId: json['tradeOrderId'] as String,
-      goodsDesc: json['goodsDesc'] as String,
-      attach: json['attach'] as String);
+      orderId: json['orderId'] as String,
+  );
 }
 
 Map<String, dynamic> _$OrderResultToJson(OrderResult instance) =>
     <String, dynamic>{
-      'tradeOrderId': instance.tradeOrderId,
-      'goodsDesc': instance.goodsDesc,
-      'attach': instance.attach
+      'orderId': instance.orderId,
     };

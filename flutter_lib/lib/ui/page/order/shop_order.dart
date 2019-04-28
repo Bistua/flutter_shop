@@ -282,9 +282,9 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                           //"商品描述",
                           goToPay(
                               context,
-                              orderResult.tradeOrderId,
+                              orderResult.orderId,
                               "123.12.12.123",
-                              orderResult.goodsDesc,
+                              "商品组合",
                               "附加数据，在查询API和支付通知中原样返回，该字段主要用于商户携带订单的自定义数据");
                         },
                       )
