@@ -648,6 +648,8 @@ class ShopDetailPageState extends State<ShopDetailPage> {
           Bridge.showLongToast(result.msg);
         }
       });
+    }else{
+      addCart(product, product.skuId.toString());
     }
   }
 
