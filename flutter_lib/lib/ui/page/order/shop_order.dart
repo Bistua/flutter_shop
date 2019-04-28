@@ -203,6 +203,10 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
   }
 
   showPayDialog(BuildContext context, Cart cart, OrderResult orderResult) {
+    if (orderResult == null) {
+      Bridge.showLongToast("订单信息生成失败");
+      return;
+    }
     showModalBottomSheet(
         context: context,
         builder: (context) => Center(
@@ -222,7 +226,7 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                                   color: UIData.ff33333, fontSize: 18))),
                       Divider(),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 46, 0, 59),
+                        padding: const EdgeInsets.fromLTRB(0, 46, 0, 0),
                         child: Text(
                           "￥" + cart.totalMoney.toStringAsFixed(2),
                           style:
@@ -266,7 +270,7 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                             )
                           ],
                         ),
-                        padding: EdgeInsets.fromLTRB(14, 14, 14, 14),
+                        padding: EdgeInsets.fromLTRB(14, 14, 14, 0),
                       ),
                       Divider(),
                       UIData.getShapeButton(

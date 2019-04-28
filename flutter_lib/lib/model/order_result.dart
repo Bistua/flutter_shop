@@ -13,5 +13,10 @@ class OrderResult {
 
   Map<String, dynamic> toJson() => _$OrderResultToJson(this);
 
+  @override
+  String toString() {
+    return 'OrderResult{orderId: $orderId}';
+  }
+
 
 }
