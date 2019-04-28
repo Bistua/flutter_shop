@@ -5,7 +5,7 @@ import 'package:flutter_lib/bridge/sku_bridge.dart';
 import 'package:flutter_lib/logic/bloc/product_bloc.dart';
 import 'package:flutter_lib/logic/viewmodel/comment_view_model.dart';
 import 'package:flutter_lib/model/Result.dart';
-import 'package:flutter_lib/model/SkuResult.dart';
+import 'package:flutter_lib/model/skuresult.dart';
 import 'package:flutter_lib/model/cart.dart';
 import 'package:flutter_lib/model/comment.dart';
 import 'package:flutter_lib/model/productitem.dart';
