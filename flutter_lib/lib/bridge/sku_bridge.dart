@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter_lib/bridge/common_bridge.dart';
@@ -33,7 +34,7 @@ class SkuBridge {
         "action": component,
         "arguments": {
           "method": "find_goods_sku_info",
-          "data": {"productId": productId, "optionsIds": optionsIds},
+          "data": {"productId": productId, "optionsIds": json.encode(optionsIds)},
         }
       }
     });

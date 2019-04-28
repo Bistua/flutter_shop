@@ -37,6 +37,23 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
   Widget appBarTitle;
   CategoryBloc categoryBloc = new CategoryBloc();
 
+
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    categoryBloc.getCategories();
+  }
+
+  @override
+  void dispose() {
+    categoryBloc.close();
+    super.dispose();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -63,7 +80,7 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
 
   Widget bodyData() {
     print("shop category build");
-    categoryBloc.getCategories();
+
     return StreamBuilder<List<Category>>(
         stream: categoryBloc.categoryItems,
         builder: (context, snapshot) {

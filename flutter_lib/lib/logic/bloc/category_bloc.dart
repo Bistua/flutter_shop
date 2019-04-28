@@ -47,4 +47,8 @@ class CategoryBloc {
       }
     });
   }
+
+  void close() {
+    categoryController?.close();
+  }
 }

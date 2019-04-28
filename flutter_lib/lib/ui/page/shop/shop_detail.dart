@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/bridge/cart_bridge.dart';
 import 'package:flutter_lib/bridge/common_bridge.dart';
@@ -25,12 +27,19 @@ class ShopDetailPage extends StatefulWidget {
   ShopDetailPageState createState() => new ShopDetailPageState(productId);
 }
 
-class ShopDetailPageState extends State<ShopDetailPage>
-    with WidgetsBindingObserver {
+class ShopDetailPageState extends State<ShopDetailPage> {
+//    with WidgetsBindingObserver {
   int productId;
   ProductBloc productBloc;
 
   SkuInfo skuInfo;
+
+  int chooseCount = 1;
+  String chooseCountStr = "1";
+  int cartCount = 0;
+  Map map = new Map<String, dynamic>();
+  Map mapForId = new Map<String, dynamic>();
+
   ShopDetailPageState(int productId) {
     this.productId = productId;
   }
@@ -39,43 +48,20 @@ class ShopDetailPageState extends State<ShopDetailPage>
   void initState() {
     super.initState();
     productBloc = ProductBloc();
-    WidgetsBinding.instance.addObserver(this);
+//    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void dispose() {
     productBloc.close();
-    WidgetsBinding.instance.removeObserver(this);
+//    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
   @override
-  Future<bool> didPopRoute() {
-    print("didPopRoute");
-
-    return super.didPopRoute();
-  }
-
-//  @override
-//  void didChangeAppLifecycleState(AppLifecycleState state) {
-//    print("didChangeAppLifecycleState");
-//    setState(() {
-//      switch (state) {
-//        case AppLifecycleState.inactive:
-//        case AppLifecycleState.paused:
-//        case AppLifecycleState.suspending:
-//          break;
-//        case AppLifecycleState.resumed:
-//          print("1resumed");
-//
-//          break;
-//      }
-//    });
-//  }
-
-  @override
   Widget build(BuildContext context) {
     productBloc.getProduct(productId);
+
     return new Scaffold(
       appBar: UIData.getCenterTitleAppBar("商品名称", context),
       body: bodyData(),
@@ -143,7 +129,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
                 ),
                 UIData.getShapeButton(
                     UIData.fffa4848, UIData.fff, 125, 50, "加入购物车", 16, 0, () {
-                  addCart(product, product.skuId.toString());
+                  getSkuResult(product);
                 }),
                 UIData.getShapeButton(
                     UIData.ffffa517, UIData.fff, 110, 50, "立即购买", 16, 0, () {
@@ -436,29 +422,10 @@ class ShopDetailPageState extends State<ShopDetailPage>
     );
   }
 
-  int chooseCount = 1;
-  String chooseCountStr = "1";
-  int cartCount = 0;
-
   Padding buildVipInfo(ProductItem product) {
-
-    Future<Result> skuFuture = SkuBridge.findGoodsSku(productId.toString());
-    skuFuture.then((result) {
-      if (result.code == 200) {
-        SkuInfo skuResult = SkuInfo.fromJson(result.data);
-        this.skuInfo = skuResult;
-        this.skuInfo.options.map((option) {
-          option.values.map((value) {
-           setState(() {
-             map[option.key] = value.name;
-           });
-          }).toList();
-        }).toList();
-
-      } else {
-        Bridge.showLongToast(result.msg);
-      }
-    });
+    if (skuInfo == null) {
+      getSkuList(product.id);
+    }
 
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
@@ -482,7 +449,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
                 ),
                 onTap: () {
                   if (skuInfo == null) {
-                    addCart(product, product.skuId.toString());
+                    getSkuResult(product);
                     return;
                   }
                   showChooseDialog(product).then((v) => {
@@ -513,7 +480,6 @@ class ShopDetailPageState extends State<ShopDetailPage>
       ),
     );
   }
-  Map map = new Map<String, dynamic>();
 
   Future<Null> showChooseDialog(ProductItem product) async {
     return await showModalBottomSheet(
@@ -532,10 +498,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
             ));
   }
 
-
   Widget buildBody(ProductItem product) {
-
-
     return Stack(
       children: <Widget>[
         Column(
@@ -597,7 +560,7 @@ class ShopDetailPageState extends State<ShopDetailPage>
             18,
             5,
             () {
-              addCart(product, product.skuId.toString());
+              getSkuResult(product);
             },
           ),
         ),
@@ -605,7 +568,6 @@ class ShopDetailPageState extends State<ShopDetailPage>
     );
   }
 
-  Set set = new Set<int>();
   Column buildSkuInfoWidget(SkuInfo data) {
     return Column(
       children: data.options.map(
@@ -629,10 +591,8 @@ class ShopDetailPageState extends State<ShopDetailPage>
                     ),
                     onTap: () {
                       setState(() {
-                        set.add(value.id);
-                        setState(() {
-                          map[option.key] = value.name;
-                        });
+                        map[option.key] = value.name;
+                        mapForId[option.key] = value.id;
                       });
                     },
                   );
@@ -651,6 +611,19 @@ class ShopDetailPageState extends State<ShopDetailPage>
       if (result.code == 200) {
         SkuInfo skuResult = SkuInfo.fromJson(result.data);
         this.skuInfo = skuResult;
+        for (int i = 0; i < this.skuInfo.options.length; i++) {
+          var o = this.skuInfo.options[i];
+          List<ValuesListBean> vs = this.skuInfo.options[i].values;
+          for (int j = 0; j < vs.length; j++) {
+            var v = vs[j];
+            if (j == 0) {
+              setState(() {
+                mapForId[o.key] = v.id;
+                map[o.key] = v.name;
+              });
+            }
+          }
+        }
       } else {
         Bridge.showLongToast(result.msg);
       }
@@ -659,8 +632,13 @@ class ShopDetailPageState extends State<ShopDetailPage>
 
   void getSkuResult(ProductItem product) {
     if (skuInfo != null) {
+      Set set = new Set();
+      mapForId.forEach((k, v) {
+        set.add(v);
+      });
+      Int64List int64list = Int64List.fromList(set.toList());
       Future<Result> skuFuture =
-          SkuBridge.findGoodsSkuInfo(productId.toString(), set.toList());
+          SkuBridge.findGoodsSkuInfo(productId.toString(), int64list);
 
       skuFuture.then((result) {
         if (result.code == 200) {
