@@ -32,20 +32,20 @@ public class WXAwakenActivity extends Activity {
             return;
         }
         String result = getIntent().getStringExtra(UserPayConstant.USER_WX_PAY_RESULT);
-        WXPayResult wxPayResult = JSON.parseObject(result, WXPayResult.class);
-        if (wxPayResult == null || wxPayResult.data == null || wxPayResult.code != 0) {
+        WXPayResult.DataBean wxPayResult = JSON.parseObject(result, WXPayResult.DataBean.class);
+        if (wxPayResult == null) {
             Toast.makeText(this, "用户支付失败，通讯模组没有初始化", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
-        if (wxPayResult.data.appid == null || wxPayResult.data.partnerid == null
-                || wxPayResult.data.prepayid == null || wxPayResult.data.packages == null || wxPayResult.data.noncestr == null || wxPayResult.data.timestamp == null || wxPayResult.data.sign == null) {
+        if (wxPayResult.appid == null || wxPayResult.partnerid == null
+                || wxPayResult.prepayid == null || wxPayResult.packages == null || wxPayResult.noncestr == null || wxPayResult.timestamp == null || wxPayResult.sign == null) {
             Toast.makeText(this, "用户支付失败，通讯模组没有初始化", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
-        wxPay(wxPayResult.data.appid, wxPayResult.data.partnerid, wxPayResult.data.prepayid,
-                wxPayResult.data.packages, wxPayResult.data.noncestr, wxPayResult.data.timestamp, wxPayResult.data.sign);
+        wxPay(wxPayResult.appid, wxPayResult.partnerid, wxPayResult.prepayid,
+                wxPayResult.packages, wxPayResult.noncestr, wxPayResult.timestamp, wxPayResult.sign);
         finish();
     }
 
