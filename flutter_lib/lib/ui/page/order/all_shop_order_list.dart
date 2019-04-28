@@ -13,86 +13,19 @@ class AllShopOrderPage extends StatefulWidget {
   }
 }
 
-class _ShopCartListState extends State<AllShopOrderPage> {
+class TagOrderPage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return TagState();
+  }
+}
+
+class TagState extends State<TagOrderPage> {
   OrderListBloc orderListBloc = OrderListBloc();
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-      statusBarColor: UIData.fffa4848, //or set color with: Color(0xFF0000FF)
-    ));
-
-    return DefaultTabController(
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: UIData.fff,
-          centerTitle: true,
-          title: Text(
-            "我的订单",
-            style: TextStyle(
-                color: UIData.ff353535,
-                fontSize: 18,
-                fontWeight: FontWeight.bold),
-          ),
-          elevation: 0,
-          leading: new IconButton(
-            icon: Icon(Icons.arrow_back_ios, color: UIData.ff353535),
-            color: UIData.fff,
-            onPressed: () => Navigator.pop(context, false),
-          ),
-          bottom: TabBar(
-            indicatorColor: UIData.fffa4848,
-            labelColor: UIData.fffa4848,
-            unselectedLabelColor: UIData.ff666666,
-            tabs: <Widget>[
-              // No of Tab() Widgets Should be equal to length
-              Tab(
-                child: Container(
-                  color: UIData.fff,
-                  child: Text(
-                    "全部",
-                    style: TextStyle(color: UIData.ff666666, fontSize: 14),
-                  ),
-                ),
-              ),
-              Tab(
-                child: Container(
-                  color: UIData.fff,
-                  child: Text(
-                    "待发货",
-                    style: TextStyle(color: UIData.ff666666, fontSize: 14),
-                  ),
-                ),
-              ),
-              Tab(
-                child: Container(
-                  color: UIData.fff,
-                  child: Text(
-                    "待评价",
-                    style: TextStyle(color: UIData.ff666666, fontSize: 14),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        body: TabBarView(
-          children: [
-            //1:待付款，2:待发货，3:待收货，4:待评价,0:全部
-            Container(child: getOrderList(0)),
-            Container(child: getOrderList(1)),
-            Container(child: getOrderList(2)),
-          ],
-        ),
-      ),
-      length: 3,
-    );
-  }
-
-  Container buildBody() {
-    return Container(
-      child: Text("sadsa"),
-    );
+    return getOrderList(0);
   }
 
   Widget getOrderList(int type) {
@@ -140,23 +73,22 @@ class _ShopCartListState extends State<AllShopOrderPage> {
 //    0已取消，1等待发货，2已发货，3已收货，4完成交易
     String status = "无状态";
     String action = "无动作";
-    switch(orderItem.status){
+    switch (orderItem.status) {
       case 0:
-        status= "已取消";
+        status = "已取消";
         break;
       case 1:
-        status= "等待发货";
+        status = "等待发货";
         break;
       case 2:
-        status= "已发货";
+        status = "已发货";
         break;
       case 3:
-        status= "已收货";
+        status = "已收货";
         break;
       case 4:
-        status= "完成交易";
+        status = "完成交易";
         break;
-
     }
 
     return GestureDetector(
@@ -306,6 +238,89 @@ class _ShopCartListState extends State<AllShopOrderPage> {
         Navigator.pushNamed(context, UIData.ShopDetailPage,
             arguments: product.goodsId);
       },
+    );
+  }
+}
+
+class _ShopCartListState extends State<AllShopOrderPage> {
+  OrderListBloc orderListBloc = OrderListBloc();
+
+  @override
+  Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+      statusBarColor: UIData.fffa4848, //or set color with: Color(0xFF0000FF)
+    ));
+
+    return DefaultTabController(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: UIData.fff,
+          centerTitle: true,
+          title: Text(
+            "我的订单",
+            style: TextStyle(
+                color: UIData.ff353535,
+                fontSize: 18,
+                fontWeight: FontWeight.bold),
+          ),
+          elevation: 0,
+          leading: new IconButton(
+            icon: Icon(Icons.arrow_back_ios, color: UIData.ff353535),
+            color: UIData.fff,
+            onPressed: () => Navigator.pop(context, false),
+          ),
+          bottom: TabBar(
+            indicatorColor: UIData.fffa4848,
+            labelColor: UIData.fffa4848,
+            unselectedLabelColor: UIData.ff666666,
+            tabs: <Widget>[
+              // No of Tab() Widgets Should be equal to length
+              Tab(
+                child: Container(
+                  color: UIData.fff,
+                  child: Text(
+                    "全部",
+                    style: TextStyle(color: UIData.ff666666, fontSize: 14),
+                  ),
+                ),
+              ),
+              Tab(
+                child: Container(
+                  color: UIData.fff,
+                  child: Text(
+                    "待发货",
+                    style: TextStyle(color: UIData.ff666666, fontSize: 14),
+                  ),
+                ),
+              ),
+              Tab(
+                child: Container(
+                  color: UIData.fff,
+                  child: Text(
+                    "待评价",
+                    style: TextStyle(color: UIData.ff666666, fontSize: 14),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            //1:待付款，2:待发货，3:待收货，4:待评价,0:全部
+            Container(child: TagOrderPage()),
+            Container(child: TagOrderPage()),
+            Container(child: TagOrderPage()),
+          ],
+        ),
+      ),
+      length: 3,
+    );
+  }
+
+  Container buildBody() {
+    return Container(
+      child: Text("sadsa"),
     );
   }
 }

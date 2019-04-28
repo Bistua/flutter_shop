@@ -13,14 +13,6 @@ class OrderListBloc {
   }
 
 
-  Stream<List<OrderItem>> get productItems1 {
-    return orderListController.stream;
-  }
-
-  Stream<List<OrderItem>> get productItems2 {
-    return orderListController.stream;
-  }
-
 
   OrderListBloc();
 
