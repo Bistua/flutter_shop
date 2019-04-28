@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lib/bridge/rebate_bridge.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 import 'package:flutter_lib/logic/bloc/product_bloc.dart';
 import 'package:flutter_lib/model/product.dart';
@@ -23,6 +24,8 @@ class IviteFriendsPageState extends State<IviteFriendsPage> {
     RankViewModel rankViewModel = RankViewModel();
     List<Rank> rankList = rankViewModel.getMenuItems();
     print(productBloc.productItems);
+    RebateBridge.findRebateDetail(1, 2000);
+    //RebateBridge.findRebateList(1, 2000);
     return new Scaffold(
       appBar: UIData.getCenterTitleAppBar("邀请好友下单", context),
       body: CustomScrollView(
@@ -48,11 +51,12 @@ class IviteFriendsPageState extends State<IviteFriendsPage> {
                           children: <Widget>[
                             Padding(
                               padding: EdgeInsets.fromLTRB(17, 18, 15, 18),
-                              child:  Container(
+                              child: Container(
                                 width: 25,
                                 height: 25,
                                 child: Center(
-                                  child:  UIData.getTextWidget((index+1).toString(), UIData.fff, 15),
+                                  child: UIData.getTextWidget(
+                                      (index + 1).toString(), UIData.fff, 15),
                                 ),
                                 decoration: new BoxDecoration(
                                   color: rankList[index].color,
@@ -65,13 +69,17 @@ class IviteFriendsPageState extends State<IviteFriendsPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Padding(
-                                  child: UIData.getTextWidget(rankList[index].name,
-                                      UIData.ff353535, 12),
+                                  child: UIData.getTextWidget(
+                                      rankList[index].name,
+                                      UIData.ff353535,
+                                      12),
                                   padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
                                 ),
                                 Padding(
-                                  child: UIData.getTextWidget(rankList[index].xiaofei,
-                                      UIData.ff353535, 12),
+                                  child: UIData.getTextWidget(
+                                      rankList[index].xiaofei,
+                                      UIData.ff353535,
+                                      12),
                                   padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                                 ),
                               ],
@@ -200,9 +208,7 @@ class IviteFriendsPageState extends State<IviteFriendsPage> {
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(15, 8, 15, 10),
-              child:UIData.getMaxWidthButton("立即成为VIP", (){
-
-              }),
+              child: UIData.getMaxWidthButton("立即成为VIP", () {}),
             ),
           ],
         ),
