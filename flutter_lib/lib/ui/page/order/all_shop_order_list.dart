@@ -96,7 +96,9 @@ class _ShopCartListState extends State<AllShopOrderPage> {
   }
 
   Widget getOrderList(int type) {
-    orderListBloc.getOrderListList(type);
+    if(type==0){
+      orderListBloc.getOrderListList(type);
+    }
     return StreamBuilder<List<OrderItem>>(
         stream: orderListBloc.productItems,
         builder: (context, snapshot) {
