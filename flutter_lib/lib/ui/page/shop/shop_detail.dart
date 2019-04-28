@@ -37,7 +37,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
   int chooseCount = 1;
   String chooseCountStr = "1";
   int cartCount = 0;
-  Map map = new Map<String, dynamic>();
+  Map mapForUI = new Map<String, dynamic>();
   Map mapForId = new Map<String, dynamic>();
 
   ShopDetailPageState(int productId) {
@@ -441,7 +441,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      map.toString() + "  数量:" + chooseCount.toString() + "）",
+                      mapForUI.toString() + "  数量:" + chooseCount.toString() + "）",
                       style: TextStyle(color: UIData.ff353535, fontSize: 15),
                     ),
                     Icon(Icons.arrow_forward_ios),
@@ -572,12 +572,12 @@ class ShopDetailPageState extends State<ShopDetailPage> {
     return Column(
       children: data.options.map(
         (option) {
-          return Row(
+          return Column(
             children: <Widget>[
               Card(
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
-                  child: Text(option.key),
+                  child: Text(option.key,style: TextStyle(fontSize: 15,color: UIData.ff353535),),
                 ),
               ),
               Row(
@@ -591,7 +591,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                     ),
                     onTap: () {
                       setState(() {
-                        map[option.key] = value.name;
+                        mapForUI[option.key] = value.name;
                         mapForId[option.key] = value.id;
                       });
                     },
@@ -619,7 +619,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
             if (j == 0) {
               setState(() {
                 mapForId[o.key] = v.id;
-                map[o.key] = v.name;
+                mapForUI[o.key] = v.name;
               });
             }
           }
@@ -632,7 +632,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
 
   void getSkuResult(ProductItem product) {
     if (skuInfo != null) {
-      Set set = new Set();
+      Set set = new Set<int>();
       mapForId.forEach((k, v) {
         set.add(v);
       });

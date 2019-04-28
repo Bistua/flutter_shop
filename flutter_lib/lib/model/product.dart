@@ -76,7 +76,7 @@ class Product {
   static List<Product> parseProducts(String responseBody) {
     final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
 
-    return parsed.map<Product>((json) => Product.fromJson(json)).toList();
+    return parsed.mapForUI<Product>((json) => Product.fromJson(json)).toList();
   }
 
   factory Product.fromJson(Map<String, dynamic> json) {
