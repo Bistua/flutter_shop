@@ -18,7 +18,7 @@ class OrderItem {
   double productTotal; //商品合计(价格)
   double freight; //运费
   @JsonKey(name: 'buyAllPrice')
-  double payPrice; //实付款
+  String payPrice; //实付款
 
 
   OrderItem(

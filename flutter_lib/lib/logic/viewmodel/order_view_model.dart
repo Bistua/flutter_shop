@@ -44,7 +44,7 @@ class OrderViewModel {
           payMode: "支付宝",
           productTotal: 230.00,
           freight: 10.00,
-          payPrice: 240.00,
+          payPrice: 240.00.toStringAsFixed(2),
         ),
         OrderItem(
           status: 0,
@@ -92,7 +92,7 @@ class OrderViewModel {
           payMode: "支付宝",
           productTotal: 230.00,
           freight: 10.00,
-          payPrice: 240.00,
+          payPrice: 240.00.toStringAsFixed(2),
         ),
         OrderItem(
           status: 0,
@@ -151,7 +151,7 @@ class OrderViewModel {
           payMode: "支付宝",
           productTotal: 230.00,
           freight: 10.00,
-          payPrice: 240.00,
+          payPrice: 240.00.toStringAsFixed(2),
         ),
         OrderItem(
           status: 0,
@@ -188,7 +188,7 @@ class OrderViewModel {
           payMode: "支付宝",
           productTotal: 230.00,
           freight: 10.00,
-          payPrice: 240.00,
+          payPrice: 240.00.toStringAsFixed(2),
         ),
       ];
 }

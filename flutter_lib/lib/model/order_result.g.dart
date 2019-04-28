@@ -7,12 +7,8 @@ part of 'order_result.dart';
 // **************************************************************************
 
 OrderResult _$OrderResultFromJson(Map<String, dynamic> json) {
-  return OrderResult(
-      orderId: json['orderId'] as String,
-  );
+  return OrderResult(orderId: json['orderId'] as String);
 }
 
 Map<String, dynamic> _$OrderResultToJson(OrderResult instance) =>
-    <String, dynamic>{
-      'orderId': instance.orderId,
-    };
+    <String, dynamic>{'orderId': instance.orderId};

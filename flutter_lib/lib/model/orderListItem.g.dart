@@ -20,9 +20,9 @@ OrderItem _$OrderItemFromJson(Map<String, dynamic> json) {
       orderNumber: json['orderId'] as String,
       orderTime: json['orderTime'] as String,
       payMode: json['payMode'] as String,
-      productTotal: (json['productTotal'] as num)?.toDouble(),
-      freight: (json['freight'] as num)?.toDouble(),
-      payPrice: (json['buyAllPrice'] as num)?.toDouble());
+      productTotal:json['productTotal'],
+      freight: json['freight'] ,
+      payPrice:json['buyAllPrice']);
 }
 
 Map<String, dynamic> _$OrderItemToJson(OrderItem instance) => <String, dynamic>{
