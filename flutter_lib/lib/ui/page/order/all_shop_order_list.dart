@@ -14,6 +14,11 @@ class AllShopOrderPage extends StatefulWidget {
 }
 
 class TagOrderPage extends StatefulWidget {
+  int type;
+  TagOrderPage(int i){
+    this.type= i;
+  }
+
   @override
   State<StatefulWidget> createState() {
     return TagState();
@@ -23,20 +28,21 @@ class TagOrderPage extends StatefulWidget {
 class TagState extends State<TagOrderPage> {
   OrderListBloc orderListBloc = OrderListBloc();
 
+
   @override
   Widget build(BuildContext context) {
-    return getOrderList(0);
+    return getOrderList(widget.type);
   }
 
   Widget getOrderList(int type) {
 //    todo type
-    orderListBloc.getOrderListList(0);
+    orderListBloc.getOrderListList(type);
     return StreamBuilder<List<OrderItem>>(
         stream: orderListBloc.productItems,
         builder: (context, snapshot) {
           List<OrderItem> list = snapshot.data;
           return snapshot.hasData
-              ? (list == null ? empty(type) : buildListView(list))
+              ? ((list == null||list.isEmpty) ? empty(type) : buildListView(list))
               : Center(child: CircularProgressIndicator());
         });
   }
@@ -70,24 +76,26 @@ class TagState extends State<TagOrderPage> {
   GestureDetector buildOrderItem(List<OrderItem> orders, int index) {
     OrderItem orderItem = orders[index];
     List<Good> prducts = orderItem.products;
-//    0已取消，1等待发货，2已发货，3已收货，4完成交易
     String status = "无状态";
     String action = "无动作";
+
+//    1:待付款，2:待发货，3:待收货，4:待评价,0:全部
+
     switch (orderItem.status) {
       case 0:
         status = "已取消";
         break;
       case 1:
-        status = "等待发货";
+        status = "待付款";
         break;
       case 2:
-        status = "已发货";
+        status = "待发货";
         break;
       case 3:
-        status = "已收货";
+        status = "待收货";
         break;
       case 4:
-        status = "完成交易";
+        status = "待评价";
         break;
     }
 
@@ -307,10 +315,10 @@ class _ShopCartListState extends State<AllShopOrderPage> {
         ),
         body: TabBarView(
           children: [
-            //1:待付款，2:待发货，3:待收货，4:待评价,0:全部
-            Container(child: TagOrderPage()),
-            Container(child: TagOrderPage()),
-            Container(child: TagOrderPage()),
+            //    1:待付款，2:待发货，3:待收货，4:待评价,0:全部
+            Container(child: TagOrderPage(0)),
+            Container(child: TagOrderPage(2)),
+            Container(child: TagOrderPage(4)),
           ],
         ),
       ),
@@ -318,9 +326,4 @@ class _ShopCartListState extends State<AllShopOrderPage> {
     );
   }
 
-  Container buildBody() {
-    return Container(
-      child: Text("sadsa"),
-    );
-  }
 }
