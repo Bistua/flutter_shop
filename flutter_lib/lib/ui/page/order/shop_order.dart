@@ -420,7 +420,7 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
     return StreamBuilder<List<Address>>(
         stream: addressBloc.productItems,
         builder: (context, snapshot) {
-          Address address = (snapshot.data != null && snapshot.data.length > 1)
+          Address address = (snapshot.data != null && snapshot.data.length > 0)
               ? snapshot.data[0]
               : null;
           return snapshot.hasData
