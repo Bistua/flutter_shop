@@ -22,7 +22,7 @@ class ShopOrderListPage extends StatefulWidget {
 }
 
 class _ShopOrderListState extends State<ShopOrderListPage> {
-  double get deliverPrice => 10;
+  double  deliverPrice = 0;
   CartBloc cartBloc = CartBloc();
   AddressBloc addressBloc = AddressBloc();
 
