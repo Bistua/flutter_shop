@@ -15,14 +15,14 @@ OrderItem _$OrderItemFromJson(Map<String, dynamic> json) {
       express: json['express'] as String,
       products: (json['goodsList'] as List)
           ?.map((e) =>
-              e == null ? null : Product.fromJson(e as Map<String, dynamic>))
+              e == null ? null : Good.fromJson(e as Map<String, dynamic>))
           ?.toList(),
       orderNumber: json['orderId'] as String,
       orderTime: json['orderTime'] as String,
       payMode: json['payMode'] as String,
-      productTotal:json['productTotal'],
-      freight: json['freight'] ,
-      payPrice:json['buyAllPrice']);
+      productTotal: (json['productTotal'] as num)?.toDouble(),
+      freight: (json['freight'] as num)?.toDouble(),
+      payPrice: json['buyAllPrice'] as String);
 }
 
 Map<String, dynamic> _$OrderItemToJson(OrderItem instance) => <String, dynamic>{
@@ -36,4 +36,19 @@ Map<String, dynamic> _$OrderItemToJson(OrderItem instance) => <String, dynamic>{
       'productTotal': instance.productTotal,
       'freight': instance.freight,
       'buyAllPrice': instance.payPrice
+    };
+
+Good _$GoodFromJson(Map<String, dynamic> json) {
+  return Good(
+      buyNum: json['buyNum'] as String,
+      goodsId: json['goodsId'] as String,
+      goodsName: json['goodsName'] as String,
+      goodsPrice: json['goodsPrice'] as String);
+}
+
+Map<String, dynamic> _$GoodToJson(Good instance) => <String, dynamic>{
+      'buyNum': instance.buyNum,
+      'goodsId': instance.goodsId,
+      'goodsName': instance.goodsName,
+      'goodsPrice': instance.goodsPrice
     };

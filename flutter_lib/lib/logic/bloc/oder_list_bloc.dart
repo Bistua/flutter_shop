@@ -6,7 +6,7 @@ import 'package:flutter_lib/model/orderListItem.dart';
 import 'package:flutter_lib/model/orderlist.dart';
 
 class OrderListBloc {
-  final orderListController = StreamController<List<OrderItem>>();
+  final orderListController = StreamController<List<OrderItem>>.broadcast();
 
   Stream<List<OrderItem>> get productItems {
     return orderListController.stream;
@@ -15,7 +15,7 @@ class OrderListBloc {
   OrderListBloc();
 
   getOrderListList(int type) {
-    OrderListBridge.getOrderList(1, 2000, type).then((result) {
+    OrderListBridge.getOrderList(1, 2, type).then((result) {
       if (result.code == 200) {
         OrderList orderList = OrderList.fromJson(result.data);
         orderListController.add(orderList.list);

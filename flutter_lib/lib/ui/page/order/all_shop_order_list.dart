@@ -96,9 +96,7 @@ class _ShopCartListState extends State<AllShopOrderPage> {
   }
 
   Widget getOrderList(int type) {
-    if(type==0){
-      orderListBloc.getOrderListList(type);
-    }
+    orderListBloc.getOrderListList(type);
     return StreamBuilder<List<OrderItem>>(
         stream: orderListBloc.productItems,
         builder: (context, snapshot) {
@@ -137,7 +135,7 @@ class _ShopCartListState extends State<AllShopOrderPage> {
 
   GestureDetector buildOrderItem(List<OrderItem> orders, int index) {
     OrderItem orderItem = orders[index];
-    List<Product> prducts = orderItem.products;
+    List<Good> prducts = orderItem.products;
     return GestureDetector(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -202,7 +200,11 @@ class _ShopCartListState extends State<AllShopOrderPage> {
     );
   }
 
-  GestureDetector buildListIItem(Product product) {
+  GestureDetector buildListIItem(Good product) {
+    String img =  "";
+    String description = "没有";
+    String price = product.goodsPrice;
+    String count = product.buyNum;
     return GestureDetector(
       child: Container(
         child: Row(
@@ -210,7 +212,7 @@ class _ShopCartListState extends State<AllShopOrderPage> {
             Padding(
               padding: EdgeInsets.fromLTRB(16, 15, 0, 16),
               child: UIData.getImageWithWHFit(
-                product.image,
+                img,
                 BoxFit.cover,
                 88,
                 88,
@@ -224,7 +226,7 @@ class _ShopCartListState extends State<AllShopOrderPage> {
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.fromLTRB(12, 18, 12, 8),
-                    child: Text(product.name,
+                    child: Text(product.goodsName,
                         style: TextStyle(fontSize: 12, color: UIData.ff353535)),
                   ),
                   Padding(
@@ -238,7 +240,7 @@ class _ShopCartListState extends State<AllShopOrderPage> {
                             borderRadius: BorderRadius.circular(3)),
                         child: Center(
                           child: UIData.getTextWidget(
-                              product.description, UIData.ff999999, 11),
+                              description, UIData.ff999999, 11),
                         )),
                   ),
                   Padding(
@@ -250,7 +252,7 @@ class _ShopCartListState extends State<AllShopOrderPage> {
                       children: <Widget>[
                         Expanded(
                           child: Text(
-                            "￥" + product.priceNum.toStringAsFixed(2),
+                            "￥" +price,
                             style:
                                 TextStyle(color: UIData.fffa4848, fontSize: 15),
                           ),
@@ -260,7 +262,7 @@ class _ShopCartListState extends State<AllShopOrderPage> {
                           height: 20,
                           child: Center(
                             child: UIData.getTextWidget(
-                                "x" + product.count.toString(),
+                                "x" + count.toString(),
                                 UIData.ff999999,
                                 11),
                           ),
@@ -281,7 +283,7 @@ class _ShopCartListState extends State<AllShopOrderPage> {
       ),
       onTap: () {
         Navigator.pushNamed(context, UIData.ShopDetailPage,
-            arguments: product.skuId);
+            arguments: product.goodsId);
       },
     );
   }
