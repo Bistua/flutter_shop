@@ -260,9 +260,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               //搜索框点击事件
               onTap: () {
-                final navigator = Navigator.of(context);
-                navigator.push(new MaterialPageRoute(
-                    builder: (context) => new SearchShopList()));
+                Navigator.pushNamed(context, UIData.SearchShopList);
               },
             ),
           ),

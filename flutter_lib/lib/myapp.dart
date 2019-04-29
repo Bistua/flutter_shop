@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
         UIData.ShopCartListPage: (BuildContext context) => ShopCartListPage(true),
         UIData.Login: (BuildContext context) => LoginPage(),
         UIData.homeRoute: (BuildContext context) => MyHomePage(),
-        UIData.SearchShopList: (BuildContext context) => SearchShopList(),
+        UIData.SearchShopList: (BuildContext context) => SearchShopListPage(),
         UIData.notFoundRoute: (BuildContext context) => NotFoundPage(),
         UIData.IviteFriendsPage: (BuildContext context) => IviteFriendsPage(),
         UIData.InviteInputPage: (BuildContext context) => InviteInputPage(),

@@ -38,6 +38,11 @@ const List<Choice> choices = const <Choice>[
 ];
 
 class DashboardPageState extends State<DashboardPage> {
+  MyHomePage myHomePage = MyHomePage();
+  ShopCategoryListPage shopCategoryListPage =
+      ShopCategoryListPage(title: "全部分类", showBackBtn: false);
+  ShopCartListPage shopCartListPage = ShopCartListPage(false);
+  UserHomeListPage userHomeListPage = UserHomeListPage();
   @override
   void initState() {
     super.initState();
@@ -49,15 +54,14 @@ class DashboardPageState extends State<DashboardPage> {
   }
 
   int currentIndex = 0;
-  final List<Widget> _children = [
-    MyHomePage(),
-    ShopCategoryListPage(title: "全部分类", showBackBtn: false),
-    ShopCartListPage(false),
-    UserHomeListPage(),
-  ];
+  final List<Widget> _children = [];
 
   @override
   Widget build(BuildContext context) {
+    _children.add(myHomePage);
+    _children.add(shopCategoryListPage);
+    _children.add(shopCartListPage);
+    _children.add(userHomeListPage);
     return Scaffold(
       body: _children[currentIndex],
       bottomNavigationBar: BottomNavigationBar(

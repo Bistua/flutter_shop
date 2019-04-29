@@ -34,7 +34,9 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
 
   @override
   Widget build(BuildContext context) {
-    categoryBloc.getCategories();
+
+    print("ShopCategoryListPage build");
+
     return DefaultTabController(
       length: 3,
       child: Scaffold(

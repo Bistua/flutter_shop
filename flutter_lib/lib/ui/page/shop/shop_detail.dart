@@ -59,6 +59,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    print("ShopDetailPage build");
     productBloc = ProductBloc();
     return ProductProvider(
         productBloc: productBloc,
@@ -83,6 +84,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
   }
 
   Container buidBody(ProductItem product) {
+
     productBloc.getProductSkuInfo(productId);
     return Container(
       child: Stack(

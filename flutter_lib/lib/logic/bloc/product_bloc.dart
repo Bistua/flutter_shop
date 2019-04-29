@@ -73,6 +73,7 @@ class ProductBloc {
         print("getProduct sku add");
       } else {
         Bridge.showLongToast(result.msg);
+        skuInfoController.add(null);
       }
     });
   }

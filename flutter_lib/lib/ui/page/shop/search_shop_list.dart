@@ -6,12 +6,6 @@ import 'package:flutter_lib/ui/page/shop/shop_detail.dart';
 import 'package:flutter_lib/ui/widgets/shop_tab_item.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
-class SearchShopList extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return SearchShopListPage();
-  }
-}
 
 class SearchShopListPage extends StatefulWidget {
   @override

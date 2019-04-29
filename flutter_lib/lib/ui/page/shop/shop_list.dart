@@ -6,22 +6,6 @@ import 'package:flutter_lib/ui/page/shop/shop_detail.dart';
 import 'package:flutter_lib/ui/widgets/shop_tab_item.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
-class ShopList extends StatelessWidget {
-  String title;
-  int categoryId;
-  ShopList(String title, int categoryId) {
-    this.title = title;
-    this.categoryId = categoryId;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ShopListPage(
-      title: title,
-      categoryId: categoryId,
-    );
-  }
-}
 
 //分页参考https://medium.com/saugo360/flutter-creating-a-listview-that-loads-one-page-at-a-time-c5c91b6fabd3
 class ShopListPage extends StatefulWidget {
@@ -39,7 +23,7 @@ class ShopListState extends State<ShopListPage> {
 
   @override
   Widget build(BuildContext context) {
-
+    print("ShopListPage build");
     return DefaultTabController(
       length: 3,
       child: Scaffold(

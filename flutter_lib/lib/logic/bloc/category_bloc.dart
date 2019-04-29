@@ -21,28 +21,40 @@ class CategoryBloc {
     return subCategoryController.stream;
   }
 
-  CategoryBloc();
+  CategoryBloc() {
+    getCategories();
+  }
 
   getCategories() {
+    print("getCategories begin");
     CategoryBridge.getCategories().then((result) {
       if (result.code == 200) {
         CategoryList categoryList = CategoryList.fromJson(result.data);
         categoryViewModel.categorysItems = categoryList.list;
         categoryController.add(categoryViewModel.categorysItems);
+        print("getCategories add");
       } else {
-        Bridge.showLongToast(result.msg==null?"未返回错误信息":result.msg);
+        Bridge.showLongToast(result.msg == null ? "未返回错误信息" : result.msg);
+        if (categoryController.isClosed || categoryController.isPaused) {
+          return;
+        }
         categoryController.add(List());
       }
     });
   }
 
   getSubCategories(int categoryId) {
+    print("getSubCategories begin");
     CategoryBridge.getSubCategories(categoryId).then((result) {
       if (result.code == 200) {
         CategoryList subCategoryList = CategoryList.fromJson(result.data);
         subCategoryController.add(subCategoryList.list);
+        print("getSubCategories add");
       } else {
-        Bridge.showLongToast(result.msg==null?"未返回错误信息":result.msg);
+        Bridge.showLongToast(result.msg == null ? "未返回错误信息" : result.msg);
+        if (subCategoryController.isClosed || subCategoryController.isPaused) {
+          return;
+        }
         subCategoryController.add(List());
       }
     });
