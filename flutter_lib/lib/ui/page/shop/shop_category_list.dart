@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/logic/bloc/category_bloc.dart';
+import 'package:flutter_lib/logic/inherited/category_provider.dart';
 import 'package:flutter_lib/model/category.dart';
 import 'package:flutter_lib/ui/page/shop/shop_list.dart';
 import 'package:flutter_lib/utils/uidata.dart';
@@ -37,13 +38,9 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
   Widget appBarTitle;
   CategoryBloc categoryBloc = new CategoryBloc();
 
-
-
-
   @override
   void initState() {
     super.initState();
-
     categoryBloc.getCategories();
   }
 
@@ -52,7 +49,6 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
     categoryBloc.close();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -80,14 +76,16 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
 
   Widget bodyData() {
     print("shop category build");
-
-    return StreamBuilder<List<Category>>(
-        stream: categoryBloc.categoryItems,
-        builder: (context, snapshot) {
-          return snapshot.hasData
-              ? (snapshot.data.isEmpty ? empty() : body(snapshot.data))
-              : Center(child: CircularProgressIndicator());
-        });
+   return CategoryProvider(
+      categoryBloc: categoryBloc,
+      child: StreamBuilder<List<Category>>(
+          stream: categoryBloc.categoryItems,
+          builder: (context, snapshot) {
+            return snapshot.hasData
+                ? (snapshot.data.isEmpty ? empty() : body(snapshot.data))
+                : Center(child: CircularProgressIndicator());
+          }),
+    );
   }
 
   int selectIndex = 0;
@@ -182,19 +180,23 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
   }
 
   Widget buildSliverGrid() {
-    return StreamBuilder<List<Category>>(
-        stream: categoryBloc.suCategoryItems,
-        builder: (context, snapshot) {
-          return snapshot.hasData
-              ? (snapshot.data.isEmpty ? emptySub() : sliverGrid(snapshot.data))
-              : SliverList(
-                  delegate: SliverChildListDelegate(
-                    [
-                      Center(child: CircularProgressIndicator()),
-                    ],
-                  ),
-                );
-        });
+    return CategoryProvider(
+        categoryBloc: categoryBloc,
+        child: StreamBuilder<List<Category>>(
+            stream: categoryBloc.suCategoryItems,
+            builder: (context, snapshot) {
+              return snapshot.hasData
+                  ? (snapshot.data.isEmpty
+                      ? emptySub()
+                      : sliverGrid(snapshot.data))
+                  : SliverList(
+                      delegate: SliverChildListDelegate(
+                        [
+                          Center(child: CircularProgressIndicator()),
+                        ],
+                      ),
+                    );
+            }));
   }
 
   Widget emptySub() {
@@ -274,6 +276,4 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
       ),
     );
   }
-
-
 }

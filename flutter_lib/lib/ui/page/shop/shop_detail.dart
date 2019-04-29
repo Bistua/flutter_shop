@@ -5,6 +5,7 @@ import 'package:flutter_lib/bridge/cart_bridge.dart';
 import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/bridge/sku_bridge.dart';
 import 'package:flutter_lib/logic/bloc/product_bloc.dart';
+import 'package:flutter_lib/logic/inherited/product_provider.dart';
 import 'package:flutter_lib/logic/viewmodel/comment_view_model.dart';
 import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/skuresult.dart';
@@ -49,6 +50,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
     super.initState();
     productBloc = ProductBloc();
 //    WidgetsBinding.instance.addObserver(this);
+
   }
 
   @override
@@ -62,10 +64,12 @@ class ShopDetailPageState extends State<ShopDetailPage> {
   Widget build(BuildContext context) {
     productBloc.getProduct(productId);
 
-    return new Scaffold(
-      appBar: UIData.getCenterTitleAppBar("商品名称", context),
-      body: bodyData(),
-    );
+    return ProductProvider(
+        productBloc: productBloc,
+        child: new Scaffold(
+          appBar: UIData.getCenterTitleAppBar("商品名称", context),
+          body: bodyData(),
+        ));
   }
 
   Widget bodyData() {
@@ -154,13 +158,22 @@ class ShopDetailPageState extends State<ShopDetailPage> {
   }
 
   CustomScrollView buildCustomScrollView(ProductItem product) {
+    productBloc.getProductSkuInfo(productId);
     return CustomScrollView(
       slivers: <Widget>[
         SliverList(
           delegate: SliverChildListDelegate(
             [
               buildHeader(product),
-              buildVipInfo(product),
+
+              StreamBuilder<SkuInfo>(
+              stream: productBloc.skuInfo,
+              builder: (context, snapshot) {
+              return snapshot.hasData
+              ? buildVipInfo(product,snapshot.data)
+                  : Center(child: CircularProgressIndicator());
+              })
+
             ],
           ),
         ),
@@ -422,11 +435,19 @@ class ShopDetailPageState extends State<ShopDetailPage> {
     );
   }
 
-  Padding buildVipInfo(ProductItem product) {
-    if (skuInfo == null) {
-      getSkuList(product.id);
+  Padding buildVipInfo(ProductItem product, SkuInfo data) {
+    this.skuInfo = data;
+    for (int i = 0; i < this.skuInfo.options.length; i++) {
+      var o = this.skuInfo.options[i];
+      List<ValuesListBean> vs = this.skuInfo.options[i].values;
+      for (int j = 0; j < vs.length; j++) {
+        var v = vs[j];
+        if (j == 0) {
+          mapForId[o.key] = v.id;
+          mapForUI[o.key] = v.name;
+        }
+      }
     }
-
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
       child: new Container(
@@ -441,7 +462,10 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      mapForUI.toString() + "  数量:" + chooseCount.toString() + "）",
+                      mapForUI.toString() +
+                          "  数量:" +
+                          chooseCount.toString() +
+                          "）",
                       style: TextStyle(color: UIData.ff353535, fontSize: 15),
                     ),
                     Icon(Icons.arrow_forward_ios),
@@ -577,7 +601,10 @@ class ShopDetailPageState extends State<ShopDetailPage> {
               Card(
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
-                  child: Text(option.key,style: TextStyle(fontSize: 15,color: UIData.ff353535),),
+                  child: Text(
+                    option.key,
+                    style: TextStyle(fontSize: 15, color: UIData.ff353535),
+                  ),
                 ),
               ),
               Row(
@@ -617,10 +644,8 @@ class ShopDetailPageState extends State<ShopDetailPage> {
           for (int j = 0; j < vs.length; j++) {
             var v = vs[j];
             if (j == 0) {
-              setState(() {
-                mapForId[o.key] = v.id;
-                mapForUI[o.key] = v.name;
-              });
+              mapForId[o.key] = v.id;
+              mapForUI[o.key] = v.name;
             }
           }
         }
@@ -648,7 +673,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
           Bridge.showLongToast(result.msg);
         }
       });
-    }else{
+    } else {
       addCart(product, product.skuId.toString());
     }
   }
