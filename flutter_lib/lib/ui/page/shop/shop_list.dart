@@ -39,7 +39,7 @@ class ShopListState extends State<ShopListPage> {
 
   @override
   Widget build(BuildContext context) {
-    productBloc.getProducts(widget.categoryId, true);
+
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -64,6 +64,7 @@ class ShopListState extends State<ShopListPage> {
   }
 
   Widget bodyData() {
+    productBloc.getProducts(widget.categoryId, true);
     return StreamBuilder<List<ProductItem>>(
         stream: productBloc.productItems,
         builder: (context, snapshot) {

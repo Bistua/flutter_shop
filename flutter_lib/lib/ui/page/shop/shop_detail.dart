@@ -39,7 +39,6 @@ class ShopDetailPageState extends State<ShopDetailPage> {
   String chooseCountStr = "1";
   int cartCount = 0;
   Map mapForUI = new Map<String, dynamic>();
-  Map mapForId = new Map<String, dynamic>();
 
   ShopDetailPageState(int productId) {
     this.productId = productId;
@@ -49,14 +48,11 @@ class ShopDetailPageState extends State<ShopDetailPage> {
   void initState() {
     super.initState();
     productBloc = ProductBloc();
-//    WidgetsBinding.instance.addObserver(this);
-
   }
 
   @override
   void dispose() {
     productBloc.close();
-//    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -158,23 +154,11 @@ class ShopDetailPageState extends State<ShopDetailPage> {
   }
 
   CustomScrollView buildCustomScrollView(ProductItem product) {
-    productBloc.getProductSkuInfo(productId);
     return CustomScrollView(
       slivers: <Widget>[
         SliverList(
           delegate: SliverChildListDelegate(
-            [
-              buildHeader(product),
-
-              StreamBuilder<SkuInfo>(
-              stream: productBloc.skuInfo,
-              builder: (context, snapshot) {
-              return snapshot.hasData
-              ? buildVipInfo(product,snapshot.data)
-                  : Center(child: CircularProgressIndicator());
-              })
-
-            ],
+            [buildHeader(product), buildSKUStreamBuilder(product)],
           ),
         ),
         SliverList(
@@ -209,6 +193,17 @@ class ShopDetailPageState extends State<ShopDetailPage> {
         ),
       ],
     );
+  }
+
+  StreamBuilder<SkuInfo> buildSKUStreamBuilder(ProductItem product) {
+    productBloc.getProductSkuInfo(productId);
+    return StreamBuilder<SkuInfo>(
+        stream: productBloc.skuInfo,
+        builder: (context, snapshot) {
+          return snapshot.hasData
+              ? buildVipInfo(product, snapshot.data)
+              : Center(child: CircularProgressIndicator());
+        });
   }
 
   Padding buildHeader(ProductItem product) {
@@ -443,11 +438,15 @@ class ShopDetailPageState extends State<ShopDetailPage> {
       for (int j = 0; j < vs.length; j++) {
         var v = vs[j];
         if (j == 0) {
-          mapForId[o.key] = v.id;
-          mapForUI[o.key] = v.name;
+          mapForUI[o.key] = v;
         }
       }
     }
+    String skuInfo = "";
+    mapForUI.forEach((k, v) {
+      skuInfo = skuInfo + "  " + k + ":" + v.name;
+    });
+
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
       child: new Container(
@@ -462,10 +461,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      mapForUI.toString() +
-                          "  数量:" +
-                          chooseCount.toString() +
-                          "）",
+                      skuInfo + "  数量：" + chooseCount.toString(),
                       style: TextStyle(color: UIData.ff353535, fontSize: 15),
                     ),
                     Icon(Icons.arrow_forward_ios),
@@ -597,31 +593,30 @@ class ShopDetailPageState extends State<ShopDetailPage> {
       children: data.options.map(
         (option) {
           return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Text(
-                    option.key,
-                    style: TextStyle(fontSize: 15, color: UIData.ff353535),
-                  ),
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Text(
+                  option.key,
+                  style: TextStyle(fontSize: 15, color: UIData.ff353535),
                 ),
               ),
               Row(
                 children: option.values.map((value) {
-                  return GestureDetector(
-                    child: Card(
+                  return Card(
+                    child: GestureDetector(
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Text(value.name),
                       ),
+                      onTap: () {
+                        setState(() {
+                          mapForUI[option.key] = value;
+                        });
+                      },
                     ),
-                    onTap: () {
-                      setState(() {
-                        mapForUI[option.key] = value.name;
-                        mapForId[option.key] = value.id;
-                      });
-                    },
                   );
                 }).toList(),
               )
@@ -631,35 +626,34 @@ class ShopDetailPageState extends State<ShopDetailPage> {
       ).toList(),
     );
   }
-
-  void getSkuList(int productId) {
-    Future<Result> skuFuture = SkuBridge.findGoodsSku(productId.toString());
-    skuFuture.then((result) {
-      if (result.code == 200) {
-        SkuInfo skuResult = SkuInfo.fromJson(result.data);
-        this.skuInfo = skuResult;
-        for (int i = 0; i < this.skuInfo.options.length; i++) {
-          var o = this.skuInfo.options[i];
-          List<ValuesListBean> vs = this.skuInfo.options[i].values;
-          for (int j = 0; j < vs.length; j++) {
-            var v = vs[j];
-            if (j == 0) {
-              mapForId[o.key] = v.id;
-              mapForUI[o.key] = v.name;
-            }
-          }
-        }
-      } else {
-        Bridge.showLongToast(result.msg);
-      }
-    });
-  }
+//
+//  void getSkuList(int productId) {
+//    Future<Result> skuFuture = SkuBridge.findGoodsSku(productId.toString());
+//    skuFuture.then((result) {
+//      if (result.code == 200) {
+//        SkuInfo skuResult = SkuInfo.fromJson(result.data);
+//        this.skuInfo = skuResult;
+//        for (int i = 0; i < this.skuInfo.options.length; i++) {
+//          var o = this.skuInfo.options[i];
+//          List<ValuesListBean> vs = this.skuInfo.options[i].values;
+//          for (int j = 0; j < vs.length; j++) {
+//            var v = vs[j];
+//            if (j == 0) {
+//              mapForUI[o.key] = v;
+//            }
+//          }
+//        }
+//      } else {
+//        Bridge.showLongToast(result.msg);
+//      }
+//    });
+//  }
 
   void getSkuResult(ProductItem product) {
     if (skuInfo != null) {
       Set set = new Set<int>();
-      mapForId.forEach((k, v) {
-        set.add(v);
+      mapForUI.forEach((k, v) {
+        set.add(v.id);
       });
       Int64List int64list = Int64List.fromList(set.toList());
       Future<Result> skuFuture =
