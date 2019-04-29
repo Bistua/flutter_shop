@@ -4,6 +4,7 @@ import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/bridge/product_bridge.dart';
 import 'package:flutter_lib/bridge/sku_bridge.dart';
 import 'package:flutter_lib/logic/viewmodel/product_view_model.dart';
+import 'package:flutter_lib/model/Result.dart';
 
 import 'package:flutter_lib/model/productitem.dart';
 import 'package:flutter_lib/model/productlist.dart';
@@ -28,6 +29,7 @@ class ProductBloc {
     ProductBridge.getProducts(categoryId, orderByAes).then((result) {
       if (result.code == 200) {
         ProductList productList = ProductList.fromJson(result.data);
+
         productController.add(productList.list);
       } else {
         Bridge.showLongToast(result.msg);
@@ -47,23 +49,28 @@ class ProductBloc {
     });
   }
 
-  getProduct(int productId) {
-    ProductBridge.getProduct(productId).then((result) {
-      if (result.code == 200) {
-        ProductList productList = ProductList.fromJson(result.data);
-        productController.add(productList.list);
-      } else {
-        Bridge.showLongToast(result.msg);
-      }
-    });
+  getProduct(int productId) async {
+    print("getProduct begin");
+    Result result = await ProductBridge.getProduct(productId);
+    if (result.code == 200) {
+      ProductList productList = ProductList.fromJson(result.data);
+      productController.add(productList.list);
+      print("getProduct add");
+
+    } else {
+      Bridge.showLongToast(result.msg);
+      productController.add(null);
+    }
   }
 
   getProductSkuInfo(int productId) {
+    print("getProductSkuInfo begin");
     SkuBridge.findGoodsSku(productId.toString()).then((result) {
       if (result.code == 200) {
         print(result.toString());
         SkuInfo productList = SkuInfo.fromJson(result.data);
         skuInfoController.add(productList);
+        print("getProduct sku add");
       } else {
         Bridge.showLongToast(result.msg);
       }

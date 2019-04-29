@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lib/model/category.dart';
 import 'package:flutter_lib/ui/page/account/login.dart';
 import 'package:flutter_lib/ui/page/dashboard/dashboard.page.dart';
 import 'package:flutter_lib/ui/page/dashboard/home_page.dart';
@@ -77,16 +78,16 @@ class MyApp extends StatelessWidget {
               return new MaterialPageRoute(
                 settings: settings,
                 builder: (BuildContext context) =>
-                    ShopCategoryList(arguments, true),
+                    ShopCategoryListPage(title:arguments,showBackBtn: true),
               );
             }
             break;
           case UIData.ShopListPage:
-            if (arguments is String) {
+            if (arguments is Category) {
               return new MaterialPageRoute(
                 settings: settings,
                 builder: (BuildContext context) =>
-                    ShopListPage(title: arguments),
+                    ShopListPage(categoryId: arguments.id,title: arguments.name),
               );
             }
             break;

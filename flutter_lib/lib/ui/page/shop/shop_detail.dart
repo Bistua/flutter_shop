@@ -20,6 +20,9 @@ import 'package:flutter_lib/utils/uidata.dart';
 class ShopDetailPage extends StatefulWidget {
   int productId;
 
+  String skuInfoSelect;
+  Map mapForUI = new Map<String, dynamic>();
+
   ShopDetailPage(int productId, {Key key}) : super(key: key) {
     this.productId = productId;
   }
@@ -38,7 +41,6 @@ class ShopDetailPageState extends State<ShopDetailPage> {
   int chooseCount = 1;
   String chooseCountStr = "1";
   int cartCount = 0;
-  Map mapForUI = new Map<String, dynamic>();
 
   ShopDetailPageState(int productId) {
     this.productId = productId;
@@ -47,19 +49,17 @@ class ShopDetailPageState extends State<ShopDetailPage> {
   @override
   void initState() {
     super.initState();
-    productBloc = ProductBloc();
   }
 
   @override
   void dispose() {
-    productBloc.close();
+//    productBloc.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    productBloc.getProduct(productId);
-
+    productBloc = ProductBloc();
     return ProductProvider(
         productBloc: productBloc,
         child: new Scaffold(
@@ -69,16 +69,21 @@ class ShopDetailPageState extends State<ShopDetailPage> {
   }
 
   Widget bodyData() {
+    productBloc.getProduct(productId);
     return StreamBuilder<List<ProductItem>>(
         stream: productBloc.productItems,
         builder: (context, snapshot) {
-          return snapshot.hasData
-              ? buidBody(snapshot.data[0])
-              : Center(child: CircularProgressIndicator());
+          if (snapshot.hasData) {
+            print("getProduct hasdata");
+            return buidBody(snapshot.data[0]);
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
         });
   }
 
   Container buidBody(ProductItem product) {
+    productBloc.getProductSkuInfo(productId);
     return Container(
       child: Stack(
         children: <Widget>[
@@ -158,7 +163,13 @@ class ShopDetailPageState extends State<ShopDetailPage> {
       slivers: <Widget>[
         SliverList(
           delegate: SliverChildListDelegate(
-            [buildHeader(product), buildSKUStreamBuilder(product)],
+            [
+              buildHeader(product),
+              ProductProvider(
+                productBloc: productBloc,
+                child: buildSKUStreamBuilder(product),
+              )
+            ],
           ),
         ),
         SliverList(
@@ -196,13 +207,15 @@ class ShopDetailPageState extends State<ShopDetailPage> {
   }
 
   StreamBuilder<SkuInfo> buildSKUStreamBuilder(ProductItem product) {
-    productBloc.getProductSkuInfo(productId);
     return StreamBuilder<SkuInfo>(
         stream: productBloc.skuInfo,
         builder: (context, snapshot) {
-          return snapshot.hasData
-              ? buildVipInfo(product, snapshot.data)
-              : Center(child: CircularProgressIndicator());
+          if(snapshot.hasData){
+            print("getProduct sku hasdata");
+            return buildVipInfo(product, snapshot.data);
+          }else{
+            return Center(child: CircularProgressIndicator());
+          }
         });
   }
 
@@ -432,20 +445,19 @@ class ShopDetailPageState extends State<ShopDetailPage> {
 
   Padding buildVipInfo(ProductItem product, SkuInfo data) {
     this.skuInfo = data;
+    String skuInfoSelect = "";
     for (int i = 0; i < this.skuInfo.options.length; i++) {
       var o = this.skuInfo.options[i];
       List<ValuesListBean> vs = this.skuInfo.options[i].values;
       for (int j = 0; j < vs.length; j++) {
         var v = vs[j];
         if (j == 0) {
-          mapForUI[o.key] = v;
+          widget.mapForUI[o.key] = v;
+          skuInfoSelect = skuInfoSelect + "  " + o.key + ":" + v.name;
         }
       }
     }
-    String skuInfo = "";
-    mapForUI.forEach((k, v) {
-      skuInfo = skuInfo + "  " + k + ":" + v.name;
-    });
+    widget.skuInfoSelect = skuInfoSelect;
 
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
@@ -461,7 +473,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      skuInfo + "  数量：" + chooseCount.toString(),
+                      widget.skuInfoSelect + "  数量：" + chooseCount.toString(),
                       style: TextStyle(color: UIData.ff353535, fontSize: 15),
                     ),
                     Icon(Icons.arrow_forward_ios),
@@ -472,9 +484,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                     getSkuResult(product);
                     return;
                   }
-                  showChooseDialog(product).then((v) => {
-                        debugPrint("dialog关闭"),
-                      });
+                  showChooseDialog(product);
                 },
               ),
             ),
@@ -501,8 +511,20 @@ class ShopDetailPageState extends State<ShopDetailPage> {
     );
   }
 
-  Future<Null> showChooseDialog(ProductItem product) async {
-    return await showModalBottomSheet(
+  getSkuSelectInfo() {
+    String skuInfoSelect = "";
+    widget.mapForUI.forEach((k, v) {
+      skuInfoSelect = skuInfoSelect + "  " + k + ":" + v.name;
+    });
+    print(widget.skuInfoSelect);
+    setState(() {
+      widget.skuInfoSelect = skuInfoSelect;
+      print("刷新getSkuSelectInfo:" + widget.skuInfoSelect);
+    });
+  }
+
+  showChooseDialog(ProductItem product) {
+    showModalBottomSheet(
         context: context,
         builder: (context) => Center(
               child: Material(
@@ -612,9 +634,10 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                         child: Text(value.name),
                       ),
                       onTap: () {
-                        setState(() {
-                          mapForUI[option.key] = value;
-                        });
+                        widget.mapForUI[option.key] = value;
+                        getSkuSelectInfo();
+                        print(widget.mapForUI.toString());
+                        Navigator.of(context).pop();
                       },
                     ),
                   );
@@ -652,10 +675,11 @@ class ShopDetailPageState extends State<ShopDetailPage> {
   void getSkuResult(ProductItem product) {
     if (skuInfo != null) {
       Set set = new Set<int>();
-      mapForUI.forEach((k, v) {
+      widget.mapForUI.forEach((k, v) {
         set.add(v.id);
       });
       Int64List int64list = Int64List.fromList(set.toList());
+      print(int64list);
       Future<Result> skuFuture =
           SkuBridge.findGoodsSkuInfo(productId.toString(), int64list);
 

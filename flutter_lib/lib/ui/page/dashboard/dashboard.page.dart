@@ -48,15 +48,10 @@ class DashboardPageState extends State<DashboardPage> {
     super.dispose();
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {}
-
-
-
   int currentIndex = 0;
   final List<Widget> _children = [
     MyHomePage(),
-    ShopCategoryList("全部分类", false),
+    ShopCategoryListPage(title: "全部分类", showBackBtn: false),
     ShopCartListPage(false),
     UserHomeListPage(),
   ];

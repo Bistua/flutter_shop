@@ -5,24 +5,6 @@ import 'package:flutter_lib/model/category.dart';
 import 'package:flutter_lib/ui/page/shop/shop_list.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
-class ShopCategoryList extends StatelessWidget {
-  String title;
-  bool showBackBtn = false;
-  BuildContext buildContext;
-  ShopCategoryList(String title, bool showBackBtn) {
-    this.title = title;
-    this.showBackBtn = showBackBtn;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    buildContext = context;
-    return ShopCategoryListPage(
-      title: title,
-      showBackBtn: showBackBtn,
-    );
-  }
-}
 
 class ShopCategoryListPage extends StatefulWidget {
   ShopCategoryListPage({Key key, this.title, this.showBackBtn})
@@ -41,7 +23,7 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
   @override
   void initState() {
     super.initState();
-    categoryBloc.getCategories();
+
   }
 
   @override
@@ -52,6 +34,7 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
 
   @override
   Widget build(BuildContext context) {
+    categoryBloc.getCategories();
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -264,11 +247,7 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
             ),
             onTap: () {
               print(data[index].toString());
-              Navigator.push(
-                  context,
-                  new MaterialPageRoute(
-                      builder: (context) =>
-                          new ShopList(data[index].name, data[index].id)));
+              Navigator.pushNamed(context, UIData.ShopListPage,arguments:data[index]);
             },
           );
         },
