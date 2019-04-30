@@ -65,7 +65,7 @@ dependencies {
     //全局APP Context
     implementation 'com.bristua.framework:context:2.0.0-SNAPHOST'
     implementation 'com.ft.business.interceptor:response:1.1.1-SNAPHOST'
-    implementation 'com.ft.business.component:user_login:5.0.7-SNAPHOST'
+    implementation 'com.ft.business.component:user_login:5.0.8-SNAPHOST'
     implementation 'com.ft.business.component:user_pay:1.1.2-SNAPHOST'
     implementation 'com.ft.business.component:user_info:1.0.1-SNAPHOST'
     implementation 'com.ft.business.component:enviroment:1.0.8-SNAPHOST'

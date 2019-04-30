@@ -80,7 +80,7 @@ class LoginState extends State<LoginPage> {
                 //圆角大小,与BoxDecoration保持一致，更美观
                 onPressed: () {
                   Future<Result> future = AccountBridge.login(
-                      _controller1.text, _controller2.text, "");
+                      _controller1.text, _controller2.text, "0");
                   future.then((v) {
                     if (v.code == 200) {
                       Bridge.showShortToast("登录成功");
