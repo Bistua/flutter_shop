@@ -98,7 +98,7 @@ class ShopListState extends State<ShopListPage> {
                       new Stack(
                         children: <Widget>[
                           UIData.getImage(
-                            productItem.medias.alt1.url,
+                            productItem.medias[0].url,
                           ),
                           Positioned(
                               bottom: 0,

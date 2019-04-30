@@ -8,6 +8,7 @@ import 'package:flutter_lib/logic/bloc/product_bloc.dart';
 import 'package:flutter_lib/logic/inherited/product_provider.dart';
 import 'package:flutter_lib/logic/viewmodel/comment_view_model.dart';
 import 'package:flutter_lib/model/Result.dart';
+import 'package:flutter_lib/model/productdetail.dart';
 import 'package:flutter_lib/model/skuresult.dart';
 import 'package:flutter_lib/model/cart.dart';
 import 'package:flutter_lib/model/comment.dart';
@@ -71,19 +72,19 @@ class ShopDetailPageState extends State<ShopDetailPage> {
 
   Widget bodyData() {
     productBloc.getProduct(productId);
-    return StreamBuilder<List<ProductItem>>(
-        stream: productBloc.productItems,
+    return StreamBuilder<ProductDetail>(
+        stream: productBloc.productDetail,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             print("getProduct hasdata");
-            return buidBody(snapshot.data[0]);
+            return buidBody(snapshot.data);
           } else {
             return Center(child: CircularProgressIndicator());
           }
         });
   }
 
-  Container buidBody(ProductItem product) {
+  Container buidBody(ProductDetail product) {
 
     productBloc.getProductSkuInfo(productId);
     return Container(
@@ -160,7 +161,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
     );
   }
 
-  CustomScrollView buildCustomScrollView(ProductItem product) {
+  CustomScrollView buildCustomScrollView(ProductDetail product) {
     return CustomScrollView(
       slivers: <Widget>[
         SliverList(
@@ -200,7 +201,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                   ),
                 ),
               ),
-              UIData.getImage(product.medias.alt1.url),
+              UIData.getImage(product.medias[0].url),
             ],
           ),
         ),
@@ -208,7 +209,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
     );
   }
 
-  StreamBuilder<SkuInfo> buildSKUStreamBuilder(ProductItem product) {
+  StreamBuilder<SkuInfo> buildSKUStreamBuilder(ProductDetail product) {
     return StreamBuilder<SkuInfo>(
         stream: productBloc.skuInfo,
         builder: (context, snapshot) {
@@ -221,7 +222,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
         });
   }
 
-  Padding buildHeader(ProductItem product) {
+  Padding buildHeader(ProductDetail product) {
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
       child: new Container(
@@ -229,7 +230,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
         child: new Center(
           child: new Column(
             children: <Widget>[
-              UIData.getImage(product.medias.alt1.url),
+              UIData.getImage(product.medias[0].url),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -245,7 +246,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                             text: new TextSpan(
                               children: <TextSpan>[
                                 TextSpan(
-                                  text: "￥" + product.price.toString(),
+                                  text: "￥" + product.retailPrice.toString(),
                                   style: TextStyle(
                                       color: UIData.fffa4848, fontSize: 18),
                                 ),
@@ -259,7 +260,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                             text: new TextSpan(
                               children: <TextSpan>[
                                 new TextSpan(
-                                  text: "￥" + product.price.toString(),
+                                  text: "￥" + product.retailPrice.toString(),
                                   style: new TextStyle(
                                     color: UIData.ff999999,
                                     decoration: TextDecoration.lineThrough,
@@ -301,7 +302,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                   Padding(
                     padding: EdgeInsets.fromLTRB(15, 6, 15, 15),
                     child: Text(
-                      product.description,
+                      product.detail,
                       style: TextStyle(color: UIData.ff999999, fontSize: 12),
                     ),
                   ),
@@ -445,7 +446,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
     );
   }
 
-  Padding buildVipInfo(ProductItem product, SkuInfo data) {
+  Padding buildVipInfo(ProductDetail product, SkuInfo data) {
     this.skuInfo = data;
     String skuInfoSelect = "";
     for (int i = 0; i < this.skuInfo.options.length; i++) {
@@ -525,7 +526,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
     });
   }
 
-  showChooseDialog(ProductItem product) {
+  showChooseDialog(ProductDetail product) {
     showModalBottomSheet(
         context: context,
         builder: (context) => Center(
@@ -542,7 +543,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
             ));
   }
 
-  Widget buildBody(ProductItem product) {
+  Widget buildBody(ProductDetail product) {
     return Stack(
       children: <Widget>[
         Column(
@@ -554,7 +555,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   UIData.getImageWithWH(
-                    product.medias.alt1.url,
+                    product.medias[0].url,
                     90,
                     90,
                   ),
@@ -575,7 +576,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            product.price.toString(),
+                            product.retailPrice.toString(),
                             style:
                                 TextStyle(color: UIData.fffa4848, fontSize: 15),
                           ),
@@ -674,7 +675,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
 //    });
 //  }
 
-  void getSkuResult(ProductItem product) {
+  void getSkuResult(ProductDetail product) {
     if (skuInfo != null) {
       Set set = new Set<int>();
       widget.mapForUI.forEach((k, v) {
@@ -694,20 +695,20 @@ class ShopDetailPageState extends State<ShopDetailPage> {
         }
       });
     } else {
-      addCart(product, product.skuId.toString());
+      addCart(product, product.id.toString());
     }
   }
 
-  void addCart(ProductItem product, String skuId) {
+  void addCart(ProductDetail product, String skuId) {
     Future<Result> future = CartBridge.addSku(
         productId,
-        product.skuId.toString(),
+        product.id.toString(),
         chooseCount,
-        product.price,
+        product.retailPrice,
         0,
         "规格",
         product.name,
-        product.medias.alt1.url);
+        product.medias[0].url);
     future.then((result) {
       if (result.code == 200) {
         Cart categoryList = Cart.fromJson(result.data);

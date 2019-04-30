@@ -5,18 +5,23 @@ import 'package:flutter_lib/bridge/product_bridge.dart';
 import 'package:flutter_lib/bridge/sku_bridge.dart';
 import 'package:flutter_lib/logic/viewmodel/product_view_model.dart';
 import 'package:flutter_lib/model/Result.dart';
+import 'package:flutter_lib/model/productdetail.dart';
 
 import 'package:flutter_lib/model/productitem.dart';
-import 'package:flutter_lib/model/productlist.dart';
 import 'package:flutter_lib/model/skuinfo.dart';
 
 class ProductBloc {
   final ProductViewModel productViewModel = ProductViewModel();
   final productController = StreamController<List<ProductItem>>();
+  final productDetaailController = StreamController<ProductDetail>();
   final skuInfoController = StreamController<SkuInfo>.broadcast();
 
   Stream<List<ProductItem>> get productItems {
     return productController.stream;
+  }
+
+  Stream<ProductDetail> get productDetail {
+    return productDetaailController.stream;
   }
 
   Stream<SkuInfo> get skuInfo {
@@ -53,13 +58,13 @@ class ProductBloc {
     print("getProduct begin");
     Result result = await ProductBridge.getProduct(productId);
     if (result.code == 200) {
-      ProductList productList = ProductList.fromJson(result.data);
-      productController.add(productList.list);
+      Productdetail productList = Productdetail.fromJson(result.data);
+      productDetaailController.add(productList.list[0]);
       print("getProduct add");
 
     } else {
       Bridge.showLongToast(result.msg);
-      productController.add(null);
+      productDetaailController.add(null);
     }
   }
 

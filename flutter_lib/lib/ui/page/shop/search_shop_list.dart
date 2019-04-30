@@ -149,7 +149,7 @@ class SearchShopListState extends State<SearchShopListPage> {
                       new Stack(
                         children: <Widget>[
                           UIData.getImage(
-                            prodcutItem.medias.alt1.url,
+                            prodcutItem.medias[0].url,
                           ),
                           Positioned(
                               bottom: 0,
