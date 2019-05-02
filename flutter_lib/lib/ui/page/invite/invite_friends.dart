@@ -23,33 +23,31 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
   BuildContext _context;
   UserInfoBloc userInfoBloc = new UserInfoBloc();
   RebateBloc rebateBloc = new RebateBloc();
-  RankViewModel rankViewModel = RankViewModel();
-  List<Rank> rankList = rankViewModel.getMenuItems();
 
   @override
   Widget build(BuildContext context) {
     _context = context;
     return new Scaffold(
         appBar: UIData.getCenterTitleAppBar("邀请好友下单", context),
-        body: bodyData(rankList));
+        body: bodyData());
   }
 
   /**
    * 获取用户信息
    */
-  Widget bodyData(List<Rank> rankList) {
+  Widget bodyData() {
     userInfoBloc.getUserInfo();
     return StreamBuilder<Userinfo>(
         stream: userInfoBloc.userInfoStream.stream,
         builder: (context, snapshot) {
-          return getCustomScroll(snapshot.data, rankList);
+          return getCustomScroll(snapshot.data);
         });
   }
 
   /*
    * 获取返现的列表数据
    */
-  Widget getSliverDelegate(List<RebateInfo> rankList) {
+  Widget getSliverDelegate() {
     rebateBloc.getRebatList();
     return StreamBuilder<List<RebateInfo>>(
         stream: rebateBloc.rebateInfo,
@@ -101,7 +99,7 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
                                 (index + 1).toString(), UIData.fff, 15),
                           ),
                           decoration: new BoxDecoration(
-                            color: rankList[index].color,
+                            color: UIData.fffa4848,
                             shape: BoxShape.circle,
                           ),
                         ),
@@ -112,12 +110,12 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
                         children: <Widget>[
                           Padding(
                             child: UIData.getTextWidget(
-                                rankList[index].name, UIData.ff353535, 12),
+                                rankList[index].userName, UIData.ff353535, 12),
                             padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
                           ),
                           Padding(
                             child: UIData.getTextWidget(
-                                rankList[index].xiaofei, UIData.ff353535, 12),
+                                rankList[index].consumeAmt, UIData.ff353535, 12),
                             padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                           ),
                         ],
@@ -137,7 +135,7 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
    * 获取ui
    */
   CustomScrollView getCustomScroll(
-      Userinfo userInfo, List<RebateInfo> rankList) {
+      Userinfo userInfo) {
     return CustomScrollView(
       slivers: <Widget>[
         SliverList(
@@ -150,7 +148,7 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
             ],
           ),
         ),
-        getSliverDelegate(rankList),
+        getSliverDelegate(),
       ],
     );
   }
