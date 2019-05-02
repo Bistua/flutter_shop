@@ -6,6 +6,11 @@ import 'package:flutter_lib/model/product.dart';
 import 'package:flutter_lib/ui/widgets/shop_tab_item.dart';
 import 'package:flutter_lib/model/rankList.dart';
 import 'package:flutter_lib/logic/viewmodel/rank_view_model.dart';
+import 'package:flutter_lib/logic//bloc/userinfo_bloc.dart';
+import 'package:flutter_lib/model/userinfo.dart';
+import 'package:flutter_lib/utils/uidata.dart';
+import 'package:flutter_lib/model/rebateList.dart';
+import 'package:flutter_lib/logic//bloc/rebate_bloc.dart';
 
 class InviteFriendsPage extends StatefulWidget {
   InviteFriendsPage({Key key}) : super(key: key);
@@ -16,7 +21,8 @@ class InviteFriendsPage extends StatefulWidget {
 
 class InviteFriendsPageState extends State<InviteFriendsPage> {
   BuildContext _context;
-
+  UserInfoBloc userInfoBloc = new UserInfoBloc();
+  RebateBloc rebateBloc=new RebateBloc();
   @override
   Widget build(BuildContext context) {
     _context = context;
@@ -25,32 +31,37 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
     //RebateBridge.findRebateList(1, 2000);
     return new Scaffold(
       appBar: UIData.getCenterTitleAppBar("邀请好友下单", context),
-      body:getCustomScroll(rankList)
+      body:bodyData(rankList)
     );
   }
 
 
-//  /**
-//   * 获取用户信息
-//   */
-//  Widget bodyData() {
-//    rebateInfoBloc.getUserInfo();
-//    return StreamBuilder<Userinfo>(
-//        stream: userInfoBloc.userInfoStream.stream,
-//        builder: (context, snapshot) {
-//          return getCustomScroll(snapshot.data, rankList);
-//        });
-//  }
+  /**
+   * 获取用户信息
+   */
+  Widget bodyData(List<Rank> rankList) {
+    userInfoBloc.getUserInfo();
+    return StreamBuilder<Userinfo>(
+        stream: userInfoBloc.userInfoStream.stream,
+        builder: (context, snapshot) {
+          return getCustomScroll(snapshot.data,rankList);
+        });
+  }
 
-  CustomScrollView getCustomScroll(List<Rank> rankList){
+
+
+  /**
+   * 获取ui
+   */
+  CustomScrollView getCustomScroll(Userinfo userInfo,List<Rank> rankList){
     return  CustomScrollView(
       slivers: <Widget>[
         SliverList(
           delegate: SliverChildListDelegate(
             [
-              buildHeader(),
-              buildVipInfo(),
-              buildPayInfo(),
+              buildHeader(userInfo),
+              buildVipInfo(userInfo),
+              buildPayInfo(userInfo),
               buildFriendsPayInfoList(),
             ],
           ),
@@ -79,26 +90,7 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
                           ),
                         ),
                       ),
-                      new Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                            child: UIData.getTextWidget(
-                                rankList[index].name,
-                                UIData.ff353535,
-                                12),
-                            padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
-                          ),
-                          Padding(
-                            child: UIData.getTextWidget(
-                                rankList[index].xiaofei,
-                                UIData.ff353535,
-                                12),
-                            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                          ),
-                        ],
-                      ),
+
                     ],
                   ),
                   Divider(),
@@ -111,6 +103,8 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
       ],
     );
   }
+
+
 
   Padding buildFriendsPayInfoList() {
     return Padding(
@@ -144,7 +138,7 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
     );
   }
 
-  Padding buildPayInfo() {
+  Padding buildPayInfo(Userinfo userInfo) {
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
       child: new Container(
@@ -185,7 +179,7 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
     );
   }
 
-  Padding buildVipInfo() {
+  Padding buildVipInfo(Userinfo userInfo) {
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
       child: new Container(
@@ -230,7 +224,7 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
     );
   }
 
-  Padding buildHeader() {
+  Padding buildHeader(Userinfo userInfo) {
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
       child: new Container(
@@ -252,7 +246,7 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
               new Padding(
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 14),
                 child: Text(
-                  "GX10100166",
+                  userInfo==null?"":userInfo.userCode,
                   style: TextStyle(color: UIData.ffffe116, fontSize: 30),
                 ),
               ),
