@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_lib/logic//bloc/userinfo_bloc.dart';
 import 'package:flutter_lib/logic/viewmodel/homeitem_view_model.dart';
 import 'package:flutter_lib/model/homeitem.dart';
 import 'package:flutter_lib/model/userinfo.dart';
+import 'package:flutter_lib/logic//bloc/userinfo_bloc.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 import 'dart:ui';
 
@@ -17,10 +17,10 @@ class UserHomeListPage extends StatefulWidget {
 class _UserHomeState extends State<UserHomeListPage> {
   HomeItemViewModel homeItemViewModel = HomeItemViewModel();
   List<HomeItem> homeItems;
-  UserInfoBloc userInfoBloc=new UserInfoBloc();
+  UserInfoBloc userInfoBloc = new UserInfoBloc();
+
   @override
   Widget build(BuildContext context) {
-
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
       statusBarColor: UIData.fffa4848, //or set color with: Color(0xFF0000FF)
     ));
@@ -35,14 +35,11 @@ class _UserHomeState extends State<UserHomeListPage> {
       child: Stack(
         children: <Widget>[
           Positioned(
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child:new Scaffold(
-              body:bodyData()
-            )
-          ),
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: new Scaffold(body: bodyData())),
         ],
       ),
     );
@@ -128,7 +125,7 @@ class _UserHomeState extends State<UserHomeListPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Padding(
-                          child:Image.asset(
+                          child: Image.asset(
                             "images/order2.png",
                             width: 22.0,
                             height: 22.0,
@@ -164,7 +161,7 @@ class _UserHomeState extends State<UserHomeListPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Padding(
-                          child:Image.asset(
+                          child: Image.asset(
                             "images/order4.png",
                             width: 22.0,
                             height: 22.0,
@@ -188,7 +185,7 @@ class _UserHomeState extends State<UserHomeListPage> {
     );
   }
 
-  Widget buildListIItem(int index,Userinfo userInfo) {
+  Widget buildListIItem(int index, Userinfo userInfo) {
     homeItems = homeItemViewModel.getMenuItems(userInfo);
     HomeItem homeItem = homeItems[index];
     return GestureDetector(
@@ -202,8 +199,7 @@ class _UserHomeState extends State<UserHomeListPage> {
                 Row(
                   children: <Widget>[
                     Padding(
-                      child:
-                      Image.asset(
+                      child: Image.asset(
                         homeItem.icon,
                         width: 22.0,
                         height: 22.0,
@@ -245,36 +241,38 @@ class _UserHomeState extends State<UserHomeListPage> {
         ),
       ),
       onTap: () {
+        //未登录的用户，要主动跳转
+        if(userInfo==null) {
+           Navigator.pushNamed(context, UIData.Login);
+           return;
+        }
         Navigator.pushNamed(context, homeItem.action);
+
       },
     );
   }
 
-  Widget bodyData(){
+  Widget bodyData() {
     userInfoBloc.getUserInfo();
     return StreamBuilder<Userinfo>(
         stream: userInfoBloc.userInfoStream.stream,
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            print("getProduct hasdata");
-            return getWidget(snapshot.data);
-          } else {
-            return getWidget(snapshot.data);
-          }
+          return getWidget(snapshot.data);
         });
   }
 
   /*
    * 获取配置信息
    */
-  CustomScrollView getWidget(Userinfo userInfo){
+  CustomScrollView getWidget(Userinfo userInfo) {
     return CustomScrollView(
       slivers: <Widget>[
         SliverAppBar(
           centerTitle: false,
           expandedHeight: 155.0,
           floating: false,
-          pinned: false, //固定在顶部
+          pinned: false,
+          //固定在顶部
           automaticallyImplyLeading: false,
           flexibleSpace: FlexibleSpaceBar(
             centerTitle: false,
@@ -290,18 +288,17 @@ class _UserHomeState extends State<UserHomeListPage> {
                         child: Padding(
                           padding: EdgeInsets.fromLTRB(22, 56, 8, 16),
                           child: Column(
-                            crossAxisAlignment:
-                            CrossAxisAlignment.stretch,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: <Widget>[
                               Text(
-                                userInfo==null?"":userInfo.nickName,
-                                style: TextStyle(
-                                    color: UIData.fff, fontSize: 20),
+                                userInfo == null ? "" : userInfo.nickName,
+                                style:
+                                    TextStyle(color: UIData.fff, fontSize: 20),
                               ),
                               Text(
-                                userInfo==null?"":userInfo.phone,
-                                style: TextStyle(
-                                    color: UIData.fff, fontSize: 15),
+                                userInfo == null ? "" : userInfo.phone,
+                                style:
+                                    TextStyle(color: UIData.fff, fontSize: 15),
                               ),
                             ],
                           ),
@@ -310,8 +307,9 @@ class _UserHomeState extends State<UserHomeListPage> {
                       Padding(
                         child: CircleAvatar(
                           radius: 30,
-                          backgroundImage: NetworkImage(
-                              userInfo==null?"file://":userInfo.userImgUrl),
+                          backgroundImage: NetworkImage(userInfo == null
+                              ? "file://"
+                              : userInfo.userImgUrl),
                         ),
                         padding: EdgeInsets.fromLTRB(0, 0, 22, 0),
                       ),
@@ -336,7 +334,7 @@ class _UserHomeState extends State<UserHomeListPage> {
         SliverFixedExtentList(
           itemExtent: 60,
           delegate: SliverChildBuilderDelegate(
-                (context, index) => buildListIItem(index,userInfo),
+            (context, index) => buildListIItem(index, userInfo),
             childCount: 6,
           ),
         ),
@@ -347,15 +345,15 @@ class _UserHomeState extends State<UserHomeListPage> {
   /*
    * 执行去登录或者去激活的操作
    */
-  void gotoLogin(Userinfo userInfo){
+  void gotoLogin(Userinfo userInfo) {
     print("跳转至登录页面");
-    if(userInfo == null) {
+    if (userInfo == null) {
       Navigator.pushNamed(context, UIData.Login);
       return;
     }
-    print("跳转至登录页面2:"+userInfo.phone);
+    print("跳转至登录页面2:" + userInfo.phone);
     //判断用户手机号是否存在
-    if(userInfo.phone == "-"){
+    if (userInfo.phone == "-") {
       print("去执行页面跳转");
       //执行去绑定手机号
       Navigator.pushNamed(context, UIData.Register);

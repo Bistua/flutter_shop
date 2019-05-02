@@ -23,7 +23,7 @@ class HomeItemViewModel {
           subTitle: "邀请好友赢返利  ",
           arrowIcon:Icons.arrow_forward_ios,
           action: UIData.IviteFriendsPage,
-          params: userInfo==null?"":userInfo.balanceAmt+"/"),
+       ),
       HomeItem(
         icon:  "images/coin.png",
           title: "我的金币",
