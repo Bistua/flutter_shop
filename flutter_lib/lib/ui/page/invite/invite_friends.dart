@@ -49,12 +49,12 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
   /*
    * 获取返现的列表数据
    */
-  SliverChildDelegate getSliverDelegate(List<Rank> rankList) {
+  Widget getSliverDelegate(List<RebateInfo> rankList) {
     rebateBloc.getRebatList();
     return StreamBuilder<List<RebateInfo>>(
-        stream: rebateBloc.rebateStream.stream,
+        stream: rebateBloc.rebateInfo,
         builder: (context, snapshot) {
-          return getSliverChild(rankList);
+          return  getSliverChild(snapshot.data);
         });
   }
 
@@ -62,59 +62,63 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
   /*
    * 获取 SliverChildBuilderDelegate
    */
-  SliverChildBuilderDelegate getSliverChild(List<Rank> rankList) {
-    return SliverChildBuilderDelegate(
-      (context, index) => Container(
-            color: UIData.fff,
-            child: new Column(
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(17, 18, 15, 18),
-                      child: Container(
-                        width: 25,
-                        height: 25,
-                        child: Center(
-                          child: UIData.getTextWidget(
-                              (index + 1).toString(), UIData.fff, 15),
-                        ),
-                        decoration: new BoxDecoration(
-                          color: rankList[index].color,
-                          shape: BoxShape.circle,
-                        ),
+  SliverFixedExtentList getSliverChild(List<RebateInfo> rankList) {
+    return SliverFixedExtentList(
+      itemExtent: 77, // I'm forcing item heights
+      delegate:  SliverChildBuilderDelegate(
+            (context, index) => Container(
+          color: UIData.fff,
+          child: new Column(
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(17, 18, 15, 18),
+                    child: Container(
+                      width: 25,
+                      height: 25,
+                      child: Center(
+                        child: UIData.getTextWidget(
+                            (index + 1).toString(), UIData.fff, 15),
+                      ),
+                      decoration: new BoxDecoration(
+                        color: rankList[index].color,
+                        shape: BoxShape.circle,
                       ),
                     ),
-                    new Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          child: UIData.getTextWidget(
-                              rankList[index].name, UIData.ff353535, 12),
-                          padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
-                        ),
-                        Padding(
-                          child: UIData.getTextWidget(
-                              rankList[index].xiaofei, UIData.ff353535, 12),
-                          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                Divider(),
-              ],
-            ),
+                  ),
+                  new Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        child: UIData.getTextWidget(
+                            rankList[index].name, UIData.ff353535, 12),
+                        padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                      ),
+                      Padding(
+                        child: UIData.getTextWidget(
+                            rankList[index].xiaofei, UIData.ff353535, 12),
+                        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              Divider(),
+            ],
           ),
-      childCount: 6,
+        ),
+        childCount: 6,
+      ),
     );
+
   }
 
   /*
    * 获取ui
    */
-  CustomScrollView getCustomScroll(Userinfo userInfo, List<Rank> rankList) {
+  CustomScrollView getCustomScroll(Userinfo userInfo, List<RebateInfo> rankList) {
     return CustomScrollView(
       slivers: <Widget>[
         SliverList(
@@ -127,10 +131,8 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
             ],
           ),
         ),
-        SliverFixedExtentList(
-            itemExtent: 77, // I'm forcing item heights
-            delegate: getSliverDelegate(rankList)
-        ),
+        getSliverDelegate(rankList),
+
       ],
     );
   }
