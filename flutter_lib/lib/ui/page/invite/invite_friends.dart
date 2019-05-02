@@ -22,19 +22,17 @@ class InviteFriendsPage extends StatefulWidget {
 class InviteFriendsPageState extends State<InviteFriendsPage> {
   BuildContext _context;
   UserInfoBloc userInfoBloc = new UserInfoBloc();
-  RebateBloc rebateBloc=new RebateBloc();
+  RebateBloc rebateBloc = new RebateBloc();
+  RankViewModel rankViewModel = RankViewModel();
+  List<Rank> rankList = rankViewModel.getMenuItems();
+
   @override
   Widget build(BuildContext context) {
     _context = context;
-    RankViewModel rankViewModel = RankViewModel();
-    List<Rank> rankList = rankViewModel.getMenuItems();
-    //RebateBridge.findRebateList(1, 2000);
     return new Scaffold(
-      appBar: UIData.getCenterTitleAppBar("邀请好友下单", context),
-      body:bodyData(rankList)
-    );
+        appBar: UIData.getCenterTitleAppBar("邀请好友下单", context),
+        body: bodyData(rankList));
   }
-
 
   /**
    * 获取用户信息
@@ -44,17 +42,80 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
     return StreamBuilder<Userinfo>(
         stream: userInfoBloc.userInfoStream.stream,
         builder: (context, snapshot) {
-          return getCustomScroll(snapshot.data,rankList);
+          return getCustomScroll(snapshot.data, rankList);
+        });
+  }
+
+  /*
+   * 获取返现的列表数据
+   */
+  SliverChildDelegate getSliverDelegate(List<Rank> rankList) {
+    rebateBloc.getRebatList();
+    return StreamBuilder<List<RebateInfo>>(
+        stream: rebateBloc.rebateStream.stream,
+        builder: (context, snapshot) {
+          return getSliverChild(rankList);
         });
   }
 
 
+  /*
+   * 获取 SliverChildBuilderDelegate
+   */
+  SliverChildBuilderDelegate getSliverChild(List<Rank> rankList) {
+    return SliverChildBuilderDelegate(
+      (context, index) => Container(
+            color: UIData.fff,
+            child: new Column(
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(17, 18, 15, 18),
+                      child: Container(
+                        width: 25,
+                        height: 25,
+                        child: Center(
+                          child: UIData.getTextWidget(
+                              (index + 1).toString(), UIData.fff, 15),
+                        ),
+                        decoration: new BoxDecoration(
+                          color: rankList[index].color,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    ),
+                    new Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          child: UIData.getTextWidget(
+                              rankList[index].name, UIData.ff353535, 12),
+                          padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                        ),
+                        Padding(
+                          child: UIData.getTextWidget(
+                              rankList[index].xiaofei, UIData.ff353535, 12),
+                          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                Divider(),
+              ],
+            ),
+          ),
+      childCount: 6,
+    );
+  }
 
-  /**
+  /*
    * 获取ui
    */
-  CustomScrollView getCustomScroll(Userinfo userInfo,List<Rank> rankList){
-    return  CustomScrollView(
+  CustomScrollView getCustomScroll(Userinfo userInfo, List<Rank> rankList) {
+    return CustomScrollView(
       slivers: <Widget>[
         SliverList(
           delegate: SliverChildListDelegate(
@@ -67,44 +128,12 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
           ),
         ),
         SliverFixedExtentList(
-          itemExtent: 77, // I'm forcing item heights
-          delegate: SliverChildBuilderDelegate(
-                (context, index) => Container(
-              color: UIData.fff,
-              child: new Column(
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(17, 18, 15, 18),
-                        child: Container(
-                          width: 25,
-                          height: 25,
-                          child: Center(
-                            child: UIData.getTextWidget(
-                                (index + 1).toString(), UIData.fff, 15),
-                          ),
-                          decoration: new BoxDecoration(
-                            color: rankList[index].color,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                      ),
-
-                    ],
-                  ),
-                  Divider(),
-                ],
-              ),
-            ),
-            childCount: rankList.length,
-          ),
+            itemExtent: 77, // I'm forcing item heights
+            delegate: getSliverDelegate(rankList)
         ),
       ],
     );
   }
-
-
 
   Padding buildFriendsPayInfoList() {
     return Padding(
@@ -246,7 +275,7 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
               new Padding(
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 14),
                 child: Text(
-                  userInfo==null?"":userInfo.userCode,
+                  userInfo == null ? "" : userInfo.userCode,
                   style: TextStyle(color: UIData.ffffe116, fontSize: 30),
                 ),
               ),

@@ -1,22 +1,21 @@
 import 'dart:async';
 import 'package:flutter_lib/bridge/common_bridge.dart';
-import 'package:flutter_lib/bridge/account_bridge.dart';
+import 'package:flutter_lib/bridge/rebate_bridge.dart';
 import 'package:flutter_lib/model/rebateList.dart';
 
 class RebateBloc {
-  final rebateStream = StreamController<RebateList>();
+  final rebateStream = StreamController<List<RebateInfo>>();
 
-  Stream<RebateList> get rebateInfo {
+  Stream<List<RebateInfo>> get rebateInfo {
     return rebateStream.stream;
   }
-
   RebateBloc();
 
-  getUserInfo() {
-    AccountBridge.getUserInfo().then((result) {
+  getRebatList() {
+    RebateBridge.findRebateList(0, 100).then((result) {
       if (result.code == 200) {
-        RebateList userinfo = RebateList.fromJson(result.data);
-        rebateStream.add(userinfo);
+        RebateList rebateList = RebateList.fromJson(result.data);
+        rebateStream.add(rebateList.list);
       } else {
         Bridge.showLongToast(result.msg == null ? "未返回错误信息" : result.msg);
       }
