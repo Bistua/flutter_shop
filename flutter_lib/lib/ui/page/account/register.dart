@@ -85,19 +85,6 @@ class RegisterState extends State<RegisterPage> {
                 ),
               ),
               Positioned(
-                  top: 0.0,
-                  right: -15.0,
-                  child: FlatButton(
-                    child: Text(
-                      '取消',
-                      style:
-                          TextStyle(color: Color(0xFF353535), fontSize: 16.0),
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context, "取消注册");
-                    },
-                  )),
-              Positioned(
                   top: 60.0,
                   left: 30.0,
                   right: 30.0,
@@ -105,7 +92,7 @@ class RegisterState extends State<RegisterPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        "新用户注册",
+                        "完善个人信息",
                         style:
                             TextStyle(color: Color(0xFF353535), fontSize: 24.0),
                       ),
@@ -187,7 +174,7 @@ class RegisterState extends State<RegisterPage> {
                         child: RaisedButton(
                           child: new Container(
                             child: new Text(
-                              "注册",
+                              "确定",
                               style: TextStyle(fontSize: 18.0),
                             ),
                             alignment: Alignment.center,
@@ -199,7 +186,7 @@ class RegisterState extends State<RegisterPage> {
                           color: Color.fromARGB(255, 250, 72, 72),
                           //圆角大小,与BoxDecoration保持一致，更美观
                           onPressed: () {
-                            Future<Result> future = AccountBridge.login(
+                            Future<Result> future = AccountBridge.bindUserInfo(
                                 _controller.text,
                                 smsCodeEditingController.text,
                                 inviteCodeEditingController.text);

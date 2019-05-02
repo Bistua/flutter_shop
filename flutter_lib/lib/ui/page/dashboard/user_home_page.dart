@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_lib/bridge/info_bridge.dart';
+import 'package:flutter_lib/logic//bloc/userinfo_bloc.dart';
 import 'package:flutter_lib/logic/viewmodel/homeitem_view_model.dart';
 import 'package:flutter_lib/model/homeitem.dart';
+import 'package:flutter_lib/model/userinfo.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 import 'dart:ui';
 
@@ -16,10 +17,10 @@ class UserHomeListPage extends StatefulWidget {
 class _UserHomeState extends State<UserHomeListPage> {
   HomeItemViewModel homeItemViewModel = HomeItemViewModel();
   List<HomeItem> homeItems;
-
+  UserInfoBloc userInfoBloc=new UserInfoBloc();
   @override
   Widget build(BuildContext context) {
-    homeItems = homeItemViewModel.getMenuItems();
+
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
       statusBarColor: UIData.fffa4848, //or set color with: Color(0xFF0000FF)
     ));
@@ -38,86 +39,19 @@ class _UserHomeState extends State<UserHomeListPage> {
             bottom: 0,
             left: 0,
             right: 0,
-            child: CustomScrollView(
-              slivers: <Widget>[
-                SliverAppBar(
-                  centerTitle: false,
-                  expandedHeight: 155.0,
-                  floating: false,
-                  pinned: false, //固定在顶部
-                  automaticallyImplyLeading: false,
-                  flexibleSpace: FlexibleSpaceBar(
-                    centerTitle: false,
-                    background: GestureDetector(
-                      child: Container(
-                        color: UIData.fffa4848,
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Expanded(
-                                child: Padding(
-                                  padding: EdgeInsets.fromLTRB(22, 56, 8, 16),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: <Widget>[
-                                      Text(
-                                        "小猪佩奇",
-                                        style: TextStyle(
-                                            color: UIData.fff, fontSize: 20),
-                                      ),
-                                      Text(
-                                        "账号：18610001234",
-                                        style: TextStyle(
-                                            color: UIData.fff, fontSize: 15),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                child: CircleAvatar(
-                                  radius: 30,
-                                  backgroundImage: NetworkImage(
-                                      "http://pic1.win4000.com/wallpaper/a/59322eda4daf0.jpg"),
-                                ),
-                                padding: EdgeInsets.fromLTRB(0, 0, 22, 0),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.pushNamed(context, UIData.Login);
-                      },
-                    ),
-                  ),
-                ),
-                SliverList(
-                  delegate: SliverChildListDelegate(
-                    [
-                      buildHeader(),
-                    ],
-                  ),
-                ),
-                SliverFixedExtentList(
-                  itemExtent: 60,
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) => buildListIItem(index),
-                    childCount: homeItems.length,
-                  ),
-                ),
-              ],
-            ),
+            child:new Scaffold(
+              body:bodyData()
+            )
           ),
         ],
       ),
     );
   }
 
-  Widget buildHeader() {
+  /*
+   * 创建头部布局
+   */
+  Widget buildHeader(Userinfo userInfo) {
     return Padding(
       padding: EdgeInsets.all(10),
       child: Container(
@@ -254,7 +188,8 @@ class _UserHomeState extends State<UserHomeListPage> {
     );
   }
 
-  Widget buildListIItem(int index) {
+  Widget buildListIItem(int index,Userinfo userInfo) {
+    homeItems = homeItemViewModel.getMenuItems(userInfo);
     HomeItem homeItem = homeItems[index];
     return GestureDetector(
       child: Container(
@@ -313,5 +248,118 @@ class _UserHomeState extends State<UserHomeListPage> {
         Navigator.pushNamed(context, homeItem.action);
       },
     );
+  }
+
+  Widget bodyData(){
+    userInfoBloc.getUserInfo();
+    return StreamBuilder<Userinfo>(
+        stream: userInfoBloc.userInfoStream.stream,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            print("getProduct hasdata");
+            return getWidget(snapshot.data);
+          } else {
+            return getWidget(snapshot.data);
+          }
+        });
+  }
+
+  /*
+   * 获取配置信息
+   */
+  CustomScrollView getWidget(Userinfo userInfo){
+    return CustomScrollView(
+      slivers: <Widget>[
+        SliverAppBar(
+          centerTitle: false,
+          expandedHeight: 155.0,
+          floating: false,
+          pinned: false, //固定在顶部
+          automaticallyImplyLeading: false,
+          flexibleSpace: FlexibleSpaceBar(
+            centerTitle: false,
+            background: GestureDetector(
+              child: Container(
+                color: UIData.fffa4848,
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(22, 56, 8, 16),
+                          child: Column(
+                            crossAxisAlignment:
+                            CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              Text(
+                                userInfo==null?"":userInfo.nickName,
+                                style: TextStyle(
+                                    color: UIData.fff, fontSize: 20),
+                              ),
+                              Text(
+                                userInfo==null?"":userInfo.phone,
+                                style: TextStyle(
+                                    color: UIData.fff, fontSize: 15),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        child: CircleAvatar(
+                          radius: 30,
+                          backgroundImage: NetworkImage(
+                              userInfo==null?"file://":userInfo.userImgUrl),
+                        ),
+                        padding: EdgeInsets.fromLTRB(0, 0, 22, 0),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              onTap: () {
+                //如果用户信息为空，那么我们就要去登录了，如果用户信息不为空，这时候，就要验证下
+                gotoLogin(userInfo);
+              },
+            ),
+          ),
+        ),
+        SliverList(
+          delegate: SliverChildListDelegate(
+            [
+              buildHeader(userInfo),
+            ],
+          ),
+        ),
+        SliverFixedExtentList(
+          itemExtent: 60,
+          delegate: SliverChildBuilderDelegate(
+                (context, index) => buildListIItem(index,userInfo),
+            childCount: 6,
+          ),
+        ),
+      ],
+    );
+  }
+
+  /*
+   * 执行去登录或者去激活的操作
+   */
+  void gotoLogin(Userinfo userInfo){
+    print("跳转至登录页面");
+    if(userInfo == null) {
+      Navigator.pushNamed(context, UIData.Login);
+      return;
+    }
+    print("跳转至登录页面2:"+userInfo.phone);
+    //判断用户手机号是否存在
+    if(userInfo.phone == "-"){
+      print("去执行页面跳转");
+      //执行去绑定手机号
+      Navigator.pushNamed(context, UIData.Register);
+      return;
+    }
   }
 }

@@ -18,7 +18,9 @@ import 'package:flutter_lib/ui/page/shop/shop_cart_list.dart';
 import 'package:flutter_lib/ui/page/shop/shop_category_list.dart';
 import 'package:flutter_lib/ui/page/shop/shop_detail.dart';
 import 'package:flutter_lib/ui/page/shop/shop_list.dart';
+import 'package:flutter_lib/ui/page/account/register.dart';
 import 'package:flutter_lib/utils/uidata.dart';
+
 
 class MyApp extends StatelessWidget {
   final materialApp = MaterialApp(
@@ -60,6 +62,7 @@ class MyApp extends StatelessWidget {
         UIData.OrderCommentPage: (BuildContext context) => OrderCommentPage(),
         UIData.OrderCommentListPage: (BuildContext context) =>
             OrderCommentListPage(),
+        UIData.Register: (BuildContext context) => RegisterPage()
       },
       onGenerateRoute: (RouteSettings settings) {
         final arguments = settings.arguments;

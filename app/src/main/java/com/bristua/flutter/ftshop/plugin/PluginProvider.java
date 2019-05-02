@@ -3,8 +3,10 @@ package com.bristua.flutter.ftshop.plugin;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.bristua.framework.define.IFlutterResult;
+import com.bristua.framework.logger.Logger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,6 +29,7 @@ public class PluginProvider {
                 iDelegate.call(context, methodCall, methodCall.arguments.toString(), new IFlutterResult() {
                     @Override
                     public void success(@Nullable String pResult, int pErrorCode, @Nullable String pMessage) {
+                        Logger.LOGD(CHANNEL,"iDelegate call:",pResult);
                         result.success(pResult);
                     }
 

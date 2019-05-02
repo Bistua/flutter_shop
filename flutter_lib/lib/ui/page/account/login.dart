@@ -37,18 +37,6 @@ class LoginState extends State<LoginPage> {
               constraints: BoxConstraints.expand(),
             ),
             Positioned(
-                top: 0.0,
-                right: -15.0,
-                child: FlatButton(
-                  child: Text(
-                    '注册',
-                    style: TextStyle(color: Colors.white, fontSize: 16.0),
-                  ),
-                  onPressed: () {
-                    _navigateToRegister(context);
-                  },
-                )),
-            Positioned(
               top: 188.0,
               left: 30.0,
               right: 30.0,
