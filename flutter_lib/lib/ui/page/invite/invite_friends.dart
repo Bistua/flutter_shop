@@ -6,13 +6,7 @@ import 'package:flutter_lib/model/product.dart';
 import 'package:flutter_lib/ui/widgets/shop_tab_item.dart';
 import 'package:flutter_lib/model/rankList.dart';
 import 'package:flutter_lib/logic/viewmodel/rank_view_model.dart';
-import 'package:flutter_lib/model/rebate_list.dart';
-import 'package:flutter_lib/logic//bloc/rebate_bloc.dart';
 
-/*
- * 邀请好友下单
- * @author richsjeson
- */
 class InviteFriendsPage extends StatefulWidget {
   InviteFriendsPage({Key key}) : super(key: key);
 
@@ -21,38 +15,42 @@ class InviteFriendsPage extends StatefulWidget {
 }
 
 class InviteFriendsPageState extends State<InviteFriendsPage> {
-  RebateInfoBloc rebateInfoBloc = new RebateInfoBloc();
+  BuildContext _context;
 
   @override
   Widget build(BuildContext context) {
+    _context = context;
     RankViewModel rankViewModel = RankViewModel();
+    List<Rank> rankList = rankViewModel.getMenuItems();
+    //RebateBridge.findRebateList(1, 2000);
     return new Scaffold(
-        appBar: UIData.getCenterTitleAppBar("邀请好友下单", context),
-        body: bodyData());
+      appBar: UIData.getCenterTitleAppBar("邀请好友下单", context),
+      body:getCustomScroll(rankList)
+    );
   }
 
-  /**
-   * 获取用户信息
-   */
-  Widget bodyData() {
-    rebateInfoBloc.getUserInfo();
-    return StreamBuilder<Userinfo>(
-        stream: userInfoBloc.userInfoStream.stream,
-        builder: (context, snapshot) {
-          return getWidget(snapshot.data);
-        });
-  }
 
-  //居然告诉我现在可以获取信息了，卧槽
-  CustomScrollView getWidget(RebateInfo userInfo) {
-    return CustomScrollView(
+//  /**
+//   * 获取用户信息
+//   */
+//  Widget bodyData() {
+//    rebateInfoBloc.getUserInfo();
+//    return StreamBuilder<Userinfo>(
+//        stream: userInfoBloc.userInfoStream.stream,
+//        builder: (context, snapshot) {
+//          return getCustomScroll(snapshot.data, rankList);
+//        });
+//  }
+
+  CustomScrollView getCustomScroll(List<Rank> rankList){
+    return  CustomScrollView(
       slivers: <Widget>[
         SliverList(
           delegate: SliverChildListDelegate(
             [
-              buildHeader(userInfo),
-              buildVipInfo(userInfo),
-              buildPayInfo(userInfo),
+              buildHeader(),
+              buildVipInfo(),
+              buildPayInfo(),
               buildFriendsPayInfoList(),
             ],
           ),
@@ -60,65 +58,58 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
         SliverFixedExtentList(
           itemExtent: 77, // I'm forcing item heights
           delegate: SliverChildBuilderDelegate(
-            (context, index) => Container(
-                  color: UIData.fff,
-                  child: new Column(
+                (context, index) => Container(
+              color: UIData.fff,
+              child: new Column(
+                children: <Widget>[
+                  Row(
                     children: <Widget>[
-                      Row(
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(17, 18, 15, 18),
+                        child: Container(
+                          width: 25,
+                          height: 25,
+                          child: Center(
+                            child: UIData.getTextWidget(
+                                (index + 1).toString(), UIData.fff, 15),
+                          ),
+                          decoration: new BoxDecoration(
+                            color: rankList[index].color,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      ),
+                      new Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Padding(
-                            padding: EdgeInsets.fromLTRB(17, 18, 15, 18),
-                            child: Container(
-                              width: 25,
-                              height: 25,
-                              child: Center(
-                                child: UIData.getTextWidget(
-                                    (index + 1).toString(), UIData.fff, 15),
-                              ),
-                              decoration: new BoxDecoration(
-                                color: rankList[index].color,
-                                shape: BoxShape.circle,
-                              ),
-                            ),
+                            child: UIData.getTextWidget(
+                                rankList[index].name,
+                                UIData.ff353535,
+                                12),
+                            padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
                           ),
-                          new Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Padding(
-                                child: UIData.getTextWidget(
-                                    rankList[index].name, UIData.ff353535, 12),
-                                padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
-                              ),
-                              Padding(
-                                child: UIData.getTextWidget(
-                                    rankList[index].xiaofei,
-                                    UIData.ff353535,
-                                    12),
-                                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                              ),
-                            ],
+                          Padding(
+                            child: UIData.getTextWidget(
+                                rankList[index].xiaofei,
+                                UIData.ff353535,
+                                12),
+                            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                           ),
                         ],
                       ),
-                      Divider(),
                     ],
                   ),
-                ),
+                  Divider(),
+                ],
+              ),
+            ),
             childCount: rankList.length,
           ),
         ),
       ],
     );
-  }
-
-  Padding buildFreandsList(){
-    rebateInfoBloc.getRebateList();
-    return StreamBuilder<RebateList>(
-        stream: userInfoBloc.userInfoStream.stream,
-        builder: (context, snapshot) {
-          return getWidget(snapshot.data, rankList);
-        });
   }
 
   Padding buildFriendsPayInfoList() {
@@ -153,7 +144,7 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
     );
   }
 
-  Padding buildPayInfo(Userinfo userInfo) {
+  Padding buildPayInfo() {
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
       child: new Container(
@@ -194,7 +185,7 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
     );
   }
 
-  Padding buildVipInfo(Userinfo userInfo) {
+  Padding buildVipInfo() {
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
       child: new Container(
@@ -239,7 +230,7 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
     );
   }
 
-  Padding buildHeader(Userinfo userInfo) {
+  Padding buildHeader() {
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
       child: new Container(
@@ -261,7 +252,7 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
               new Padding(
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 14),
                 child: Text(
-                  userInfo==null?"":userInfo.userCode,
+                  "GX10100166",
                   style: TextStyle(color: UIData.ffffe116, fontSize: 30),
                 ),
               ),
