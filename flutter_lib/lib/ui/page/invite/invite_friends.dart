@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_lib/bridge/rebate_bridge.dart';
-import 'package:flutter_lib/utils/uidata.dart';
-import 'package:flutter_lib/logic/bloc/product_bloc.dart';
-import 'package:flutter_lib/model/product.dart';
-import 'package:flutter_lib/ui/widgets/shop_tab_item.dart';
-import 'package:flutter_lib/model/rankList.dart';
-import 'package:flutter_lib/logic/viewmodel/rank_view_model.dart';
-import 'package:flutter_lib/logic//bloc/userinfo_bloc.dart';
+import 'package:flutter_lib/logic/bloc/rebate_bloc.dart';
+import 'package:flutter_lib/logic/bloc/userinfo_bloc.dart';
+import 'package:flutter_lib/model/rebateList.dart';
 import 'package:flutter_lib/model/userinfo.dart';
 import 'package:flutter_lib/utils/uidata.dart';
-import 'package:flutter_lib/model/rebateList.dart';
-import 'package:flutter_lib/logic//bloc/rebate_bloc.dart';
 
 class InviteFriendsPage extends StatefulWidget {
   InviteFriendsPage({Key key}) : super(key: key);
@@ -32,7 +25,7 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
         body: bodyData());
   }
 
-  /**
+  /*
    * 获取用户信息
    */
   Widget bodyData() {
@@ -50,10 +43,11 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
   Widget getSliverDelegate() {
     rebateBloc.getRebatList();
     return StreamBuilder<List<RebateInfo>>(
-        stream: rebateBloc.rebateInfo,
+        stream: rebateBloc.rebateStream.stream,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return getSliverChild(snapshot.data);
+            print("又要进来了吧");
+            empty2("hello");
           } else if (snapshot.hasError) {
             empty(snapshot.error);
           } else {
@@ -62,12 +56,16 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
         });
   }
 
+  Widget empty2(Object error) {
+    return SliverFixedExtentList(itemExtent: 120.0);
+  }
+
   Widget empty(Object error) {
     return Center(
       child: GestureDetector(
         child: Padding(
           padding: const EdgeInsets.all(32.0),
-          child: Text(error==null?error.toString():"點擊重試"),
+          child: Text(error == null ? error.toString() : "點擊重試"),
         ),
         onTap: () {
 //         todo try again？
@@ -79,7 +77,13 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
   /*
    * 获取 SliverChildBuilderDelegate
    */
-  SliverFixedExtentList getSliverChild(List<RebateInfo> rankList) {
+  Widget getTextFromW() {
+//    print("rankList:" + rankList.length.toString());
+    return Text("123");
+  }
+
+  Widget getSliverChild() {
+//    print("rankList:" + rankList.length.toString());
     return SliverFixedExtentList(
       itemExtent: 77, // I'm forcing item heights
       delegate: SliverChildBuilderDelegate(
@@ -95,8 +99,7 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
                           width: 25,
                           height: 25,
                           child: Center(
-                            child: UIData.getTextWidget(
-                                (index + 1).toString(), UIData.fff, 15),
+                            child: UIData.getTextWidget("1231", UIData.fff, 15),
                           ),
                           decoration: new BoxDecoration(
                             color: UIData.fffa4848,
@@ -110,12 +113,12 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
                         children: <Widget>[
                           Padding(
                             child: UIData.getTextWidget(
-                                rankList[index].userName, UIData.ff353535, 12),
+                                "121", UIData.ff353535, 12),
                             padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
                           ),
                           Padding(
                             child: UIData.getTextWidget(
-                                rankList[index].consumeAmt, UIData.ff353535, 12),
+                                "123", UIData.ff353535, 12),
                             padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                           ),
                         ],
@@ -126,7 +129,7 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
                 ],
               ),
             ),
-        childCount: 6,
+        childCount: 0,
       ),
     );
   }
@@ -134,8 +137,7 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
   /*
    * 获取ui
    */
-  CustomScrollView getCustomScroll(
-      Userinfo userInfo) {
+  CustomScrollView getCustomScroll(Userinfo userInfo) {
     return CustomScrollView(
       slivers: <Widget>[
         SliverList(

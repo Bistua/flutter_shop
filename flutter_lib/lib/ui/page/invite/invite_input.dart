@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lib/bridge/common_bridge.dart';
+import 'package:flutter_lib/bridge/invite_bridge.dart';
+import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class InviteInputPage extends StatefulWidget {
@@ -9,8 +12,8 @@ class InviteInputPage extends StatefulWidget {
 }
 
 class InviteInputPageState extends State<InviteInputPage> {
-  bool _has_super = true;
-  String _super_name = "用户1";
+  bool _hasSuper = true;
+  String _superName = "用户1";
   final TextEditingController _controller = new TextEditingController();
 
   @override
@@ -26,7 +29,7 @@ class InviteInputPageState extends State<InviteInputPage> {
             Container(
               padding: EdgeInsets.fromLTRB(15.0, 17.0, 15.0, 12.0),
               child: Text(
-                _has_super ? "你已经是" + _super_name + "的下级用户" : "你暂未成为任何用户的下级用户",
+                _hasSuper ? "你已经是" + _superName + "的下级用户" : "你暂未成为任何用户的下级用户",
                 style: TextStyle(color: Color(0xFF999999), fontSize: 12.0),
               ),
             ),
@@ -52,9 +55,8 @@ class InviteInputPageState extends State<InviteInputPage> {
                         //最大行数
                         obscureText: false,
                         //是否是密码
-                        style: TextStyle(
-                            fontSize: 15.0,
-                            color: Color(0xFF666666)),
+                        style:
+                            TextStyle(fontSize: 15.0, color: Color(0xFF666666)),
                         //输入文本的样式
                         decoration: new InputDecoration(
                             border: InputBorder.none,
@@ -67,8 +69,8 @@ class InviteInputPageState extends State<InviteInputPage> {
                           //print('change $text');
                         },
                         onSubmitted: (text) {
-                          //内容提交(按回车)的回调
-                          //print('submit $text');
+                          //
+                          _navigateToPerfectInfo(context, _controller.text);
                         },
                       ),
                     ),
@@ -81,9 +83,7 @@ class InviteInputPageState extends State<InviteInputPage> {
               height: 50,
               child: UIData.getShapeButton(
                   UIData.fffa4848, UIData.fff, 345, 45, "提交", 18, 5, () {
-                setState(() {
-
-                });
+                setState(() {});
                 Navigator.of(context).pop();
               }),
             )
@@ -91,5 +91,16 @@ class InviteInputPageState extends State<InviteInputPage> {
         ),
       ),
     );
+  }
+
+  _navigateToPerfectInfo(BuildContext context, String inviteCode) async {
+    Future<Result> future = InviteBridge.invitedParent(inviteCode);
+    future.then((result) {
+      if (result.code == 200) {
+        Navigator.pop(context, false);
+      } else {
+        Bridge.showLongToast(result.msg == null ? "未返回错误信息" : result.msg);
+      }
+    });
   }
 }
