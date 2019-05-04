@@ -53,7 +53,7 @@ class OrderCommentPageState extends State<OrderCommentPage> {
                           setState(() {
                             _value = value;
                             widget.orderComment.goodsEvaluates.forEach((f) {
-                              f.level = value.toString();
+                              f.level = _value.toString();
                             });
                           });
                         },
@@ -90,7 +90,7 @@ class OrderCommentPageState extends State<OrderCommentPage> {
                         TextStyle(fontSize: 15.0, color: Color(0xFFCCCCCC))),
                 onChanged: (text) {
                   widget.orderComment.goodsEvaluates.forEach((f) {
-                    f.level = text;
+                    f.content = text;
                   });
                 },
                 onSubmitted: (text) {

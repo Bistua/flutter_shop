@@ -70,14 +70,12 @@ class OrderBridge {
 
   static Future<Result> submitComment(OrderComment order) async {
     return Bridge.dispenser({
-      "method": "order_confirm",
+      "method": "order_comment",
       "params": {
         "action": component,
         "arguments": {
-          "method": "order_confirm",
-          "data": {
-            "orderId": order.toJson(),
-          }
+          "method": "order_comment",
+          "data": json.encode(order),
         }
       }
     });
