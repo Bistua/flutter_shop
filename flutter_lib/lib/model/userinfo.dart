@@ -1,6 +1,6 @@
 class Userinfo {
   String balanceAmt;
-  String totalConsumeAmt;
+  String totalConsume;
   String phone;
   String userCode;
   String status;
@@ -18,11 +18,11 @@ class Userinfo {
   String inviteNum;
 
 
-  Userinfo({this.balanceAmt, this.totalConsumeAmt, this.phone, this.userCode, this.status, this.parentId, this.createTime, this.userLevel, this.userSex, this.userImgUrl, this.openId, this.nickName, this.cityName, this.countryName, this.provinceName, this.imgUrl, this.inviteNum});
+  Userinfo({this.balanceAmt, this.totalConsume, this.phone, this.userCode, this.status, this.parentId, this.createTime, this.userLevel, this.userSex, this.userImgUrl, this.openId, this.nickName, this.cityName, this.countryName, this.provinceName, this.imgUrl, this.inviteNum});
 
   Userinfo.fromJson(Map<String, dynamic> json) {    
     this.balanceAmt = json['balanceAmt'];
-    this.totalConsumeAmt = json['totalConsumeAmt'];
+    this.totalConsume = json['totalConsume'];
     this.phone = json['phone'];
     this.userCode = json['userCode'];
     this.status = json['status'];
@@ -43,7 +43,7 @@ class Userinfo {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['balanceAmt'] = this.balanceAmt;
-    data['totalConsumeAmt'] = this.totalConsumeAmt;
+    data['totalConsume'] = this.totalConsume;
     data['phone'] = this.phone;
     data['userCode'] = this.userCode;
     data['status'] = this.status;

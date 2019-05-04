@@ -6,20 +6,16 @@ import 'package:flutter_lib/model/userinfo.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class InviteFriendsPage extends StatefulWidget {
-  InviteFriendsPage({Key key}) : super(key: key);
-
   @override
   InviteFriendsPageState createState() => new InviteFriendsPageState();
 }
 
 class InviteFriendsPageState extends State<InviteFriendsPage> {
-  BuildContext _context;
   UserInfoBloc userInfoBloc = new UserInfoBloc();
   RebateBloc rebateBloc = new RebateBloc();
 
   @override
   Widget build(BuildContext context) {
-    _context = context;
     return new Scaffold(
         appBar: UIData.getCenterTitleAppBar("邀请好友下单", context),
         body: bodyData());
@@ -31,9 +27,15 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
   Widget bodyData() {
     userInfoBloc.getUserInfo();
     return StreamBuilder<Userinfo>(
-        stream: userInfoBloc.userInfoStream.stream,
+        stream: userInfoBloc.userInfo,
         builder: (context, snapshot) {
-          return getCustomScroll(snapshot.data);
+          if (snapshot.hasData) {
+            return getCustomScroll(snapshot.data);
+          } else if (snapshot.hasError) {
+            return error(snapshot.error);
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
         });
   }
 
@@ -43,33 +45,62 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
   Widget getSliverDelegate() {
     rebateBloc.getRebatList();
     return StreamBuilder<List<RebateInfo>>(
-        stream: rebateBloc.rebateStream.stream,
+        stream: rebateBloc.rebateInfo,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            print("又要进来了吧");
-            empty2("hello");
+            if (snapshot.data == null || snapshot.data.isEmpty) {
+              return emptySub("无数据");
+            } else {
+              return getSliverChild(snapshot.data);
+            }
           } else if (snapshot.hasError) {
-            empty(snapshot.error);
+            return emptySub(snapshot.error);
           } else {
-            return Center(child: CircularProgressIndicator());
+            return progress();
           }
         });
   }
 
-  Widget empty2(Object error) {
-    return SliverFixedExtentList(itemExtent: 120.0);
-  }
-
-  Widget empty(Object error) {
+  Widget error(Object error) {
     return Center(
       child: GestureDetector(
         child: Padding(
           padding: const EdgeInsets.all(32.0),
-          child: Text(error == null ? error.toString() : "點擊重試"),
+          child: Text(error.toString() + "点击重试"),
         ),
         onTap: () {
-//         todo try again？
+          userInfoBloc.getUserInfo();
         },
+      ),
+    );
+  }
+
+  Widget emptySub(Object error) {
+    return SliverList(
+      delegate: SliverChildListDelegate(
+        [
+          Center(
+            child: GestureDetector(
+              child: Padding(
+                padding: const EdgeInsets.all(32.0),
+                child: Text(error.toString() + "点击重试"),
+              ),
+              onTap: () {
+                rebateBloc.getRebatList();
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget progress() {
+    return SliverList(
+      delegate: SliverChildListDelegate(
+        [
+          Center(child: CircularProgressIndicator()),
+        ],
       ),
     );
   }
@@ -82,10 +113,12 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
     return Text("123");
   }
 
-  Widget getSliverChild() {
+  Widget getSliverChild(List<RebateInfo> data) {
 //    print("rankList:" + rankList.length.toString());
+
     return SliverFixedExtentList(
       itemExtent: 77, // I'm forcing item heights
+
       delegate: SliverChildBuilderDelegate(
         (context, index) => Container(
               color: UIData.fff,
@@ -99,7 +132,8 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
                           width: 25,
                           height: 25,
                           child: Center(
-                            child: UIData.getTextWidget("1231", UIData.fff, 15),
+                            child: UIData.getTextWidget(
+                                data[index].userName, UIData.fff, 15),
                           ),
                           decoration: new BoxDecoration(
                             color: UIData.fffa4848,
@@ -113,12 +147,12 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
                         children: <Widget>[
                           Padding(
                             child: UIData.getTextWidget(
-                                "121", UIData.ff353535, 12),
+                                data[index].iegralNum, UIData.ff353535, 12),
                             padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
                           ),
                           Padding(
                             child: UIData.getTextWidget(
-                                "123", UIData.ff353535, 12),
+                                data[index].consumeAmt, UIData.ff353535, 12),
                             padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                           ),
                         ],
@@ -129,7 +163,7 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
                 ],
               ),
             ),
-        childCount: 0,
+        childCount: data.length,
       ),
     );
   }
@@ -205,7 +239,7 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
                     style: TextStyle(color: UIData.ff353535, fontSize: 15),
                   ),
                   Text(
-                    "累计1560.0",
+                    userInfo == null ? "" : userInfo.totalConsume,
                     style: TextStyle(color: UIData.fffa4848, fontSize: 15),
                   )
                 ],
@@ -246,7 +280,7 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
                     style: TextStyle(color: UIData.ff353535, fontSize: 15),
                   ),
                   Text(
-                    "0个",
+                    userInfo == null ? "" : userInfo.balanceAmt,
                     style: TextStyle(color: UIData.ff353535, fontSize: 15),
                   )
                 ],

@@ -74,6 +74,7 @@ flutter:
     - images/invite.png
     - images/favor.png
     - images/coin.png
+    - images/user_icon.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
