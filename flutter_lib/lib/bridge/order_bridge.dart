@@ -81,5 +81,20 @@ class OrderBridge {
     });
   }
 
+  static Future<Result> orderDetail(String orderId) async {
+    return Bridge.dispenser({
+      "method": "order_detail",
+      "params": {
+        "action": component,
+        "arguments": {
+          "method": "order_detail",
+          "data": {
+            "orderId": orderId,
+          }
+        }
+      }
+    });
+  }
+
 
 }

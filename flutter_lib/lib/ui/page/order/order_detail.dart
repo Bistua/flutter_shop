@@ -1,80 +1,113 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_lib/logic/viewmodel/product_view_model.dart';
-import 'package:flutter_lib/model/address.dart';
-import 'package:flutter_lib/model/orderDetail.dart';
-import 'package:flutter_lib/model/product.dart';
-import 'package:flutter_lib/ui/page/address/add_edit_address.dart';
-import 'package:flutter_lib/ui/page/address/address_list.dart';
+import 'package:flutter_lib/logic/bloc/oder_list_bloc.dart';
+import 'package:flutter_lib/model/orderdetail.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class OrderDetailPage extends StatefulWidget {
-  OrderDetailPage({Key key}) : super(key: key);
+  String orderId;
+
+  OrderDetailPage(this.orderId);
 
   @override
   OrderDetailPageState createState() => new OrderDetailPageState();
 }
 
 class OrderDetailPageState extends State<OrderDetailPage> {
-  OrderDetail _orderDetail;
+  OrderListBloc orderListBloc = OrderListBloc();
 
-  @override
-  Widget build(BuildContext context) {
-    _orderDetail = getOrderDetail();
-    return new Scaffold(
-      appBar: UIData.getCenterTitleAppBar("订单详情", context),
-      body: Container(
-        child: Stack(
-          children: <Widget>[
-            Container(
-              color: Color(0xFFF5F5F5),
-            ),
-            buildHeader(),
-            Positioned(
-              top: 78.0,
-              left: 10.0,
-              right: 10.0,
-              bottom: _orderDetail.status == 0 ? 0 : 49.0,
-              child: CustomScrollView(
-                slivers: <Widget>[
-                  SliverList(
-                    delegate: SliverChildListDelegate(
-                      [
-                        _orderDetail.status != 0
-                            ? buildLogistics()
-                            : Container(
-                                height: 0.0,
-                              ),
-                        buildAddress(),
-                      ],
-                    ),
-                  ),
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) =>
-                          ProductItem(item: _orderDetail.products[index]),
-                      childCount: _orderDetail.products.length,
-                    ),
-                  ),
-                  SliverList(
-                    delegate: SliverChildListDelegate(
-                      [
-                        buildOrderInfo(),
-                        buildPayInfo(),
-                        buildServiceInfo(),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            buildBottomBar(),
-          ],
+  Widget empty(String orderId, String error) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: GestureDetector(
+          child: Padding(
+            padding: const EdgeInsets.all(32.0),
+            child: Text(error),
+          ),
+          onTap: () {
+            orderListBloc.getOrderDetail(orderId);
+          },
         ),
       ),
     );
   }
 
-  Container buildHeader() {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: UIData.getCenterTitleAppBar("订单详情", context),
+      body: Container(
+        child: getDetail(),
+      ),
+    );
+  }
+
+  Widget getDetail() {
+    orderListBloc.getOrderDetail(widget.orderId);
+    return StreamBuilder<OrderDetail>(
+        stream: orderListBloc.orderDetail,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return empty(widget.orderId, snapshot.error);
+          } else if (snapshot.hasData) {
+            return buildStack(snapshot.data);
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        });
+  }
+
+  Stack buildStack(OrderDetail _orderDetail) {
+    return Stack(
+      children: <Widget>[
+        Container(
+          color: Color(0xFFF5F5F5),
+        ),
+        buildHeader(_orderDetail),
+        Positioned(
+          top: 78.0,
+          left: 10.0,
+          right: 10.0,
+          bottom: _orderDetail.status == 0 ? 0 : 49.0,
+          child: CustomScrollView(
+            slivers: <Widget>[
+              SliverList(
+                delegate: SliverChildListDelegate(
+                  [
+                    _orderDetail.status != 0
+                        ? buildLogistics(_orderDetail)
+                        : Container(
+                            height: 0.0,
+                          ),
+                    buildAddress(_orderDetail),
+                  ],
+                ),
+              ),
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) =>
+                      ProductItem(item: _orderDetail.goods[index]),
+                  childCount: _orderDetail.goods.length,
+                ),
+              ),
+              SliverList(
+                delegate: SliverChildListDelegate(
+                  [
+                    buildOrderInfo(_orderDetail),
+                    buildPayInfo(_orderDetail),
+                    buildServiceInfo(),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        buildBottomBar(_orderDetail),
+      ],
+    );
+  }
+
+  Container buildHeader(OrderDetail _orderDetail) {
     return Container(
       color: Color(0xFFF33D3C),
       height: 100.0,
@@ -106,7 +139,7 @@ class OrderDetailPageState extends State<OrderDetailPage> {
     );
   }
 
-  Card buildLogistics() {
+  Card buildLogistics(OrderDetail _orderDetail) {
     return Card(
       child: Container(
         height: 45.0,
@@ -137,7 +170,7 @@ class OrderDetailPageState extends State<OrderDetailPage> {
     );
   }
 
-  Card buildAddress() {
+  Card buildAddress(OrderDetail _orderDetail) {
     return Card(
       child: Padding(
         padding: EdgeInsets.fromLTRB(10, 15, 10, 15),
@@ -156,11 +189,12 @@ class OrderDetailPageState extends State<OrderDetailPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    _orderDetail.address.name + _orderDetail.address.phone,
+                    _orderDetail.receiveGoods.name +
+                        _orderDetail.receiveGoods.phone,
                     style: TextStyle(color: UIData.ff353535, fontSize: 13),
                   ),
                   Text(
-                    "地址：" + _orderDetail.address.address,
+                    "地址：" + _orderDetail.receiveGoods.address,
                     style: TextStyle(color: UIData.ff999999, fontSize: 12),
                   ),
                 ],
@@ -176,7 +210,7 @@ class OrderDetailPageState extends State<OrderDetailPage> {
     );
   }
 
-  Card buildOrderInfo() {
+  Card buildOrderInfo(OrderDetail _orderDetail) {
     return Card(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -206,7 +240,7 @@ class OrderDetailPageState extends State<OrderDetailPage> {
           Padding(
               padding: EdgeInsets.fromLTRB(16.0, 15.0, 0, 15.0),
               child: Text(
-                "订单编号：" + _orderDetail.orderNumber,
+                "订单编号：" + _orderDetail.orderId,
                 style: TextStyle(color: Color(0xFF777777), fontSize: 12.0),
               )),
           Container(
@@ -217,7 +251,7 @@ class OrderDetailPageState extends State<OrderDetailPage> {
           Padding(
               padding: EdgeInsets.fromLTRB(16.0, 15.0, 0, 15.0),
               child: Text(
-                "下单时间：" + _orderDetail.orderTime,
+                "下单时间：" + _orderDetail.createTime,
                 style: TextStyle(color: Color(0xFF777777), fontSize: 12.0),
               )),
           Container(
@@ -230,7 +264,7 @@ class OrderDetailPageState extends State<OrderDetailPage> {
     );
   }
 
-  Card buildPayInfo() {
+  Card buildPayInfo(OrderDetail _orderDetail) {
     return Card(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -238,7 +272,7 @@ class OrderDetailPageState extends State<OrderDetailPage> {
           Padding(
               padding: EdgeInsets.fromLTRB(16.0, 15.0, 0, 15.0),
               child: Text(
-                "支付方式：" + _orderDetail.payMode,
+                "支付方式：" + _orderDetail.payType,
                 style: TextStyle(color: Color(0xFF777777), fontSize: 12.0),
               )),
           Container(
@@ -249,7 +283,7 @@ class OrderDetailPageState extends State<OrderDetailPage> {
           Padding(
               padding: EdgeInsets.fromLTRB(16.0, 15.0, 0, 15.0),
               child: Text(
-                "商品合计：¥" + _orderDetail.productTotal.toStringAsFixed(2),
+                "商品合计：¥" + _orderDetail.orderPrice,
                 style: TextStyle(color: Color(0xFF777777), fontSize: 12.0),
               )),
           Container(
@@ -260,7 +294,7 @@ class OrderDetailPageState extends State<OrderDetailPage> {
           Padding(
               padding: EdgeInsets.fromLTRB(16.0, 15.0, 0, 15.0),
               child: Text(
-                "运费：¥" + _orderDetail.freight.toStringAsFixed(2),
+                "运费：¥" + _orderDetail.freight,
                 style: TextStyle(color: Color(0xFF777777), fontSize: 12.0),
               )),
           Container(
@@ -271,7 +305,7 @@ class OrderDetailPageState extends State<OrderDetailPage> {
           Padding(
               padding: EdgeInsets.fromLTRB(16.0, 15.0, 0, 15.0),
               child: Text(
-                "实付款：¥" + _orderDetail.payPrice.toStringAsFixed(2),
+                "实付款：¥" + _orderDetail.payFee,
                 style: TextStyle(color: Color(0xFFFF2E2E), fontSize: 12.0),
               )),
           Container(
@@ -312,7 +346,7 @@ class OrderDetailPageState extends State<OrderDetailPage> {
     ));
   }
 
-  Positioned buildBottomBar() {
+  Positioned buildBottomBar(OrderDetail _orderDetail) {
     return _orderDetail.status == 0
         ? Positioned(
             bottom: 0,
@@ -397,8 +431,7 @@ class OrderDetailPageState extends State<OrderDetailPage> {
                                   alignment: Alignment.center,
                                 ),
                                 //圆角大小,与BoxDecoration保持一致，更美观
-                                onTap: () {
-                                },
+                                onTap: () {},
                               ),
                             ],
                           ),
@@ -409,28 +442,10 @@ class OrderDetailPageState extends State<OrderDetailPage> {
           );
   }
 
-  OrderDetail getOrderDetail() {
-    OrderDetail orderDetail = new OrderDetail();
-    orderDetail.status = 2;
-    orderDetail.express = "离开【太原中心】，下一站【广州中心】";
-    Address address = new Address();
-    address.name = "王大锤";
-    address.phone = "12345678901";
-    address.address = "四川省成都市金牛区西雅图";
-    orderDetail.address = address;
-    orderDetail.products = ProductViewModel().getOderDetailProducts();
-    orderDetail.orderNumber = "2539129895";
-    orderDetail.orderTime = "2018.12.22 09:32";
-    orderDetail.payMode = "支付宝";
-    orderDetail.productTotal = 195.00;
-    orderDetail.freight = 12.00;
-    orderDetail.payPrice = 165.00;
-    return orderDetail;
-  }
 }
 
 class ProductItem extends StatelessWidget {
-  final Product item;
+  final Goods item;
 
   ProductItem({Key key, @required this.item}) : super(key: key);
 
@@ -446,21 +461,14 @@ class ProductItem extends StatelessWidget {
               children: <Widget>[
                 Container(
                   margin: EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
-                  width: 88.0,
-                  height: 88.0,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(8.0),
-                    image: DecorationImage(
-                        image: NetworkImage(item.image), fit: BoxFit.cover),
-                  ),
+                  child: UIData.getImageWithWH(item.goodsImgUrl, 88, 88),
                 ),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        item.name,
+                        item.goodsName,
                         style:
                             TextStyle(color: Color(0xFF353535), fontSize: 12.0),
                       ),
@@ -475,7 +483,7 @@ class ProductItem extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(3)),
                             child: Center(
                               child: UIData.getTextWidget(
-                                  "米白色, 36码", UIData.ff999999, 11),
+                                  item.specMsg, UIData.ff999999, 11),
                             )),
                       ),
                       Container(
@@ -484,7 +492,7 @@ class ProductItem extends StatelessWidget {
                           children: <Widget>[
                             Expanded(
                               child: Text(
-                                item.price,
+                                item.goodsPrice,
                                 style: TextStyle(
                                     color: Color(0xFFFF2E2E), fontSize: 12.0),
                               ),
@@ -496,7 +504,7 @@ class ProductItem extends StatelessWidget {
                                 height: 20,
                                 child: Center(
                                   child: UIData.getTextWidget(
-                                      "x " + item.count.toString(),
+                                      "x " + item.buyNum.toString(),
                                       UIData.ff999999,
                                       11),
                                 ),
@@ -520,7 +528,7 @@ class ProductItem extends StatelessWidget {
       ),
       onTap: () {
         Navigator.pushNamed(context, UIData.ShopDetailPage,
-            arguments: item.skuId);
+            arguments: item.goodsId);
       },
     );
   }

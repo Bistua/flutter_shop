@@ -170,7 +170,7 @@ class TagState extends State<TagOrderPage> {
         ),
       ),
       onTap: () {
-        Navigator.pushNamed(context, UIData.OrderDetailPage);
+        Navigator.pushNamed(context, UIData.OrderDetailPage,arguments: orderItem.orderNumber);
       },
     );
   }

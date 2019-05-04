@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
         UIData.AllShopOrderPage: (BuildContext context) => AllShopOrderPage(),
         UIData.MineCollectionPage: (BuildContext context) =>
             MineCollectionPage(),
-        UIData.OrderDetailPage: (BuildContext context) => OrderDetailPage(),
+
 
         UIData.OrderCommentListPage: (BuildContext context) =>
             OrderCommentListPage(),
@@ -93,19 +93,27 @@ class MyApp extends StatelessWidget {
               );
             }
             break;
-          case UIData.MineOrderPage:
-            if (arguments is int) {
-              return new MaterialPageRoute(
-                settings: settings,
-                builder: (BuildContext context) => MineOrderPage(arguments),
-              );
-            }
-            break;
+//          case UIData.MineOrderPage:
+//            if (arguments is int) {
+//              return new MaterialPageRoute(
+//                settings: settings,
+//                builder: (BuildContext context) => MineOrderPage(arguments),
+//              );
+//            }
+//            break;
           case UIData.OrderCommentPage:
             if (arguments is OrderComment) {
               return new MaterialPageRoute(
                 settings: settings,
                 builder: (BuildContext context) => OrderCommentPage(arguments),
+              );
+            }
+            break;
+          case UIData.OrderDetailPage:
+            if (arguments is String) {
+              return new MaterialPageRoute(
+                settings: settings,
+                builder: (BuildContext context) => OrderDetailPage(arguments),
               );
             }
             break;

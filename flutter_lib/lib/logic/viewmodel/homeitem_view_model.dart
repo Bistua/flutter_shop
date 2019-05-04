@@ -9,12 +9,12 @@ class HomeItemViewModel {
 
   getMenuItems() {
     return rankList = <HomeItem>[
-      HomeItem(
-          icon:  "images/vip.png",
-          title: "成为VIP",
-          subTitle: "邀请返利不限量",
-          arrowIcon:Icons.arrow_forward_ios,
-          action: UIData.OrderDetailPage),
+//      HomeItem(
+//          icon:  "images/vip.png",
+//          title: "成为VIP",
+//          subTitle: "邀请返利不限量",
+//          arrowIcon:Icons.arrow_forward_ios,
+//          action: UIData.OrderDetailPage),
       HomeItem(
           icon:  "images/invite.png",
           title: "邀请好友赢返利 ",
