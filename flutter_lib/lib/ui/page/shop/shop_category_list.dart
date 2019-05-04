@@ -5,7 +5,6 @@ import 'package:flutter_lib/model/category.dart';
 import 'package:flutter_lib/ui/page/shop/shop_list.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
-
 class ShopCategoryListPage extends StatefulWidget {
   ShopCategoryListPage({Key key, this.title, this.showBackBtn})
       : super(key: key);
@@ -23,7 +22,6 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
@@ -34,7 +32,6 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
 
   @override
   Widget build(BuildContext context) {
-
     print("ShopCategoryListPage build");
 
     return DefaultTabController(
@@ -61,14 +58,18 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
 
   Widget bodyData() {
     print("shop category build");
-   return CategoryProvider(
+    return CategoryProvider(
       categoryBloc: categoryBloc,
       child: StreamBuilder<List<Category>>(
           stream: categoryBloc.categoryItems,
           builder: (context, snapshot) {
-            return snapshot.hasData
-                ? (snapshot.data.isEmpty ? empty() : body(snapshot.data))
-                : Center(child: CircularProgressIndicator());
+            if (snapshot.hasError) {
+              return empty(snapshot.error);
+            } else if (snapshot.hasData) {
+              return body(snapshot.data);
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
           }),
     );
   }
@@ -76,12 +77,12 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
   int selectIndex = 0;
   int categoryId = 0;
 
-  Widget empty() {
+  Widget empty(Object error) {
     return Center(
       child: GestureDetector(
         child: Padding(
           padding: const EdgeInsets.all(32.0),
-          child: Text("无数据,点击重试"),
+          child: Text(error.toString() + "无数据,点击重试"),
         ),
         onTap: () {
           categoryBloc.getCategories();
@@ -249,7 +250,8 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
             ),
             onTap: () {
               print(data[index].toString());
-              Navigator.pushNamed(context, UIData.ShopListPage,arguments:data[index]);
+              Navigator.pushNamed(context, UIData.ShopListPage,
+                  arguments: data[index]);
             },
           );
         },

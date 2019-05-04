@@ -85,7 +85,6 @@ class ShopDetailPageState extends State<ShopDetailPage> {
   }
 
   Container buidBody(ProductDetail product) {
-
     productBloc.getProductSkuInfo(productId);
     return Container(
       child: Stack(
@@ -213,10 +212,10 @@ class ShopDetailPageState extends State<ShopDetailPage> {
     return StreamBuilder<SkuInfo>(
         stream: productBloc.skuInfo,
         builder: (context, snapshot) {
-          if(snapshot.hasData){
+          if (snapshot.hasData) {
             print("getProduct sku hasdata");
             return buildVipInfo(product, snapshot.data);
-          }else{
+          } else {
             return Center(child: CircularProgressIndicator());
           }
         });
@@ -447,16 +446,21 @@ class ShopDetailPageState extends State<ShopDetailPage> {
   }
 
   Padding buildVipInfo(ProductDetail product, SkuInfo data) {
-    this.skuInfo = data;
+    print(data.toString());
     String skuInfoSelect = "";
-    for (int i = 0; i < this.skuInfo.options.length; i++) {
-      var o = this.skuInfo.options[i];
-      List<ValuesListBean> vs = this.skuInfo.options[i].values;
-      for (int j = 0; j < vs.length; j++) {
-        var v = vs[j];
-        if (j == 0) {
-          widget.mapForUI[o.key] = v;
-          skuInfoSelect = skuInfoSelect + "  " + o.key + ":" + v.name;
+    if (skuInfo != null &&
+        skuInfo.options != null &&
+        skuInfo.options.isNotEmpty) {
+      this.skuInfo = data;
+      for (int i = 0; i < this.skuInfo.options.length; i++) {
+        var o = this.skuInfo.options[i];
+        List<ValuesListBean> vs = this.skuInfo.options[i].values;
+        for (int j = 0; j < vs.length; j++) {
+          var v = vs[j];
+          if (j == 0) {
+            widget.mapForUI[o.key] = v;
+            skuInfoSelect = skuInfoSelect + "  " + o.key + ":" + v.name;
+          }
         }
       }
     }
@@ -695,7 +699,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
         }
       });
     } else {
-      addCart(product, product.id.toString());
+      addCart(product, product.skuId.toString());
     }
   }
 

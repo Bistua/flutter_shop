@@ -12,6 +12,8 @@ class SkuInfo {
     data['options'] = this.options != null?this.options.map((i) => i.toJson()).toList():null;
     return data;
   }
+
+
 }
 
 class OptionsListBean {

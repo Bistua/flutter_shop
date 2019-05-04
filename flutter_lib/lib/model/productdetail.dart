@@ -26,10 +26,15 @@ class ProductDetail {
   double retailPrice;
   int inventory;
   int id;
+  int skuId;
   List<AttributesListBean> attributes;
   List<MediasListBean> medias;
 
-  ProductDetail({this.activeStartDate, this.name, this.detail, this.salePrice, this.retailPrice, this.inventory, this.id, this.attributes, this.medias});
+
+  ProductDetail(this.activeStartDate, this.name, this.detail, this.salePrice,
+      this.retailPrice, this.inventory, this.id, this.skuId, this.attributes,
+      this.medias);
+
 
   ProductDetail.fromJson(Map<String, dynamic> json) {
     this.activeStartDate = json['activeStartDate'];
@@ -39,6 +44,7 @@ class ProductDetail {
     this.retailPrice = json['retailPrice'];
     this.inventory = json['inventory'];
     this.id = json['id'];
+    this.skuId = json['skuId'];
     this.attributes = (json['attributes'] as List)!=null?(json['attributes'] as List).map((i) => AttributesListBean.fromJson(i)).toList():null;
     this.medias = (json['medias'] as List)!=null?(json['medias'] as List).map((i) => MediasListBean.fromJson(i)).toList():null;
   }
@@ -52,6 +58,7 @@ class ProductDetail {
     data['retailPrice'] = this.retailPrice;
     data['inventory'] = this.inventory;
     data['id'] = this.id;
+    data['skuId'] = this.skuId;
     data['attributes'] = this.attributes != null?this.attributes.map((i) => i.toJson()).toList():null;
     data['medias'] = this.medias != null?this.medias.map((i) => i.toJson()).toList():null;
     return data;
