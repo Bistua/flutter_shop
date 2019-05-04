@@ -47,7 +47,6 @@ class InviteInputPageState extends State<InviteInputPage> {
                     child: Container(
                       padding: EdgeInsets.fromLTRB(15.0, 2.5, 15.0, 0.0),
                       child: TextField(
-                        keyboardType: TextInputType.number,
                         controller: _controller,
                         maxLength: 11,
                         //最大长度，设置此项会让TextField右下角有一个输入数量的统计字符串
@@ -70,7 +69,7 @@ class InviteInputPageState extends State<InviteInputPage> {
                         },
                         onSubmitted: (text) {
                           //
-                          _navigateToPerfectInfo(context, _controller.text);
+                          print("onSubmitted onChanged");
                         },
                       ),
                     ),
@@ -82,9 +81,8 @@ class InviteInputPageState extends State<InviteInputPage> {
               margin: EdgeInsets.fromLTRB(15.0, 16.0, 15.0, 0.0),
               height: 50,
               child: UIData.getShapeButton(
-                  UIData.fffa4848, UIData.fff, 345, 45, "提交", 18, 5, () {
-                setState(() {});
-                Navigator.of(context).pop();
+                  UIData.fffa4848, UIData.fff, 345, 45, "激活", 18, 5, () {
+                _navigateToPerfectInfo(context, _controller.text);
               }),
             )
           ],

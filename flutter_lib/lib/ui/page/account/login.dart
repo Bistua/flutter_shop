@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_lib/bridge/account_bridge.dart';
 import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/model/Result.dart';
-import 'package:flutter_lib/myapp.dart';
-import 'package:flutter_lib/ui/page/account/perfectinfo.dart';
 import 'package:flutter_lib/ui/page/account/register.dart';
 
 class LoginPage extends StatefulWidget {
-
   @override
   LoginState createState() => LoginState();
 }
@@ -22,11 +20,11 @@ class LoginState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
+    return new DefaultTabController(
       length: 3,
       child: Scaffold(
+        backgroundColor: Colors.transparent,
         key: _scaffoldkey,
-        //appBar: buildSearchAppBar(context),
         body: Stack(
           children: <Widget>[
             ConstrainedBox(
@@ -37,19 +35,33 @@ class LoginState extends State<LoginPage> {
               constraints: BoxConstraints.expand(),
             ),
             Positioned(
-              top: 188.0,
+              top: 0.0,
+              left: -15.0,
+              child: FlatButton(
+                child: Image.asset(
+                  'images/icon_back.png',
+                  width: 20.0,
+                  height: 20.0,
+                ),
+                onPressed: () {
+                  Navigator.pop(context, "取消注册");
+                },
+              ),
+            ),
+            Positioned(
+              top: 195.0,
               left: 30.0,
               right: 30.0,
               child: InputLayout(hint: "请输入手机号码", controller: _controller1),
             ),
             Positioned(
-              top: 268.0,
+              top: 258.0,
               left: 30.0,
               right: 30.0,
               child: buildGetSms(),
             ),
             Positioned(
-              top: 348.0,
+              top: 356.0,
               left: 30.0,
               right: 30.0,
               child: RaisedButton(
@@ -79,22 +91,6 @@ class LoginState extends State<LoginPage> {
                   });
                 },
                 textColor: Colors.white,
-              ),
-            ),
-            Positioned(
-              top: 423.0,
-              left: 37.0,
-              child: Row(
-                children: <Widget>[
-                  Text(
-                    "登录代表您已同意",
-                    style: TextStyle(fontSize: 12.0, color: Color(0xFFD5D1CE)),
-                  ),
-                  Text(
-                    "《某某条款》",
-                    style: TextStyle(fontSize: 12.0, color: Color(0xFFFFFFFF)),
-                  ),
-                ],
               ),
             ),
             Positioned(
@@ -165,8 +161,8 @@ class LoginState extends State<LoginPage> {
 
   Container buildGetSms() {
     return Container(
-      height: 40,
-      margin: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+      height: 50,
+      margin: EdgeInsets.fromLTRB(0.0, 18.0, 16.0, 13.0),
       child: Stack(
         children: <Widget>[
           InputLayout(
@@ -196,7 +192,7 @@ class LoginState extends State<LoginPage> {
                     height: 22.0,
                     child: new Text(
                       "获取验证码",
-                      style: TextStyle(color: _verifycodecolor, fontSize: 10),
+                      style: TextStyle(color: _verifybordercolor, fontSize: 10),
                     ),
                     alignment: Alignment.center,
                   ),

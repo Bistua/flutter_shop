@@ -1,11 +1,11 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_lib/logic//bloc/userinfo_bloc.dart';
 import 'package:flutter_lib/logic/viewmodel/homeitem_view_model.dart';
 import 'package:flutter_lib/model/homeitem.dart';
 import 'package:flutter_lib/model/userinfo.dart';
-import 'package:flutter_lib/logic//bloc/userinfo_bloc.dart';
 import 'package:flutter_lib/utils/uidata.dart';
-import 'dart:ui';
 
 class UserHomeListPage extends StatefulWidget {
   @override
@@ -21,9 +21,9 @@ class _UserHomeState extends State<UserHomeListPage> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
-      statusBarColor: UIData.fffa4848, //or set color with: Color(0xFF0000FF)
-    ));
+//    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
+//      statusBarColor: UIData.fffa4848, //or set color with: Color(0xFF0000FF)
+//    ));
     //InfoBridge.wxInfo();
     return Scaffold(
       body: buildBody(),
@@ -242,12 +242,11 @@ class _UserHomeState extends State<UserHomeListPage> {
       ),
       onTap: () {
         //未登录的用户，要主动跳转
-        if(userInfo==null) {
-           Navigator.pushNamed(context, UIData.Login);
-           return;
+        if (userInfo == null) {
+          Navigator.pushNamed(context, UIData.Login);
+          return;
         }
         Navigator.pushNamed(context, homeItem.action);
-
       },
     );
   }
@@ -284,34 +283,38 @@ class _UserHomeState extends State<UserHomeListPage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
+                      Padding(
+                        child: CircleAvatar(
+                            radius: 30, backgroundImage: getImage(userInfo)),
+                        padding: EdgeInsets.fromLTRB(22, 0, 0, 0),
+                      ),
                       Expanded(
                         child: Padding(
-                          padding: EdgeInsets.fromLTRB(22, 56, 8, 16),
+                          padding: EdgeInsets.fromLTRB(20, 50, 8, 16),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: <Widget>[
-                              Text(
-                                userInfo == null ? "" : userInfo.nickName,
-                                style:
-                                    TextStyle(color: UIData.fff, fontSize: 20),
+                              Padding(
+                                child: Text(
+                                    userInfo == null
+                                        ? "点此登录"
+                                        : userInfo.nickName,
+                                    style: TextStyle(
+                                        color: UIData.fff, fontSize: 18)),
+                                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                               ),
-                              Text(
-                                userInfo == null ? "" : userInfo.phone,
-                                style:
-                                    TextStyle(color: UIData.fff, fontSize: 15),
-                              ),
+                              Padding(
+                                child: Text(
+                                    userInfo == null
+                                        ? "登录后获取更多精彩内容"
+                                        : userInfo.phone,
+                                    style: TextStyle(
+                                        color: UIData.fff, fontSize: 12)),
+                                padding: EdgeInsets.fromLTRB(0, 7, 0, 0),
+                              )
                             ],
                           ),
                         ),
-                      ),
-                      Padding(
-                        child: CircleAvatar(
-                          radius: 30,
-                          backgroundImage: NetworkImage(userInfo == null
-                              ? "file://"
-                              : userInfo.userImgUrl),
-                        ),
-                        padding: EdgeInsets.fromLTRB(0, 0, 22, 0),
                       ),
                     ],
                   ),
@@ -340,6 +343,13 @@ class _UserHomeState extends State<UserHomeListPage> {
         ),
       ],
     );
+  }
+
+  ImageProvider getImage(Userinfo userInfo) {
+    if (userInfo == null) {
+      return new AssetImage("images/user_icon.png");
+    }
+    return new NetworkImage(userInfo.userImgUrl);
   }
 
   /*

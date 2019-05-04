@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_lib/bridge/address_bridge.dart';
 import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/logic/bloc/address_bloc.dart';
@@ -21,9 +20,9 @@ class _AddressListState extends State<AddressListPage> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-      statusBarColor: UIData.fffa4848, //or set color with: Color(0xFF0000FF)
-    ));
+//    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+//      statusBarColor: UIData.fffa4848, //or set color with: Color(0xFF0000FF)
+//    ));
     findAddress();
     return Scaffold(
       appBar: new AppBar(
@@ -53,7 +52,7 @@ class _AddressListState extends State<AddressListPage> {
   }
 
   Container buildBody(List<Address> list) {
-    if(list == null){
+    if (list == null) {
       list = new List();
     }
     return Container(

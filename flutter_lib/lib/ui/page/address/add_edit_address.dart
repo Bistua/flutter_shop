@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_lib/bridge/address_bridge.dart';
 import 'package:flutter_lib/bridge/common_bridge.dart';
-import 'package:flutter_lib/logic/viewmodel/deliver_address_manager.dart';
-import 'package:flutter_lib/logic/viewmodel/shop_cart_manager.dart';
 import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/address.dart';
 import 'package:flutter_lib/utils/uidata.dart';
@@ -28,9 +25,9 @@ class _AddAddressListState extends State<AddAddressListPage> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-      statusBarColor: UIData.fffa4848, //or set color with: Color(0xFF0000FF)
-    ));
+//    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+//      statusBarColor: UIData.fffa4848, //or set color with: Color(0xFF0000FF)
+//    ));
 
     return Scaffold(
       appBar: new AppBar(

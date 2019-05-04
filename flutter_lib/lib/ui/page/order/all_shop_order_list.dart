@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_lib/logic/bloc/oder_list_bloc.dart';
-import 'package:flutter_lib/logic/viewmodel/order_view_model.dart';
 import 'package:flutter_lib/model/orderListItem.dart';
-import 'package:flutter_lib/model/product.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class AllShopOrderPage extends StatefulWidget {
@@ -15,8 +12,8 @@ class AllShopOrderPage extends StatefulWidget {
 
 class TagOrderPage extends StatefulWidget {
   int type;
-  TagOrderPage(int i){
-    this.type= i;
+  TagOrderPage(int i) {
+    this.type = i;
   }
 
   @override
@@ -27,7 +24,6 @@ class TagOrderPage extends StatefulWidget {
 
 class TagState extends State<TagOrderPage> {
   OrderListBloc orderListBloc = OrderListBloc();
-
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +38,9 @@ class TagState extends State<TagOrderPage> {
         builder: (context, snapshot) {
           List<OrderItem> list = snapshot.data;
           return snapshot.hasData
-              ? ((list == null||list.isEmpty) ? empty(type) : buildListView(list))
+              ? ((list == null || list.isEmpty)
+                  ? empty(type)
+                  : buildListView(list))
               : Center(child: CircularProgressIndicator());
         });
   }
@@ -255,9 +253,9 @@ class _ShopCartListState extends State<AllShopOrderPage> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-      statusBarColor: UIData.fffa4848, //or set color with: Color(0xFF0000FF)
-    ));
+//    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+//      statusBarColor: UIData.fffa4848, //or set color with: Color(0xFF0000FF)
+//    ));
 
     return DefaultTabController(
       child: Scaffold(
@@ -325,5 +323,4 @@ class _ShopCartListState extends State<AllShopOrderPage> {
       length: 3,
     );
   }
-
 }

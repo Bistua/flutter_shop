@@ -33,8 +33,8 @@ class PerfectState extends State<PerfectPage> {
   var _verifyborderwidth = 1.0;
   String _phonenum = "";
 
-  _upRegisterTextColor(bool is_phone) {
-    if (is_phone) {
+  _upRegisterTextColor(bool isPhone) {
+    if (isPhone) {
       //输入手机号正确
       if (_registercolor.value != 0xFFFFFFFF) {
         setState(() {
@@ -85,7 +85,7 @@ class PerfectState extends State<PerfectPage> {
                     child: Text(
                       '取消',
                       style:
-                      TextStyle(color: Color(0xFF353535), fontSize: 16.0),
+                          TextStyle(color: Color(0xFF353535), fontSize: 16.0),
                     ),
                     onPressed: () {
                       Navigator.pop(context, "取消注册");
@@ -101,7 +101,7 @@ class PerfectState extends State<PerfectPage> {
                       Text(
                         "完善信息",
                         style:
-                        TextStyle(color: Color(0xFF353535), fontSize: 24.0),
+                            TextStyle(color: Color(0xFF353535), fontSize: 24.0),
                       ),
                       Container(
                         height: 40,
@@ -117,10 +117,10 @@ class PerfectState extends State<PerfectPage> {
                               fontSize: 15.0, color: Color(0xFF333333)),
                           //输入文本的样式
                           decoration: new InputDecoration(
-                            //fillColor: Color(0xFFEEEEEE),
+                              //fillColor: Color(0xFFEEEEEE),
                               border: InputBorder.none,
                               counterStyle:
-                              TextStyle(color: Colors.transparent),
+                                  TextStyle(color: Colors.transparent),
                               hintText: '请输入手机号',
                               hintStyle: TextStyle(
                                   fontSize: 15.0, color: Color(0xFFBBBBBB))),
@@ -157,10 +157,10 @@ class PerfectState extends State<PerfectPage> {
                                   fontSize: 15.0, color: Color(0xFF333333)),
                               //输入文本的样式
                               decoration: new InputDecoration(
-                                //fillColor: Color(0xFFEEEEEE),
+                                  //fillColor: Color(0xFFEEEEEE),
                                   border: InputBorder.none,
                                   counterStyle:
-                                  TextStyle(color: Colors.transparent),
+                                      TextStyle(color: Colors.transparent),
                                   hintText: '短信验证码',
                                   hintStyle: TextStyle(
                                       fontSize: 15.0,
@@ -186,7 +186,8 @@ class PerfectState extends State<PerfectPage> {
                                     height: 22.0,
                                     decoration: BoxDecoration(
                                       border: Border.all(
-                                          color: _verifybordercolor, width: _verifyborderwidth),
+                                          color: _verifybordercolor,
+                                          width: _verifyborderwidth),
                                       borderRadius: new BorderRadius.all(
                                           new Radius.circular(11.0)),
                                     ),
@@ -226,10 +227,10 @@ class PerfectState extends State<PerfectPage> {
                               fontSize: 15.0, color: Color(0xFF333333)),
                           //输入文本的样式
                           decoration: new InputDecoration(
-                            //fillColor: Color(0xFFEEEEEE),
+                              //fillColor: Color(0xFFEEEEEE),
                               border: InputBorder.none,
                               counterStyle:
-                              TextStyle(color: Colors.transparent),
+                                  TextStyle(color: Colors.transparent),
                               hintText: '请输入邀请码(选填)',
                               hintStyle: TextStyle(
                                   fontSize: 15.0, color: Color(0xFFBBBBBB))),
@@ -277,4 +278,3 @@ class PerfectState extends State<PerfectPage> {
         ));
   }
 }
-

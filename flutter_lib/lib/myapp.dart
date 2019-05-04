@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/model/category.dart';
 import 'package:flutter_lib/ui/page/account/login.dart';
+import 'package:flutter_lib/ui/page/account/register.dart';
 import 'package:flutter_lib/ui/page/dashboard/dashboard.page.dart';
 import 'package:flutter_lib/ui/page/dashboard/home_page.dart';
 import 'package:flutter_lib/ui/page/dashboard/user_home_page.dart';
@@ -11,16 +12,14 @@ import 'package:flutter_lib/ui/page/order/all_shop_order_list.dart';
 import 'package:flutter_lib/ui/page/order/mine_order.dart';
 import 'package:flutter_lib/ui/page/order/oder_comment.dart';
 import 'package:flutter_lib/ui/page/order/order_comment_list.dart';
-import 'package:flutter_lib/ui/page/shop/mine_collection.dart';
 import 'package:flutter_lib/ui/page/order/order_detail.dart';
+import 'package:flutter_lib/ui/page/shop/mine_collection.dart';
 import 'package:flutter_lib/ui/page/shop/search_shop_list.dart';
 import 'package:flutter_lib/ui/page/shop/shop_cart_list.dart';
 import 'package:flutter_lib/ui/page/shop/shop_category_list.dart';
 import 'package:flutter_lib/ui/page/shop/shop_detail.dart';
 import 'package:flutter_lib/ui/page/shop/shop_list.dart';
-import 'package:flutter_lib/ui/page/account/register.dart';
 import 'package:flutter_lib/utils/uidata.dart';
-
 
 class MyApp extends StatelessWidget {
   final materialApp = MaterialApp(
@@ -47,7 +46,8 @@ class MyApp extends StatelessWidget {
 
       //routes
       routes: <String, WidgetBuilder>{
-        UIData.ShopCartListPage: (BuildContext context) => ShopCartListPage(true),
+        UIData.ShopCartListPage: (BuildContext context) =>
+            ShopCartListPage(true),
         UIData.Login: (BuildContext context) => LoginPage(),
         UIData.homeRoute: (BuildContext context) => MyHomePage(),
         UIData.SearchShopList: (BuildContext context) => SearchShopListPage(),
@@ -81,7 +81,7 @@ class MyApp extends StatelessWidget {
               return new MaterialPageRoute(
                 settings: settings,
                 builder: (BuildContext context) =>
-                    ShopCategoryListPage(title:arguments,showBackBtn: true),
+                    ShopCategoryListPage(title: arguments, showBackBtn: true),
               );
             }
             break;
@@ -89,8 +89,8 @@ class MyApp extends StatelessWidget {
             if (arguments is Category) {
               return new MaterialPageRoute(
                 settings: settings,
-                builder: (BuildContext context) =>
-                    ShopListPage(categoryId: arguments.id,title: arguments.name),
+                builder: (BuildContext context) => ShopListPage(
+                    categoryId: arguments.id, title: arguments.name),
               );
             }
             break;

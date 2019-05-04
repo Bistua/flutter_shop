@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/logic/bloc/cart_bloc.dart';
 import 'package:flutter_lib/model/cart.dart';
@@ -23,9 +22,9 @@ class _ShopCartListState extends State<ShopCartListPage> {
   CartBloc cartBloc = CartBloc();
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-      statusBarColor: UIData.fffa4848, //or set color with: Color(0xFF0000FF)
-    ));
+//    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+//      statusBarColor: UIData.fffa4848, //or set color with: Color(0xFF0000FF)
+//    ));
 
     return Scaffold(
       appBar: new AppBar(
@@ -72,7 +71,7 @@ class _ShopCartListState extends State<ShopCartListPage> {
         child: GestureDetector(
           child: Padding(
             padding: const EdgeInsets.all(32.0),
-            child: Text(widget.showBackBtn?"快去添加商品":"可前往首页选购商品"),
+            child: Text(widget.showBackBtn ? "快去添加商品" : "可前往首页选购商品"),
           ),
           onTap: () {
             if (widget.showBackBtn) {

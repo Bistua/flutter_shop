@@ -6,6 +6,7 @@ import 'package:flutter_lib/model/Result.dart';
 
 class OrderBridge {
   static const String component = "order";
+
   /*
    *
    *获取产品列表
@@ -18,8 +19,8 @@ class OrderBridge {
 //      return Result.fromJson(data);
 //    }
 //    return Result.fromJson(json.encode({"code": -1, "msg": "无结果"}));
-  print(orderGoods);
-  print(json.encode(orderGoods));
+    print(orderGoods);
+    print(json.encode(orderGoods));
     return Bridge.dispenser({
       "method": "order_submit",
       "params": {

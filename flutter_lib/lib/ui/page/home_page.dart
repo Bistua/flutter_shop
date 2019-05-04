@@ -3,15 +3,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/logic/bloc/menu_bloc.dart';
 import 'package:flutter_lib/model/menu.dart';
-
-import 'package:flutter_lib/ui/widgets/profile_tile.dart';
 import 'package:flutter_lib/ui/widgets/about_tile.dart';
+import 'package:flutter_lib/ui/widgets/profile_tile.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
-import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_lib/ui/widgets/banner/banner_widget.dart';
-import 'package:flutter_lib/ui/widgets/banner/banner_evalutor.dart';
-
+// ignore: must_be_immutable
 class HomePage extends StatelessWidget {
   final _scaffoldState = GlobalKey<ScaffoldState>();
   Size deviceSize;

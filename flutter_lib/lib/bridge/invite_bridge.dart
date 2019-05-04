@@ -9,7 +9,7 @@ class InviteBridge {
   /*
   被邀请人输入邀请码
  */
-  static Future<Result> invitedParent(String inviteCode) {
+  static Future<Result> invitedParent(String inviteCode) async {
     return Bridge.dispenser({
       "method": "invite_parent",
       "params": {

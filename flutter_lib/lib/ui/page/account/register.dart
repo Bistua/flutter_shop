@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/bridge/account_bridge.dart';
+import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
@@ -36,8 +36,8 @@ class RegisterState extends State<RegisterPage> {
   var _verifyborderwidth = 1.0;
   String _phonenum = "";
 
-  _upRegisterTextColor(bool is_phone) {
-    if (is_phone) {
+  _upRegisterTextColor(bool isPhone) {
+    if (isPhone) {
       //输入手机号正确
       if (_registercolor.value != 0xFFFFFFFF) {
         setState(() {
@@ -63,6 +63,7 @@ class RegisterState extends State<RegisterPage> {
   TextEditingController smsCodeEditingController = new TextEditingController();
   TextEditingController inviteCodeEditingController =
       new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
