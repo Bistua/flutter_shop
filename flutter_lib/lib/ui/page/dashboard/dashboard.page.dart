@@ -1,41 +1,18 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/ui/page/dashboard/home_page.dart';
 import 'package:flutter_lib/ui/page/dashboard/user_home_page.dart';
 import 'package:flutter_lib/ui/page/shop/shop_cart_list.dart';
 import 'package:flutter_lib/ui/page/shop/shop_category_list.dart';
-import 'package:flutter_lib/ui/widgets/banner/banner_evalutor.dart';
 import 'package:flutter_lib/utils/uidata.dart';
-import 'package:flutter_test/flutter_test.dart';
 
 class DashboardPage extends StatefulWidget {
   @override
   DashboardPageState createState() => DashboardPageState();
 }
 
-class Model extends Object with BannerWithEval {
-  final String imgUrl;
 
-  Model({this.imgUrl});
-
-  @override
-  get bannerUrl => imgUrl;
-}
-
-class Choice {
-  const Choice({this.title, this.icon});
-  final String title;
-  final IconData icon;
-}
-
-const List<Choice> choices = const <Choice>[
-  const Choice(title: '热销精品', icon: Icons.directions_car),
-  const Choice(title: '上新好货', icon: Icons.directions_bike),
-  const Choice(title: '全部分类', icon: Icons.directions_boat),
-  const Choice(title: '邀请返利', icon: Icons.directions_bus)
-];
 
 class DashboardPageState extends State<DashboardPage> {
   MyHomePage myHomePage = MyHomePage();
