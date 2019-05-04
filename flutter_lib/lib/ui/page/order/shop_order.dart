@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/bridge/order_bridge.dart';
 import 'package:flutter_lib/bridge/pay_bridge.dart';
@@ -22,7 +21,7 @@ class ShopOrderListPage extends StatefulWidget {
 }
 
 class _ShopOrderListState extends State<ShopOrderListPage> {
-  double  deliverPrice = 0;
+  double deliverPrice = 0;
   CartBloc cartBloc = CartBloc();
   AddressBloc addressBloc = AddressBloc();
 
@@ -30,9 +29,9 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-      statusBarColor: UIData.fffa4848, //or set color with: Color(0xFF0000FF)
-    ));
+//    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+//      statusBarColor: UIData.fffa4848, //or set color with: Color(0xFF0000FF)
+//    ));
 
     return Scaffold(
       appBar: new AppBar(

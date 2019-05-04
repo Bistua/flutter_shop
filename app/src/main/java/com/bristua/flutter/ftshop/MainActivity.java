@@ -37,10 +37,6 @@ public class MainActivity extends AppCompatActivity {
         FrameLayout.LayoutParams layout = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         PluginProvider.registerPlugin(this, flutterView, new PluginDelegate());
         setContentView(flutterView, layout);
-        /**
-         * 远离flutter Ui 层进行接口测试
-         */
-        testLogin();
     }
 
 

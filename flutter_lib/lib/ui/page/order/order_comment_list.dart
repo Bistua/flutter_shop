@@ -14,11 +14,11 @@ class OrderCommentListPage extends StatefulWidget {
 class OrderCommentPageState extends State<OrderCommentListPage> {
   List<Comment> items = CommentViewModel().getListItems();
 
-  _upItems(List<Comment> items) {
-    setState(() {
-      this.items = items;
-    });
-  }
+//  _upItems(List<Comment> items) {
+//    setState(() {
+//      this.items = items;
+//    });
+//  }
 
   @override
   Widget build(BuildContext context) {

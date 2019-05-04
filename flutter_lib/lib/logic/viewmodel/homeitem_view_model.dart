@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/model/homeitem.dart';
 import 'package:flutter_lib/utils/uidata.dart';
+import 'package:flutter_lib/model/userinfo.dart';
 
 class HomeItemViewModel {
   List<HomeItem> rankList;
 
   HomeItemViewModel({this.rankList});
 
-  getMenuItems() {
+  getMenuItems(Userinfo userInfo) {
+
     return rankList = <HomeItem>[
 //      HomeItem(
 //          icon:  "images/vip.png",
@@ -20,11 +22,12 @@ class HomeItemViewModel {
           title: "邀请好友赢返利 ",
           subTitle: "邀请好友赢返利  ",
           arrowIcon:Icons.arrow_forward_ios,
-          action: UIData.IviteFriendsPage),
+          action: UIData.IviteFriendsPage,
+       ),
       HomeItem(
         icon:  "images/coin.png",
           title: "我的金币",
-          subTitle: "累计155个",
+          subTitle: "累计"+(userInfo==null?"0":userInfo.balanceAmt)+"个",
           arrowIcon:Icons.arrow_forward_ios,),
 
       HomeItem(

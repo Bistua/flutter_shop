@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/bridge/account_bridge.dart';
+import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
@@ -36,8 +36,8 @@ class RegisterState extends State<RegisterPage> {
   var _verifyborderwidth = 1.0;
   String _phonenum = "";
 
-  _upRegisterTextColor(bool is_phone) {
-    if (is_phone) {
+  _upRegisterTextColor(bool isPhone) {
+    if (isPhone) {
       //输入手机号正确
       if (_registercolor.value != 0xFFFFFFFF) {
         setState(() {
@@ -63,6 +63,7 @@ class RegisterState extends State<RegisterPage> {
   TextEditingController smsCodeEditingController = new TextEditingController();
   TextEditingController inviteCodeEditingController =
       new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -85,19 +86,6 @@ class RegisterState extends State<RegisterPage> {
                 ),
               ),
               Positioned(
-                  top: 0.0,
-                  right: -15.0,
-                  child: FlatButton(
-                    child: Text(
-                      '取消',
-                      style:
-                          TextStyle(color: Color(0xFF353535), fontSize: 16.0),
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context, "取消注册");
-                    },
-                  )),
-              Positioned(
                   top: 60.0,
                   left: 30.0,
                   right: 30.0,
@@ -105,7 +93,7 @@ class RegisterState extends State<RegisterPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        "新用户注册",
+                        "完善个人信息",
                         style:
                             TextStyle(color: Color(0xFF353535), fontSize: 24.0),
                       ),
@@ -187,7 +175,7 @@ class RegisterState extends State<RegisterPage> {
                         child: RaisedButton(
                           child: new Container(
                             child: new Text(
-                              "注册",
+                              "确定",
                               style: TextStyle(fontSize: 18.0),
                             ),
                             alignment: Alignment.center,
@@ -199,7 +187,7 @@ class RegisterState extends State<RegisterPage> {
                           color: Color.fromARGB(255, 250, 72, 72),
                           //圆角大小,与BoxDecoration保持一致，更美观
                           onPressed: () {
-                            Future<Result> future = AccountBridge.login(
+                            Future<Result> future = AccountBridge.bindUserInfo(
                                 _controller.text,
                                 smsCodeEditingController.text,
                                 inviteCodeEditingController.text);

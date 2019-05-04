@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/model/searchTab.dart';
-import 'package:flutter_lib/utils/uidata.dart';
 
 class TabViewModel {
   List<SearchTab> tabItems;
@@ -15,14 +14,8 @@ class TabViewModel {
           icon: Icons.arrow_drop_down,
           items: ["home", "Profile 2", "Profile 3", "Profile 4"]),
       SearchTab(
-          title: "销量",
-          menuColor: Color(0xff050505),
-          icon:null,
-          items: []),
-      SearchTab(
-          title: "价格",
-          menuColor: Color(0xff050505),
-          items: []),
+          title: "销量", menuColor: Color(0xff050505), icon: null, items: []),
+      SearchTab(title: "价格", menuColor: Color(0xff050505), items: []),
     ];
   }
 }

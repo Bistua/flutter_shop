@@ -7,8 +7,8 @@ import 'package:flutter_lib/logic/bloc/oder_list_bloc.dart';
 import 'package:flutter_lib/logic/viewmodel/order_view_model.dart';
 import 'package:flutter_lib/model/OrderComment.dart';
 import 'package:flutter_lib/model/Result.dart';
+import 'package:flutter_lib/logic/bloc/oder_list_bloc.dart';
 import 'package:flutter_lib/model/orderListItem.dart';
-import 'package:flutter_lib/model/product.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class AllShopOrderPage extends StatefulWidget {
@@ -416,9 +416,9 @@ class _ShopCartListState extends State<AllShopOrderPage> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-      statusBarColor: UIData.fffa4848, //or set color with: Color(0xFF0000FF)
-    ));
+//    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+//      statusBarColor: UIData.fffa4848, //or set color with: Color(0xFF0000FF)
+//    ));
 
     return DefaultTabController(
       child: Scaffold(

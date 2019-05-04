@@ -66,6 +66,9 @@ class AccountBridge {
     });
   }
 
+  /*
+   * 获取用户信息
+   */
   static Future<Result> getUserInfo() {
     return Bridge.dispenser({
       "method": "getUserInfo",
@@ -74,6 +77,26 @@ class AccountBridge {
         "arguments": {
           "method": "getUserInfo",
           "data": {"phone": "123"},
+        }
+      }
+    });
+  }
+
+  /*
+   * 绑定用户信息
+   */
+  static Future<Result> bindUserInfo(String phone, String smsCode, String inviteCode) {
+    return Bridge.dispenser({
+      "method": "bindUserMobile",
+      "params": {
+        "action": component,
+        "arguments": {
+          "method": "bindUserMobile",
+          "data": {
+            "phone": phone,
+            "smsCode": smsCode,
+            "inviteCode": inviteCode==""?"-":inviteCode,
+          },
         }
       }
     });

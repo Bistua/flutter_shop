@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_lib/bridge/common_bridge.dart';
 
 class PreferreSizeWidget extends StatelessWidget implements PreferredSize {
   final ValueChanged<bool> onChanged;
