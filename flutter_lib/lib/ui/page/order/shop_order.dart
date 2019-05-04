@@ -264,7 +264,7 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                                   color: UIData.ff666666, fontSize: 15),
                             ),
                             Text(
-                              "支付宝",
+                              "微信",
                               style:
                                   TextStyle(color: Colors.black, fontSize: 15),
                             )
