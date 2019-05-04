@@ -100,7 +100,7 @@ public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHan
                         WXCode wxCode = new WXCode();
                         wxCode.setCode(code);
                         protocol.setData(wxCode);
-                        protocol.setMethod(UserLoginConstant.WX_AWAKEN_MODULE);
+                        protocol.setMethod(UserLoginConstant.WX_METHOD_WAKEN);
                         String json = JSON.toJSONString(protocol);
                         try {
                             BRouter.getInstance().build(UserLoginConstant.USER_LOGIN_MODULE).setProtocol(json).setResult(this).navigation();

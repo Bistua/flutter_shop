@@ -35,4 +35,36 @@ class OrderBridge {
       }
     });
   }
+
+  static Future<Result> cancelOrder(String orderId) async {
+    return Bridge.dispenser({
+      "method": "order_cancel",
+      "params": {
+        "action": component,
+        "arguments": {
+          "method": "order_cancel",
+          "data": {
+            "orderId": orderId,
+          }
+        }
+      }
+    });
+  }
+
+
+  static Future<Result> confirmOrder(String orderId) async {
+    return Bridge.dispenser({
+      "method": "order_confirm",
+      "params": {
+        "action": component,
+        "arguments": {
+          "method": "order_confirm",
+          "data": {
+            "orderId": orderId,
+          }
+        }
+      }
+    });
+  }
+
 }

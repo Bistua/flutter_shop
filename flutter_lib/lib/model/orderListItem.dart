@@ -6,7 +6,8 @@ part 'orderListItem.g.dart';
 
 @JsonSerializable()
 class OrderItem {
-  int status; //1:待付款，2:待发货，3:待收货，4:待评价,0:全部
+//  //1:待付款，2:待发货，3:待收货，4:待评价,0:全部
+  int status;
   Address address; //收货地址
   String express; //最新一条物流信息
   @JsonKey(name: 'goodsList')
@@ -53,6 +54,7 @@ class Good {
   String goodsId;
   String goodsName;
   String goodsPrice;
+  String goodsImgUrl;
   Good({
     this.buyNum,
     this.goodsId,

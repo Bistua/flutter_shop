@@ -57,6 +57,7 @@ dependencies {
     //https模块
     implementation 'com.bristua.framework:https:2.0.1-SNAPHOST'
     //路由模块
+
     implementation 'com.bristua.framework:brouter:2.0.0-SNAPHOST'
     //配置通用api 能力
     implementation 'com.bristua.framework:common_api:2.0.0-SNAPHOST'
@@ -65,15 +66,15 @@ dependencies {
     //全局APP Context
     implementation 'com.bristua.framework:context:2.0.0-SNAPHOST'
     implementation 'com.ft.business.interceptor:response:1.1.2-SNAPHOST'
-    implementation 'com.ft.business.component:user_login:5.0.8-SNAPHOST'
+    implementation 'com.ft.business.component:user_login:6.1.1-SNAPHOST'
     implementation 'com.ft.business.component:user_pay:1.1.2-SNAPHOST'
     implementation 'com.ft.business.component:user_info:1.0.1-SNAPHOST'
     implementation 'com.ft.business.component:enviroment:1.0.8-SNAPHOST'
     implementation 'com.ft.business.component:shop_cart:1.2.6-SNAPHOST'
     implementation 'com.ft.business.component:shop_sku:1.0.5-SNAPHOST'
     implementation 'com.ft.business.component:address:1.1.1-SNAPHOST'
-    implementation 'com.ft.business.component:order:1.0.9-SNAPHOST'
-    implementation 'com.ft.business.component:order_list:1.0.0-SNAPHOST'
+    implementation 'com.ft.business.component:order:1.1.6-SNAPHOST'
+    implementation 'com.ft.business.component:order_list:1.0.1-SNAPHOST'
     implementation 'com.ft.business.component:evaluate:1.0.1-SNAPHOST'
     implementation 'com.ft.business.component:collection:1.0.1-SNAPHOST'
     implementation 'com.ft.business.component:product:1.0.5-SNAPHOST'

@@ -43,12 +43,14 @@ Good _$GoodFromJson(Map<String, dynamic> json) {
       buyNum: json['buyNum'] as String,
       goodsId: json['goodsId'] as String,
       goodsName: json['goodsName'] as String,
-      goodsPrice: json['goodsPrice'] as String);
+      goodsPrice: json['goodsPrice'] as String)
+    ..goodsImgUrl = json['goodsImgUrl'] as String;
 }
 
 Map<String, dynamic> _$GoodToJson(Good instance) => <String, dynamic>{
       'buyNum': instance.buyNum,
       'goodsId': instance.goodsId,
       'goodsName': instance.goodsName,
-      'goodsPrice': instance.goodsPrice
+      'goodsPrice': instance.goodsPrice,
+      'goodsImgUrl': instance.goodsImgUrl
     };
