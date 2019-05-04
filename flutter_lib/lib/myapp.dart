@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lib/model/OrderComment.dart';
 import 'package:flutter_lib/model/category.dart';
 import 'package:flutter_lib/ui/page/account/login.dart';
 import 'package:flutter_lib/ui/page/dashboard/dashboard.page.dart';
@@ -18,6 +19,7 @@ import 'package:flutter_lib/ui/page/shop/shop_cart_list.dart';
 import 'package:flutter_lib/ui/page/shop/shop_category_list.dart';
 import 'package:flutter_lib/ui/page/shop/shop_detail.dart';
 import 'package:flutter_lib/ui/page/shop/shop_list.dart';
+
 import 'package:flutter_lib/utils/uidata.dart';
 
 class MyApp extends StatelessWidget {
@@ -57,7 +59,7 @@ class MyApp extends StatelessWidget {
         UIData.MineCollectionPage: (BuildContext context) =>
             MineCollectionPage(),
         UIData.OrderDetailPage: (BuildContext context) => OrderDetailPage(),
-        UIData.OrderCommentPage: (BuildContext context) => OrderCommentPage(),
+
         UIData.OrderCommentListPage: (BuildContext context) =>
             OrderCommentListPage(),
       },
@@ -96,6 +98,14 @@ class MyApp extends StatelessWidget {
               return new MaterialPageRoute(
                 settings: settings,
                 builder: (BuildContext context) => MineOrderPage(arguments),
+              );
+            }
+            break;
+          case UIData.OrderCommentPage:
+            if (arguments is OrderComment) {
+              return new MaterialPageRoute(
+                settings: settings,
+                builder: (BuildContext context) => OrderCommentPage(arguments),
               );
             }
             break;

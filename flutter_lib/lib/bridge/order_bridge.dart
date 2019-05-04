@@ -2,6 +2,7 @@ import 'dart:async' show Future;
 import 'dart:convert';
 
 import 'package:flutter_lib/bridge/common_bridge.dart';
+import 'package:flutter_lib/model/OrderComment.dart';
 import 'package:flutter_lib/model/Result.dart';
 
 class OrderBridge {
@@ -66,5 +67,21 @@ class OrderBridge {
       }
     });
   }
+
+  static Future<Result> submitComment(OrderComment order) async {
+    return Bridge.dispenser({
+      "method": "order_confirm",
+      "params": {
+        "action": component,
+        "arguments": {
+          "method": "order_confirm",
+          "data": {
+            "orderId": order.toJson(),
+          }
+        }
+      }
+    });
+  }
+
 
 }

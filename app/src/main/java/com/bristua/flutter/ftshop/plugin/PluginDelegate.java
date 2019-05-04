@@ -1,9 +1,11 @@
 package com.bristua.flutter.ftshop.plugin;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.bristua.flutter.ftshop.WebActivity;
 import com.bristua.framework.define.IFlutterResult;
 import com.bristua.framework.router.BRouter;
 
@@ -20,6 +22,16 @@ public class PluginDelegate {
         }
 
         switch (methodCall.method) {
+            case "webview":
+                if (jsonObject != null) {
+                    String url = jsonObject.optString("url");
+                    Intent intent = new Intent(context, WebActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("url",url);
+                    context.startActivity(intent);
+                }
+
+                break;
             case "showShortToast":
                 if (jsonObject != null)
                     Toast.makeText(context, jsonObject.optString("message"), Toast.LENGTH_SHORT).show();

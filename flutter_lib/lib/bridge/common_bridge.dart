@@ -20,6 +20,20 @@ class Bridge {
     return Result.fromJson(json.encode({"code": -1, "msg": "无结果"}));
   }
 
+  static webview(String url) {
+    if (url == null || url.isEmpty) {
+      return;
+    }
+    url = "" + url;
+    url = url.replaceAll(" ", "");
+    dispenser({
+      "method": "webview",
+      "params": json.encode({
+        "url": url,
+      }),
+    });
+  }
+
   static showShortToast(String message) {
     if (message == null || message.isEmpty) {
       return;
