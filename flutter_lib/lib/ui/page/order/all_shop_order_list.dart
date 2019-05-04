@@ -263,7 +263,6 @@ class TagState extends State<TagOrderPage> {
 
   Widget getActionBtn(OrderItem orderItem, int type) {
     //    1:待付款，2:待发货，3:待收货，4:待评价,0:全部
-    orderItem.status = 4;
     switch (orderItem.status) {
       case 2:
         return Row(
