@@ -6,7 +6,6 @@ import 'package:flutter_lib/ui/page/shop/shop_detail.dart';
 import 'package:flutter_lib/ui/widgets/shop_tab_item.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
-
 //分页参考https://medium.com/saugo360/flutter-creating-a-listview-that-loads-one-page-at-a-time-c5c91b6fabd3
 class ShopListPage extends StatefulWidget {
   ShopListPage({Key key, this.title, this.categoryId}) : super(key: key);
@@ -88,6 +87,10 @@ class ShopListState extends State<ShopListPage> {
           ),
           itemBuilder: (BuildContext context, int index) {
             ProductItem productItem = data[index];
+            String imgUrl;
+            if (productItem.medias.isNotEmpty) {
+              imgUrl = productItem.medias[0].url;
+            }
             return new GestureDetector(
               child: new Card(
                 elevation: 5.0,
@@ -98,7 +101,7 @@ class ShopListState extends State<ShopListPage> {
                       new Stack(
                         children: <Widget>[
                           UIData.getImage(
-                            productItem.medias[0].url,
+                            imgUrl,
                           ),
                           Positioned(
                               bottom: 0,

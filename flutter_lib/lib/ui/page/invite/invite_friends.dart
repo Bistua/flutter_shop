@@ -4,6 +4,7 @@ import 'package:flutter_lib/logic/bloc/userinfo_bloc.dart';
 import 'package:flutter_lib/model/rebateList.dart';
 import 'package:flutter_lib/model/userinfo.dart';
 import 'package:flutter_lib/utils/uidata.dart';
+import 'package:clipboard_manager/clipboard_manager.dart';
 
 class InviteFriendsPage extends StatefulWidget {
   @override
@@ -326,12 +327,26 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
                 "专属邀请码",
                 style: TextStyle(color: UIData.ffffa5a5, fontSize: 12),
               ),
-              new Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 14),
-                child: Text(
-                  userInfo == null ? "" : userInfo.userCode,
-                  style: TextStyle(color: UIData.ffffe116, fontSize: 30),
+              GestureDetector(
+                child: new Padding(
+                  padding: EdgeInsets.fromLTRB(0, 10, 0, 14),
+                  child: Text(
+                    userInfo == null ? "" : userInfo.userCode,
+                    style: TextStyle(color: UIData.ffffe116, fontSize: 30),
+                  ),
                 ),
+                onTap: () {
+                  if (userInfo != null && userInfo.userCode.isNotEmpty) {
+                    ClipboardManager.copyToClipBoard(
+                        userInfo == null ? "" : userInfo.userCode)
+                        .then((result) {
+                      final snackBar = SnackBar(
+                        content: Text('已复制到粘贴板'),
+                      );
+                      Scaffold.of(context).showSnackBar(snackBar);
+                    });
+                  }
+                },
               ),
               new Padding(
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 26),

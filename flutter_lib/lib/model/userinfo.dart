@@ -1,4 +1,17 @@
 class Userinfo {
+
+//  balanceAmt:金币
+////  totalConsumeAmt:总的消费额
+////  userCode:邀请码
+////  phone:手机号
+////  inviteNum:我的会员个数
+////  userSex:性别，1：男，2：女
+////  userImgUrl:用户头像
+////  openId:微信openid
+////  nickName：昵称
+////  cityName:所在城市
+////  provinceName：所在省份
+
   String balanceAmt;
   String totalConsume;
   String phone;
