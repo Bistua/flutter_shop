@@ -1,8 +1,10 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_lib/logic/bloc/home_bloc.dart';
 import 'package:flutter_lib/logic/bloc/product_bloc.dart';
 import 'package:flutter_lib/logic/viewmodel/product_view_model.dart';
+import 'package:flutter_lib/model/Banner.dart';
 import 'package:flutter_lib/model/product.dart';
 import 'package:flutter_lib/model/productitem.dart';
 import 'package:flutter_lib/ui/widgets/banner/banner_evalutor.dart';
@@ -12,15 +14,6 @@ import 'package:flutter_lib/utils/uidata.dart';
 class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
-}
-
-class Model extends Object with BannerWithEval {
-  final String imgUrl;
-
-  Model({this.imgUrl});
-
-  @override
-  get bannerUrl => imgUrl;
 }
 
 class Choice {
@@ -49,23 +42,7 @@ const List<Choice> choices = const <Choice>[
 class _MyHomePageState extends State<MyHomePage> {
   ProductBloc productBloc = ProductBloc();
 
-  final List<Model> data = [
-    new Model(
-        imgUrl:
-            'https://img1.360buyimg.com/da/jfs/t1/26933/21/15251/101018/5cae9e2fEb2d18145/ce92ccee53fc3e62.jpg'),
-    new Model(
-        imgUrl:
-            'https://img1.360buyimg.com/pop/jfs/t1/33615/26/2942/67787/5cb2db16E190d1438/f87d36b439a01bb4.jpg'),
-    new Model(
-        imgUrl:
-            'https://m.360buyimg.com/babel/jfs/t1/32943/39/11194/86395/5cb44a60Eacbc1baf/d15986655530b38a.jpg'),
-    new Model(
-        imgUrl:
-            'https://m.360buyimg.com/babel/jfs/t1/35770/34/1817/46457/5cb43c53E9c28780e/b05442df5d5ba2c3.jpg'),
-    new Model(
-        imgUrl:
-            'https://m.360buyimg.com/babel/jfs/t1/25888/33/15004/99699/5caca583E85bc0c4b/0144e355305c5946.jpg'),
-  ];
+  HomeBloc homeBloc = HomeBloc();
 
   final List<Product> discountList = ProductViewModel().getDiscountList();
   final List<Product> hotShopList = ProductViewModel().getProductTests();
@@ -89,21 +66,6 @@ class _MyHomePageState extends State<MyHomePage> {
       top: true,
       child: buildCustomScrollView(),
     );
-//    return Scaffold(
-//      body: Container(
-//        child: buildCustomScrollView(),
-//      ),
-////      floatingActionButton: FloatingActionButton(
-////        tooltip: 'Increment',
-////        child: Icon(Icons.add),
-////        onPressed: () {
-////          final navigator = Navigator.of(context);
-////          navigator.push(new MaterialPageRoute(
-////              builder: (context) => new SearchShopList()));
-////        },
-////      ),
-//      // This trailing comma makes auto-formatting nicer for build methods.
-//    );
   }
 
   CustomScrollView buildCustomScrollView() {
@@ -266,12 +228,40 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  BannerWidget buildBanner() {
-    return BannerWidget(
-        data: data,
-        curve: Curves.linear,
-        onClick: (position, bannerWithEval) {
-          print(position);
+  Widget empty(String error) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: GestureDetector(
+          child: Padding(
+            padding: const EdgeInsets.all(32.0),
+            child: Text(error),
+          ),
+          onTap: () {
+            homeBloc.getImages();
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget buildBanner() {
+    homeBloc.getImages();
+    return StreamBuilder<List<DataListBean>>(
+        stream: homeBloc.tabItems,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return empty(snapshot.error);
+          } else if (snapshot.hasData) {
+            return BannerWidget(
+                data: snapshot.data,
+                curve: Curves.linear,
+                onClick: (position, bannerWithEval) {
+                  print(position);
+                });
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
         });
   }
 
@@ -400,6 +390,14 @@ class _MyHomePageState extends State<MyHomePage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return getFeatursGrid(snapshot.data);
+          }else{
+            return  SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  Center(child: CircularProgressIndicator()),
+                ],
+              ),
+            );
           }
         });
   }
