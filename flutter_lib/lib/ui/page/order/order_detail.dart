@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/logic/bloc/oder_list_bloc.dart';
 import 'package:flutter_lib/model/orderdetail.dart';
+import 'package:flutter_lib/ui/widgets/empty_widget.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class OrderDetailPage extends StatefulWidget {
@@ -14,23 +15,6 @@ class OrderDetailPage extends StatefulWidget {
 
 class OrderDetailPageState extends State<OrderDetailPage> {
   OrderListBloc orderListBloc = OrderListBloc();
-
-  Widget empty(String orderId, String error) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32.0),
-        child: GestureDetector(
-          child: Padding(
-            padding: const EdgeInsets.all(32.0),
-            child: Text(error),
-          ),
-          onTap: () {
-            orderListBloc.getOrderDetail(orderId);
-          },
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +32,9 @@ class OrderDetailPageState extends State<OrderDetailPage> {
         stream: orderListBloc.orderDetail,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return empty(widget.orderId, snapshot.error);
+            return EmptyWidget(snapshot.error, () {
+              orderListBloc.getOrderDetail(widget.orderId);
+            });
           } else if (snapshot.hasData) {
             return buildStack(snapshot.data);
           } else {
@@ -117,7 +103,9 @@ class OrderDetailPageState extends State<OrderDetailPage> {
             top: 31.0,
             left: 26.0,
             child: Text(
-              _orderDetail.getStatusName(),
+              _orderDetail.getStatusName() == null
+                  ? ""
+                  : _orderDetail.getStatusName(),
               style: TextStyle(color: Colors.white, fontSize: 18.0),
             ),
           ),
@@ -154,7 +142,7 @@ class OrderDetailPageState extends State<OrderDetailPage> {
               child: Container(
                 padding: EdgeInsets.fromLTRB(6.0, 0.0, 6.0, 0.0),
                 child: Text(
-                  _orderDetail.express,
+                  _orderDetail.express == null ? "" : _orderDetail.express,
                   style: TextStyle(color: Color(0xFF353535), fontSize: 12.0),
                   maxLines: 1,
                 ),
@@ -240,7 +228,9 @@ class OrderDetailPageState extends State<OrderDetailPage> {
           Padding(
               padding: EdgeInsets.fromLTRB(16.0, 15.0, 0, 15.0),
               child: Text(
-                "订单编号：" + _orderDetail.orderId,
+                "订单编号：" + _orderDetail.orderId == null
+                    ? ""
+                    : _orderDetail.orderId,
                 style: TextStyle(color: Color(0xFF777777), fontSize: 12.0),
               )),
           Container(
@@ -251,7 +241,9 @@ class OrderDetailPageState extends State<OrderDetailPage> {
           Padding(
               padding: EdgeInsets.fromLTRB(16.0, 15.0, 0, 15.0),
               child: Text(
-                "下单时间：" + _orderDetail.createTime,
+                "下单时间：" + _orderDetail.createTime == null
+                    ? ""
+                    : _orderDetail.createTime,
                 style: TextStyle(color: Color(0xFF777777), fontSize: 12.0),
               )),
           Container(
@@ -272,7 +264,8 @@ class OrderDetailPageState extends State<OrderDetailPage> {
           Padding(
               padding: EdgeInsets.fromLTRB(16.0, 15.0, 0, 15.0),
               child: Text(
-                "支付方式：" + _orderDetail.payType,
+                "支付方式：" +
+                    (_orderDetail.payType == null ? "" : _orderDetail.payType),
                 style: TextStyle(color: Color(0xFF777777), fontSize: 12.0),
               )),
           Container(
@@ -283,7 +276,7 @@ class OrderDetailPageState extends State<OrderDetailPage> {
           Padding(
               padding: EdgeInsets.fromLTRB(16.0, 15.0, 0, 15.0),
               child: Text(
-                "商品合计：¥" + _orderDetail.orderPrice,
+                "商品合计：¥" + _orderDetail.orderPrice == null ? "" : _orderDetail.orderPrice,
                 style: TextStyle(color: Color(0xFF777777), fontSize: 12.0),
               )),
           Container(
@@ -294,7 +287,7 @@ class OrderDetailPageState extends State<OrderDetailPage> {
           Padding(
               padding: EdgeInsets.fromLTRB(16.0, 15.0, 0, 15.0),
               child: Text(
-                "运费：¥" + _orderDetail.freight,
+                "运费：¥" + _orderDetail.freight== null ? "" : _orderDetail.freight,
                 style: TextStyle(color: Color(0xFF777777), fontSize: 12.0),
               )),
           Container(
@@ -305,7 +298,7 @@ class OrderDetailPageState extends State<OrderDetailPage> {
           Padding(
               padding: EdgeInsets.fromLTRB(16.0, 15.0, 0, 15.0),
               child: Text(
-                "实付款：¥" + _orderDetail.payFee,
+                "实付款：¥" + _orderDetail.payFee== null ? "" : _orderDetail.payFee,
                 style: TextStyle(color: Color(0xFFFF2E2E), fontSize: 12.0),
               )),
           Container(
@@ -441,7 +434,6 @@ class OrderDetailPageState extends State<OrderDetailPage> {
             ),
           );
   }
-
 }
 
 class ProductItem extends StatelessWidget {
@@ -461,14 +453,15 @@ class ProductItem extends StatelessWidget {
               children: <Widget>[
                 Container(
                   margin: EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
-                  child: UIData.getImageWithWH(item.goodsImgUrl, 88, 88),
+                  child: UIData.getImageWithWH(
+                      item.goodsImgUrl == null ? "" : item.goodsImgUrl, 88, 88),
                 ),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        item.goodsName,
+                        item.goodsName == null ? "" : item.goodsName,
                         style:
                             TextStyle(color: Color(0xFF353535), fontSize: 12.0),
                       ),
@@ -483,7 +476,9 @@ class ProductItem extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(3)),
                             child: Center(
                               child: UIData.getTextWidget(
-                                  item.specMsg, UIData.ff999999, 11),
+                                  item.specMsg == null ? "" : item.specMsg,
+                                  UIData.ff999999,
+                                  11),
                             )),
                       ),
                       Container(
@@ -492,7 +487,7 @@ class ProductItem extends StatelessWidget {
                           children: <Widget>[
                             Expanded(
                               child: Text(
-                                item.goodsPrice,
+                                item.goodsPrice == null ? "" : item.goodsPrice,
                                 style: TextStyle(
                                     color: Color(0xFFFF2E2E), fontSize: 12.0),
                               ),
@@ -504,7 +499,10 @@ class ProductItem extends StatelessWidget {
                                 height: 20,
                                 child: Center(
                                   child: UIData.getTextWidget(
-                                      "x " + item.buyNum.toString(),
+                                      "x " +
+                                          (item.buyNum == null
+                                              ? ""
+                                              : item.buyNum),
                                       UIData.ff999999,
                                       11),
                                 ),

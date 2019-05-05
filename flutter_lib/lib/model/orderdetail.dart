@@ -71,6 +71,8 @@ class OrderDetail {
         return "已收货";
       case 4:
         return "交易完成";
+      default:
+        return "";
     }
   }
 
@@ -86,6 +88,8 @@ class OrderDetail {
         return "待评价";
       case 4:
         return "待评价";
+      default:
+        return "";
     }
   }
 
@@ -101,6 +105,8 @@ class OrderDetail {
         return "申请售后";
       case 4:
         return "申请售后";
+      default:
+        return "";
     }
   }
 
@@ -116,6 +122,8 @@ class OrderDetail {
         return "退换货";
       case 4:
         return "退换货";
+      default:
+        return "";
     }
   }
 }

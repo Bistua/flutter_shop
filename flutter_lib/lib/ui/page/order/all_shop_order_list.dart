@@ -45,7 +45,9 @@ class TagOrderPage extends StatefulWidget {
 class TagState extends State<TagOrderPage> {
   @override
   void initState() {
+    widget.orderListBloc.getOrderListList(widget.type);
     super.initState();
+    widget.orderListBloc.getOrderListList(widget.type);
   }
 
   @override
