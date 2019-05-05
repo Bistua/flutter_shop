@@ -16,7 +16,15 @@ class AllShopOrderPage extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _ShopCartListState();
+
+    List<Widget> pages = List();
+    pages.add(Container(child: TagOrderPage(0)));
+    pages.add(Container(child: TagOrderPage(1)));
+    pages.add(Container(child: TagOrderPage(2)));
+    pages.add(Container(child: TagOrderPage(3)));
+    pages.add(Container(child: TagOrderPage(4)));
+
+    return _ShopCartListState(pages);
   }
 }
 
@@ -26,6 +34,8 @@ class TagOrderPage extends StatefulWidget {
     this.type = i;
   }
 
+  OrderListBloc orderListBloc = OrderListBloc();
+
   @override
   State<StatefulWidget> createState() {
     return TagState();
@@ -33,11 +43,8 @@ class TagOrderPage extends StatefulWidget {
 }
 
 class TagState extends State<TagOrderPage> {
-  OrderListBloc orderListBloc = OrderListBloc();
-
   @override
   void initState() {
-    orderListBloc.getOrderListList(widget.type);
     super.initState();
   }
 
@@ -48,15 +55,20 @@ class TagState extends State<TagOrderPage> {
 
   Widget getOrderList(int type) {
     return StreamBuilder<List<OrderItem>>(
-        stream: orderListBloc.productItems,
+        stream: widget.orderListBloc.productItems,
         builder: (context, snapshot) {
           List<OrderItem> list = snapshot.data;
           return snapshot.hasData
               ? ((list == null || list.isEmpty)
                   ? empty(type)
                   : buildListView(type, list))
-              : Center(child: CircularProgressIndicator());
+              : center();
         });
+  }
+
+  Center center() {
+    widget.orderListBloc.getOrderListList(widget.type);
+    return Center(child: CircularProgressIndicator());
   }
 
   Widget empty(int type) {
@@ -69,7 +81,7 @@ class TagState extends State<TagOrderPage> {
             child: Text("无数据,点击重试"),
           ),
           onTap: () {
-            orderListBloc.getOrderListList(type);
+            widget.orderListBloc.getOrderListList(type);
           },
         ),
       ),
@@ -284,7 +296,7 @@ class TagState extends State<TagOrderPage> {
                       future.then((r) {
                         if (r.code == 200) {
                           Bridge.showLongToast("取消成功");
-                          orderListBloc.getOrderListList(type);
+                          widget.orderListBloc.getOrderListList(type);
                         } else {
                           Bridge.showLongToast(r.msg);
                         }
@@ -339,7 +351,7 @@ class TagState extends State<TagOrderPage> {
                       future.then((r) {
                         if (r.code == 200) {
                           Bridge.showLongToast("已确认收货");
-                          orderListBloc.getOrderListList(type);
+                          widget.orderListBloc.getOrderListList(type);
                         } else {
                           Bridge.showLongToast(r.msg);
                         }
@@ -400,11 +412,15 @@ class TagState extends State<TagOrderPage> {
 }
 
 class _ShopCartListState extends State<AllShopOrderPage> {
-
+  List<Widget> pages;
+  _ShopCartListState(pages){
+    this.pages = pages;
+  }
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
+
       initialIndex: widget.initialIndex,
       child: Scaffold(
         appBar: AppBar(
@@ -478,17 +494,10 @@ class _ShopCartListState extends State<AllShopOrderPage> {
           ),
         ),
         body: TabBarView(
-          children: [
-            //    1:待付款，2:待发货，3:待收货，4:待评价,0:全部
-            Container(child: TagOrderPage(0)),
-            Container(child: TagOrderPage(1)),
-            Container(child: TagOrderPage(2)),
-            Container(child: TagOrderPage(3)),
-            Container(child: TagOrderPage(4)),
-          ],
+          children:pages,
         ),
       ),
-      length: 3,
+      length: 5,
     );
   }
 }
