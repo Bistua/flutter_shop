@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
         UIData.IviteFriendsPage: (BuildContext context) => InviteFriendsPage(),
         UIData.InviteInputPage: (BuildContext context) => InviteInputPage(),
         UIData.UserHomeListPage: (BuildContext context) => UserHomeListPage(),
-
+        UIData.AllShopOrderPage: (BuildContext context) => AllShopOrderPage(0),
         UIData.MineCollectionPage: (BuildContext context) =>
             MineCollectionPage(),
 

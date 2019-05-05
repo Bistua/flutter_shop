@@ -85,19 +85,6 @@ class TagState extends State<TagOrderPage> {
     );
   }
 
-  goToPay(BuildContext context, String tradeOrderId, String spbillCreateIp,
-      String goodsDesc, String attach) async {
-    Future<Result> future =
-        PayBridge.wxPay(tradeOrderId, spbillCreateIp, goodsDesc, attach);
-    future.then((v) {
-      if (v.code == 200) {
-        Navigator.pop(context, false);
-      } else {
-        Bridge.showShortToast(v.msg);
-      }
-    });
-  }
-
   GestureDetector buildOrderItem(List<OrderItem> orders, int index, int type) {
     OrderItem orderItem = orders[index];
     List<Good> prducts = orderItem.products;
@@ -264,7 +251,7 @@ class TagState extends State<TagOrderPage> {
               child: Container(
                 child: GestureDetector(
                     onTap: () {
-                      showPayDialog(context, orderItem.productTotal,
+                      showPayDialog(context, double.parse(orderItem.payPrice),
                           orderItem.orderNumber);
                     },
                     child: Padding(
