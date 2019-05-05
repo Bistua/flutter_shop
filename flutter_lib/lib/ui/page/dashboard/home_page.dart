@@ -900,7 +900,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         onTap: () {
           Navigator.pushNamed(context, UIData.ShopDetailPage,
-              arguments: product.skuId);
+              arguments: product.id.toString());
         },
       ),
     );

@@ -12,7 +12,7 @@ import 'package:flutter_lib/model/skuinfo.dart';
 class ProductBloc {
   final ProductViewModel productViewModel = ProductViewModel();
   final productController = StreamController<List<ProductItem>>.broadcast();
-  final productDetaailController = StreamController<ProductDetail>.broadcast();
+  final productDetailController = StreamController<ProductDetail>.broadcast();
   final skuInfoController = StreamController<SkuInfo>.broadcast();
 
   Stream<List<ProductItem>> get productItems {
@@ -20,7 +20,7 @@ class ProductBloc {
   }
 
   Stream<ProductDetail> get productDetail {
-    return productDetaailController.stream;
+    return productDetailController.stream;
   }
 
   Stream<SkuInfo> get skuInfo {
@@ -73,11 +73,11 @@ class ProductBloc {
     Result result = await ProductBridge.getProduct(productId);
     if (result.code == 200) {
       Productdetail productList = Productdetail.fromJson(result.data);
-      productDetaailController.add(productList.list[0]);
+      productDetailController.add(productList.list[0]);
       print("getProduct add");
     } else {
       Bridge.showLongToast(result.msg);
-      productDetaailController.add(null);
+      productDetailController.add(null);
     }
   }
 

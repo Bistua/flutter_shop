@@ -3,14 +3,14 @@ import 'package:flutter/cupertino.dart';
 class EmptyWidget extends StatelessWidget {
   var type = 0;
   var tab;
-  var error;
+  String error;
 
   EmptyWidget(
     this.error,
     this.tab,
   );
 
-  EmptyWidget.WithSliverList(this.tab, this.error) {
+  EmptyWidget.WithSliverList(this.error,this.tab) {
     type = 1;
   }
 
@@ -23,7 +23,7 @@ class EmptyWidget extends StatelessWidget {
           child: GestureDetector(
             child: Padding(
               padding: const EdgeInsets.all(32.0),
-              child: Text(error?"无数据,点击重试":error),
+              child: Text(error==null?"无数据,点击重试":error),
             ),
             onTap: tab,
           ),
@@ -39,7 +39,7 @@ class EmptyWidget extends StatelessWidget {
                 child: GestureDetector(
                   child: Padding(
                     padding: const EdgeInsets.all(32.0),
-                    child: Text(error?"无数据,点击重试":error),
+                    child: Text(error==null?"无数据,点击重试":error),
                   ),
                   onTap: tab,
                 ),
@@ -58,7 +58,7 @@ class EmptyWidget extends StatelessWidget {
                 child: GestureDetector(
                   child: Padding(
                     padding: const EdgeInsets.all(32.0),
-                    child: Text(error?"无数据,点击重试":error),
+                    child: Text(error==null?"无数据,点击重试":error),
                   ),
                   onTap: tab,
                 ),
