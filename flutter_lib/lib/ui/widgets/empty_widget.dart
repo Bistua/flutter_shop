@@ -23,7 +23,7 @@ class EmptyWidget extends StatelessWidget {
           child: GestureDetector(
             child: Padding(
               padding: const EdgeInsets.all(32.0),
-              child: Text(error??"无数据,点击重试"),
+              child: Text(error?"无数据,点击重试":error),
             ),
             onTap: tab,
           ),
@@ -39,7 +39,7 @@ class EmptyWidget extends StatelessWidget {
                 child: GestureDetector(
                   child: Padding(
                     padding: const EdgeInsets.all(32.0),
-                    child: Text(error??"无数据,点击重试"),
+                    child: Text(error?"无数据,点击重试":error),
                   ),
                   onTap: tab,
                 ),
@@ -58,7 +58,7 @@ class EmptyWidget extends StatelessWidget {
                 child: GestureDetector(
                   child: Padding(
                     padding: const EdgeInsets.all(32.0),
-                    child: Text(error??"无数据,点击重试"),
+                    child: Text(error?"无数据,点击重试":error),
                   ),
                   onTap: tab,
                 ),
