@@ -162,8 +162,8 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                           .map(
                             (sku) => new OrderGoods(
                                   sku.sku.productId,
-                                  sku.goodsId,
                                   sku.sku.amount.toString(),
+                                  sku.goodsId,
                                 ),
                           )
                           .toList();
