@@ -5,7 +5,7 @@ import 'package:flutter_lib/model/Banner.dart';
 import 'package:flutter_lib/utils/http.dart';
 
 class HomeBloc {
-  final tabController = StreamController<List<DataListBean>>();
+  final tabController = StreamController<List<DataListBean>>.broadcast();
 
   Stream<List<DataListBean>> get tabItems => tabController.stream;
 
