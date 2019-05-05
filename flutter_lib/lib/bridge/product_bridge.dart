@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/logic/viewmodel/product_view_model.dart';
 import 'package:flutter_lib/model/Result.dart';
@@ -19,12 +17,12 @@ class ProductBridge {
 //    return Result.fromJson(json.encode({"code": -1, "msg": "无结果"}));
     //todo 接口通了后使用下面的方法替换上面的假数据
     return Bridge.dispenser({
-      "method": "findAll",
+      "method": "product_findAll",
       "params": {
         "action": component,
         "arguments": {
-          "method": "findAll",
-          "data": {"categoryId": categoryId,"orderBy":orderBy}
+          "method": "product_findAll",
+          "data": {"categoryId": categoryId, "orderBy": orderBy}
         }
       }
     });
@@ -53,7 +51,7 @@ class ProductBridge {
         "action": component,
         "arguments": {
           "method": "queryProduct",
-          "data": {"query": query,"orderBy":orderBy}
+          "data": {"query": query, "orderBy": orderBy}
         }
       }
     });
@@ -67,12 +65,28 @@ class ProductBridge {
 //    }
 
     return Bridge.dispenser({
-      "method": "detail",
+      "method": "product_detail",
       "params": {
         "action": component,
         "arguments": {
-          "method": "detail",
+          "method": "product_detail",
           "data": {"productId": productId}
+        }
+      }
+    });
+  }
+
+  /*
+   * 获取feature模块
+   */
+  static Future<Result> getFeature(int pageNo, int pageSize) async {
+    return Bridge.dispenser({
+      "method": "product_search_list",
+      "params": {
+        "action": component,
+        "arguments": {
+          "method": "product_feature_search",
+          "data": {"pageNo": pageNo, "pageSize": pageSize}
         }
       }
     });

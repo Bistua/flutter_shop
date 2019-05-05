@@ -6,7 +6,6 @@ import 'package:flutter_lib/bridge/sku_bridge.dart';
 import 'package:flutter_lib/logic/viewmodel/product_view_model.dart';
 import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/productdetail.dart';
-
 import 'package:flutter_lib/model/productitem.dart';
 import 'package:flutter_lib/model/skuinfo.dart';
 
@@ -42,6 +41,21 @@ class ProductBloc {
     });
   }
 
+  /*
+   * 获取精选列表的商品
+   */
+  getFeatures(int pageNo, int pageSize) {
+    ProductBridge.getFeature(pageNo, pageSize).then((result) {
+      if (result.code == 200) {
+        ProductList productList = ProductList.fromJson(result.data);
+
+        productController.add(productList.list);
+      } else {
+        Bridge.showLongToast(result.msg);
+      }
+    });
+  }
+
   queryProducts(String query, bool orderByAes) {
     ProductBridge.queryProduct(query, orderByAes).then((result) {
       if (result.code == 200) {
@@ -61,7 +75,6 @@ class ProductBloc {
       Productdetail productList = Productdetail.fromJson(result.data);
       productDetaailController.add(productList.list[0]);
       print("getProduct add");
-
     } else {
       Bridge.showLongToast(result.msg);
       productDetaailController.add(null);

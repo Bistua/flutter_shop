@@ -1,14 +1,13 @@
-import 'package:flutter/material.dart';
 import 'dart:ui';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_lib/logic/bloc/product_bloc.dart';
 import 'package:flutter_lib/logic/viewmodel/product_view_model.dart';
 import 'package:flutter_lib/model/product.dart';
-
-import 'package:flutter_lib/ui/page/shop/search_shop_list.dart';
-import 'package:flutter_lib/utils/uidata.dart';
-
-import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_lib/ui/widgets/banner/banner_widget.dart';
+import 'package:flutter_lib/model/productitem.dart';
 import 'package:flutter_lib/ui/widgets/banner/banner_evalutor.dart';
+import 'package:flutter_lib/ui/widgets/banner/banner_widget.dart';
+import 'package:flutter_lib/utils/uidata.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -48,6 +47,8 @@ const List<Choice> choices = const <Choice>[
 ];
 
 class _MyHomePageState extends State<MyHomePage> {
+  ProductBloc productBloc = ProductBloc();
+
   final List<Model> data = [
     new Model(
         imgUrl:
@@ -155,23 +156,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      SliverGrid(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 0.0,
-          mainAxisSpacing: 0.0,
-          childAspectRatio: 0.74,
-        ),
-        delegate: SliverChildBuilderDelegate(
-          (BuildContext context, int index) {
-            return Container(
-              color: Color(0xFFF6F6F6),
-              child: buildHotShopItem(index, hotShopList[index]),
-            );
-          },
-          childCount: hotShopList.length,
-        ),
-      ),
+      getFeatureGrid(),
     ]);
   }
 
@@ -198,7 +183,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Container buildHeader() {
+  buildHeader() {
     return Container(
       height: 44.0,
       color: Colors.white,
@@ -409,6 +394,36 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  Widget getFeatureGrid() {
+    return StreamBuilder<List<ProductItem>>(
+        stream: productBloc.productItems,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return getFeatursGrid(snapshot.data);
+          }
+        });
+  }
+
+  SliverGrid getFeatursGrid(List<ProductItem> items) {
+    return SliverGrid(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 0.0,
+        mainAxisSpacing: 0.0,
+        childAspectRatio: 0.74,
+      ),
+      delegate: SliverChildBuilderDelegate(
+        (BuildContext context, int index) {
+          return Container(
+            color: Color(0xFFF6F6F6),
+            child: buildHotShopItem(index, items[index]),
+          );
+        },
+        childCount: hotShopList.length,
+      ),
+    );
+  }
+
   Container buildTypeChild(int type, String typeName, String typeImg) {
     return Container(
         child: InkWell(
@@ -557,9 +572,9 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: EdgeInsets.fromLTRB(2.0, 0.0, 0.0, 0.0),
             child: UIData.getImageWithWHFit(
               rightImage,
-               BoxFit.cover,
-            166.0,
-               130.0,
+              BoxFit.cover,
+              166.0,
+              130.0,
             ),
           ),
         ],
@@ -660,7 +675,7 @@ class _MyHomePageState extends State<MyHomePage> {
             children: <Widget>[
               UIData.getImageWithWHFit(
                 "https://img13.360buyimg.com/mobilecms/s140x140_jfs/t1/5542/25/10695/184499/5bcc0adcE903a8a97/c43423eedf3039cf.jpg!q90.webp",
-                 BoxFit.cover,
+                BoxFit.cover,
                 70.0,
                 70.0,
               ),
@@ -669,8 +684,8 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               UIData.getImageWithWHFit(
                 "https://img12.360buyimg.com/mobilecms/s140x140_jfs/t28132/336/144040487/125605/531bc317/5be9427dN7a38cc7f.jpg!q90.webp",
-                 BoxFit.cover,
-              70.0,
+                BoxFit.cover,
+                70.0,
                 70.0,
               ),
             ],
@@ -711,17 +726,17 @@ class _MyHomePageState extends State<MyHomePage> {
             children: <Widget>[
               UIData.getImageWithWHFit(
                 "https://img11.360buyimg.com/mobilecms/s140x140_jfs/t1/36973/38/1895/117319/5cb453e9E93fc31a1/6edd54fcfd32ce9c.png!q90.webp",
-              BoxFit.cover,
+                BoxFit.cover,
                 70.0,
-              70.0,
+                70.0,
               ),
               Expanded(
                 child: Container(),
               ),
               UIData.getImageWithWHFit(
                 "https://img11.360buyimg.com/mobilecms/s140x140_jfs/t1/9339/14/3383/296696/5bd69f43E5078db49/40af3283649c059e.jpg!q90.webp",
-               BoxFit.cover,
-               70.0,
+                BoxFit.cover,
+                70.0,
                 70.0,
               ),
             ],
@@ -762,9 +777,9 @@ class _MyHomePageState extends State<MyHomePage> {
             alignment: Alignment.center,
             child: UIData.getImageWithWHFit(
               imageUrl,
-             BoxFit.cover,
-               70.0,
-             70.0,
+              BoxFit.cover,
+              70.0,
+              70.0,
             ),
           ),
         ],
@@ -796,7 +811,19 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Container buildHotShopItem(int index, Product product) {
+  Widget getFeatureItems(index) {
+    return StreamBuilder<List<ProductItem>>(
+        stream: productBloc.productItems,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            List<ProductItem> list = snapshot.data;
+            ProductItem item = list[index];
+            return buildHotShopItem(index, item);
+          }
+        });
+  }
+
+  Container buildHotShopItem(int index, ProductItem product) {
     return Container(
       padding: EdgeInsets.fromLTRB(
           index % 2 == 0 ? 4.0 : 0.0, 0.0, index % 2 == 0 ? 0.0 : 4.0, 0.0),
@@ -813,7 +840,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     topLeft: Radius.circular(5.0),
                     topRight: Radius.circular(5.0)),
                 image: DecorationImage(
-                    image: NetworkImage(product.image), fit: BoxFit.cover),
+                    image: NetworkImage(product.medias[0].toString()),
+                    fit: BoxFit.cover),
               ),
             ),
             Expanded(
@@ -834,7 +862,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Padding(
                       padding: EdgeInsets.fromLTRB(14.0, 0.0, 0.0, 0.0),
                       child: Text(
-                        product.price,
+                        product.price.toString(),
                         style:
                             TextStyle(color: Color(0xFFFA4848), fontSize: 16.0),
                       ),
