@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/bridge/order_bridge.dart';
 import 'package:flutter_lib/bridge/pay_bridge.dart';
 import 'package:flutter_lib/logic/bloc/oder_list_bloc.dart';
-import 'package:flutter_lib/logic/viewmodel/order_view_model.dart';
 import 'package:flutter_lib/model/OrderComment.dart';
 import 'package:flutter_lib/model/Result.dart';
-import 'package:flutter_lib/logic/bloc/oder_list_bloc.dart';
 import 'package:flutter_lib/model/orderListItem.dart';
+import 'package:flutter_lib/ui/widgets/common_dialogs.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class AllShopOrderPage extends StatefulWidget {
+  int initialIndex = 0;
+
+  AllShopOrderPage(this.initialIndex);
+
   @override
   State<StatefulWidget> createState() {
     return _ShopCartListState();
@@ -34,13 +36,17 @@ class TagState extends State<TagOrderPage> {
   OrderListBloc orderListBloc = OrderListBloc();
 
   @override
+  void initState() {
+    orderListBloc.getOrderListList(widget.type);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return getOrderList(widget.type);
   }
 
   Widget getOrderList(int type) {
-//    todo type
-    orderListBloc.getOrderListList(type);
     return StreamBuilder<List<OrderItem>>(
         stream: orderListBloc.productItems,
         builder: (context, snapshot) {
@@ -96,11 +102,10 @@ class TagState extends State<TagOrderPage> {
     OrderItem orderItem = orders[index];
     List<Good> prducts = orderItem.products;
     String status = "无状态";
-
 //    1:待付款，2:待发货，3:待收货，4:待评价,0:全部
     switch (orderItem.status) {
       case 1:
-        status = "已取消";
+        status = "待付款";
         break;
       case 2:
         status = "待发货";
@@ -170,7 +175,8 @@ class TagState extends State<TagOrderPage> {
         ),
       ),
       onTap: () {
-        Navigator.pushNamed(context, UIData.OrderDetailPage,arguments: orderItem.orderNumber);
+        Navigator.pushNamed(context, UIData.OrderDetailPage,
+            arguments: orderItem.orderNumber);
       },
     );
   }
@@ -203,21 +209,6 @@ class TagState extends State<TagOrderPage> {
                     child: Text(product.goodsName,
                         style: TextStyle(fontSize: 12, color: UIData.ff353535)),
                   ),
-//规格信息未下发 这里删掉
-//                  Padding(
-//                    padding: EdgeInsets.fromLTRB(12, 0, 13, 0),
-//                    child: Container(
-//                        height: 18,
-//                        width: 92,
-//                        decoration: BoxDecoration(
-//                            color: UIData.fff7f7f7,
-//                            shape: BoxShape.rectangle,
-//                            borderRadius: BorderRadius.circular(3)),
-//                        child: Center(
-//                          child: UIData.getTextWidget(
-//                              description, UIData.ff999999, 11),
-//                        )),
-//                  ),
                   Padding(
                     padding: EdgeInsets.fromLTRB(15, 6, 15, 17),
                     child: Row(
@@ -264,6 +255,34 @@ class TagState extends State<TagOrderPage> {
   Widget getActionBtn(OrderItem orderItem, int type) {
     //    1:待付款，2:待发货，3:待收货，4:待评价,0:全部
     switch (orderItem.status) {
+      case 1:
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+              child: Container(
+                child: GestureDetector(
+                    onTap: () {
+                      showPayDialog(context, orderItem.productTotal,
+                          orderItem.orderNumber);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                      child: Text(
+                        "立即付款",
+                        style: TextStyle(color: UIData.ff353535, fontSize: 13),
+                      ),
+                    )),
+                decoration: BoxDecoration(
+                  border: Border.all(color: UIData.ff353535, width: 1),
+                  borderRadius: BorderRadius.circular(13.0),
+                ),
+              ),
+            ),
+          ],
+        );
+
       case 2:
         return Row(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -359,24 +378,6 @@ class TagState extends State<TagOrderPage> {
         return Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-//            Padding(
-//              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-//              child: Container(
-//                child: GestureDetector(
-//                    onTap: () {},
-//                    child: Padding(
-//                      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-//                      child: Text(
-//                        "退换货",
-//                        style: TextStyle(color: UIData.ff353535, fontSize: 13),
-//                      ),
-//                    )),
-//                decoration: BoxDecoration(
-//                  border: Border.all(color: UIData.ff353535, width: 1),
-//                  borderRadius: BorderRadius.circular(13.0),
-//                ),
-//              ),
-//            ),
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
               child: Container(
@@ -412,15 +413,12 @@ class TagState extends State<TagOrderPage> {
 }
 
 class _ShopCartListState extends State<AllShopOrderPage> {
-  OrderListBloc orderListBloc = OrderListBloc();
+
 
   @override
   Widget build(BuildContext context) {
-//    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-//      statusBarColor: UIData.fffa4848, //or set color with: Color(0xFF0000FF)
-//    ));
-
     return DefaultTabController(
+      initialIndex: widget.initialIndex,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: UIData.fff,
@@ -449,7 +447,16 @@ class _ShopCartListState extends State<AllShopOrderPage> {
                   color: UIData.fff,
                   child: Text(
                     "全部",
-                    style: TextStyle(color: UIData.ff666666, fontSize: 14),
+                    style: TextStyle(color: UIData.ff666666, fontSize: 12),
+                  ),
+                ),
+              ),
+              Tab(
+                child: Container(
+                  color: UIData.fff,
+                  child: Text(
+                    "待付款",
+                    style: TextStyle(color: UIData.ff666666, fontSize: 12),
                   ),
                 ),
               ),
@@ -458,7 +465,16 @@ class _ShopCartListState extends State<AllShopOrderPage> {
                   color: UIData.fff,
                   child: Text(
                     "待发货",
-                    style: TextStyle(color: UIData.ff666666, fontSize: 14),
+                    style: TextStyle(color: UIData.ff666666, fontSize: 12),
+                  ),
+                ),
+              ),
+              Tab(
+                child: Container(
+                  color: UIData.fff,
+                  child: Text(
+                    "待收货",
+                    style: TextStyle(color: UIData.ff666666, fontSize: 12),
                   ),
                 ),
               ),
@@ -467,7 +483,7 @@ class _ShopCartListState extends State<AllShopOrderPage> {
                   color: UIData.fff,
                   child: Text(
                     "待评价",
-                    style: TextStyle(color: UIData.ff666666, fontSize: 14),
+                    style: TextStyle(color: UIData.ff666666, fontSize: 12),
                   ),
                 ),
               ),
@@ -478,7 +494,9 @@ class _ShopCartListState extends State<AllShopOrderPage> {
           children: [
             //    1:待付款，2:待发货，3:待收货，4:待评价,0:全部
             Container(child: TagOrderPage(0)),
+            Container(child: TagOrderPage(1)),
             Container(child: TagOrderPage(2)),
+            Container(child: TagOrderPage(3)),
             Container(child: TagOrderPage(4)),
           ],
         ),

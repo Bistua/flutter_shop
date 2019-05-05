@@ -118,62 +118,81 @@ class _UserHomeState extends State<UserHomeListPage> {
                         ],
                       ),
                       onTap: () {
-                        Navigator.pushNamed(context, UIData.AllShopOrderPage);
+                        Navigator.pushNamed(context, UIData.AllShopOrderPage,
+                            arguments: 1);
                       },
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Padding(
-                          child: Image.asset(
-                            "images/order2.png",
-                            width: 22.0,
-                            height: 22.0,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, UIData.AllShopOrderPage,
+                            arguments: 2);
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            child: Image.asset(
+                              "images/order2.png",
+                              width: 22.0,
+                              height: 22.0,
+                            ),
+                            padding: EdgeInsets.fromLTRB(0, 12, 0, 8),
                           ),
-                          padding: EdgeInsets.fromLTRB(0, 12, 0, 8),
-                        ),
-                        Text(
-                          "待发货",
-                          style:
-                              TextStyle(color: UIData.ff353535, fontSize: 12),
-                        ),
-                      ],
+                          Text(
+                            "待发货",
+                            style:
+                                TextStyle(color: UIData.ff353535, fontSize: 12),
+                          ),
+                        ],
+                      ),
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Padding(
-                          child: Image.asset(
-                            "images/order3.png",
-                            width: 22.0,
-                            height: 22.0,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, UIData.AllShopOrderPage,
+                            arguments: 3);
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            child: Image.asset(
+                              "images/order3.png",
+                              width: 22.0,
+                              height: 22.0,
+                            ),
+                            padding: EdgeInsets.fromLTRB(0, 12, 0, 8),
                           ),
-                          padding: EdgeInsets.fromLTRB(0, 12, 0, 8),
-                        ),
-                        Text(
-                          "待收货",
-                          style:
-                              TextStyle(color: UIData.ff353535, fontSize: 12),
-                        ),
-                      ],
+                          Text(
+                            "待收货",
+                            style:
+                                TextStyle(color: UIData.ff353535, fontSize: 12),
+                          ),
+                        ],
+                      ),
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Padding(
-                          child: Image.asset(
-                            "images/order4.png",
-                            width: 22.0,
-                            height: 22.0,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, UIData.AllShopOrderPage,
+                            arguments: 4);
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            child: Image.asset(
+                              "images/order4.png",
+                              width: 22.0,
+                              height: 22.0,
+                            ),
+                            padding: EdgeInsets.fromLTRB(0, 12, 0, 8),
                           ),
-                          padding: EdgeInsets.fromLTRB(0, 12, 0, 8),
-                        ),
-                        Text(
-                          "待评价",
-                          style:
-                              TextStyle(color: UIData.ff353535, fontSize: 12),
-                        ),
-                      ],
+                          Text(
+                            "待评价",
+                            style:
+                                TextStyle(color: UIData.ff353535, fontSize: 12),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

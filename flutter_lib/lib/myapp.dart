@@ -10,7 +10,6 @@ import 'package:flutter_lib/ui/page/invite/invite_friends.dart';
 import 'package:flutter_lib/ui/page/invite/invite_input.dart';
 import 'package:flutter_lib/ui/page/notfound/notfound_page.dart';
 import 'package:flutter_lib/ui/page/order/all_shop_order_list.dart';
-import 'package:flutter_lib/ui/page/order/mine_order.dart';
 import 'package:flutter_lib/ui/page/order/oder_comment.dart';
 import 'package:flutter_lib/ui/page/order/order_comment_list.dart';
 import 'package:flutter_lib/ui/page/order/order_detail.dart';
@@ -20,7 +19,6 @@ import 'package:flutter_lib/ui/page/shop/shop_cart_list.dart';
 import 'package:flutter_lib/ui/page/shop/shop_category_list.dart';
 import 'package:flutter_lib/ui/page/shop/shop_detail.dart';
 import 'package:flutter_lib/ui/page/shop/shop_list.dart';
-
 import 'package:flutter_lib/utils/uidata.dart';
 
 class MyApp extends StatelessWidget {
@@ -35,18 +33,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: true,
       showPerformanceOverlay: false,
       home: DashboardPage(),
-//      localizationsDelegates: [
-//        const TranslationsDelegate(),
-//        GlobalMaterialLocalizations.delegate,
-//        GlobalWidgetsLocalizations.delegate,
-//      ],
-//      supportedLocales: [
-//        const Locale("en", "US"),
-//        const Locale("hi", "IN"),
-//      ],
       initialRoute: UIData.notFoundRoute,
-
-      //routes
       routes: <String, WidgetBuilder>{
         UIData.ShopCartListPage: (BuildContext context) =>
             ShopCartListPage(true),
@@ -57,7 +44,7 @@ class MyApp extends StatelessWidget {
         UIData.IviteFriendsPage: (BuildContext context) => InviteFriendsPage(),
         UIData.InviteInputPage: (BuildContext context) => InviteInputPage(),
         UIData.UserHomeListPage: (BuildContext context) => UserHomeListPage(),
-        UIData.AllShopOrderPage: (BuildContext context) => AllShopOrderPage(),
+
         UIData.MineCollectionPage: (BuildContext context) =>
             MineCollectionPage(),
 
@@ -96,14 +83,6 @@ class MyApp extends StatelessWidget {
               );
             }
             break;
-//          case UIData.MineOrderPage:
-//            if (arguments is int) {
-//              return new MaterialPageRoute(
-//                settings: settings,
-//                builder: (BuildContext context) => MineOrderPage(arguments),
-//              );
-//            }
-//            break;
           case UIData.OrderCommentPage:
             if (arguments is OrderComment) {
               return new MaterialPageRoute(
@@ -117,6 +96,14 @@ class MyApp extends StatelessWidget {
               return new MaterialPageRoute(
                 settings: settings,
                 builder: (BuildContext context) => OrderDetailPage(arguments),
+              );
+            }
+            break;
+          case UIData.AllShopOrderPage:
+            if (arguments is int) {
+              return new MaterialPageRoute(
+                settings: settings,
+                builder: (BuildContext context) => AllShopOrderPage(arguments),
               );
             }
             break;
