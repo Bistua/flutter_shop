@@ -852,6 +852,12 @@ class _MyHomePageState extends State<MyHomePage> {
             Container(
               width: 170.0,
               height: 170.0,
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(5.0),
+                    topRight: Radius.circular(5.0)),
+              ),
               child: UIData.getImageWithWH(imageUrl, 88, 88),
             ),
             Expanded(
