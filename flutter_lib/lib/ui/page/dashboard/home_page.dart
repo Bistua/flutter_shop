@@ -9,6 +9,7 @@ import 'package:flutter_lib/model/product.dart';
 import 'package:flutter_lib/model/productitem.dart';
 import 'package:flutter_lib/ui/widgets/banner/banner_evalutor.dart';
 import 'package:flutter_lib/ui/widgets/banner/banner_widget.dart';
+import 'package:flutter_lib/ui/widgets/empty_widget.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -73,7 +74,13 @@ class _MyHomePageState extends State<MyHomePage> {
         delegate: SliverChildListDelegate(
           [
             buildHeader(),
-            buildBanner(),
+          ],
+        ),
+      ),
+      buildBanner(),
+      SliverList(
+        delegate: SliverChildListDelegate(
+          [
             buildType(),
             buildAdvertisement(
                 "https://img20.360buyimg.com/mobilecms/s350x128_jfs/t8554/10/1668315357/28454/82af77f0/59be2c79Ne4502dcf.jpg!q90!cc_350x128.webp"),
@@ -227,41 +234,34 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget empty(String error, tab) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32.0),
-        child: GestureDetector(
-          child: Padding(
-            padding: const EdgeInsets.all(32.0),
-            child: Text(error),
-          ),
-          onTap: tab,
-        ),
-      ),
-    );
-  }
+
 
   Widget buildBanner() {
     homeBloc.getImages();
-    return StreamBuilder<List<DataListBean>>(
-        stream: homeBloc.tabItems,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return empty(snapshot.error, () {
-              homeBloc.getImages();
-            });
-          } else if (snapshot.hasData) {
-            return BannerWidget(
-                data: snapshot.data,
-                curve: Curves.linear,
-                onClick: (position, bannerWithEval) {
-                  print(position);
-                });
-          } else {
-            return Center(child: CircularProgressIndicator());
-          }
-        });
+    return SliverList(
+      delegate: SliverChildListDelegate(
+        [
+          StreamBuilder<List<DataListBean>>(
+              stream: homeBloc.tabItems,
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return EmptyWidget(snapshot.error, () {
+                    homeBloc.getImages();
+                  });
+                } else if (snapshot.hasData) {
+                  return BannerWidget(
+                      data: snapshot.data,
+                      curve: Curves.linear,
+                      onClick: (position, bannerWithEval) {
+                        print(position);
+                      });
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
+              })
+        ],
+      ),
+    );
   }
 
   Container buildType() {
@@ -391,7 +391,7 @@ class _MyHomePageState extends State<MyHomePage> {
           if (snapshot.hasData) {
             return getFeatursGrid(snapshot.data);
           } else if (snapshot.hasError) {
-            empty(snapshot.error, () {
+            EmptyWidget(snapshot.error, () {
               productBloc.getFeatures(1, 10);
             });
           } else {
@@ -823,7 +823,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ProductItem item = list[index];
               return buildHotShopItem(index, item);
             } else {
-              return empty(snapshot.error, () {});
+              return EmptyWidget(snapshot.error, () {});
             }
           } else {
             return SliverList(

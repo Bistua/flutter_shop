@@ -9,12 +9,16 @@ class HomeBloc {
 
   Stream<List<DataListBean>> get tabItems => tabController.stream;
 
-  HomeBloc();
+  HomeBloc() {
 
+  }
+
+
+  Images v;
   getImages() async {
-    Images v = await Http.getBanner();
-    print("image");
-    print(v.toString());
+    if (v == null || v.code != 0) {
+      v = await Http.getBanner();
+    }
     if (v.code == 0) {
       tabController.add(v.data);
     }
