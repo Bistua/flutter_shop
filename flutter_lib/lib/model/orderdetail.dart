@@ -1,3 +1,6 @@
+import 'package:flutter_lib/bridge/common_bridge.dart';
+import 'package:flutter_lib/bridge/order_bridge.dart';
+import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/address.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -64,28 +67,28 @@ class OrderDetail {
       case 0:
         return "已取消";
       case 1:
-        return "等待发货";
+        return "待付款";
       case 2:
-        return "已发货";
+        return "待发货";
       case 3:
-        return "已收货";
+        return "待收货";
       case 4:
-        return "交易完成";
+        return "待评价";
       default:
         return "";
     }
   }
-
+//  1:待付款，2:待发货，3:待收货，4:待评价,0:全部
   String getListStatusName() {
     switch (status) {
       case 0:
         return "已取消";
       case 1:
-        return "待发货";
+        return "待付款";
       case 2:
-        return "已发货";
+        return "待发货";
       case 3:
-        return "待评价";
+        return "待收货";
       case 4:
         return "待评价";
       default:
@@ -110,18 +113,29 @@ class OrderDetail {
     }
   }
 
-  String getListStatusButtonName() {
+  doWithOrder(){
     switch (status) {
       case 0:
-        return "已取消";
-      case 1:
-        return "取消订单";
+        Future<Result> future =
+        OrderBridge.cancelOrder(orderId);
+        future.then((r) {
+          if (r.code == 200) {
+            Bridge.showLongToast("取消成功");
+          } else {
+            Bridge.showLongToast(r.msg);
+          }
+        });
+        break;
       case 2:
-        return "查看物流";
+
+        Bridge.webview("https://www.kuaidi100.com/chaxun?com=[]&nu=[]");
+        break;
       case 3:
-        return "退换货";
+        Bridge.webview("https://www.kuaidi100.com/chaxun?com=[]&nu=[]");
+        break;
       case 4:
-        return "退换货";
+        Bridge.webview("https://www.kuaidi100.com/chaxun?com=[]&nu=[]");
+        break;
       default:
         return "";
     }

@@ -393,7 +393,10 @@ class OrderDetailPageState extends State<OrderDetailPage> {
                             alignment: Alignment.center,
                           ),
                           //圆角大小,与BoxDecoration保持一致，更美观
-                          onTap: () {},
+                          onTap: () {
+                              _orderDetail.doWithOrder();
+
+                          },
                         ),
                       ],
                     ),

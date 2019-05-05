@@ -272,7 +272,9 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                         ),
                         Expanded(
                           child: GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.pushNamed(context, UIData.IviteFriendsPage);
+                            },
                             child: Container(
                               width: 115,
                               height: 20,

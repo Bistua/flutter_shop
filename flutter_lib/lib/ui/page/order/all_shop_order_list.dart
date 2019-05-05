@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/bridge/order_bridge.dart';
-import 'package:flutter_lib/bridge/pay_bridge.dart';
 import 'package:flutter_lib/logic/bloc/oder_list_bloc.dart';
 import 'package:flutter_lib/model/OrderComment.dart';
 import 'package:flutter_lib/model/Result.dart';
