@@ -38,13 +38,6 @@ class ProductBridge {
    *获取产品列表
    */
   static Future<Result> queryProduct(String query, bool orderBy) async {
-//    String data = await distest();
-//    if (data != null) {
-//      print("bridge result:" + data);
-//      return Result.fromJson(data);
-//    }
-//    return Result.fromJson(json.encode({"code": -1, "msg": "无结果"}));
-    //todo 接口通了后使用下面的方法替换上面的假数据
     return Bridge.dispenser({
       "method": "queryProduct",
       "params": {
@@ -58,12 +51,6 @@ class ProductBridge {
   }
 
   static Future<Result> getProduct(int productId) async {
-//    String data = await distest();
-//    if (data != null) {
-//      print("bridge result:" + data);
-//      return Result.fromJson(data);
-//    }
-
     return Bridge.dispenser({
       "method": "product_detail",
       "params": {

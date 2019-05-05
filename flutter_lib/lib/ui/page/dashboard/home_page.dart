@@ -45,7 +45,6 @@ class _MyHomePageState extends State<MyHomePage> {
   HomeBloc homeBloc = HomeBloc();
 
   final List<Product> discountList = ProductViewModel().getDiscountList();
-  final List<Product> hotShopList = ProductViewModel().getProductTests();
 
   @override
   void initState() {
@@ -228,7 +227,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget empty(String error) {
+  Widget empty(String error, tab) {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(32.0),
@@ -237,9 +236,7 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: const EdgeInsets.all(32.0),
             child: Text(error),
           ),
-          onTap: () {
-            homeBloc.getImages();
-          },
+          onTap: tab,
         ),
       ),
     );
@@ -251,7 +248,9 @@ class _MyHomePageState extends State<MyHomePage> {
         stream: homeBloc.tabItems,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return empty(snapshot.error);
+            return empty(snapshot.error, () {
+              homeBloc.getImages();
+            });
           } else if (snapshot.hasData) {
             return BannerWidget(
                 data: snapshot.data,
@@ -385,13 +384,18 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget getFeatureGrid() {
+    productBloc.getFeatures(1, 10);
     return StreamBuilder<List<ProductItem>>(
         stream: productBloc.productItems,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return getFeatursGrid(snapshot.data);
-          }else{
-            return  SliverList(
+          } else if (snapshot.hasError) {
+            empty(snapshot.error, () {
+              productBloc.getFeatures(1, 10);
+            });
+          } else {
+            return SliverList(
               delegate: SliverChildListDelegate(
                 [
                   Center(child: CircularProgressIndicator()),
@@ -417,7 +421,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: buildHotShopItem(index, items[index]),
           );
         },
-        childCount: hotShopList.length,
+        childCount: items.length,
       ),
     );
   }
@@ -815,13 +819,29 @@ class _MyHomePageState extends State<MyHomePage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<ProductItem> list = snapshot.data;
-            ProductItem item = list[index];
-            return buildHotShopItem(index, item);
+            if (list.length > 0) {
+              ProductItem item = list[index];
+              return buildHotShopItem(index, item);
+            } else {
+              return empty(snapshot.error, () {});
+            }
+          } else {
+            return SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  Center(child: CircularProgressIndicator()),
+                ],
+              ),
+            );
           }
         });
   }
 
   Container buildHotShopItem(int index, ProductItem product) {
+    String imageUrl = "";
+    if (product.medias.length > 0) {
+      imageUrl = product.medias[0].toString();
+    }
     return Container(
       padding: EdgeInsets.fromLTRB(
           index % 2 == 0 ? 4.0 : 0.0, 0.0, index % 2 == 0 ? 0.0 : 4.0, 0.0),
@@ -832,15 +852,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Container(
               width: 170.0,
               height: 170.0,
-              decoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(5.0),
-                    topRight: Radius.circular(5.0)),
-                image: DecorationImage(
-                    image: NetworkImage(product.medias[0].toString()),
-                    fit: BoxFit.cover),
-              ),
+              child: UIData.getImageWithWH(imageUrl, 88, 88),
             ),
             Expanded(
               child: Container(

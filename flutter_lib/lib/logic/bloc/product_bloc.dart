@@ -11,8 +11,8 @@ import 'package:flutter_lib/model/skuinfo.dart';
 
 class ProductBloc {
   final ProductViewModel productViewModel = ProductViewModel();
-  final productController = StreamController<List<ProductItem>>();
-  final productDetaailController = StreamController<ProductDetail>();
+  final productController = StreamController<List<ProductItem>>.broadcast();
+  final productDetaailController = StreamController<ProductDetail>.broadcast();
   final skuInfoController = StreamController<SkuInfo>.broadcast();
 
   Stream<List<ProductItem>> get productItems {
