@@ -102,29 +102,35 @@ class ShopListState extends State<ShopListPage> {
                         ),
                       ),
                       Positioned(
-                          bottom: 5,
+                          bottom: 8,
+                          left: 10,
+                          right: 10,
                           child: new Container(
+                            width: 140,
                             color: Colors.white,
                             child: new Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
                                 new Padding(
-                                  padding: EdgeInsets.fromLTRB(4, 0, 4, 4),
-                                  child: new Text(
-                                    product.name,
-                                    maxLines: 1,
-                                    overflow:  TextOverflow.ellipsis,
-                                    style:
-                                    TextStyle(fontSize: 12, color: UIData.ff353535),
+                                  padding: EdgeInsets.fromLTRB(5, 5, 5, 4),
+                                  child: Container(
+                                    width: 140,
+                                    child: new Text(
+                                      product.name,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontSize: 12, color: UIData.ff353535),
+                                    ),
                                   ),
                                 ),
                                 new Padding(
-                                  padding: EdgeInsets.fromLTRB(4, 4, 4, 4),
+                                  padding: EdgeInsets.fromLTRB(5, 4, 5, 4),
                                   child: new Text(
                                     "￥" + product.price.toString(),
                                     maxLines: 1,
-                                    overflow:  TextOverflow.ellipsis,
+                                    overflow: TextOverflow.ellipsis,
                                     style: TextStyle(color: Colors.red, fontSize: 16),
                                   ),
                                 ),
