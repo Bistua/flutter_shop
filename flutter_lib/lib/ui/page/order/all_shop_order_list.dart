@@ -221,15 +221,18 @@ class TagState extends State<TagOrderPage> {
                           ),
                         ),
                         Container(
-                          width: 20,
+                          width: 100,
                           height: 20,
                           child: Center(
-                            child: UIData.getTextWidget(
-                                "x" + count.toString(), UIData.ff999999, 11),
+                            child: Text("数量：x" + count.toString(),
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  color: UIData.ff999999,
+                                )),
                           ),
                           decoration: BoxDecoration(
-                            border:
-                                Border.all(color: UIData.fff7f7f7, width: 1.0),
+                            border: Border.all(
+                                color: UIData.fff7f7f7, width: 1.0),
                             shape: BoxShape.rectangle,
                           ),
                         ),
