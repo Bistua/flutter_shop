@@ -55,18 +55,21 @@ class _UserHomeState extends State<UserHomeListPage> {
         child: Card(
           child: Column(
             children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.all(15),
-                    child: Text(
-                      "我的订单",
-                      style: TextStyle(color: UIData.ff353535, fontSize: 15),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, UIData.AllShopOrderPage);
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.all(15),
+                      child: Text(
+                        "我的订单",
+                        style: TextStyle(color: UIData.ff353535, fontSize: 15),
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: GestureDetector(
+                    Expanded(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
@@ -85,12 +88,9 @@ class _UserHomeState extends State<UserHomeListPage> {
                           ),
                         ],
                       ),
-                      onTap: () {
-                        Navigator.pushNamed(context, UIData.AllShopOrderPage);
-                      },
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               Divider(),
               Padding(
@@ -108,7 +108,7 @@ class _UserHomeState extends State<UserHomeListPage> {
                               width: 22.0,
                               height: 22.0,
                             ),
-                            padding: EdgeInsets.fromLTRB(0, 12, 0, 8),
+                            padding: EdgeInsets.fromLTRB(0, 20, 0, 8),
                           ),
                           Text(
                             "待付款",
