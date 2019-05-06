@@ -311,11 +311,11 @@ class UIData {
 
   static Widget getImage(String image) {
     if (image == null || !image.startsWith("http")) {
-      return Image.asset("images/shop_type_hat.png");
+      return Image.asset("images/placeholder.png");
     } else {
       return FadeInImage.assetNetwork(
-        placeholder: 'images/shop_type_hat.png',
-        fit: BoxFit.contain,
+        placeholder: 'images/placeholder.png',
+        fit: BoxFit.cover,
         image: image,
       );
     }
@@ -324,14 +324,14 @@ class UIData {
   static Widget getImageWithWH(String image, double w, double h) {
     if (image == null || !image.startsWith("http")) {
       return Image.asset(
-        "images/shop_type_hat.png",
+        "images/placeholder.png",
         width: w,
         height: h,
       );
     } else {
       return FadeInImage.assetNetwork(
-        placeholder: 'images/shop_type_hat.png',
-        fit: BoxFit.contain,
+        placeholder: 'images/placeholder.png',
+        fit: BoxFit.cover,
         image: image,
         width: w,
         height: h,
@@ -343,13 +343,13 @@ class UIData {
       String image, BoxFit fit, double w, double h) {
     if (image == null || !image.startsWith("http")) {
       return Image.asset(
-        "images/shop_type_hat.png",
+        "images/placeholder.png",
         width: w,
         height: h,
       );
     } else {
       return FadeInImage.assetNetwork(
-        placeholder: 'images/shop_type_hat.png',
+        placeholder: 'images/placeholder.png',
         fit: fit,
         image: image,
         width: w,

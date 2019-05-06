@@ -194,34 +194,40 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
         (BuildContext context, int index) {
           return new GestureDetector(
             child: new Container(
-              alignment: Alignment.center,
-              child: new Column(
+              alignment: Alignment.bottomCenter,
+              child: new Stack(
                 children: <Widget>[
-                  new Stack(
-                    children: <Widget>[
-                      UIData.getImage(data[index].image),
-                      Positioned(
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          child: new Container(
-                            color: Colors.white,
-                            child: new Column(
-                              children: <Widget>[
-                                new Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 12, 0, 6),
-                                  child: new Text(
-                                    data[index].name,
-                                    style: TextStyle(
-                                        fontSize: 11, color: UIData.ff353535),
-                                    maxLines: 1,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )),
-                    ],
+                  Positioned(
+                    child: Container(
+                      child: UIData.getImageWithWH(data[index].image, 80, 100),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(
+                            color: UIData.ffcccccc,
+                            width: 0.5,
+                            style: BorderStyle.solid),
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
                   ),
+                  Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: new Container(
+                        alignment: Alignment.center,
+                        color: Colors.white,
+                        child: new Padding(
+                          padding: EdgeInsets.fromLTRB(0, 12, 0, 6),
+                          child: new Text(
+                            data[index].name,
+                            textAlign: TextAlign.center,
+                            style:
+                                TextStyle(fontSize: 11, color: UIData.ff353535),
+                            maxLines: 1,
+                          ),
+                        ),
+                      )),
                 ],
               ),
             ),

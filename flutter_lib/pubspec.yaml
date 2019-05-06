@@ -76,6 +76,7 @@ flutter:
     - images/favor.png
     - images/coin.png
     - images/user_icon.png
+    - images/placeholder.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
