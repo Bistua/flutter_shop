@@ -3,6 +3,7 @@ import 'package:flutter_lib/logic/bloc/product_bloc.dart';
 import 'package:flutter_lib/model/product.dart';
 import 'package:flutter_lib/model/productitem.dart';
 import 'package:flutter_lib/ui/page/shop/shop_detail.dart';
+import 'package:flutter_lib/ui/widgets/empty_widget.dart';
 import 'package:flutter_lib/ui/widgets/shop_tab_item.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
@@ -51,27 +52,22 @@ class ShopListState extends State<ShopListPage> {
     return StreamBuilder<List<ProductItem>>(
         stream: productBloc.productItems,
         builder: (context, snapshot) {
-          return snapshot.hasData
-              ? (snapshot.data.isEmpty ? empty() : productGrid(snapshot.data))
-              : Center(child: CircularProgressIndicator());
+          if (snapshot.hasData) {
+            if (snapshot.data.isEmpty) {
+              return EmptyWidget("无数据", () {
+                productBloc.getProducts(widget.categoryId, true);
+              });
+            } else {
+              return productGrid(snapshot.data);
+            }
+          } else if (snapshot.hasError) {
+            return EmptyWidget(snapshot.error, () {
+              productBloc.getProducts(widget.categoryId, true);
+            });
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
         });
-  }
-
-  Widget empty() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32.0),
-        child: GestureDetector(
-          child: Padding(
-            padding: const EdgeInsets.all(32.0),
-            child: Text("无数据,点击重试"),
-          ),
-          onTap: () {
-            productBloc.getProducts(widget.categoryId, true);
-          },
-        ),
-      ),
-    );
   }
 
   Widget productGrid(List<ProductItem> data) {

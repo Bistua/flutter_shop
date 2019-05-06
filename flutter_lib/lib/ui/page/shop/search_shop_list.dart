@@ -3,6 +3,7 @@ import 'package:flutter_lib/logic/bloc/product_bloc.dart';
 import 'package:flutter_lib/logic/viewmodel/tab_view_model.dart';
 import 'package:flutter_lib/model/productitem.dart';
 import 'package:flutter_lib/ui/page/shop/shop_detail.dart';
+import 'package:flutter_lib/ui/widgets/empty_widget.dart';
 import 'package:flutter_lib/ui/widgets/shop_tab_item.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
@@ -41,7 +42,9 @@ class SearchShopListState extends State<SearchShopListPage> {
         builder: (context, snapshot) {
           if (showHistory) {
             if (chips.isEmpty) {
-              return empty();
+              return EmptyWidget("无数据", () {
+
+              });
             } else {
               return buildWrapChips();
             }
@@ -53,20 +56,6 @@ class SearchShopListState extends State<SearchShopListPage> {
         });
   }
 
-  Widget empty() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32.0),
-        child: GestureDetector(
-          child: Padding(
-            padding: const EdgeInsets.all(32.0),
-            child: Text("热门搜索,可以补充任何东西?"),
-          ),
-          onTap: () {},
-        ),
-      ),
-    );
-  }
 
   Column buildWrapChips() {
     return Column(

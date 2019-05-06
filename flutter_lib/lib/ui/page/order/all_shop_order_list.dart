@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_lib/logic/bloc/oder_list_bloc.dart';
 import 'package:flutter_lib/model/orderListItem.dart';
 import 'package:flutter_lib/ui/page/order/order_action_widget.dart';
+import 'package:flutter_lib/ui/widgets/empty_widget.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class AllShopOrderPage extends StatefulWidget {
- final int initialIndex;
+  final int initialIndex;
 
   AllShopOrderPage(this.initialIndex);
 
@@ -43,6 +44,7 @@ class TagState extends State<TagOrderPage> {
     widget.orderListBloc = OrderListBloc();
     widget.orderListBloc.getOrderListList(widget.type);
   }
+
   @override
   void dispose() {
     widget.orderListBloc?.close();
@@ -61,7 +63,9 @@ class TagState extends State<TagOrderPage> {
           List<OrderItem> list = snapshot.data;
           return snapshot.hasData
               ? ((list == null || list.isEmpty)
-                  ? empty(type)
+                  ? EmptyWidget("无数据,点击重试", () {
+                      widget.orderListBloc.getOrderListList(type);
+                    })
                   : buildListView(type, list))
               : center();
         });
@@ -70,23 +74,6 @@ class TagState extends State<TagOrderPage> {
   Center center() {
     widget.orderListBloc.getOrderListList(widget.type);
     return Center(child: CircularProgressIndicator());
-  }
-
-  Widget empty(int type) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32.0),
-        child: GestureDetector(
-          child: Padding(
-            padding: const EdgeInsets.all(32.0),
-            child: Text("无数据,点击重试"),
-          ),
-          onTap: () {
-            widget.orderListBloc.getOrderListList(type);
-          },
-        ),
-      ),
-    );
   }
 
   Widget buildListView(int type, List<OrderItem> orders) {

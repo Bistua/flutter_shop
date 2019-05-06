@@ -12,6 +12,7 @@ import 'package:flutter_lib/model/ordergoods.dart';
 import 'package:flutter_lib/ui/page/address/add_edit_address.dart';
 import 'package:flutter_lib/ui/page/address/address_list.dart';
 import 'package:flutter_lib/ui/widgets/common_dialogs.dart';
+import 'package:flutter_lib/ui/widgets/empty_widget.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class ShopOrderListPage extends StatefulWidget {
@@ -59,26 +60,13 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
         builder: (context, snapshot) {
           Cart cart = snapshot.data;
           return snapshot.hasData
-              ? (cart == null ? empty() : buildBody(cart))
+              ? (cart == null
+                  ? EmptyWidget("无数据", () {
+                      cartBloc.findCart();
+                    })
+                  : buildBody(cart))
               : Center(child: CircularProgressIndicator());
         });
-  }
-
-  Widget empty() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32.0),
-        child: GestureDetector(
-          child: Padding(
-            padding: const EdgeInsets.all(32.0),
-            child: Text("无数据,点击重试"),
-          ),
-          onTap: () {
-            cartBloc.findCart();
-          },
-        ),
-      ),
-    );
   }
 
   Container buildBody(Cart cart) {
@@ -102,7 +90,7 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                 SliverFixedExtentList(
                   itemExtent: 111,
                   delegate: SliverChildBuilderDelegate(
-                        (context, index) => buildListIItem(cart.products[index]),
+                    (context, index) => buildListIItem(cart.products[index]),
                     childCount: (cart == null || cart.products == null)
                         ? 0
                         : cart.products.length,
@@ -132,7 +120,7 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                         child: Text(
                           "合计",
                           style:
-                          TextStyle(color: UIData.ff353535, fontSize: 15),
+                              TextStyle(color: UIData.ff353535, fontSize: 15),
                         ),
                         padding: EdgeInsets.fromLTRB(13, 13, 8, 13),
                       ),
@@ -162,26 +150,26 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                       List<OrderGoods> orderGoodses = cart.products
                           .map(
                             (sku) => new OrderGoods(
-                          sku.sku.productId,
-                          sku.sku.amount.toString(),
-                          sku.goodsId,
-                        ),
-                      )
+                                  sku.sku.productId,
+                                  sku.sku.amount.toString(),
+                                  sku.goodsId,
+                                ),
+                          )
                           .toList();
 
                       var orders =
-                      orderGoodses.map((f) => (f.toJson())).toList();
+                          orderGoodses.map((f) => (f.toJson())).toList();
 
                       Future<Result> future =
-                      OrderBridge.submitOrder(userAddressId, true, orders);
+                          OrderBridge.submitOrder(userAddressId, true, orders);
                       future.then((result) {
                         if (result.code == 200) {
                           if (result.data == null) {
                             Bridge.showLongToast("订单号获取失败");
                             return;
                           }
-                          showPayDialog(
-                              context, cart.totalMoney, OrderResult.fromJson(result.data).orderId);
+                          showPayDialog(context, cart.totalMoney,
+                              OrderResult.fromJson(result.data).orderId);
                         } else {
                           Bridge.showLongToast(result.msg);
                         }
@@ -202,8 +190,6 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
       ),
     );
   }
-
-
 
   GestureDetector buildListIItem(SkuWapper sku) {
     CartProduct cartProduct = sku.sku;
@@ -238,7 +224,7 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                       padding: EdgeInsets.fromLTRB(12, 18, 12, 8),
                       child: Text(name,
                           style:
-                          TextStyle(fontSize: 12, color: UIData.ff353535)),
+                              TextStyle(fontSize: 12, color: UIData.ff353535)),
                     ),
                     Padding(
                       padding: EdgeInsets.fromLTRB(12, 0, 13, 0),
@@ -251,7 +237,7 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                               borderRadius: BorderRadius.circular(3)),
                           child: Center(
                             child:
-                            UIData.getTextWidget(name, UIData.ff999999, 11),
+                                UIData.getTextWidget(name, UIData.ff999999, 11),
                           )),
                     ),
                     Padding(
@@ -349,42 +335,42 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
           padding: EdgeInsets.fromLTRB(10, 15, 10, 15),
           child: address == null
               ? Text(
-            "添加地址",
-            style: TextStyle(color: UIData.ff353535, fontSize: 13),
-          )
+                  "添加地址",
+                  style: TextStyle(color: UIData.ff353535, fontSize: 13),
+                )
               : Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Icon(
-                Icons.my_location,
-                color: UIData.fffa4848,
-              ),
-              Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          address.name + address.phone,
-                          style:
-                          TextStyle(color: UIData.ff353535, fontSize: 13),
-                        ),
-                        Text(
-                          address.address,
-                          style:
-                          TextStyle(color: UIData.ff999999, fontSize: 12),
-                        ),
-                      ],
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Icon(
+                      Icons.my_location,
+                      color: UIData.fffa4848,
                     ),
-                  )),
-              Icon(
-                Icons.arrow_forward_ios,
-                color: UIData.ff999999,
-              ),
-            ],
-          ),
+                    Expanded(
+                        child: Padding(
+                      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            address.name + address.phone,
+                            style:
+                                TextStyle(color: UIData.ff353535, fontSize: 13),
+                          ),
+                          Text(
+                            address.address,
+                            style:
+                                TextStyle(color: UIData.ff999999, fontSize: 12),
+                          ),
+                        ],
+                      ),
+                    )),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      color: UIData.ff999999,
+                    ),
+                  ],
+                ),
         ),
       ),
       onTap: () {
@@ -455,6 +441,4 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
       ),
     );
   }
-
-
 }

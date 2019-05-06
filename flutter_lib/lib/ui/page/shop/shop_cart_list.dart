@@ -3,6 +3,7 @@ import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/logic/bloc/cart_bloc.dart';
 import 'package:flutter_lib/model/cart.dart';
 import 'package:flutter_lib/ui/page/order/shop_order.dart';
+import 'package:flutter_lib/ui/widgets/empty_widget.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class ShopCartListPage extends StatefulWidget {
@@ -53,36 +54,34 @@ class _ShopCartListState extends State<ShopCartListPage> {
         stream: cartBloc.productItems,
         builder: (context, snapshot) {
           Cart cart = snapshot.data;
-          return snapshot.hasData
-              ? ((cart == null ||
-                      cart.products == null ||
-                      cart.products.isEmpty ||
-                      cart.totalCounts == 0)
-                  ? empty()
-                  : buildBody(cart))
-              : Center(child: CircularProgressIndicator());
-        });
-  }
-
-  Widget empty() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32.0),
-        child: GestureDetector(
-          child: Padding(
-            padding: const EdgeInsets.all(32.0),
-            child: Text(widget.showBackBtn ? "快去添加商品" : "可前往首页选购商品"),
-          ),
-          onTap: () {
-            if (widget.showBackBtn) {
-              Navigator.pop(context, true);
+          if (snapshot.hasData) {
+            if ((cart == null ||
+                cart.products == null ||
+                cart.products.isEmpty ||
+                cart.totalCounts == 0)) {
+              return buildBody(cart);
             } else {
-              cartBloc.findCart();
+              return EmptyWidget(widget.showBackBtn ? "快去添加商品" : "可前往首页选购商品",
+                  () {
+                if (widget.showBackBtn) {
+                  Navigator.pop(context, true);
+                } else {
+                  cartBloc.findCart();
+                }
+              });
             }
-          },
-        ),
-      ),
-    );
+          } else if (snapshot.hasError) {
+            return EmptyWidget(snapshot.error, () {
+              if (widget.showBackBtn) {
+                Navigator.pop(context, true);
+              } else {
+                cartBloc.findCart();
+              }
+            });
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        });
   }
 
   String userAddressId = "12";

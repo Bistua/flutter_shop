@@ -3,6 +3,7 @@ import 'package:flutter_lib/logic/bloc/rebate_bloc.dart';
 import 'package:flutter_lib/logic/bloc/userinfo_bloc.dart';
 import 'package:flutter_lib/model/rebateList.dart';
 import 'package:flutter_lib/model/userinfo.dart';
+import 'package:flutter_lib/ui/widgets/empty_widget.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 import 'package:clipboard_manager/clipboard_manager.dart';
 
@@ -33,7 +34,9 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
           if (snapshot.hasData) {
             return getCustomScroll(snapshot.data);
           } else if (snapshot.hasError) {
-            return error(snapshot.error);
+            return EmptyWidget.WithSliverList(snapshot.error, () {
+              userInfoBloc.getUserInfo();
+            });
           } else {
             return Center(child: CircularProgressIndicator());
           }
@@ -50,50 +53,20 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data == null || snapshot.data.isEmpty) {
-              return emptySub("无数据");
+              return EmptyWidget.WithSliverList(snapshot.error, () {
+                userInfoBloc.getUserInfo();
+              });
             } else {
               return getSliverChild(snapshot.data);
             }
           } else if (snapshot.hasError) {
-            return emptySub(snapshot.error);
+            return EmptyWidget.WithSliverList(snapshot.error, () {
+              rebateBloc.getRebatList();
+            });
           } else {
             return progress();
           }
         });
-  }
-
-  Widget error(Object error) {
-    return Center(
-      child: GestureDetector(
-        child: Padding(
-          padding: const EdgeInsets.all(32.0),
-          child: Text(error.toString() + "点击重试"),
-        ),
-        onTap: () {
-          userInfoBloc.getUserInfo();
-        },
-      ),
-    );
-  }
-
-  Widget emptySub(Object error) {
-    return SliverList(
-      delegate: SliverChildListDelegate(
-        [
-          Center(
-            child: GestureDetector(
-              child: Padding(
-                padding: const EdgeInsets.all(32.0),
-                child: Text(error.toString() + "点击重试"),
-              ),
-              onTap: () {
-                rebateBloc.getRebatList();
-              },
-            ),
-          ),
-        ],
-      ),
-    );
   }
 
   Widget progress() {
@@ -338,7 +311,7 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
                 onTap: () {
                   if (userInfo != null && userInfo.userCode.isNotEmpty) {
                     ClipboardManager.copyToClipBoard(
-                        userInfo == null ? "" : userInfo.userCode)
+                            userInfo == null ? "" : userInfo.userCode)
                         .then((result) {
                       final snackBar = SnackBar(
                         content: Text('已复制到粘贴板'),
