@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_lib/bridge/common_bridge.dart';
-import 'package:flutter_lib/bridge/order_bridge.dart';
 import 'package:flutter_lib/logic/bloc/oder_list_bloc.dart';
-import 'package:flutter_lib/model/OrderComment.dart';
-import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/orderListItem.dart';
 import 'package:flutter_lib/ui/page/order/order_action_widget.dart';
-import 'package:flutter_lib/ui/widgets/common_dialogs.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class AllShopOrderPage extends StatefulWidget {
-  int initialIndex = 0;
+ final int initialIndex;
 
   AllShopOrderPage(this.initialIndex);
 

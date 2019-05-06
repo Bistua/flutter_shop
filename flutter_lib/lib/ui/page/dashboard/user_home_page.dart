@@ -57,7 +57,7 @@ class _UserHomeState extends State<UserHomeListPage> {
             children: <Widget>[
               GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, UIData.AllShopOrderPage);
+                  Navigator.pushNamed(context, UIData.AllShopOrderPage,arguments: 0);
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -118,8 +118,7 @@ class _UserHomeState extends State<UserHomeListPage> {
                         ],
                       ),
                       onTap: () {
-                        Navigator.pushNamed(context, UIData.AllShopOrderPage,
-                            arguments: 1);
+                        Navigator.pushNamed(context, UIData.AllShopOrderPage, arguments: 1);
                       },
                     ),
                     GestureDetector(
