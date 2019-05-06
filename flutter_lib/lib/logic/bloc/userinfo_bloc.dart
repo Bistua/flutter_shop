@@ -18,7 +18,8 @@ class UserInfoBloc {
         Userinfo userinfo = Userinfo.fromJson(result.data);
         userInfoStream.add(userinfo);
       } else {
-//        Bridge.showLongToast(result.msg == null ? "未返回错误信息" : result.msg);
+        print(result.msg);
+        userInfoStream.add(null);
       }
     });
   }

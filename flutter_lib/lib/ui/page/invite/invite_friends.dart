@@ -32,7 +32,13 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
         stream: userInfoBloc.userInfo,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return getCustomScroll(snapshot.data);
+            if (snapshot.data != null) {
+              return getCustomScroll(snapshot.data);
+            } else {
+              return EmptyWidget.WithSliverList("暂无数据", () {
+                userInfoBloc.getUserInfo();
+              });
+            }
           } else if (snapshot.hasError) {
             return EmptyWidget.WithSliverList(snapshot.error, () {
               userInfoBloc.getUserInfo();

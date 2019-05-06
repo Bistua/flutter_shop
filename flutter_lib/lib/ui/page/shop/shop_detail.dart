@@ -77,7 +77,13 @@ class ShopDetailPageState extends State<ShopDetailPage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             print("getProduct hasdata");
-            return buidBody(snapshot.data);
+            if (snapshot.data != null) {
+              return buidBody(snapshot.data);
+            } else {
+              return EmptyWidget("暂无数据", () {});
+            }
+          } else if (snapshot.hasError) {
+            return EmptyWidget(snapshot.error, () {});
           } else {
             return Center(child: CircularProgressIndicator());
           }
