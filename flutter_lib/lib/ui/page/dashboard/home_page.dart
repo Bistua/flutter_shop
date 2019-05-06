@@ -861,11 +861,11 @@ class _MyHomePageState extends State<MyHomePage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           new Padding(
-                            padding: EdgeInsets.fromLTRB(4, 0, 4, 4),
+                            padding: EdgeInsets.fromLTRB(0, 0, 0, 4),
                             child: new Text(
                               product.name,
-                              overflow: TextOverflow.ellipsis,
                               maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   fontSize: 12, color: UIData.ff353535),
                             ),

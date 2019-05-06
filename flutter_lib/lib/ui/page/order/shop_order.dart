@@ -226,20 +226,20 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                           style:
                               TextStyle(fontSize: 12, color: UIData.ff353535)),
                     ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(12, 0, 13, 0),
-                      child: Container(
-                          height: 18,
-                          width: 92,
-                          decoration: BoxDecoration(
-                              color: UIData.fff7f7f7,
-                              shape: BoxShape.rectangle,
-                              borderRadius: BorderRadius.circular(3)),
-                          child: Center(
-                            child:
-                                UIData.getTextWidget(name, UIData.ff999999, 11),
-                          )),
-                    ),
+//                    Padding(
+//                      padding: EdgeInsets.fromLTRB(12, 0, 13, 0),
+//                      child: Container(
+//                          height: 18,
+//                          width: 92,
+//                          decoration: BoxDecoration(
+//                              color: UIData.fff7f7f7,
+//                              shape: BoxShape.rectangle,
+//                              borderRadius: BorderRadius.circular(3)),
+//                          child: Center(
+//                            child:
+//                                UIData.getTextWidget(name, UIData.ff999999, 11),
+//                          )),
+//                    ),
                     Padding(
                       padding: EdgeInsets.fromLTRB(15, 6, 15, 17),
                       child: Row(
@@ -275,7 +275,7 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                           Padding(
                             padding: EdgeInsets.fromLTRB(3, 0, 3, 0),
                             child: UIData.getTextWidget(
-                                cartProduct.amount.toString(),
+                               "x "+ cartProduct.amount.toString(),
                                 UIData.ff999999,
                                 11),
                           ),
