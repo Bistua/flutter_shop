@@ -185,6 +185,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     alignment: Alignment.center,
                     height: 30.0,
                     decoration: BoxDecoration(
+                      color: Colors.white,
                       border: Border.all(color: Color(0xFFF5F5F5), width: 15.0),
                       borderRadius:
                           new BorderRadius.all(new Radius.circular(15.0)),
@@ -352,6 +353,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: TextStyle(color: Colors.white, fontSize: 12),
               ),
               decoration: new BoxDecoration(
+                  color: Colors.white,
                   borderRadius: BorderRadius.only(
                       topRight: Radius.circular(15.0),
                       bottomRight: Radius.circular(15.0)),
@@ -872,6 +874,7 @@ class _MyHomePageState extends State<MyHomePage> {
               width: 170.0,
               height: 170.0,
               decoration: BoxDecoration(
+                color: Colors.white,
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(5.0),
