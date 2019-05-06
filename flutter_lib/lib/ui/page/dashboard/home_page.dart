@@ -392,12 +392,12 @@ class _MyHomePageState extends State<MyHomePage> {
               if (snapshot.data.isNotEmpty) {
                 return getFeatursGrid(snapshot.data);
               } else {
-                return EmptyWidget("暂无数据", () {
+                return EmptyWidget.WithSliverList("暂无数据", () {
                   productBloc.getFeatures(1, 10);
                 });
               }
             } else if (snapshot.hasError) {
-              return EmptyWidget(snapshot.error, () {
+              return EmptyWidget.WithSliverList(snapshot.error, () {
                 productBloc.getFeatures(1, 10);
               });
             } else {
