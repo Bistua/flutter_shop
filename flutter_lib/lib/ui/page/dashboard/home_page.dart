@@ -857,7 +857,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 Positioned(
                     bottom: 0,
                     left: 0,
-                    right: 0,
                     child: new Container(
                       color: Colors.white,
                       child: new Column(

@@ -137,7 +137,6 @@ class SearchShopListState extends State<SearchShopListPage> {
                       Positioned(
                         top: 0,
                         left: 0,
-                        right: 0,
                         child: UIData.getImage(
                           imgUrl,
                         ),
