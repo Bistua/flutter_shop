@@ -17,11 +17,12 @@ class ShopCategoryListPage extends StatefulWidget {
 
 class ShopCategoryListState extends State<ShopCategoryListPage> {
   Widget appBarTitle;
-  CategoryBloc categoryBloc = new CategoryBloc();
+  CategoryBloc categoryBloc ;
 
   @override
   void initState() {
     super.initState();
+    categoryBloc = new CategoryBloc();
   }
 
   @override

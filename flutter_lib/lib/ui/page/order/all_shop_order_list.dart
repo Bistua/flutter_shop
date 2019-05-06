@@ -16,7 +16,6 @@ class AllShopOrderPage extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-
     List<Widget> pages = List();
     pages.add(Container(child: TagOrderPage(0)));
     pages.add(Container(child: TagOrderPage(1)));
@@ -34,7 +33,7 @@ class TagOrderPage extends StatefulWidget {
     this.type = i;
   }
 
-  OrderListBloc orderListBloc = OrderListBloc();
+  OrderListBloc orderListBloc;
 
   @override
   State<StatefulWidget> createState() {
@@ -45,9 +44,14 @@ class TagOrderPage extends StatefulWidget {
 class TagState extends State<TagOrderPage> {
   @override
   void initState() {
-    widget.orderListBloc.getOrderListList(widget.type);
     super.initState();
+    widget.orderListBloc = OrderListBloc();
     widget.orderListBloc.getOrderListList(widget.type);
+  }
+  @override
+  void dispose() {
+    widget.orderListBloc?.close();
+    super.dispose();
   }
 
   @override
@@ -167,7 +171,7 @@ class TagState extends State<TagOrderPage> {
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
-                    child: OrderActionWidget(orderItem,type,(){
+                    child: OrderActionWidget(orderItem, type, () {
                       widget.orderListBloc.getOrderListList(type);
                     }),
                   ),
@@ -258,14 +262,13 @@ class TagState extends State<TagOrderPage> {
 
 class _ShopCartListState extends State<AllShopOrderPage> {
   List<Widget> pages;
-  _ShopCartListState(pages){
+  _ShopCartListState(pages) {
     this.pages = pages;
   }
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-
       initialIndex: widget.initialIndex,
       child: Scaffold(
         appBar: AppBar(
@@ -339,7 +342,7 @@ class _ShopCartListState extends State<AllShopOrderPage> {
           ),
         ),
         body: TabBarView(
-          children:pages,
+          children: pages,
         ),
       ),
       length: 5,

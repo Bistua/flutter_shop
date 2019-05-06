@@ -49,4 +49,8 @@ class OrderListBloc {
       }
     });
   }
+
+  void close() {
+    orderListController?.close();
+  }
 }

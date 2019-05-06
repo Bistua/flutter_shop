@@ -12,7 +12,6 @@ import 'package:flutter_lib/model/productdetail.dart';
 import 'package:flutter_lib/model/skuresult.dart';
 import 'package:flutter_lib/model/cart.dart';
 import 'package:flutter_lib/model/comment.dart';
-import 'package:flutter_lib/model/productitem.dart';
 import 'package:flutter_lib/model/skuinfo.dart';
 import 'package:flutter_lib/ui/page/order/shop_order.dart';
 import 'package:flutter_lib/ui/widgets/rating_bar.dart';
@@ -50,18 +49,19 @@ class ShopDetailPageState extends State<ShopDetailPage> {
   @override
   void initState() {
     super.initState();
+    productBloc = ProductBloc();
+    productBloc.getProduct(productId);
   }
 
   @override
   void dispose() {
-//    productBloc.close();
+    productBloc.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     print("ShopDetailPage build");
-    productBloc = ProductBloc();
     return ProductProvider(
         productBloc: productBloc,
         child: new Scaffold(
@@ -71,7 +71,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
   }
 
   Widget bodyData() {
-    productBloc.getProduct(productId);
+
     return StreamBuilder<ProductDetail>(
         stream: productBloc.productDetail,
         builder: (context, snapshot) {
