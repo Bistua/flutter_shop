@@ -174,6 +174,8 @@ class _ShopCartListState extends State<ShopCartListPage> {
                 ? products[index].sku.price.toStringAsFixed(2)
                 : "0.00");
 
+        String skuInfo =
+            products[index].sku.norms == null ? "" : products[index].sku.norms;
         return GestureDetector(
           child: Container(
             child: Card(
@@ -197,20 +199,25 @@ class _ShopCartListState extends State<ShopCartListPage> {
                               style: TextStyle(
                                   fontSize: 12, color: UIData.ff353535)),
                         ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(12, 0, 13, 0),
-                          child: Container(
-                              height: 18,
-                              width: 92,
-                              decoration: BoxDecoration(
-                                  color: UIData.fff7f7f7,
-                                  shape: BoxShape.rectangle,
-                                  borderRadius: BorderRadius.circular(3)),
-                              child: Center(
-                                child: UIData.getTextWidget(
-                                    name, UIData.ff999999, 11),
-                              )),
-                        ),
+                        skuInfo.isEmpty
+                            ? Container(
+                                width: 0,
+                                height: 0,
+                              )
+                            : Padding(
+                                padding: EdgeInsets.fromLTRB(12, 0, 13, 0),
+                                child: Container(
+                                    height: 18,
+                                    width: 92,
+                                    decoration: BoxDecoration(
+                                        color: UIData.fff7f7f7,
+                                        shape: BoxShape.rectangle,
+                                        borderRadius: BorderRadius.circular(3)),
+                                    child: Center(
+                                      child: UIData.getTextWidget(
+                                          skuInfo, UIData.ff999999, 11),
+                                    )),
+                              ),
                         Padding(
                           padding: EdgeInsets.fromLTRB(15, 6, 15, 17),
                           child: Row(
