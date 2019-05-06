@@ -79,18 +79,16 @@ showPayDialog(BuildContext context, double totalMoney, String tradeOrderId) {
             child: Material(
               borderRadius: BorderRadius.circular(8.0),
               color: Colors.white,
-              elevation: 5.0,
               child: Padding(
-                padding: const EdgeInsets.all(32.0),
+                padding: const EdgeInsets.fromLTRB(32, 0, 32, 0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
+                  mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
                     Center(
                         child: Text("确认付款",
                             style: TextStyle(
                                 color: UIData.ff33333, fontSize: 18))),
-                    Divider(),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 46, 0, 0),
                       child: Text(
@@ -136,30 +134,33 @@ showPayDialog(BuildContext context, double totalMoney, String tradeOrderId) {
                       padding: EdgeInsets.fromLTRB(14, 14, 14, 0),
                     ),
                     Divider(),
-                    UIData.getShapeButton(
-                      UIData.fffa4848,
-                      UIData.fff,
-                      345,
-                      45,
-                      "立即付款",
-                      18,
-                      5,
-                      () {
-                        //"1555746236014000",
-                        //"商品描述",
-                        Future<Result> future = PayBridge.wxPay(
-                            tradeOrderId,
-                            "123.12.12.123",
-                            "商品组合",
-                            "附加数据，在查询API和支付通知中原样返回，该字段主要用于商户携带订单的自定义数据");
-                        future.then((v) {
-                          if (v.code == 200) {
-                            Navigator.pop(context, false);
-                          } else {
-                            Bridge.showShortToast(v.msg);
-                          }
-                        });
-                      },
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                      child: UIData.getShapeButton(
+                        UIData.fffa4848,
+                        UIData.fff,
+                        345,
+                        45,
+                        "立即付款",
+                        18,
+                        5,
+                        () {
+                          //"1555746236014000",
+                          //"商品描述",
+                          Future<Result> future = PayBridge.wxPay(
+                              tradeOrderId,
+                              "123.12.12.123",
+                              "商品组合",
+                              "附加数据，在查询API和支付通知中原样返回，该字段主要用于商户携带订单的自定义数据");
+                          future.then((v) {
+                            if (v.code == 200) {
+                              Navigator.pop(context, false);
+                            } else {
+                              Bridge.showShortToast(v.msg);
+                            }
+                          });
+                        },
+                      ),
                     )
                   ],
                 ),
