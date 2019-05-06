@@ -199,20 +199,7 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
                   top: 0,
                   left: 0,
                   right: 0,
-                  child: Container(
-                    width: 78,
-                    height: 82,
-                    alignment: Alignment.topCenter,
-                    child: UIData.getImageWithWH(data[index].image, 78, 82),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(
-                          color: UIData.ffcccccc,
-                          width: 0.5,
-                          style: BorderStyle.solid),
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
+                  child:UIData.getImageWithWH(data[index].image, 90, 90),
                 ),
                 Positioned(
                     bottom: 0,

@@ -91,44 +91,45 @@ class ShopListState extends State<ShopListPage> {
               child: new Card(
                 elevation: 5.0,
                 child: new Container(
-                  alignment: Alignment.center,
-                  child: new Column(
+                  alignment: Alignment.bottomCenter,
+                  child: new Stack(
                     children: <Widget>[
-                      new Stack(
-                        children: <Widget>[
-                          UIData.getImage(
-                            imgUrl,
-                          ),
-                          Positioned(
-                              bottom: 0,
-                              left: 0,
-                              right: 0,
-                              child: new Container(
-                                color: Colors.white,
-                                child: new Column(
-                                  children: <Widget>[
-                                    new Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 12, 0, 6),
-                                      child: new Text(
-                                        data[index].name,
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            color: UIData.ff353535),
-                                      ),
-                                    ),
-                                    new Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 6, 0, 12),
-                                      child: new Text(
-                                        productItem.price.toString(),
-                                        style: TextStyle(
-                                            color: Colors.red, fontSize: 16),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )),
-                        ],
+                      Positioned(
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        child: UIData.getImage(
+                          imgUrl,
+                        ),
                       ),
+                      Positioned(
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: new Container(
+                            color: Colors.white,
+                            child: new Column(
+                              children: <Widget>[
+                                new Padding(
+                                  padding: EdgeInsets.fromLTRB(12, 12, 12, 6),
+                                  child: new Text(
+                                    data[index].name,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 12, color: UIData.ff353535),
+                                  ),
+                                ),
+                                new Padding(
+                                  padding: EdgeInsets.fromLTRB(0, 6, 0, 12),
+                                  child: new Text(
+                                    productItem.price.toString(),
+                                    style: TextStyle(
+                                        color: Colors.red, fontSize: 16),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )),
                     ],
                   ),
                 ),
