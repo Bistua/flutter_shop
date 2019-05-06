@@ -229,6 +229,12 @@ class ShopDetailPageState extends State<ShopDetailPage> {
   }
 
   Padding buildHeader(ProductDetail product) {
+    String img = "";
+    if (product != null &&
+        product.medias != null &&
+        product.medias.isNotEmpty) {
+      img = product.medias[0].url;
+    }
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
       child: new Container(
@@ -236,7 +242,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
         child: new Center(
           child: new Column(
             children: <Widget>[
-              UIData.getImage(product.medias[0].url),
+              UIData.getImage(img),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
