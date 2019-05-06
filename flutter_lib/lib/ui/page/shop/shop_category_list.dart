@@ -194,12 +194,15 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
         (BuildContext context, int index) {
           return new GestureDetector(
             child: new Container(
-              alignment: Alignment.bottomCenter,
+              alignment: Alignment.center,
               child: new Stack(
                 children: <Widget>[
                   Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
                     child: Container(
-                      child: UIData.getImageWithWH(data[index].image, 80, 100),
+                      child: UIData.getImageWithWH(data[index].image, 88, 88),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         border: Border.all(
