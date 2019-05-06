@@ -425,15 +425,17 @@ class _MyHomePageState extends State<MyHomePage> {
     return SliverGrid(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        crossAxisSpacing: 0.0,
-        mainAxisSpacing: 0.0,
-        childAspectRatio: 0.74,
+        childAspectRatio: (0.7), //item长宽比
+        mainAxisSpacing: 5.0,
+        crossAxisSpacing: 5.0,
       ),
       delegate: SliverChildBuilderDelegate(
         (BuildContext context, int index) {
-          return Container(
-            color: Color(0xFFF6F6F6),
-            child: buildHotShopItem(index, items[index]),
+          return Padding(
+            padding: const EdgeInsets.all(2.0),
+            child: Container(
+              child: productGrid(items[index],index),
+            ),
           );
         },
         childCount: items.length,
@@ -828,97 +830,60 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget getFeatureItems(index) {
-    productBloc.getFeatures(1, 10);
-    return ProductProvider(
-      productBloc: productBloc,
-      child: StreamBuilder<List<ProductItem>>(
-          stream: productBloc.productItems,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              List<ProductItem> list = snapshot.data;
-              if (snapshot.data.isNotEmpty) {
-                ProductItem item = list[index];
-                return buildHotShopItem(index, item);
-              } else {
-                return EmptyWidget("暂无数据", () {});
-              }
-            } else if (snapshot.hasError) {
-              return EmptyWidget(snapshot.error, () {});
-            } else {
-              return SliverList(
-                delegate: SliverChildListDelegate(
-                  [
-                    Center(child: CircularProgressIndicator()),
-                  ],
-                ),
-              );
-            }
-          }),
-    );
-  }
 
-  Container buildHotShopItem(int index, ProductItem product) {
+  Widget productGrid(ProductItem product,int index) {
     String imageUrl = "";
     if (product.medias.length > 0) {
       imageUrl = product.medias[0].toString();
     }
-    return Container(
+    return Padding(
       padding: EdgeInsets.fromLTRB(
-          index % 2 == 0 ? 4.0 : 0.0, 0.0, index % 2 == 0 ? 0.0 : 4.0, 0.0),
-      child: InkWell(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              width: 170.0,
-              height: 170.0,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(5.0),
-                    topRight: Radius.circular(5.0)),
-              ),
-              child: UIData.getImageWithWH(imageUrl, 88, 88),
-            ),
-            Expanded(
-              child: Container(
-                width: 170.0,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(14.0, 12.0, 12.0, 10.0),
-                      child: Text(
-                        product.name,
-                        maxLines: 1,
-                        style:
-                            TextStyle(color: Color(0xFF353535), fontSize: 12.0),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(14.0, 0.0, 0.0, 0.0),
-                      child: Text(
-                        product.price.toString(),
-                        style:
-                            TextStyle(color: Color(0xFFFA4848), fontSize: 16.0),
-                      ),
-                    ),
-                  ],
+          index % 2 == 0 ? 5.0 : 0.0, 0.0, index % 2 == 0 ? 0.0 : 5.0, 0.0),
+      child: new GestureDetector(
+        child: new Card(
+          elevation: 5.0,
+          child: new Container(
+            alignment: Alignment.bottomCenter,
+            child: new Stack(
+              children: <Widget>[
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: UIData.getImage(
+                    imageUrl,
+                  ),
                 ),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(5.0),
-                      bottomRight: Radius.circular(5.0)),
-                ),
-              ),
+                Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: new Container(
+                      color: Colors.white,
+                      child: new Column(
+                        children: <Widget>[
+                          new Padding(
+                            padding: EdgeInsets.fromLTRB(12, 12, 12, 6),
+                            child: new Text(
+                              product.name,
+                              textAlign: TextAlign.center,
+                              style:
+                                  TextStyle(fontSize: 12, color: UIData.ff353535),
+                            ),
+                          ),
+                          new Padding(
+                            padding: EdgeInsets.fromLTRB(0, 6, 0, 12),
+                            child: new Text(
+                              product.price.toString(),
+                              style: TextStyle(color: Colors.red, fontSize: 16),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )),
+              ],
             ),
-            Container(
-              height: 6.0,
-            ),
-          ],
+          ),
         ),
         onTap: () {
           Navigator.pushNamed(context, UIData.ShopDetailPage,

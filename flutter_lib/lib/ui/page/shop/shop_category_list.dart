@@ -199,7 +199,8 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
                   top: 0,
                   left: 0,
                   right: 0,
-                  child:UIData.getImageWithWH(data[index].image, 90, 90),
+                  child: UIData.getImageWithWHFit(
+                      data[index].image, BoxFit.contain, 90, 90),
                 ),
                 Positioned(
                     bottom: 0,

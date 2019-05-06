@@ -72,14 +72,14 @@ class ShopListState extends State<ShopListPage> {
 
   Widget productGrid(List<ProductItem> data) {
     return new Padding(
-      padding: EdgeInsets.all(5),
+      padding: EdgeInsets.all(10),
       child: new GridView.builder(
           itemCount: data.length,
           gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             childAspectRatio: (0.7), //item长宽比
-            mainAxisSpacing: 5.0,
-            crossAxisSpacing: 5.0, // add some space
+            mainAxisSpacing: 10.0,
+            crossAxisSpacing: 10.0,
           ),
           itemBuilder: (BuildContext context, int index) {
             ProductItem productItem = data[index];
