@@ -516,32 +516,45 @@ class ShopDetailPageState extends State<ShopDetailPage> {
         child: new Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Padding(
-              padding: EdgeInsets.all(15),
-              child: GestureDetector(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      widget.skuInfoSelect + "  数量：" + chooseCount.toString(),
-                      style: TextStyle(color: UIData.ff353535, fontSize: 15),
+            widget.skuInfoSelect.isEmpty
+                ? Container(
+                    width: 0,
+                    height: 0,
+                  )
+                : Padding(
+                    padding: EdgeInsets.all(15),
+                    child: GestureDetector(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            widget.skuInfoSelect +
+                                "  数量：" +
+                                chooseCount.toString(),
+                            style:
+                                TextStyle(color: UIData.ff353535, fontSize: 15),
+                          ),
+                          Icon(Icons.arrow_forward_ios),
+                        ],
+                      ),
+                      onTap: () {
+                        if (skuInfo == null) {
+                          getSkuResult(product);
+                          return;
+                        }
+                        showChooseDialog(product);
+                      },
                     ),
-                    Icon(Icons.arrow_forward_ios),
-                  ],
-                ),
-                onTap: () {
-                  if (skuInfo == null) {
-                    getSkuResult(product);
-                    return;
-                  }
-                  showChooseDialog(product);
-                },
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
-              child: Divider(),
-            ),
+                  ),
+            widget.skuInfoSelect.isEmpty
+                ? Container(
+                    width: 0,
+                    height: 0,
+                  )
+                : Padding(
+                    padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
+                    child: Divider(),
+                  ),
             Padding(
               padding: EdgeInsets.all(15),
               child: Row(
