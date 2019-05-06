@@ -188,51 +188,51 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
         crossAxisCount: 3,
         crossAxisSpacing: 8.0,
         mainAxisSpacing: 8.0,
-        childAspectRatio: 0.66,
+        childAspectRatio: 0.78,
       ),
       delegate: SliverChildBuilderDelegate(
         (BuildContext context, int index) {
           return new GestureDetector(
-            child: new Container(
-              alignment: Alignment.center,
-              child: new Stack(
-                children: <Widget>[
-                  Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                      child: UIData.getImageWithWH(data[index].image, 88, 88),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(
-                            color: UIData.ffcccccc,
-                            width: 0.5,
-                            style: BorderStyle.solid),
-                        borderRadius: BorderRadius.circular(2),
-                      ),
+            child: new Stack(
+              children: <Widget>[
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    width: 80,
+                    height: 80,
+                    alignment: Alignment.topCenter,
+                    child: UIData.getImageWithWH(data[index].image, 80, 80),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                          color: UIData.ffcccccc,
+                          width: 0.5,
+                          style: BorderStyle.solid),
+                      borderRadius: BorderRadius.circular(2),
                     ),
                   ),
-                  Positioned(
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      child: new Container(
-                        alignment: Alignment.center,
-                        color: Colors.white,
-                        child: new Padding(
-                          padding: EdgeInsets.fromLTRB(0, 12, 0, 6),
-                          child: new Text(
-                            data[index].name,
-                            textAlign: TextAlign.center,
-                            style:
-                                TextStyle(fontSize: 11, color: UIData.ff353535),
-                            maxLines: 1,
-                          ),
+                ),
+                Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: new Container(
+                      alignment: Alignment.center,
+                      color: Colors.white,
+                      child: new Padding(
+                        padding: EdgeInsets.fromLTRB(0, 12, 0, 6),
+                        child: new Text(
+                          data[index].name,
+                          textAlign: TextAlign.center,
+                          style:
+                              TextStyle(fontSize: 11, color: UIData.ff353535),
+                          maxLines: 1,
                         ),
-                      )),
-                ],
-              ),
+                      ),
+                    )),
+              ],
             ),
             onTap: () {
               print(data[index].toString());
