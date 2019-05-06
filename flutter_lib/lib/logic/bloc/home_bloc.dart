@@ -21,6 +21,8 @@ class HomeBloc {
     }
     if (v.code == 0) {
       tabController.add(v.data);
+    }else{
+      tabController.add(null);
     }
   }
 }

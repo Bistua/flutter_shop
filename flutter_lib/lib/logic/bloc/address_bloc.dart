@@ -20,7 +20,7 @@ class AddressBloc {
         AddressList categoryList = AddressList.fromJson(result.data);
         addressController.add(categoryList.list);
       } else {
-        Bridge.showLongToast(result.msg == null ? "未返回错误信息" : result.msg);
+        print(result.msg == null ? "未返回错误信息" : result.msg);
         addressController.add(List());
       }
     });

@@ -61,13 +61,21 @@ class TagState extends State<TagOrderPage> {
         stream: widget.orderListBloc.productItems,
         builder: (context, snapshot) {
           List<OrderItem> list = snapshot.data;
-          return snapshot.hasData
-              ? ((list == null || list.isEmpty)
-                  ? EmptyWidget("无数据,点击重试", () {
-                      widget.orderListBloc.getOrderListList(type);
-                    })
-                  : buildListView(type, list))
-              : center();
+          if (snapshot.hasData) {
+            if (snapshot.data.isNotEmpty) {
+              return buildListView(type, list);
+            } else {
+              return EmptyWidget("无数据,点击重试", () {
+                widget.orderListBloc.getOrderListList(type);
+              });
+            }
+          } else if (snapshot.hasError) {
+            return EmptyWidget(snapshot.error, () {
+              widget.orderListBloc.getOrderListList(type);
+            });
+          } else {
+            return center();
+          }
         });
   }
 

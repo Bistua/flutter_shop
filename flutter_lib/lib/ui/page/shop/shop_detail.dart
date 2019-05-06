@@ -14,6 +14,7 @@ import 'package:flutter_lib/model/comment.dart';
 import 'package:flutter_lib/model/skuinfo.dart';
 import 'package:flutter_lib/ui/inherited/product_provider.dart';
 import 'package:flutter_lib/ui/page/order/shop_order.dart';
+import 'package:flutter_lib/ui/widgets/empty_widget.dart';
 import 'package:flutter_lib/ui/widgets/rating_bar.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
@@ -213,7 +214,13 @@ class ShopDetailPageState extends State<ShopDetailPage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             print("getProduct sku hasdata");
-            return buildVipInfo(product, snapshot.data);
+            if (snapshot.data != null) {
+              return buildVipInfo(product, snapshot.data);
+            } else {
+              return EmptyWidget("暂无数据", () {});
+            }
+          } else if (snapshot.hasError) {
+            return EmptyWidget(snapshot.error, () {});
           } else {
             return Center(child: CircularProgressIndicator());
           }
@@ -272,7 +279,8 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                         Expanded(
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(context, UIData.IviteFriendsPage);
+                              Navigator.pushNamed(
+                                  context, UIData.IviteFriendsPage);
                             },
                             child: Container(
                               width: 115,

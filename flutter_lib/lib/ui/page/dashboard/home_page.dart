@@ -247,12 +247,18 @@ class _MyHomePageState extends State<MyHomePage> {
                     homeBloc.getImages();
                   });
                 } else if (snapshot.hasData) {
-                  return BannerWidget(
-                      data: snapshot.data,
-                      curve: Curves.linear,
-                      onClick: (position, bannerWithEval) {
-                        print(position);
-                      });
+                  if (snapshot.data.isNotEmpty) {
+                    return BannerWidget(
+                        data: snapshot.data,
+                        curve: Curves.linear,
+                        onClick: (position, bannerWithEval) {
+                          print(position);
+                        });
+                  } else {
+                    return EmptyWidget("暂无数据", () {
+                      homeBloc.getImages();
+                    });
+                  }
                 } else {
                   return Center(child: CircularProgressIndicator());
                 }

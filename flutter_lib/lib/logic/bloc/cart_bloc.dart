@@ -23,7 +23,8 @@ class CartBloc {
         Cart categoryList = Cart.fromJson(result.data);
         cartController.add(categoryList);
       } else {
-        Bridge.showLongToast(result.msg);
+        cartController.add(null);
+        print(result.msg == null ? "未返回错误信息" : result.msg);
       }
     });
   }
@@ -40,7 +41,8 @@ class CartBloc {
           cartController.add(categoryList);
         }
       } else {
-        Bridge.showLongToast(result.msg);
+        cartController.add(null);
+        print(result.msg == null ? "未返回错误信息" : result.msg);
       }
     });
   }
@@ -53,7 +55,8 @@ class CartBloc {
         Cart categoryList = Cart.fromJson(result.data);
         cartController.add(categoryList);
       } else {
-        Bridge.showLongToast(result.msg);
+        cartController.add(null);
+        print(result.msg == null ? "未返回错误信息" : result.msg);
       }
     });
   }
@@ -66,7 +69,8 @@ class CartBloc {
         Cart categoryList = Cart.fromJson(result.data);
         cartController.add(categoryList);
       } else {
-        Bridge.showLongToast(result.msg);
+        cartController.add(null);
+        print(result.msg == null ? "未返回错误信息" : result.msg);
       }
     });
   }

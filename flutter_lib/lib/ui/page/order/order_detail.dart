@@ -38,7 +38,13 @@ class OrderDetailPageState extends State<OrderDetailPage> {
               orderListBloc.getOrderDetail(widget.orderId);
             });
           } else if (snapshot.hasData) {
-            return buildStack(snapshot.data);
+            if (snapshot.data != null) {
+              return buildStack(snapshot.data);
+            } else {
+              return EmptyWidget("无数据", () {
+                orderListBloc.getOrderDetail(widget.orderId);
+              });
+            }
           } else {
             return Center(child: CircularProgressIndicator());
           }
@@ -130,7 +136,7 @@ class OrderDetailPageState extends State<OrderDetailPage> {
   }
 
   Widget buildLogistics(OrderDetail _orderDetail) {
-    if(_orderDetail.express==null){
+    if (_orderDetail.express == null) {
       return Container(
         width: 0,
         height: 0,
@@ -150,7 +156,9 @@ class OrderDetailPageState extends State<OrderDetailPage> {
               child: Container(
                 padding: EdgeInsets.fromLTRB(6.0, 0.0, 6.0, 0.0),
                 child: Text(
-                  _orderDetail.express == null ? "名称不可为空" : _orderDetail.express,
+                  _orderDetail.express == null
+                      ? "名称不可为空"
+                      : _orderDetail.express,
                   style: TextStyle(color: Color(0xFF353535), fontSize: 12.0),
                   maxLines: 1,
                 ),
@@ -273,7 +281,9 @@ class OrderDetailPageState extends State<OrderDetailPage> {
               padding: EdgeInsets.fromLTRB(16.0, 15.0, 0, 15.0),
               child: Text(
                 "支付方式：" +
-                    (_orderDetail.payType == null ? "名称不可为空" : _orderDetail.payType),
+                    (_orderDetail.payType == null
+                        ? "名称不可为空"
+                        : _orderDetail.payType),
                 style: TextStyle(color: Color(0xFF777777), fontSize: 12.0),
               )),
           Container(
@@ -284,7 +294,10 @@ class OrderDetailPageState extends State<OrderDetailPage> {
           Padding(
               padding: EdgeInsets.fromLTRB(16.0, 15.0, 0, 15.0),
               child: Text(
-                "商品合计：¥" + (_orderDetail.orderPrice == null ? "名称不可为空" : _orderDetail.orderPrice),
+                "商品合计：¥" +
+                    (_orderDetail.orderPrice == null
+                        ? "名称不可为空"
+                        : _orderDetail.orderPrice),
                 style: TextStyle(color: Color(0xFF777777), fontSize: 12.0),
               )),
           Container(
@@ -295,7 +308,10 @@ class OrderDetailPageState extends State<OrderDetailPage> {
           Padding(
               padding: EdgeInsets.fromLTRB(16.0, 15.0, 0, 15.0),
               child: Text(
-                "运费：¥" + (_orderDetail.freight== null ? "名称不可为空" : _orderDetail.freight),
+                "运费：¥" +
+                    (_orderDetail.freight == null
+                        ? "名称不可为空"
+                        : _orderDetail.freight),
                 style: TextStyle(color: Color(0xFF777777), fontSize: 12.0),
               )),
           Container(
@@ -306,7 +322,10 @@ class OrderDetailPageState extends State<OrderDetailPage> {
           Padding(
               padding: EdgeInsets.fromLTRB(16.0, 15.0, 0, 15.0),
               child: Text(
-                "实付款：¥" +( _orderDetail.payFee== null ? "名称不可为空" : _orderDetail.payFee),
+                "实付款：¥" +
+                    (_orderDetail.payFee == null
+                        ? "名称不可为空"
+                        : _orderDetail.payFee),
                 style: TextStyle(color: Color(0xFFFF2E2E), fontSize: 12.0),
               )),
           Container(
@@ -372,9 +391,7 @@ class OrderDetailPageState extends State<OrderDetailPage> {
                   Expanded(
                     child: Container(),
                   ),
-                  OrderActionWidget(orderItem,_orderDetail.status,(){
-
-                  }),
+                  OrderActionWidget(orderItem, _orderDetail.status, () {}),
                 ],
               ),
             ),
@@ -400,7 +417,9 @@ class ProductItem extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
                   child: UIData.getImageWithWH(
-                      item.goodsImgUrl == null ? "名称不可为空" : item.goodsImgUrl, 88, 88),
+                      item.goodsImgUrl == null ? "名称不可为空" : item.goodsImgUrl,
+                      88,
+                      88),
                 ),
                 Expanded(
                   child: Column(
@@ -422,7 +441,9 @@ class ProductItem extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(3)),
                             child: Center(
                               child: UIData.getTextWidget(
-                                  item.specMsg == null ? "名称不可为空" : item.specMsg,
+                                  item.specMsg == null
+                                      ? "名称不可为空"
+                                      : item.specMsg,
                                   UIData.ff999999,
                                   11),
                             )),
@@ -433,7 +454,9 @@ class ProductItem extends StatelessWidget {
                           children: <Widget>[
                             Expanded(
                               child: Text(
-                                item.goodsPrice == null ? "名称不可为空" : item.goodsPrice,
+                                item.goodsPrice == null
+                                    ? "名称不可为空"
+                                    : item.goodsPrice,
                                 style: TextStyle(
                                     color: Color(0xFFFF2E2E), fontSize: 12.0),
                               ),

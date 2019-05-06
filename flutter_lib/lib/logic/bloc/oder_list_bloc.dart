@@ -31,7 +31,7 @@ class OrderListBloc {
         OrderList orderList = OrderList.fromJson(result.data);
         orderListController.add(orderList.list);
       } else {
-        Bridge.showLongToast(result.msg == null ? "未返回错误信息" : result.msg);
+        print(result.msg == null ? "未返回错误信息" : result.msg);
         orderListController.add(List());
       }
     });
@@ -44,7 +44,7 @@ class OrderListBloc {
         OrderDetail orderDetail = OrderDetail.fromJson(result.data);
         orderDetailController.add(orderDetail);
       } else {
-        Bridge.showLongToast(result.msg == null ? "未返回错误信息" : result.msg);
+        print(result.msg == null ? "未返回错误信息" : result.msg);
         orderDetailController.add(null);
       }
     });
