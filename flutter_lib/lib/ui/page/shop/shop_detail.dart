@@ -5,7 +5,6 @@ import 'package:flutter_lib/bridge/cart_bridge.dart';
 import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/bridge/sku_bridge.dart';
 import 'package:flutter_lib/logic/bloc/product_bloc.dart';
-import 'package:flutter_lib/logic/inherited/product_provider.dart';
 import 'package:flutter_lib/logic/viewmodel/comment_view_model.dart';
 import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/productdetail.dart';
@@ -13,6 +12,7 @@ import 'package:flutter_lib/model/skuresult.dart';
 import 'package:flutter_lib/model/cart.dart';
 import 'package:flutter_lib/model/comment.dart';
 import 'package:flutter_lib/model/skuinfo.dart';
+import 'package:flutter_lib/ui/inherited/product_provider.dart';
 import 'package:flutter_lib/ui/page/order/shop_order.dart';
 import 'package:flutter_lib/ui/widgets/rating_bar.dart';
 import 'package:flutter_lib/utils/uidata.dart';
@@ -71,7 +71,6 @@ class ShopDetailPageState extends State<ShopDetailPage> {
   }
 
   Widget bodyData() {
-
     return StreamBuilder<ProductDetail>(
         stream: productBloc.productDetail,
         builder: (context, snapshot) {

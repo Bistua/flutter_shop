@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/logic/bloc/category_bloc.dart';
-import 'package:flutter_lib/logic/bloc/product_bloc.dart';
 
 class CategoryProvider extends InheritedWidget {
   final CategoryBloc categoryBloc;

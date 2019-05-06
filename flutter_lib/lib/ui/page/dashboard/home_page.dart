@@ -7,7 +7,7 @@ import 'package:flutter_lib/logic/viewmodel/product_view_model.dart';
 import 'package:flutter_lib/model/Banner.dart';
 import 'package:flutter_lib/model/product.dart';
 import 'package:flutter_lib/model/productitem.dart';
-import 'package:flutter_lib/ui/widgets/banner/banner_evalutor.dart';
+import 'package:flutter_lib/ui/inherited/product_provider.dart';
 import 'package:flutter_lib/ui/widgets/banner/banner_widget.dart';
 import 'package:flutter_lib/ui/widgets/empty_widget.dart';
 import 'package:flutter_lib/utils/uidata.dart';
@@ -234,8 +234,6 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-
-
   Widget buildBanner() {
     homeBloc.getImages();
     return SliverList(
@@ -385,25 +383,34 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget getFeatureGrid() {
     productBloc.getFeatures(1, 10);
-    return StreamBuilder<List<ProductItem>>(
-        stream: productBloc.productItems,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return getFeatursGrid(snapshot.data);
-          } else if (snapshot.hasError) {
-            EmptyWidget(snapshot.error, () {
-              productBloc.getFeatures(1, 10);
-            });
-          } else {
-            return SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  Center(child: CircularProgressIndicator()),
-                ],
-              ),
-            );
-          }
-        });
+    return ProductProvider(
+      productBloc: productBloc,
+      child: StreamBuilder<List<ProductItem>>(
+          stream: productBloc.productItems,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              if (snapshot.data.isNotEmpty) {
+                return getFeatursGrid(snapshot.data);
+              } else {
+                return EmptyWidget("暂无数据", () {
+                  productBloc.getFeatures(1, 10);
+                });
+              }
+            } else if (snapshot.hasError) {
+              return EmptyWidget(snapshot.error, () {
+                productBloc.getFeatures(1, 10);
+              });
+            } else {
+              return SliverList(
+                delegate: SliverChildListDelegate(
+                  [
+                    Center(child: CircularProgressIndicator()),
+                  ],
+                ),
+              );
+            }
+          }),
+    );
   }
 
   SliverGrid getFeatursGrid(List<ProductItem> items) {
@@ -814,27 +821,33 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget getFeatureItems(index) {
-    return StreamBuilder<List<ProductItem>>(
-        stream: productBloc.productItems,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            List<ProductItem> list = snapshot.data;
-            if (list.length > 0) {
-              ProductItem item = list[index];
-              return buildHotShopItem(index, item);
-            } else {
+    productBloc.getFeatures(1, 10);
+    return ProductProvider(
+      productBloc: productBloc,
+      child: StreamBuilder<List<ProductItem>>(
+          stream: productBloc.productItems,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              List<ProductItem> list = snapshot.data;
+              if (snapshot.data.isNotEmpty) {
+                ProductItem item = list[index];
+                return buildHotShopItem(index, item);
+              } else {
+                return EmptyWidget("暂无数据", () {});
+              }
+            } else if (snapshot.hasError) {
               return EmptyWidget(snapshot.error, () {});
+            } else {
+              return SliverList(
+                delegate: SliverChildListDelegate(
+                  [
+                    Center(child: CircularProgressIndicator()),
+                  ],
+                ),
+              );
             }
-          } else {
-            return SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  Center(child: CircularProgressIndicator()),
-                ],
-              ),
-            );
-          }
-        });
+          }),
+    );
   }
 
   Container buildHotShopItem(int index, ProductItem product) {

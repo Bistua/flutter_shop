@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/logic/bloc/category_bloc.dart';
-import 'package:flutter_lib/logic/inherited/category_provider.dart';
 import 'package:flutter_lib/model/category.dart';
+import 'package:flutter_lib/ui/inherited/category_provider.dart';
 import 'package:flutter_lib/ui/widgets/empty_widget.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 

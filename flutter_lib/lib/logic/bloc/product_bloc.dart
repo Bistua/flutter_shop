@@ -36,7 +36,8 @@ class ProductBloc {
 
         productController.add(productList.list);
       } else {
-        Bridge.showLongToast(result.msg);
+        print(result.msg);
+        productController.add(List());
       }
     });
   }
@@ -48,10 +49,10 @@ class ProductBloc {
     ProductBridge.getFeature(pageNo, pageSize).then((result) {
       if (result.code == 200) {
         ProductList productList = ProductList.fromJson(result.data);
-
         productController.add(productList.list);
       } else {
-        Bridge.showLongToast(result.msg);
+        print(result.msg);
+        productController.add(List());
       }
     });
   }
@@ -63,7 +64,8 @@ class ProductBloc {
         ProductList productList = ProductList.fromJson(result.data);
         productController.add(productList.list);
       } else {
-        Bridge.showLongToast(result.msg);
+        print(result.msg);
+        productController.add(List());
       }
     });
   }
@@ -76,7 +78,7 @@ class ProductBloc {
       productDetailController.add(productList.list[0]);
       print("getProduct add");
     } else {
-      Bridge.showLongToast(result.msg);
+      print(result.msg);
       productDetailController.add(null);
     }
   }
@@ -90,7 +92,7 @@ class ProductBloc {
         skuInfoController.add(productList);
         print("getProduct sku add");
       } else {
-        Bridge.showLongToast(result.msg);
+        print(result.msg);
         skuInfoController.add(null);
       }
     });
