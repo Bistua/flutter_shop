@@ -188,7 +188,7 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
         crossAxisCount: 3,
         crossAxisSpacing: 8.0,
         mainAxisSpacing: 8.0,
-        childAspectRatio: 0.78,
+        childAspectRatio: 0.7,
       ),
       delegate: SliverChildBuilderDelegate(
         (BuildContext context, int index) {
@@ -200,10 +200,10 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
                   left: 0,
                   right: 0,
                   child: Container(
-                    width: 80,
-                    height: 80,
+                    width: 78,
+                    height: 82,
                     alignment: Alignment.topCenter,
-                    child: UIData.getImageWithWH(data[index].image, 80, 80),
+                    child: UIData.getImageWithWH(data[index].image, 78, 82),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(
