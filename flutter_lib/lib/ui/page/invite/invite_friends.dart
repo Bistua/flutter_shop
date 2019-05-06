@@ -5,7 +5,7 @@ import 'package:flutter_lib/model/rebateList.dart';
 import 'package:flutter_lib/model/userinfo.dart';
 import 'package:flutter_lib/ui/widgets/empty_widget.dart';
 import 'package:flutter_lib/utils/uidata.dart';
-import 'package:clipboard_manager/clipboard_manager.dart';
+//import 'package:clipboard_manager/clipboard_manager.dart';
 
 class InviteFriendsPage extends StatefulWidget {
   @override
@@ -316,14 +316,14 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
                 ),
                 onTap: () {
                   if (userInfo != null && userInfo.userCode.isNotEmpty) {
-                    ClipboardManager.copyToClipBoard(
-                            userInfo == null ? "" : userInfo.userCode)
-                        .then((result) {
-                      final snackBar = SnackBar(
-                        content: Text('已复制到粘贴板'),
-                      );
-                      Scaffold.of(context).showSnackBar(snackBar);
-                    });
+//                    ClipboardManager.copyToClipBoard(
+//                            userInfo == null ? "" : userInfo.userCode)
+//                        .then((result) {
+//                      final snackBar = SnackBar(
+//                        content: Text('已复制到粘贴板'),
+//                      );
+//                      Scaffold.of(context).showSnackBar(snackBar);
+//                    });
                   }
                 },
               ),
