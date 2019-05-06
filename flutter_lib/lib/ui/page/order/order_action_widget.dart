@@ -30,6 +30,35 @@ class OrderActionWidget extends StatelessWidget{
               child: Container(
                 child: GestureDetector(
                     onTap: () {
+                      Future<Result> future =
+                      OrderBridge.cancelOrder(orderItem.orderNumber);
+                      future.then((r) {
+                        if (r.code == 200) {
+                          Bridge.showLongToast("取消成功");
+                          click;
+                        } else {
+                          Bridge.showLongToast(r.msg);
+                        }
+                      });
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                      child: Text(
+                        "取消订单",
+                        style: TextStyle(color: UIData.ff353535, fontSize: 13),
+                      ),
+                    )),
+                decoration: BoxDecoration(
+                  border: Border.all(color: UIData.ff353535, width: 1),
+                  borderRadius: BorderRadius.circular(13.0),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+              child: Container(
+                child: GestureDetector(
+                    onTap: () {
                       showPayDialog(context, double.parse(orderItem.payPrice),
                           orderItem.orderNumber);
                     },

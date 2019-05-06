@@ -158,7 +158,7 @@ class TagState extends State<TagOrderPage> {
                       Text(
                         "共" +
                             prducts.length.toString() +
-                            "商品，总价：" +
+                            "商品，总价：￥" +
                             orderItem.payPrice.toString(),
                         style: TextStyle(color: UIData.ff353535, fontSize: 14),
                       ),
