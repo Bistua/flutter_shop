@@ -82,16 +82,15 @@ class ShopListState extends State<ShopListPage> {
             crossAxisSpacing: 10.0,
           ),
           itemBuilder: (BuildContext context, int index) {
-            ProductItem productItem = data[index];
+            ProductItem product = data[index];
             String imgUrl;
-            if (productItem.medias.isNotEmpty) {
-              imgUrl = productItem.medias[0].url;
+            if (product.medias.isNotEmpty) {
+              imgUrl = product.medias[0].url;
             }
             return new GestureDetector(
               child: new Card(
                 elevation: 5.0,
                 child: new Container(
-                  alignment: Alignment.bottomLeft,
                   child: new Stack(
                     children: <Widget>[
                       Positioned(
@@ -103,26 +102,30 @@ class ShopListState extends State<ShopListPage> {
                         ),
                       ),
                       Positioned(
-                          bottom: 0,
-                          left: 0,
+                          bottom: 5,
                           child: new Container(
                             color: Colors.white,
                             child: new Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
                                 new Padding(
-                                  padding: EdgeInsets.fromLTRB(12, 12, 12, 6),
+                                  padding: EdgeInsets.fromLTRB(4, 0, 4, 4),
                                   child: new Text(
-                                    data[index].name,
-                                    style: TextStyle(
-                                        fontSize: 12, color: UIData.ff353535),
+                                    product.name,
+                                    maxLines: 1,
+                                    overflow:  TextOverflow.ellipsis,
+                                    style:
+                                    TextStyle(fontSize: 12, color: UIData.ff353535),
                                   ),
                                 ),
                                 new Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 6, 0, 12),
+                                  padding: EdgeInsets.fromLTRB(4, 4, 4, 4),
                                   child: new Text(
-                                    productItem.price.toString(),
-                                    style: TextStyle(
-                                        color: Colors.red, fontSize: 16),
+                                    "￥" + product.price.toString(),
+                                    maxLines: 1,
+                                    overflow:  TextOverflow.ellipsis,
+                                    style: TextStyle(color: Colors.red, fontSize: 16),
                                   ),
                                 ),
                               ],
@@ -137,7 +140,7 @@ class ShopListState extends State<ShopListPage> {
                     context,
                     new MaterialPageRoute(
                         builder: (context) =>
-                            new ShopDetailPage(productItem.id)));
+                            new ShopDetailPage(product.id)));
               },
             );
           }),

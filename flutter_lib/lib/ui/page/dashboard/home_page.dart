@@ -434,7 +434,7 @@ class _MyHomePageState extends State<MyHomePage> {
           return Padding(
             padding: const EdgeInsets.all(2.0),
             child: Container(
-              child: productGrid(items[index],index),
+              child: productGrid(items[index], index),
             ),
           );
         },
@@ -830,8 +830,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-
-  Widget productGrid(ProductItem product,int index) {
+  Widget productGrid(ProductItem product, int index) {
     String imageUrl = "";
     if (product.medias.length > 0) {
       imageUrl = product.medias[0].toString();
@@ -843,7 +842,6 @@ class _MyHomePageState extends State<MyHomePage> {
         child: new Card(
           elevation: 5.0,
           child: new Container(
-            alignment: Alignment.bottomLeft,
             child: new Stack(
               children: <Widget>[
                 Positioned(
@@ -855,24 +853,29 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
                 Positioned(
-                    bottom: 0,
-                    left: 0,
+                    bottom: 8,
                     child: new Container(
                       color: Colors.white,
                       child: new Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           new Padding(
-                            padding: EdgeInsets.fromLTRB(12, 12, 12, 6),
+                            padding: EdgeInsets.fromLTRB(4, 0, 4, 4),
                             child: new Text(
                               product.name,
-                              style:
-                                  TextStyle(fontSize: 12, color: UIData.ff353535),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              style: TextStyle(
+                                  fontSize: 12, color: UIData.ff353535),
                             ),
                           ),
                           new Padding(
-                            padding: EdgeInsets.fromLTRB(0, 6, 0, 12),
+                            padding: EdgeInsets.fromLTRB(4, 4, 4, 4),
                             child: new Text(
-                              product.price.toString(),
+                              "￥" + product.price.toString(),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(color: Colors.red, fontSize: 16),
                             ),
                           ),
