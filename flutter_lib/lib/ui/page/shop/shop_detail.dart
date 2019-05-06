@@ -203,7 +203,12 @@ class ShopDetailPageState extends State<ShopDetailPage> {
           delegate: SliverChildListDelegate(
             [
               Container(
-                color: UIData.fff,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(5.0),
+                      bottomRight: Radius.circular(5.0)),
+                ),
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(15, 17, 15, 12),
                   child: Text(
@@ -212,7 +217,15 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                   ),
                 ),
               ),
-              UIData.getImage(img),
+              Container(
+                child: UIData.getImage(img),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(5.0),
+                      bottomRight: Radius.circular(5.0)),
+                ),
+              ),
             ],
           ),
         ),
@@ -248,7 +261,15 @@ class ShopDetailPageState extends State<ShopDetailPage> {
         child: new Center(
           child: new Column(
             children: <Widget>[
-              UIData.getImage(img),
+              Container(
+                child: UIData.getImage(img),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(5.0),
+                      bottomRight: Radius.circular(5.0)),
+                ),
+              ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -316,14 +337,14 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                   Padding(
                     padding: EdgeInsets.fromLTRB(15, 6, 15, 6),
                     child: Text(
-                      product.name,
+                      product.name == null ? "" : product.name,
                       style: TextStyle(color: UIData.ff353535, fontSize: 16),
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.fromLTRB(15, 6, 15, 15),
                     child: Text(
-                      product.detail,
+                      product.detail == null ? "" : product.detail,
                       style: TextStyle(color: UIData.ff999999, fontSize: 12),
                     ),
                   ),
