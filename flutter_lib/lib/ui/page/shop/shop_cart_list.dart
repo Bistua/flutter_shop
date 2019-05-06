@@ -59,8 +59,6 @@ class _ShopCartListState extends State<ShopCartListPage> {
                 cart.products == null ||
                 cart.products.isEmpty ||
                 cart.totalCounts == 0)) {
-              return buildBody(cart);
-            } else {
               return EmptyWidget(widget.showBackBtn ? "快去添加商品" : "可前往首页选购商品",
                   () {
                 if (widget.showBackBtn) {
@@ -69,6 +67,8 @@ class _ShopCartListState extends State<ShopCartListPage> {
                   cartBloc.findCart();
                 }
               });
+            } else {
+              return buildBody(cart);
             }
           } else if (snapshot.hasError) {
             return EmptyWidget(snapshot.error, () {
