@@ -224,7 +224,7 @@ class TagState extends State<TagOrderPage> {
                           width: 100,
                           height: 20,
                           child: Center(
-                            child: Text("数量：x" + count.toString(),
+                            child: Text("数量：x " + count.toString(),
                                 style: TextStyle(
                                   fontSize: 11,
                                   color: UIData.ff999999,
