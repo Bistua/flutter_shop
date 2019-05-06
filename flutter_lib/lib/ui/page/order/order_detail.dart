@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/logic/bloc/oder_list_bloc.dart';
+import 'package:flutter_lib/model/orderListItem.dart';
 import 'package:flutter_lib/model/orderdetail.dart';
+import 'package:flutter_lib/ui/page/order/order_action_widget.dart';
 import 'package:flutter_lib/ui/widgets/empty_widget.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
@@ -282,7 +284,7 @@ class OrderDetailPageState extends State<OrderDetailPage> {
           Padding(
               padding: EdgeInsets.fromLTRB(16.0, 15.0, 0, 15.0),
               child: Text(
-                "商品合计：¥" + _orderDetail.orderPrice == null ? "名称不可为空" : _orderDetail.orderPrice,
+                "商品合计：¥" + (_orderDetail.orderPrice == null ? "名称不可为空" : _orderDetail.orderPrice),
                 style: TextStyle(color: Color(0xFF777777), fontSize: 12.0),
               )),
           Container(
@@ -293,7 +295,7 @@ class OrderDetailPageState extends State<OrderDetailPage> {
           Padding(
               padding: EdgeInsets.fromLTRB(16.0, 15.0, 0, 15.0),
               child: Text(
-                "运费：¥" + _orderDetail.freight== null ? "名称不可为空" : _orderDetail.freight,
+                "运费：¥" + (_orderDetail.freight== null ? "名称不可为空" : _orderDetail.freight),
                 style: TextStyle(color: Color(0xFF777777), fontSize: 12.0),
               )),
           Container(
@@ -304,7 +306,7 @@ class OrderDetailPageState extends State<OrderDetailPage> {
           Padding(
               padding: EdgeInsets.fromLTRB(16.0, 15.0, 0, 15.0),
               child: Text(
-                "实付款：¥" + _orderDetail.payFee== null ? "名称不可为空" : _orderDetail.payFee,
+                "实付款：¥" +( _orderDetail.payFee== null ? "名称不可为空" : _orderDetail.payFee),
                 style: TextStyle(color: Color(0xFFFF2E2E), fontSize: 12.0),
               )),
           Container(
@@ -346,6 +348,11 @@ class OrderDetailPageState extends State<OrderDetailPage> {
   }
 
   Positioned buildBottomBar(OrderDetail _orderDetail) {
+    OrderItem orderItem = OrderItem();
+    orderItem.status = _orderDetail.status;
+    orderItem.payPrice = _orderDetail.orderPrice;
+    orderItem.orderNumber = _orderDetail.orderId;
+    orderItem.products = _orderDetail.goods;
     return _orderDetail.status == 0
         ? Positioned(
             bottom: 0,
@@ -365,79 +372,9 @@ class OrderDetailPageState extends State<OrderDetailPage> {
                   Expanded(
                     child: Container(),
                   ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, 0, 10.0, 0),
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: <Widget>[
-                        Container(
-                          alignment: Alignment.center,
-                          width: 90.0,
-                          height: 30.0,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                color: Color(0xFFEEEEEE), width: 1.0),
-                            borderRadius:
-                                new BorderRadius.all(new Radius.circular(15.0)),
-                          ),
-                        ),
-                        InkWell(
-                          child: new Container(
-                            width: 90.0,
-                            height: 30.0,
-                            child: new Text(
-                              _orderDetail.getStatusButtonName(),
-                              style: TextStyle(
-                                  color: Color(0xFF353535), fontSize: 14),
-                            ),
-                            alignment: Alignment.center,
-                          ),
-                          //圆角大小,与BoxDecoration保持一致，更美观
-                          onTap: () {
-                              _orderDetail.doWithOrder();
+                  OrderActionWidget(orderItem,_orderDetail.status,(){
 
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  !(_orderDetail.status == 2 || _orderDetail.status == 3)
-                      ? Container(
-                          height: 0,
-                        )
-                      : Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 10.0, 0),
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: <Widget>[
-                              Container(
-                                alignment: Alignment.center,
-                                width: 90.0,
-                                height: 30.0,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Color(0xFFFF2E2E), width: 15.0),
-                                  borderRadius: new BorderRadius.all(
-                                      new Radius.circular(15.0)),
-                                ),
-                              ),
-                              InkWell(
-                                child: new Container(
-                                  width: 90.0,
-                                  height: 30.0,
-                                  child: new Text(
-                                    _orderDetail.status == 2 ? "确认收货" : "评价",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 14),
-                                  ),
-                                  alignment: Alignment.center,
-                                ),
-                                //圆角大小,与BoxDecoration保持一致，更美观
-                                onTap: () {},
-                              ),
-                            ],
-                          ),
-                        ),
+                  }),
                 ],
               ),
             ),
@@ -446,7 +383,7 @@ class OrderDetailPageState extends State<OrderDetailPage> {
 }
 
 class ProductItem extends StatelessWidget {
-  final Goods item;
+  final Good item;
 
   ProductItem({Key key, @required this.item}) : super(key: key);
 

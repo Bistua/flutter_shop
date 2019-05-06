@@ -1,7 +1,9 @@
 import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/bridge/order_bridge.dart';
+import 'package:flutter_lib/model/OrderComment.dart';
 import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/address.dart';
+import 'package:flutter_lib/model/orderListItem.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'orderdetail.g.dart';
@@ -34,7 +36,7 @@ class OrderDetail {
   Address receiveGoods; //收货地址
   String express; //最新一条物流信息
 
-  List<Goods> goods; //商品信息
+  List<Good> goods; //商品信息
   String createTime; //下单时间
 
   String payType; //支付方式
@@ -141,24 +143,24 @@ class OrderDetail {
     }
   }
 }
-
-@JsonSerializable()
-class Goods {
-  String goodsName;
-  String goodsPrice;
-  String buyNum;
-  String allGoodsPrice;
-  String goodsImgUrl;
-  String goodsId;
-  String specMsg;
-
-  Goods(this.goodsName, this.goodsPrice, this.buyNum, this.allGoodsPrice,
-      this.goodsImgUrl, this.goodsId, this.specMsg);
-
-  factory Goods.fromJson(Map<String, dynamic> json) => _$GoodsFromJson(json);
-
-  /// `toJson` is the convention for a class to declare support for serialization
-  /// to JSON. The implementation simply calls the private, generated
-  /// helper method `_$CategoryToJson`.
-  Map<String, dynamic> toJson() => _$GoodsToJson(this);
-}
+//
+//@JsonSerializable()
+//class Goods {
+//  String goodsName;
+//  String goodsPrice;
+//  String buyNum;
+//  String allGoodsPrice;
+//  String goodsImgUrl;
+//  String goodsId;
+//  String specMsg;
+//
+//  Goods(this.goodsName, this.goodsPrice, this.buyNum, this.allGoodsPrice,
+//      this.goodsImgUrl, this.goodsId, this.specMsg);
+//
+//  factory Goods.fromJson(Map<String, dynamic> json) => _$GoodsFromJson(json);
+//
+//  /// `toJson` is the convention for a class to declare support for serialization
+//  /// to JSON. The implementation simply calls the private, generated
+//  /// helper method `_$CategoryToJson`.
+//  Map<String, dynamic> toJson() => _$GoodsToJson(this);
+//}

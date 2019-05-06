@@ -55,11 +55,13 @@ class Good {
   String goodsName;
   String goodsPrice;
   String goodsImgUrl;
+  String specMsg;
   Good({
     this.buyNum,
     this.goodsId,
     this.goodsName,
     this.goodsPrice, //商品信息
+    this.specMsg,
   });
 
   factory Good.fromJson(Map<String, dynamic> json) =>
