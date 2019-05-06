@@ -17,7 +17,7 @@ class ShopCategoryListPage extends StatefulWidget {
 
 class ShopCategoryListState extends State<ShopCategoryListPage> {
   Widget appBarTitle;
-  CategoryBloc categoryBloc ;
+  CategoryBloc categoryBloc;
 
   @override
   void initState() {
@@ -65,11 +65,17 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
           stream: categoryBloc.categoryItems,
           builder: (context, snapshot) {
             if (snapshot.hasError) {
-              return EmptyWidget(snapshot.error,() {
+              return EmptyWidget(snapshot.error, () {
                 categoryBloc.getCategories();
               });
             } else if (snapshot.hasData) {
-              return body(snapshot.data);
+              if (snapshot.data.isNotEmpty) {
+                return body(snapshot.data);
+              } else {
+                return EmptyWidget("暂无数据", () {
+                  categoryBloc.getCategories();
+                });
+              }
             } else {
               return Center(child: CircularProgressIndicator());
             }
@@ -79,7 +85,6 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
 
   int selectIndex = 0;
   int categoryId = 0;
-
 
   Widget body(List<Category> categories) {
     categoryId = categories[selectIndex].id;
@@ -176,7 +181,6 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
                     );
             }));
   }
-
 
   SliverGrid sliverGrid(List<Category> data) {
     return SliverGrid(
