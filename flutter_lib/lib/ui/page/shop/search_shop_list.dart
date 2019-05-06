@@ -7,7 +7,6 @@ import 'package:flutter_lib/ui/widgets/empty_widget.dart';
 import 'package:flutter_lib/ui/widgets/shop_tab_item.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
-
 class SearchShopListPage extends StatefulWidget {
   @override
   SearchShopListState createState() => SearchShopListState();
@@ -42,9 +41,7 @@ class SearchShopListState extends State<SearchShopListPage> {
         builder: (context, snapshot) {
           if (showHistory) {
             if (chips.isEmpty) {
-              return EmptyWidget("无数据", () {
-
-              });
+              return EmptyWidget("无数据", () {});
             } else {
               return buildWrapChips();
             }
@@ -55,7 +52,6 @@ class SearchShopListState extends State<SearchShopListPage> {
           }
         });
   }
-
 
   Column buildWrapChips() {
     return Column(
@@ -116,60 +112,63 @@ class SearchShopListState extends State<SearchShopListPage> {
 
   Widget productGrid(List<ProductItem> data) {
     return new Padding(
-      padding: EdgeInsets.all(5),
+      padding: EdgeInsets.all(10),
       child: new GridView.builder(
           itemCount: data.length,
           gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             childAspectRatio: (0.7), //item长宽比
-            mainAxisSpacing: 5.0,
-            crossAxisSpacing: 5.0, // add some space
+            mainAxisSpacing: 10.0,
+            crossAxisSpacing: 10.0,
           ),
           itemBuilder: (BuildContext context, int index) {
-            ProductItem prodcutItem = data[index];
+            ProductItem productItem = data[index];
+            String imgUrl;
+            if (productItem.medias.isNotEmpty) {
+              imgUrl = productItem.medias[0].url;
+            }
             return new GestureDetector(
               child: new Card(
                 elevation: 5.0,
                 child: new Container(
-                  alignment: Alignment.center,
-                  child: new Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                  alignment: Alignment.bottomLeft,
+                  child: new Stack(
                     children: <Widget>[
-                      new Stack(
-                        children: <Widget>[
-                          UIData.getImage(
-                            prodcutItem.medias[0].url,
-                          ),
-                          Positioned(
-                              bottom: 0,
-                              left: 0,
-                              right: 0,
-                              child: new Container(
-                                color: Colors.white,
-                                child: new Column(
-                                  children: <Widget>[
-                                    new Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 12, 0, 6),
-                                      child: new Text(
-                                        prodcutItem.name,
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            color: UIData.ff353535),
-                                      ),
-                                    ),
-                                    new Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 6, 0, 12),
-                                      child: new Text(
-                                        prodcutItem.price.toString(),
-                                        style: TextStyle(
-                                            color: Colors.red, fontSize: 16),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )),
-                        ],
+                      Positioned(
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        child: UIData.getImage(
+                          imgUrl,
+                        ),
                       ),
+                      Positioned(
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: new Container(
+                            color: Colors.white,
+                            child: new Column(
+                              children: <Widget>[
+                                new Padding(
+                                  padding: EdgeInsets.fromLTRB(12, 12, 12, 6),
+                                  child: new Text(
+                                    data[index].name,
+                                    style: TextStyle(
+                                        fontSize: 12, color: UIData.ff353535),
+                                  ),
+                                ),
+                                new Padding(
+                                  padding: EdgeInsets.fromLTRB(0, 6, 0, 12),
+                                  child: new Text(
+                                    productItem.price.toString(),
+                                    style: TextStyle(
+                                        color: Colors.red, fontSize: 16),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )),
                     ],
                   ),
                 ),
@@ -179,7 +178,7 @@ class SearchShopListState extends State<SearchShopListPage> {
                     context,
                     new MaterialPageRoute(
                         builder: (context) =>
-                            new ShopDetailPage(prodcutItem.id)));
+                            new ShopDetailPage(productItem.id)));
               },
             );
           }),

@@ -843,7 +843,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: new Card(
           elevation: 5.0,
           child: new Container(
-            alignment: Alignment.bottomCenter,
+            alignment: Alignment.bottomLeft,
             child: new Stack(
               children: <Widget>[
                 Positioned(
@@ -866,7 +866,6 @@ class _MyHomePageState extends State<MyHomePage> {
                             padding: EdgeInsets.fromLTRB(12, 12, 12, 6),
                             child: new Text(
                               product.name,
-                              textAlign: TextAlign.center,
                               style:
                                   TextStyle(fontSize: 12, color: UIData.ff353535),
                             ),

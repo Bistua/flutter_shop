@@ -91,7 +91,7 @@ class ShopListState extends State<ShopListPage> {
               child: new Card(
                 elevation: 5.0,
                 child: new Container(
-                  alignment: Alignment.bottomCenter,
+                  alignment: Alignment.bottomLeft,
                   child: new Stack(
                     children: <Widget>[
                       Positioned(
@@ -114,7 +114,6 @@ class ShopListState extends State<ShopListPage> {
                                   padding: EdgeInsets.fromLTRB(12, 12, 12, 6),
                                   child: new Text(
                                     data[index].name,
-                                    textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontSize: 12, color: UIData.ff353535),
                                   ),
