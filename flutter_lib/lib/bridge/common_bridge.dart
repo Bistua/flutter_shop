@@ -1,11 +1,15 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_lib/model/Result.dart';
+import 'package:flutter_lib/utils/uidata.dart';
 
 class Bridge {
   static const _bridgePlatform =
       const MethodChannel("com.ym.framework.plugins/bridge");
+
+  static BuildContext context;
 
   static Future<Result> dispenser(var dispenser) async {
     String method = dispenser['method'];
@@ -13,11 +17,18 @@ class Bridge {
     print(method);
     print(params);
     String data = await _bridgePlatform.invokeMethod(method, params);
+    Result result;
     if (data != null) {
       print("bridge result:" + data);
-      return Result.fromJson(data);
+      result = Result.fromJson(data);
+      if (result.code == 401) {
+        if (context != null) {
+          Navigator.pushNamed(context, UIData.Login);
+        }
+      }
     }
-    return Result.fromJson(json.encode({"code": -1, "msg": "无结果"}));
+    result = Result.fromJson(json.encode({"code": -1, "msg": "无结果"}));
+    return result;
   }
 
   static webview(String url) {

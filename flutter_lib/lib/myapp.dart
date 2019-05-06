@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/model/OrderComment.dart';
 import 'package:flutter_lib/model/category.dart';
 import 'package:flutter_lib/ui/page/account/login.dart';
@@ -119,6 +120,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Bridge.context = context;
     return materialApp;
   }
 }
