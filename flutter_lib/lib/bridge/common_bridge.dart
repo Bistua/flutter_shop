@@ -26,8 +26,9 @@ class Bridge {
           Navigator.pushNamed(context, UIData.Login);
         }
       }
+    } else {
+      result = Result.fromJson(json.encode({"code": -1, "msg": "无结果"}));
     }
-    result = Result.fromJson(json.encode({"code": -1, "msg": "无结果"}));
     return result;
   }
 
