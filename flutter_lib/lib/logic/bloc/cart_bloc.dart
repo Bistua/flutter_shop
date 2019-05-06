@@ -41,7 +41,7 @@ class CartBloc {
           cartController.add(categoryList);
         }
       } else {
-        cartController.add(null);
+        cartController.add(Cart());
         print(result.msg == null ? "未返回错误信息" : result.msg);
       }
     });
