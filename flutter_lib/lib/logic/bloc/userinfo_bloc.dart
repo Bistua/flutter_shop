@@ -19,7 +19,7 @@ class UserInfoBloc {
         userInfoStream.add(userinfo);
       } else {
         print(result.msg);
-        userInfoStream.add(null);
+        userInfoStream.add(Userinfo());
       }
     });
   }

@@ -79,7 +79,7 @@ class ProductBloc {
       print("getProduct add");
     } else {
       print(result.msg);
-      productDetailController.add(null);
+      productDetailController.add(ProductDetail.N(""));
     }
   }
 
@@ -93,7 +93,7 @@ class ProductBloc {
         print("getProduct sku add");
       } else {
         print(result.msg);
-        skuInfoController.add(null);
+        skuInfoController.add(SkuInfo());
       }
     });
   }

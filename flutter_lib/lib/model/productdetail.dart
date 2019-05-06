@@ -35,6 +35,7 @@ class ProductDetail {
       this.retailPrice, this.inventory, this.id, this.skuId, this.attributes,
       this.medias);
 
+  ProductDetail.N(this.name);
 
   ProductDetail.fromJson(Map<String, dynamic> json) {
     this.activeStartDate = json['activeStartDate'];

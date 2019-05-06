@@ -38,7 +38,7 @@ class OrderDetailPageState extends State<OrderDetailPage> {
               orderListBloc.getOrderDetail(widget.orderId);
             });
           } else if (snapshot.hasData) {
-            if (snapshot.data != null) {
+            if (snapshot.data != null && snapshot.data.orderId.isNotEmpty) {
               return buildStack(snapshot.data);
             } else {
               return EmptyWidget("无数据", () {

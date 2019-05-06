@@ -77,7 +77,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             print("getProduct hasdata");
-            if (snapshot.data != null) {
+            if (snapshot.data != null && snapshot.data.name.isNotEmpty) {
               return buidBody(snapshot.data);
             } else {
               return EmptyWidget("暂无数据", () {});
@@ -220,7 +220,9 @@ class ShopDetailPageState extends State<ShopDetailPage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             print("getProduct sku hasdata");
-            if (snapshot.data != null) {
+            if (snapshot.data != null &&
+                snapshot.data.options != null &&
+                snapshot.data.options.isNotEmpty) {
               return buildVipInfo(product, snapshot.data);
             } else {
               return EmptyWidget("暂无数据", () {});

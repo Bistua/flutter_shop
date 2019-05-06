@@ -44,6 +44,9 @@ class OrderDetail {
   String freight; //运费
   String payFee;
 
+
+  OrderDetail.O(this.orderId);
+
   OrderDetail(
       this.orderId,
       this.status,
