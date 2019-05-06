@@ -167,6 +167,12 @@ class ShopDetailPageState extends State<ShopDetailPage> {
   }
 
   CustomScrollView buildCustomScrollView(ProductDetail product) {
+    String img = "";
+    if (product != null &&
+        product.medias != null &&
+        product.medias.isNotEmpty) {
+      img = product.medias[0].url;
+    }
     return CustomScrollView(
       slivers: <Widget>[
         SliverList(
@@ -206,7 +212,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                   ),
                 ),
               ),
-              UIData.getImage(product.medias[0].url),
+              UIData.getImage(img),
             ],
           ),
         ),
