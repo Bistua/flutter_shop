@@ -233,7 +233,7 @@ class _ShopCartListState extends State<ShopCartListPage> {
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
-                                        color: UIData.fffa4848, fontSize: 15),
+                                        color: UIData.fffa4848, fontSize: 12),
                                   ),
                                 ),
                               ),
