@@ -9,7 +9,7 @@ class HomeCategory {
 
   String categoryImgUrl;
 
-  String sortNum;
+  int sortNum;
   String categoryId;
 
   HomeCategory(

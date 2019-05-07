@@ -450,11 +450,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: InkWell(
       child: Column(
         children: <Widget>[
-          Image.asset(
-            typeImg,
-            width: 43.0,
-            height: 43.0,
-          ),
+          UIData.getImageWithWH(typeName, 43, 43),
           Padding(
             padding: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 16.0),
             child: Text(

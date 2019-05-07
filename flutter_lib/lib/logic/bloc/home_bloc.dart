@@ -6,31 +6,25 @@ import 'package:flutter_lib/utils/http.dart';
 
 class HomeBloc {
   final tabController = StreamController<List<DataListBean>>.broadcast();
-  final homeCategoryController = StreamController<List<HomeCategory>>.broadcast();
+  final homeCategoryController =
+      StreamController<List<HomeCategory>>.broadcast();
 
   Stream<List<DataListBean>> get tabItems => tabController.stream;
 
   Stream<List<HomeCategory>> get homeCategory => homeCategoryController.stream;
 
-  HomeBloc() {
+  HomeBloc() {}
 
-  }
-
-
-  Images v;
+  List<DataListBean> v;
   getImages() async {
-    if (v == null || v.code != 0) {
+    if (v == null || v.isEmpty) {
       v = await Http.getBanner();
     }
-    if (v.code == 0) {
-      tabController.add(v.data);
-    }else{
-      tabController.add(List());
-    }
+
+    tabController.add(v);
   }
 
   getHomeCategoryList() async {
     homeCategoryController.add(await Http.getHomeCategoryList());
   }
-
 }
