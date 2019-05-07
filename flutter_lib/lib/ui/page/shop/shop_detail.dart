@@ -109,9 +109,10 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                     children: <Widget>[
                       Center(
                           child: IconButton(
-                              icon: Icon(
-                                Icons.shopping_cart,
-                                color: Colors.black,
+                              icon:  Image.asset(
+                                'images/icon_shop_car.png',
+                                width: 22.0,
+                                height: 22.0,
                               ),
                               onPressed: () {
                                 Navigator.pushNamed(
@@ -136,7 +137,11 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                 Expanded(
                   flex: 1,
                   child: IconButton(
-                    icon: Icon(Icons.star, color: Colors.black),
+                    icon:  Image.asset(
+                      'images/icon_collection.png',
+                      width: 22.0,
+                      height: 22.0,
+                    ),
                     onPressed: () {},
                   ),
                 ),

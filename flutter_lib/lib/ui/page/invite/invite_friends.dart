@@ -184,7 +184,11 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
                   new Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Icon(Icons.cloud_upload),
+                      Image.asset(
+                        'images/icon_ranking.png',
+                        width: 19.0,
+                        height: 19.0,
+                      ),
                       Padding(
                         padding: EdgeInsets.fromLTRB(7, 0, 0, 0),
                         child: UIData.getTextWidget(
