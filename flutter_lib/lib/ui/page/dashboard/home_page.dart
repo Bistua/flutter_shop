@@ -5,8 +5,11 @@ import 'package:flutter_lib/logic/bloc/home_bloc.dart';
 import 'package:flutter_lib/logic/bloc/product_bloc.dart';
 import 'package:flutter_lib/logic/viewmodel/product_view_model.dart';
 import 'package:flutter_lib/model/Banner.dart';
+import 'package:flutter_lib/model/HomeCategory.dart';
+import 'package:flutter_lib/model/category.dart';
 import 'package:flutter_lib/model/product.dart';
 import 'package:flutter_lib/model/productitem.dart';
+import 'package:flutter_lib/ui/inherited/home_provider.dart';
 import 'package:flutter_lib/ui/inherited/product_provider.dart';
 import 'package:flutter_lib/ui/widgets/banner/banner_widget.dart';
 import 'package:flutter_lib/ui/widgets/empty_widget.dart';
@@ -78,10 +81,10 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       buildBanner(),
+      buildType(),
       SliverList(
         delegate: SliverChildListDelegate(
           [
-            buildType(),
             buildAdvertisement(
                 "https://img20.360buyimg.com/mobilecms/s350x128_jfs/t8554/10/1668315357/28454/82af77f0/59be2c79Ne4502dcf.jpg!q90!cc_350x128.webp"),
             buildDiscount(),
@@ -269,59 +272,58 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Container buildType() {
-    return Container(
-      padding: EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 4.0),
-      color: Colors.white,
-      child: Column(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: buildTypeChild(
-                  0,
-                  "服饰",
-                  "images/shop_type_hat.png",
+  Widget buildType() {
+    homeBloc.getHomeCategoryList();
+    return HomeBlocProvider(
+      bloc: homeBloc,
+      child: StreamBuilder<List<HomeCategory>>(
+          stream: homeBloc.homeCategory,
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              print(snapshot.error);
+              return SliverList(
+                delegate: SliverChildListDelegate(
+                  [
+                    Container(
+                      width: 0,
+                      height: 0,
+                    ),
+                  ],
                 ),
-              ),
-              Expanded(
-                child: buildTypeChild(1, "鞋帽箱包", "images/shop_type_hat.png"),
-              ),
-              Expanded(
-                child: buildTypeChild(2, "丽人", "images/shop_type_beauty.png"),
-              ),
-              Expanded(
-                child:
-                    buildTypeChild(3, "家具家装", "images/shop_type_furniture.png"),
-              ),
-              Expanded(
-                child: buildTypeChild(4, "生活服务", "images/shop_type_life.png"),
-              ),
-            ],
-          ),
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: buildTypeChild(5, "数码", "images/shop_type_hat.png"),
-              ),
-              Expanded(
-                child: buildTypeChild(6, "办公", "images/shop_type_office.png"),
-              ),
-              Expanded(
-                child: buildTypeChild(7, "百货超市", "images/shop_type_store.png"),
-              ),
-              Expanded(
-                child:
-                    buildTypeChild(8, "教育培训", "images/shop_type_education.png"),
-              ),
-              Expanded(
-                child: buildTypeChild(
-                    9, "分类", "images/shop_type_classification.png"),
-              ),
-            ],
-          ),
-        ],
-      ),
+              );
+            } else if (snapshot.hasData) {
+              List<HomeCategory> list = snapshot.data;
+              return SliverGrid(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 5,
+                  childAspectRatio: (0.7), //item长宽比
+                  mainAxisSpacing: 5.0,
+                  crossAxisSpacing: 5.0,
+                ),
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    HomeCategory item = list[index];
+                    return Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: Container(
+                        child: buildTypeChild(int.parse(item.categoryId),
+                            item.categoryName, item.categoryImgUrl),
+                      ),
+                    );
+                  },
+                  childCount: list.length,
+                ),
+              );
+            } else {
+              return SliverList(
+                delegate: SliverChildListDelegate(
+                  [
+                    Center(child: CircularProgressIndicator()),
+                  ],
+                ),
+              );
+            }
+          }),
     );
   }
 
@@ -464,30 +466,10 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       //每一个类别点击事件
       onTap: () {
-        switch (type) {
-          case 0:
-            break;
-          case 1:
-            break;
-          case 2:
-            break;
-          case 3:
-            break;
-          case 4:
-            break;
-          case 5:
-            break;
-          case 6:
-            break;
-          case 7:
-            break;
-          case 8:
-            break;
-          case 9:
-            Navigator.pushNamed(context, UIData.ShopCategoryList,
-                arguments: "全部分类");
-            break;
-        }
+        Category category = new Category();
+        category.id = type;
+        category.name = typeName;
+        Navigator.pushNamed(context, UIData.ShopListPage, arguments: category);
       },
     ));
   }
@@ -852,42 +834,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     imageUrl,
                   ),
                 ),
-                Positioned(
-                    bottom: 8,
-                    left: 10,
-                    right: 10,
-                    child: new Container(
-                      width: 140,
-                      color: Colors.white,
-                      child: new Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          new Padding(
-                            padding: EdgeInsets.fromLTRB(5, 0, 5, 4),
-                            child: Container(
-                              width: 140,
-                              child: new Text(
-                                product.name,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    fontSize: 12, color: UIData.ff353535),
-                              ),
-                            ),
-                          ),
-                          new Padding(
-                            padding: EdgeInsets.fromLTRB(5, 4, 5, 4),
-                            child: new Text(
-                              "￥" + product.price.toString(),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(color: Colors.red, fontSize: 16),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )),
               ],
             ),
           ),
