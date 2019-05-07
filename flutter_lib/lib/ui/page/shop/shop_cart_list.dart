@@ -226,10 +226,14 @@ class _ShopCartListState extends State<ShopCartListPage> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: <Widget>[
                               Expanded(
-                                child: Text(
-                                  price,
-                                  style: TextStyle(
-                                      color: UIData.fffa4848, fontSize: 15),
+                                child: Container(
+                                  width: 80,
+                                  child: Text(
+                                    price,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        color: UIData.fffa4848, fontSize: 15),
+                                  ),
                                 ),
                               ),
                               GestureDetector(
