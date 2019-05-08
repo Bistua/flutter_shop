@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/logic/bloc/product_bloc.dart';
 import 'package:flutter_lib/logic/viewmodel/tab_view_model.dart';
+import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/productitem.dart';
 import 'package:flutter_lib/ui/page/shop/shop_detail.dart';
 import 'package:flutter_lib/ui/widgets/empty_widget.dart';
@@ -51,7 +52,8 @@ class SearchShopListState extends State<SearchShopListPage> {
             }
           } else {
             if (snapshot.hasError) {
-              return ErrorStatusWidget.search(0, snapshot.error, null);
+              Result result = snapshot.error;
+              return ErrorStatusWidget.search(result.code, result.msg, null);
             } else if (snapshot.hasData) {
               if (snapshot.data == null || snapshot.data.isEmpty) {
                 return ErrorStatusWidget.search(0, "暂无搜索结果\n换个搜索词试试", null);

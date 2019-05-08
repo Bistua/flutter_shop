@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/logic/bloc/cart_bloc.dart';
+import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/cart.dart';
 import 'package:flutter_lib/ui/page/order/shop_order.dart';
 import 'package:flutter_lib/ui/widgets/empty_widget.dart';
@@ -49,6 +50,7 @@ class _ShopCartListState extends State<ShopCartListPage> {
     );
   }
 
+
   Widget bodyData() {
     cartBloc.findCart();
     return StreamBuilder<Cart>(
@@ -60,23 +62,25 @@ class _ShopCartListState extends State<ShopCartListPage> {
                 cart.products == null ||
                 cart.products.isEmpty ||
                 cart.totalCounts == 0)) {
-              return ErrorStatusWidget.cart(0,widget.showBackBtn ? "快去添加商品" : "可前往首页选购商品",
-                  () {
+              return ErrorStatusWidget.cart(
+                  0, "暂无购物记录~", () {
                 if (widget.showBackBtn) {
                   Navigator.pop(context, true);
                 } else {
-                  cartBloc.findCart();
+                 Navigator.pushNamed(context, UIData.ShopCategoryList,arguments: "全部分类");
                 }
               });
             } else {
               return buildBody(cart);
             }
           } else if (snapshot.hasError) {
-            return EmptyWidget(snapshot.error, () {
+            Result result = snapshot.error;
+            return ErrorStatusWidget.cart(
+                result.code, result.msg, () {
               if (widget.showBackBtn) {
                 Navigator.pop(context, true);
               } else {
-                cartBloc.findCart();
+                Navigator.pushNamed(context, UIData.ShopCategoryList,arguments: "全部分类");
               }
             });
           } else {

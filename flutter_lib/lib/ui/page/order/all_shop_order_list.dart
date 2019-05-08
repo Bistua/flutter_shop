@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/logic/bloc/oder_list_bloc.dart';
+import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/orderListItem.dart';
 import 'package:flutter_lib/ui/page/order/order_action_widget.dart';
 import 'package:flutter_lib/ui/widgets/empty_widget.dart';
@@ -71,7 +72,8 @@ class TagState extends State<TagOrderPage> {
               });
             }
           } else if (snapshot.hasError) {
-            return ErrorStatusWidget(0, snapshot.error, () {
+            Result result = snapshot.error;
+            return ErrorStatusWidget.order(result.code,result.msg, () {
               widget.orderListBloc.getOrderListList(type);
             });
           } else {

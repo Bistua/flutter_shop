@@ -32,7 +32,7 @@ class OrderListBloc {
         orderListController.add(orderList.list);
       } else {
         print(result.msg == null ? "未返回错误信息" : result.msg);
-        orderListController.add(List());
+        orderListController.addError(result);
       }
     });
   }
