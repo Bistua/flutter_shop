@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:flutter_lib/bridge/common_bridge.dart';
+
 import 'package:flutter_lib/bridge/rebate_bridge.dart';
 import 'package:flutter_lib/model/rebateList.dart';
 

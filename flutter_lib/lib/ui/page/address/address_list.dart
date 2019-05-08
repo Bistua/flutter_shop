@@ -43,7 +43,7 @@ class _AddressListState extends State<AddressListPage> {
   }
 
   Widget bodyData() {
-    addressBloc.getAddressList();
+    addressBloc.getAddressList(context);
     return StreamBuilder<List<Address>>(
         stream: addressBloc.productItems,
         builder: (context, snapshot) {

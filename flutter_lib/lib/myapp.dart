@@ -129,7 +129,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Bridge.context = context;
     return materialApp;
   }
 }
