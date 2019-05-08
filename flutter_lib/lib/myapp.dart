@@ -3,7 +3,9 @@ import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/model/OrderComment.dart';
 import 'package:flutter_lib/model/category.dart';
 import 'package:flutter_lib/ui/page/account/login.dart';
+import 'package:flutter_lib/ui/page/account/mine_wallet.dart';
 import 'package:flutter_lib/ui/page/account/register.dart';
+import 'package:flutter_lib/ui/page/account/vip_apply.dart';
 import 'package:flutter_lib/ui/page/dashboard/dashboard.page.dart';
 import 'package:flutter_lib/ui/page/dashboard/home_page.dart';
 import 'package:flutter_lib/ui/page/dashboard/user_home_page.dart';
@@ -44,6 +46,8 @@ class MyApp extends StatelessWidget {
         UIData.notFoundRoute: (BuildContext context) => NotFoundPage(),
         UIData.IviteFriendsPage: (BuildContext context) => InviteFriendsPage(),
         UIData.InviteInputPage: (BuildContext context) => InviteInputPage(),
+        UIData.VipApplyPage: (BuildContext context) => VipApplyPage(),
+        UIData.MineWalletPage: (BuildContext context) => MineWalletPage(),
         UIData.UserHomeListPage: (BuildContext context) => UserHomeListPage(),
         UIData.MineCollectionPage: (BuildContext context) =>
             MineCollectionPage(),

@@ -89,6 +89,8 @@ flutter:
     - images/no_order.png
     - images/no_msg.png
     - images/no_cart.png
+    - images/icon_vip_bg.png
+    - images/icon_vip_crown.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

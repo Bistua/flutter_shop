@@ -29,6 +29,8 @@ class UIData {
   static const String ShopCartListPage = "/ShopCartListPage";
   static const String WebViewPage = "/WebViewPage";
 
+  static const String VipApplyPage = "/VipApplyPage";
+  static const String MineWalletPage = "/MineWalletPage";
 
   //strings
   static const String appName = "Flutter UIKit";

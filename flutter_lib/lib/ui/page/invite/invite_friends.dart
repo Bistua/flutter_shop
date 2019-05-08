@@ -283,7 +283,9 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(15, 8, 15, 10),
-              child: UIData.getMaxWidthButton("立即成为VIP", () {}),
+              child: UIData.getMaxWidthButton("立即成为VIP", () {
+                Navigator.pushNamed(context, UIData.VipApplyPage,arguments: 0);
+              }),
             ),
           ],
         ),
