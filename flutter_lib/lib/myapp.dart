@@ -47,8 +47,6 @@ class MyApp extends StatelessWidget {
         UIData.UserHomeListPage: (BuildContext context) => UserHomeListPage(),
         UIData.MineCollectionPage: (BuildContext context) =>
             MineCollectionPage(),
-
-
         UIData.OrderCommentListPage: (BuildContext context) =>
             OrderCommentListPage(),
         UIData.Register: (BuildContext context) => RegisterPage()
@@ -109,14 +107,21 @@ class MyApp extends StatelessWidget {
             break;
         }
       },
-      onUnknownRoute: (RouteSettings rs) => new MaterialPageRoute(
-          builder: (context) => new NotFoundPage(
-                appTitle: UIData.coming_soon,
-//            icon: FontAwesomeIcons.solidSmile,
-                title: UIData.coming_soon,
-                message: "Under Development",
-                iconColor: Colors.grey,
-              )));
+      onUnknownRoute: (RouteSettings settings) {
+//        final arguments = settings.arguments;
+//        switch (settings.name) {
+//          case UIData.ShopDetailPage:
+//
+//            break;
+//        }
+        new MaterialPageRoute(
+            builder: (context) => new NotFoundPage(
+              appTitle: UIData.coming_soon,
+              title: UIData.coming_soon,
+              message: "Under Development",
+              iconColor: Colors.grey,
+            ));
+      });
 
   @override
   Widget build(BuildContext context) {

@@ -3,6 +3,7 @@ import 'package:flutter_lib/logic/bloc/oder_list_bloc.dart';
 import 'package:flutter_lib/model/orderListItem.dart';
 import 'package:flutter_lib/ui/page/order/order_action_widget.dart';
 import 'package:flutter_lib/ui/widgets/empty_widget.dart';
+import 'package:flutter_lib/ui/widgets/error_status_widget.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class AllShopOrderPage extends StatefulWidget {
@@ -65,12 +66,12 @@ class TagState extends State<TagOrderPage> {
             if (snapshot.data.isNotEmpty) {
               return buildListView(type, list);
             } else {
-              return EmptyWidget("无数据,点击重试", () {
-                widget.orderListBloc.getOrderListList(type);
+              return ErrorStatusWidget.order(0,"暂无订单", () {
+                Navigator.pop(context, false);
               });
             }
           } else if (snapshot.hasError) {
-            return EmptyWidget(snapshot.error, () {
+            return ErrorStatusWidget(0, snapshot.error, () {
               widget.orderListBloc.getOrderListList(type);
             });
           } else {
@@ -231,8 +232,8 @@ class TagState extends State<TagOrderPage> {
                                 )),
                           ),
                           decoration: BoxDecoration(
-                            border: Border.all(
-                                color: UIData.fff7f7f7, width: 1.0),
+                            border:
+                                Border.all(color: UIData.fff7f7f7, width: 1.0),
                             shape: BoxShape.rectangle,
                           ),
                         ),

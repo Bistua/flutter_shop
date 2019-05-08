@@ -4,6 +4,7 @@ import 'package:flutter_lib/logic/viewmodel/tab_view_model.dart';
 import 'package:flutter_lib/model/productitem.dart';
 import 'package:flutter_lib/ui/page/shop/shop_detail.dart';
 import 'package:flutter_lib/ui/widgets/empty_widget.dart';
+import 'package:flutter_lib/ui/widgets/error_status_widget.dart';
 import 'package:flutter_lib/ui/widgets/shop_tab_item.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
@@ -41,14 +42,25 @@ class SearchShopListState extends State<SearchShopListPage> {
         builder: (context, snapshot) {
           if (showHistory) {
             if (chips.isEmpty) {
-              return EmptyWidget("无数据", () {});
+              return Container(
+                width: 0,
+                height: 0,
+              );
             } else {
               return buildWrapChips();
             }
           } else {
-            return snapshot.hasData
-                ? productGrid(snapshot.data)
-                : Center(child: CircularProgressIndicator());
+            if (snapshot.hasError) {
+              return ErrorStatusWidget.search(0, snapshot.error, null);
+            } else if (snapshot.hasData) {
+              if (snapshot.data == null || snapshot.data.isEmpty) {
+                return ErrorStatusWidget.search(0, "暂无搜索结果\n换个搜索词试试", null);
+              } else {
+                return productGrid(snapshot.data);
+              }
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
           }
         });
   }
@@ -170,7 +182,8 @@ class SearchShopListState extends State<SearchShopListPage> {
                                     "￥" + product.price.toString(),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(color: Colors.red, fontSize: 16),
+                                    style: TextStyle(
+                                        color: Colors.red, fontSize: 16),
                                   ),
                                 ),
                               ],
@@ -238,48 +251,48 @@ class SearchShopListState extends State<SearchShopListPage> {
   }
 
   Widget buildTextField() {
-    return Center(
-      child: Stack(
-        children: <Widget>[
-          Center(
-            child: Container(
-              alignment: Alignment.center,
-              height: 30.0,
-              decoration: BoxDecoration(
-                border: Border.all(color: Color(0xFFF5F5F5), width: 15.0),
-                borderRadius: new BorderRadius.all(new Radius.circular(15.0)),
-              ),
+    return Stack(
+      children: <Widget>[
+        Center(
+          child: Container(
+            decoration: BoxDecoration(
+              color: Color(0xFFF5F5F5),
+              border: Border.all(color: Color(0xFFF5F5F5), width: 1),
+              borderRadius: BorderRadius.circular(13.0),
             ),
+            height: 30.0,
+            child: new TextField(
+              controller: _searchQuery,
+              cursorColor: Colors.transparent,
+              cursorWidth: 0,
+              decoration: new InputDecoration(
+                focusedBorder: UnderlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Colors.transparent, width: 0)),
+                hintText: "请输入搜索内容",
+                fillColor: Colors.transparent,
+                contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                hintStyle: new TextStyle(color: UIData.ffcccccc, fontSize: 12),
+              ),
+              maxLines: 1,
+              textAlign: TextAlign.left,
+            ),
+            alignment: Alignment.centerLeft,
           ),
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-              child: TextField(
-                maxLines: 1,
-                controller: _searchQuery,
-                cursorColor: Colors.transparent,
-                style: new TextStyle(color: UIData.ff353535, fontSize: 12),
-                decoration: new InputDecoration(
-                    focusedBorder: null,
-                    errorBorder: null,
-                    disabledBorder: null,
-                    focusedErrorBorder: null,
-                    border: null,
-                    fillColor: Color(0xfff5f5f5),
-                    suffixIcon: new IconButton(
-                      color: UIData.ffcccccc,
-                      icon: Icon(Icons.close),
-                      onPressed: () {
-                        _searchQuery.clear();
-                      },
-                    ),
-                    hintText: "请输入搜索内容",
-                    hintStyle: new TextStyle(color: UIData.ffcccccc)),
-              ),
-            ),
-          )
-        ],
-      ),
+        ),
+        Positioned(
+          top: 0,
+          bottom: 0,
+          right: 1,
+          child: new IconButton(
+            color: UIData.ffcccccc,
+            icon: Icon(Icons.close),
+            onPressed: () {
+              _searchQuery.clear();
+            },
+          ),
+        ),
+      ],
     );
   }
 

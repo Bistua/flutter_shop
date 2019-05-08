@@ -54,6 +54,13 @@ class UIData {
   static const String timelineImage = "$imageDir/timeline.jpeg";
   static const String verifyImage = "$imageDir/verification.jpg";
 
+  static const String no_search_result = "images/no_search_result.png";
+  static const String net_error = "images/net_error.png";
+  static const String no_order = "images/no_order.png";
+  static const String no_msg = "images/no_msg.png";
+  static const String no_cart = "images/no_cart.png";
+
+
   //login
   static const String enter_code_label = "Phone Number";
   static const String enter_code_hint = "10 Digit Phone Number";
@@ -71,7 +78,7 @@ class UIData {
   static const String ok = "OK";
   static const String forgot_password = "Forgot Password?";
   static const String something_went_wrong = "Something went wrong";
-  static const String coming_soon = "Coming Soon";
+  static const String coming_soon = "未知领域";
 
   static const MaterialColor ui_kit_color = Colors.grey;
   static const Color ffcccccc = Color(0xffcccccc);
@@ -356,5 +363,37 @@ class UIData {
         height: h,
       );
     }
+  }
+
+  static Widget getFlatButton(String txt,tab) {
+    return FlatButton(
+      child: Text(txt),
+      onPressed: tab,
+      textTheme: ButtonTextTheme.normal,
+      textColor: Colors.yellow,
+      disabledTextColor: Colors.red,
+      color: Color(0xFF82B1FF),
+      disabledColor: Colors.grey,
+      highlightColor: Colors.grey,
+      // 按下的背景色
+      splashColor: Colors.transparent,
+      // 水波纹颜色
+      colorBrightness: Brightness.light,
+      // 主题
+//      elevation: 10,
+//      highlightElevation: 10,
+//      disabledElevation: 10,
+      padding: EdgeInsets.all(10),
+//       RaisedButton 才起效
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+          side: BorderSide(
+              color: Color(0xFFF9F3FF), style: BorderStyle.solid, width: 2)),
+      clipBehavior: Clip.antiAlias,
+      materialTapTargetSize: MaterialTapTargetSize.padded,
+//      animationDuration: Duration(seconds:1),
+//      minWidth: 200,
+//      height: 50,
+    );
   }
 }

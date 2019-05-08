@@ -4,6 +4,7 @@ import 'package:flutter_lib/logic/bloc/cart_bloc.dart';
 import 'package:flutter_lib/model/cart.dart';
 import 'package:flutter_lib/ui/page/order/shop_order.dart';
 import 'package:flutter_lib/ui/widgets/empty_widget.dart';
+import 'package:flutter_lib/ui/widgets/error_status_widget.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class ShopCartListPage extends StatefulWidget {
@@ -59,7 +60,7 @@ class _ShopCartListState extends State<ShopCartListPage> {
                 cart.products == null ||
                 cart.products.isEmpty ||
                 cart.totalCounts == 0)) {
-              return EmptyWidget(widget.showBackBtn ? "快去添加商品" : "可前往首页选购商品",
+              return ErrorStatusWidget.cart(0,widget.showBackBtn ? "快去添加商品" : "可前往首页选购商品",
                   () {
                 if (widget.showBackBtn) {
                   Navigator.pop(context, true);
