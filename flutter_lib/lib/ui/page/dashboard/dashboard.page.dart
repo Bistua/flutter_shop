@@ -12,14 +12,13 @@ class DashboardPage extends StatefulWidget {
   DashboardPageState createState() => DashboardPageState();
 }
 
-
-
 class DashboardPageState extends State<DashboardPage> {
   MyHomePage myHomePage = MyHomePage();
   ShopCategoryListPage shopCategoryListPage =
       ShopCategoryListPage(title: "全部分类", showBackBtn: false);
   ShopCartListPage shopCartListPage = ShopCartListPage(false);
   UserHomeListPage userHomeListPage = UserHomeListPage();
+
   @override
   void initState() {
     super.initState();
@@ -44,36 +43,40 @@ class DashboardPageState extends State<DashboardPage> {
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-                color: UIData.ff353535,
+              icon: Image.asset(
+                'images/icon_bottom_navigation_home.png',
+                width: 22.0,
+                height: 22.0,
               ),
               title: Text(
                 '首页',
                 style: TextStyle(color: UIData.ff353535, fontSize: 10),
               )),
           BottomNavigationBarItem(
-              icon: Icon(
-                Icons.category,
-                color: UIData.ff353535,
+              icon: Image.asset(
+                'images/icon_bottom_navigation_active.png',
+                width: 22.0,
+                height: 22.0,
               ),
               title: Text(
                 '分类',
                 style: TextStyle(color: UIData.ff353535, fontSize: 10),
               )),
           BottomNavigationBarItem(
-              icon: Icon(
-                Icons.add_shopping_cart,
-                color: UIData.ff353535,
+              icon: Image.asset(
+                'images/icon_bottom_navigation_car.png',
+                width: 22.0,
+                height: 22.0,
               ),
               title: Text(
                 '购物车',
                 style: TextStyle(color: UIData.ff353535, fontSize: 10),
               )),
           BottomNavigationBarItem(
-              icon: Icon(
-                Icons.person,
-                color: UIData.ff353535,
+              icon: Image.asset(
+                'images/icon_bottom_navigation_mine.png',
+                width: 22.0,
+                height: 22.0,
               ),
               title: Text(
                 '我的',

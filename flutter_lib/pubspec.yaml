@@ -77,6 +77,13 @@ flutter:
     - images/coin.png
     - images/user_icon.png
     - images/placeholder.png
+    - images/icon_bottom_navigation_active.png
+    - images/icon_bottom_navigation_car.png
+    - images/icon_bottom_navigation_home.png
+    - images/icon_bottom_navigation_mine.png
+    - images/icon_ranking.png
+    - images/icon_collection.png
+    - images/icon_shop_car.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

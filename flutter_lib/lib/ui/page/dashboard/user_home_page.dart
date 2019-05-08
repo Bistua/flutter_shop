@@ -108,7 +108,7 @@ class _UserHomeState extends State<UserHomeListPage> {
                               width: 22.0,
                               height: 22.0,
                             ),
-                            padding: EdgeInsets.fromLTRB(0, 20, 0, 8),
+                            padding: EdgeInsets.fromLTRB(0, 12, 0, 8),
                           ),
                           Text(
                             "待付款",
