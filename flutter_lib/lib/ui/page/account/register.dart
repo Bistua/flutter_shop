@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_lib/bridge/account_bridge.dart';
 import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/model/Result.dart';
+import 'package:flutter_lib/ui/widgets/countdown.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class Register extends StatelessWidget {
@@ -28,7 +29,28 @@ class RegisterPage extends StatefulWidget {
   RegisterState createState() => RegisterState();
 }
 
-class RegisterState extends State<RegisterPage> {
+class RegisterState extends State<RegisterPage> with TickerProviderStateMixin {
+  int time_cutdown = 60;
+  bool isGetingSms = false;
+  AnimationController _animationController;
+
+  @override
+  void initState() {
+    _animationController = new AnimationController(
+      duration: new Duration(seconds: time_cutdown),
+      vsync: this,
+    );
+    _animationController.addStatusListener((v) {
+      AnimationStatus a = v;
+      if (a == AnimationStatus.completed) {
+        setState(() {
+          isGetingSms = false;
+        });
+      }
+    });
+    super.initState();
+  }
+
   final TextEditingController _controller = new TextEditingController();
   Color _registercolor = Color(0xFFFF7B7B);
   Color _verifycodecolor = Color(0xFF999999);
@@ -260,10 +282,19 @@ class RegisterState extends State<RegisterPage> {
                   child: new Container(
                     width: 71.0,
                     height: 22.0,
-                    child: new Text(
-                      "获取验证码",
-                      style: TextStyle(color: _verifycodecolor, fontSize: 10),
-                    ),
+                    child: isGetingSms
+                        ? new Countdown(
+                            color: UIData.ff353535,
+                            animation: new StepTween(
+                              begin: time_cutdown,
+                              end: 0,
+                            ).animate(_animationController),
+                          )
+                        : new Text(
+                            "获取验证码",
+                            style: TextStyle(
+                                color: _verifybordercolor, fontSize: 10),
+                          ),
                     alignment: Alignment.center,
                   ),
                   //圆角大小,与BoxDecoration保持一致，更美观
@@ -277,6 +308,10 @@ class RegisterState extends State<RegisterPage> {
                     future.then((v) {
                       if (v.code == 200) {
                         Bridge.showShortToast("短信发送成功");
+                        _animationController.forward(from: 0.0);
+                        this.setState(() {
+                          isGetingSms = true;
+                        });
                       } else {
                         Bridge.showShortToast(v.msg);
                       }
