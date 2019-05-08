@@ -74,7 +74,7 @@ class RegisterState extends State<RegisterPage> with TickerProviderStateMixin {
       if (_registercolor.value != 0xFFFF7B7B) {
         setState(() {
           _registercolor = Color(0xFFFF7B7B);
-          _verifycodecolor = Color(0xFF999999);
+          _verifycodecolor = UIData.ff666666;
           _verifybordercolor = Color(0xFFEEEEEE);
           _verifyborderwidth = 1.0;
         });
@@ -293,7 +293,7 @@ class RegisterState extends State<RegisterPage> with TickerProviderStateMixin {
                         : new Text(
                             "获取验证码",
                             style: TextStyle(
-                                color: _verifybordercolor, fontSize: 10),
+                                color: UIData.fff, fontSize: 10),
                           ),
                     alignment: Alignment.center,
                   ),
