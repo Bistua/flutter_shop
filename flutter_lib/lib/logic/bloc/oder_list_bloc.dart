@@ -1,11 +1,12 @@
 import 'dart:async';
 
-import 'package:flutter_lib/bridge/common_bridge.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_lib/bridge/order_bridge.dart';
 import 'package:flutter_lib/bridge/order_list_bridge.dart';
-import 'package:flutter_lib/model/orderdetail.dart';
 import 'package:flutter_lib/model/orderListItem.dart';
+import 'package:flutter_lib/model/orderdetail.dart';
 import 'package:flutter_lib/model/orderlist.dart';
+import 'package:flutter_lib/utils/uidata.dart';
 
 class OrderListBloc {
   final orderListController = StreamController<List<OrderItem>>.broadcast();
@@ -14,29 +15,28 @@ class OrderListBloc {
     return orderListController.stream;
   }
 
-
   final orderDetailController = StreamController<OrderDetail>.broadcast();
 
   Stream<OrderDetail> get orderDetail {
     return orderDetailController.stream;
   }
 
-
-
   OrderListBloc();
 
-  getOrderListList(int type) {
+  getOrderListList(BuildContext context, int type) {
     OrderListBridge.getOrderList(1, 50, type).then((result) {
       if (result.code == 200) {
         OrderList orderList = OrderList.fromJson(result.data);
         orderListController.add(orderList.list);
       } else {
         print(result.msg == null ? "未返回错误信息" : result.msg);
+        if (result.code == 401) {
+          Navigator.pushNamed(context, UIData.login);
+        }
         orderListController.addError(result);
       }
     });
   }
-
 
   getOrderDetail(String orderId) {
     OrderBridge.orderDetail(orderId).then((result) {

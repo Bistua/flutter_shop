@@ -312,7 +312,7 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
   }
 
   Widget buildHeaderBody() {
-    addressBloc.getAddressList();
+    addressBloc.getAddressList(context);
     return StreamBuilder<List<Address>>(
         stream: addressBloc.productItems,
         builder: (context, snapshot) {

@@ -3,7 +3,6 @@ import 'package:flutter_lib/logic/bloc/oder_list_bloc.dart';
 import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/orderListItem.dart';
 import 'package:flutter_lib/ui/page/order/order_action_widget.dart';
-import 'package:flutter_lib/ui/widgets/empty_widget.dart';
 import 'package:flutter_lib/ui/widgets/error_status_widget.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
@@ -15,6 +14,7 @@ class AllShopOrderPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     List<Widget> pages = List();
+
     pages.add(Container(child: TagOrderPage(0)));
     pages.add(Container(child: TagOrderPage(1)));
     pages.add(Container(child: TagOrderPage(2)));
@@ -44,7 +44,7 @@ class TagState extends State<TagOrderPage> {
   void initState() {
     super.initState();
     widget.orderListBloc = OrderListBloc();
-    widget.orderListBloc.getOrderListList(widget.type);
+    widget.orderListBloc.getOrderListList(context,widget.type);
   }
 
   @override
@@ -74,7 +74,7 @@ class TagState extends State<TagOrderPage> {
           } else if (snapshot.hasError) {
             Result result = snapshot.error;
             return ErrorStatusWidget.order(result.code,result.msg, () {
-              widget.orderListBloc.getOrderListList(type);
+              widget.orderListBloc.getOrderListList(context,type);
             });
           } else {
             return center();
@@ -83,7 +83,7 @@ class TagState extends State<TagOrderPage> {
   }
 
   Center center() {
-    widget.orderListBloc.getOrderListList(widget.type);
+    widget.orderListBloc.getOrderListList(context,widget.type);
     return Center(child: CircularProgressIndicator());
   }
 
@@ -165,7 +165,7 @@ class TagState extends State<TagOrderPage> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
                     child: OrderActionWidget(orderItem, type, () {
-                      widget.orderListBloc.getOrderListList(type);
+                      widget.orderListBloc.getOrderListList(context,type);
                     }),
                   ),
                 ],

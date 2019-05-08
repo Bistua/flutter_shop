@@ -21,14 +21,10 @@ class Bridge {
     if (data != null) {
       print("bridge result:" + data);
       result = Result.fromJson(data);
-      if (result.code == 401) {
-        if (context != null) {
-          Navigator.pushNamed(context, UIData.Login);
-        }
-      }
     } else {
       result = Result.fromJson(json.encode({"code": -1, "msg": "无结果"}));
     }
+
     return result;
   }
 
