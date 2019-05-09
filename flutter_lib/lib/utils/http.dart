@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter_lib/model/Banner.dart';
 import 'package:flutter_lib/model/HomeCategory.dart';
 import 'package:flutter_lib/model/Result.dart';
+import 'package:flutter_lib/model/promotion.dart';
 
 class Http {
   static const baseUrl = "https://mall.bchun.com";
@@ -67,4 +68,33 @@ class Http {
     }
     return null;
   }
+
+  static getPromotion() async{
+    Result result = await getResult(baseUrl + "/mall/get/app/index/promotion");
+    if (result != null && result.code == 0) {
+      dynamic data = result.data;
+      List<dynamic> l = data["list"];
+      List<Promotion> c = l.map((f){
+        return Promotion.fromJson(f);
+      }).toList();
+      print(data);
+      return c;
+    }
+    return null;
+  }
+
+  static getSpecial() async{
+    Result result = await getResult(baseUrl + "/mall/get/app/index/special");
+    if (result != null && result.code == 0) {
+      dynamic data = result.data;
+      List<dynamic> l = data["list"];
+      List<Promotion> c = l.map((f){
+        return Promotion.fromJson(f);
+      }).toList();
+      print(data);
+      return c;
+    }
+    return null;
+  }
+
 }
