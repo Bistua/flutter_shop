@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/bridge/order_bridge.dart';
-import 'package:flutter_lib/bridge/pay_bridge.dart';
 import 'package:flutter_lib/logic/bloc/address_bloc.dart';
 import 'package:flutter_lib/logic/bloc/cart_bloc.dart';
 import 'package:flutter_lib/model/Result.dart';
@@ -54,6 +53,7 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
   }
 
   Widget bodyData() {
+    print("立即下单即加入购物车，之后从购物车中读取出来");
     cartBloc.findCart();
     return StreamBuilder<Cart>(
         stream: cartBloc.productItems,
@@ -275,7 +275,7 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                           Padding(
                             padding: EdgeInsets.fromLTRB(3, 0, 3, 0),
                             child: UIData.getTextWidget(
-                               "x "+ cartProduct.amount.toString(),
+                                "x " + cartProduct.amount.toString(),
                                 UIData.ff999999,
                                 11),
                           ),

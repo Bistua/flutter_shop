@@ -4,7 +4,6 @@ import 'package:flutter_lib/logic/bloc/cart_bloc.dart';
 import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/cart.dart';
 import 'package:flutter_lib/ui/page/order/shop_order.dart';
-import 'package:flutter_lib/ui/widgets/empty_widget.dart';
 import 'package:flutter_lib/ui/widgets/error_status_widget.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
@@ -50,7 +49,6 @@ class _ShopCartListState extends State<ShopCartListPage> {
     );
   }
 
-
   Widget bodyData() {
     cartBloc.findCart();
     return StreamBuilder<Cart>(
@@ -62,12 +60,12 @@ class _ShopCartListState extends State<ShopCartListPage> {
                 cart.products == null ||
                 cart.products.isEmpty ||
                 cart.totalCounts == 0)) {
-              return ErrorStatusWidget.cart(
-                  0, "暂无购物记录~", () {
+              return ErrorStatusWidget.cart(0, "暂无购物记录~", () {
                 if (widget.showBackBtn) {
                   Navigator.pop(context, true);
                 } else {
-                 Navigator.pushNamed(context, UIData.ShopCategoryList,arguments: "全部分类");
+                  Navigator.pushNamed(context, UIData.ShopCategoryList,
+                      arguments: "全部分类");
                 }
               });
             } else {
@@ -75,12 +73,12 @@ class _ShopCartListState extends State<ShopCartListPage> {
             }
           } else if (snapshot.hasError) {
             Result result = snapshot.error;
-            return ErrorStatusWidget.cart(
-                result.code, result.msg, () {
+            return ErrorStatusWidget.cart(result.code, result.msg, () {
               if (widget.showBackBtn) {
                 Navigator.pop(context, true);
               } else {
-                Navigator.pushNamed(context, UIData.ShopCategoryList,arguments: "全部分类");
+                Navigator.pushNamed(context, UIData.ShopCategoryList,
+                    arguments: "全部分类");
               }
             });
           } else {
@@ -190,7 +188,7 @@ class _ShopCartListState extends State<ShopCartListPage> {
                   Padding(
                     padding: EdgeInsets.fromLTRB(14, 0, 12, 0),
                     child: UIData.getImageWithWHFit(
-                        products[index].sku.img, BoxFit.cover, 88, 88),
+                        products[index].sku.img, BoxFit.cover, 44, 44),
                   ),
                   Expanded(
                     child: Column(

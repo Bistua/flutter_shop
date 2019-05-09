@@ -54,6 +54,12 @@ flutter:
     - images/icon_login_wx.png
     - images/icon_back.png
     - images/icon_code.png
+    - images/icon_vip.png
+    - images/btn_settings.png
+    - images/icon_exit.png
+    - images/icon_kehu.png
+    - images/icon_inputnumber.png
+    - images/icon_shoucang.png
     - images/shop_type_hat.png
     - images/shop_type_beauty.png
     - images/shop_type_furniture.png

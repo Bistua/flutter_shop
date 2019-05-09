@@ -7,11 +7,11 @@ import 'package:flutter_lib/bridge/sku_bridge.dart';
 import 'package:flutter_lib/logic/bloc/product_bloc.dart';
 import 'package:flutter_lib/logic/viewmodel/comment_view_model.dart';
 import 'package:flutter_lib/model/Result.dart';
-import 'package:flutter_lib/model/productdetail.dart';
-import 'package:flutter_lib/model/skuresult.dart';
 import 'package:flutter_lib/model/cart.dart';
 import 'package:flutter_lib/model/comment.dart';
+import 'package:flutter_lib/model/productdetail.dart';
 import 'package:flutter_lib/model/skuinfo.dart';
+import 'package:flutter_lib/model/skuresult.dart';
 import 'package:flutter_lib/ui/inherited/product_provider.dart';
 import 'package:flutter_lib/ui/page/order/shop_order.dart';
 import 'package:flutter_lib/ui/widgets/empty_widget.dart';
@@ -109,7 +109,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                     children: <Widget>[
                       Center(
                           child: IconButton(
-                              icon:  Image.asset(
+                              icon: Image.asset(
                                 'images/icon_shop_car.png',
                                 width: 22.0,
                                 height: 22.0,
@@ -137,7 +137,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                 Expanded(
                   flex: 1,
                   child: IconButton(
-                    icon:  Image.asset(
+                    icon: Image.asset(
                       'images/icon_collection.png',
                       width: 22.0,
                       height: 22.0,
@@ -151,6 +151,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                 }),
                 UIData.getShapeButton(
                     UIData.ffffa517, UIData.fff, 110, 50, "立即购买", 16, 0, () {
+                  addCart(product, product.skuId.toString());
                   Navigator.push(
                       context,
                       new MaterialPageRoute(
@@ -717,6 +718,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
       ).toList(),
     );
   }
+
 //
 //  void getSkuList(int productId) {
 //    Future<Result> skuFuture = SkuBridge.findGoodsSku(productId.toString());
@@ -750,13 +752,13 @@ class ShopDetailPageState extends State<ShopDetailPage> {
       print(int64list);
       Future<Result> skuFuture =
           SkuBridge.findGoodsSkuInfo(productId.toString(), int64list);
-
       skuFuture.then((result) {
         if (result.code == 200) {
           SkuResult skuResult = SkuResult.fromJson(result.data);
           addCart(product, skuResult.id.toString());
         } else {
-          Bridge.showLongToast(result.msg);
+//          Bridge.showLongToast(result.msg);
+          addCart(product, product.skuId.toString());
         }
       });
     } else {
