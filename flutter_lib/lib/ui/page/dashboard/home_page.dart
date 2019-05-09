@@ -9,6 +9,7 @@ import 'package:flutter_lib/model/HomeCategory.dart';
 import 'package:flutter_lib/model/category.dart';
 import 'package:flutter_lib/model/product.dart';
 import 'package:flutter_lib/model/productitem.dart';
+import 'package:flutter_lib/model/promotion.dart';
 import 'package:flutter_lib/ui/inherited/home_provider.dart';
 import 'package:flutter_lib/ui/inherited/product_provider.dart';
 import 'package:flutter_lib/ui/widgets/banner/banner_widget.dart';
@@ -48,7 +49,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   HomeBloc homeBloc = HomeBloc();
 
-  final List<Product> discountList = ProductViewModel().getDiscountList();
 
   @override
   void initState() {
@@ -72,6 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   CustomScrollView buildCustomScrollView() {
+    homeBloc.getPromotion();
     return CustomScrollView(slivers: <Widget>[
       SliverList(
         delegate: SliverChildListDelegate(
@@ -87,30 +88,72 @@ class _MyHomePageState extends State<MyHomePage> {
           [
             buildAdvertisement(
                 "https://img20.360buyimg.com/mobilecms/s350x128_jfs/t8554/10/1668315357/28454/82af77f0/59be2c79Ne4502dcf.jpg!q90!cc_350x128.webp"),
-            buildDiscount(),
-            Container(
-              height: 1.0,
-              width: double.infinity,
-            ),
           ],
         ),
       ),
-      SliverGrid(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 1.0,
-          mainAxisSpacing: 1.0,
-          childAspectRatio: 1.88,
-        ),
-        delegate: SliverChildBuilderDelegate(
-          (BuildContext context, int index) {
-            return Container(
-              color: Colors.white,
-              child: buildDiscountItem(index, discountList[index]),
+      StreamBuilder<List<Promotion>>(
+        stream: homeBloc.promotions,
+        builder: (context, snapshot) {
+          if (snapshot.hasData && snapshot.data.isNotEmpty) {
+            return SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  buildDiscount(),
+                  Container(
+                    height: 1.0,
+                    width: double.infinity,
+                  ),
+                ],
+              ),
             );
-          },
-          childCount: discountList.length,
-        ),
+          } else {
+            return SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  Container(
+                    height: 0,
+                    width: 0,
+                  )
+                ],
+              ),
+            );
+          }
+        },
+      ),
+      StreamBuilder<List<Promotion>>(
+        stream: homeBloc.promotions,
+        builder: (context, snapshot) {
+          if (snapshot.hasData && snapshot.data.isNotEmpty) {
+            return SliverGrid(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 1.0,
+                mainAxisSpacing: 1.0,
+                childAspectRatio: 1.88,
+              ),
+              delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+                  return Container(
+                    color: Colors.white,
+                    child: buildDiscountItem(index, snapshot.data[index]),
+                  );
+                },
+                childCount: snapshot.data.length,
+              ),
+            );
+          } else {
+            return SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  Container(
+                    height: 0,
+                    width: 0,
+                  )
+                ],
+              ),
+            );
+          }
+        },
       ),
       SliverList(
         delegate: SliverChildListDelegate(
@@ -367,22 +410,26 @@ class _MyHomePageState extends State<MyHomePage> {
             Expanded(
               child: Container(),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                Text(
-                  "更多",
-                  style: TextStyle(color: UIData.ff999999, fontSize: 12),
-                ),
-                Padding(
-                  child: Icon(
-                    Icons.arrow_forward_ios,
-                    color: UIData.ff999999,
-                    size: 9,
+            Container(
+              width: 0,
+              height: 0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Text(
+                    "更多",
+                    style: TextStyle(color: UIData.ff999999, fontSize: 12),
                   ),
-                  padding: EdgeInsets.fromLTRB(2, 0, 12, 0),
-                ),
-              ],
+                  Padding(
+                    child: Icon(
+                      Icons.arrow_forward_ios,
+                      color: UIData.ff999999,
+                      size: 9,
+                    ),
+                    padding: EdgeInsets.fromLTRB(2, 0, 12, 0),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -470,7 +517,7 @@ class _MyHomePageState extends State<MyHomePage> {
     ));
   }
 
-  Container buildDiscountItem(int index, Product product) {
+  Container buildDiscountItem(int index, Promotion product) {
     return Container(
       child: InkWell(
         child: Row(
@@ -483,7 +530,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Padding(
                     padding: EdgeInsets.fromLTRB(12.0, 16.0, 0.0, 4.0),
                     child: Text(
-                      product.name,
+                      product.promotionTitle==null?"拜托 名字都不取一个?":product.promotionTitle,
                       maxLines: 1,
                       style: TextStyle(color: Color(0xFF353535), fontSize: 13),
                     ),
@@ -491,16 +538,37 @@ class _MyHomePageState extends State<MyHomePage> {
                   Padding(
                     padding: EdgeInsets.fromLTRB(12.0, 0.0, 0.0, 0.0),
                     child: Text(
-                      product.description,
+                      product.promotionDesc==null?"":product.promotionDesc,
                       maxLines: 1,
                       style: TextStyle(color: Color(0xFF999999), fontSize: 11),
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.fromLTRB(12.0, 8.0, 0.0, 0.0),
-                    child: Text(
-                      product.price,
-                      style: TextStyle(color: Color(0xFFEF2F2F), fontSize: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Expanded(
+                          child: Text(
+                            "￥" + (product.promotionPrice==null?"不要钱？":product.promotionPrice),
+                            style:
+                                TextStyle(color: Color(0xFFEF2F2F), fontSize: 15),
+                          ),
+                        ),
+                        RichText(
+                          text: new TextSpan(
+                            children: <TextSpan>[
+                              new TextSpan(
+                                text: product.sellPrice,
+                                style: TextStyle(
+                                  color: Color(0xFF999999),
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
                     ),
                   ),
                 ],
@@ -509,7 +577,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Padding(
               padding: EdgeInsets.fromLTRB(3.0, 12.0, 6.0, 0.0),
               child: UIData.getImageWithWHFit(
-                product.image,
+                product.imgUrl,
                 BoxFit.cover,
                 75.0,
                 75.0,
@@ -525,7 +593,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         onTap: () {
           Navigator.pushNamed(context, UIData.ShopDetailPage,
-              arguments: product.skuId);
+              arguments: product.productId);
         },
       ),
     );
