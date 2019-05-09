@@ -10,6 +10,7 @@ import 'package:flutter_lib/model/category.dart';
 import 'package:flutter_lib/model/product.dart';
 import 'package:flutter_lib/model/productitem.dart';
 import 'package:flutter_lib/model/promotion.dart';
+import 'package:flutter_lib/model/special.dart';
 import 'package:flutter_lib/ui/inherited/home_provider.dart';
 import 'package:flutter_lib/ui/inherited/product_provider.dart';
 import 'package:flutter_lib/ui/widgets/banner/banner_widget.dart';
@@ -49,7 +50,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   HomeBloc homeBloc = HomeBloc();
 
-
   @override
   void initState() {
     super.initState();
@@ -73,6 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   CustomScrollView buildCustomScrollView() {
     homeBloc.getPromotion();
+    homeBloc.getSpecial();
     return CustomScrollView(slivers: <Widget>[
       SliverList(
         delegate: SliverChildListDelegate(
@@ -165,10 +166,62 @@ class _MyHomePageState extends State<MyHomePage> {
             buildMustBay(
                 "https://img11.360buyimg.com/mobilecms/s350x250_jfs/t1/23441/6/14922/36622/5cac1223Edaf540b0/7df256141224531d.jpg!q90!cc_350x250.webp",
                 "https://img11.360buyimg.com/mobilecms/s350x250_jfs/t1/30730/6/10877/44332/5cb34d0cE9e0fcea6/9c3cde5807ab4186.jpg!q90!cc_350x250.webp"),
-            buildActivity(),
+
             buildHotShop(),
           ],
         ),
+      ),
+      StreamBuilder<List<Special>>(
+        stream: homeBloc.specials,
+        builder: (context, snapshot) {
+          if (snapshot.hasData && snapshot.data.isNotEmpty) {
+            return SliverGrid(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4,
+                crossAxisSpacing: 1.0,
+                mainAxisSpacing: 1.0,
+                childAspectRatio: 0.5,
+              ),
+              delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
+                  Special special = snapshot.data[index];
+                  return Center(
+                    child: GestureDetector(
+                      onTap: (){
+                        Navigator.pushNamed(context, UIData.ShopDetailPage,
+                            arguments: special.productId);
+                      },
+                      child: Container(
+                        color: Colors.white,
+                        child: buildActivityBottom(
+                            index,
+                            special.titleName == null
+                                ? "?"
+                                : special.titleName,
+                            special.specialDesc == null
+                                ? ""
+                                : special.specialDesc,
+                            special.imgUrl),
+                      ),
+                    ),
+                  );
+                },
+                childCount: snapshot.data.length,
+              ),
+            );
+          } else {
+            return SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  Container(
+                    height: 0,
+                    width: 0,
+                  )
+                ],
+              ),
+            );
+          }
+        },
       ),
       getFeatureGrid(),
     ]);
@@ -530,7 +583,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   Padding(
                     padding: EdgeInsets.fromLTRB(12.0, 16.0, 0.0, 4.0),
                     child: Text(
-                      product.promotionTitle==null?"拜托 名字都不取一个?":product.promotionTitle,
+                      product.promotionTitle == null
+                          ? "拜托 名字都不取一个?"
+                          : product.promotionTitle,
                       maxLines: 1,
                       style: TextStyle(color: Color(0xFF353535), fontSize: 13),
                     ),
@@ -538,7 +593,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   Padding(
                     padding: EdgeInsets.fromLTRB(12.0, 0.0, 0.0, 0.0),
                     child: Text(
-                      product.promotionDesc==null?"":product.promotionDesc,
+                      product.promotionDesc == null
+                          ? ""
+                          : product.promotionDesc,
                       maxLines: 1,
                       style: TextStyle(color: Color(0xFF999999), fontSize: 11),
                     ),
@@ -547,25 +604,39 @@ class _MyHomePageState extends State<MyHomePage> {
                     padding: EdgeInsets.fromLTRB(12.0, 8.0, 0.0, 0.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Expanded(
-                          child: Text(
-                            "￥" + (product.promotionPrice==null?"不要钱？":product.promotionPrice),
-                            style:
-                                TextStyle(color: Color(0xFFEF2F2F), fontSize: 15),
+                          child: Center(
+                            child: Text(
+                              "￥" +
+                                  (product.promotionPrice == null
+                                      ? "？"
+                                      : product.promotionPrice),
+                              style: TextStyle(
+                                  color: Color(0xFFEF2F2F), fontSize: 13),
+                            ),
                           ),
                         ),
-                        RichText(
-                          text: new TextSpan(
-                            children: <TextSpan>[
-                              new TextSpan(
-                                text: product.sellPrice,
-                                style: TextStyle(
-                                  color: Color(0xFF999999),
-                                  fontSize: 15,
-                                ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0, 0.0, 12.0, 0.0),
+                          child: Center(
+                            child: RichText(
+                              text: new TextSpan(
+                                children: <TextSpan>[
+                                  new TextSpan(
+                                    text: product.sellPrice == null
+                                        ? ""
+                                        : product.sellPrice,
+                                    style: TextStyle(
+                                      color: Color(0xFF999999),
+                                      fontSize: 11,
+                                      decoration: TextDecoration.lineThrough,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         )
                       ],
@@ -583,12 +654,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 75.0,
               ),
             ),
-//            index % 2 == 0
-//                ? Container()
-//                : Container(
-//                    width: 1.0,
-//                    color: Color(0xFFEEEEEE),
-//                  ),
           ],
         ),
         onTap: () {
@@ -647,177 +712,6 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Container buildActivity() {
-    return Container(
-      color: Colors.white,
-      height: 270.0,
-      child: Column(
-        children: <Widget>[
-          Expanded(
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: InkWell(
-                    child: buildActivityTopLeft(),
-                    //天天特价栏点击事件
-                    onTap: () {},
-                  ),
-                ),
-                Container(
-                  width: 1.0,
-                  color: Color(0xFFEEEEEE),
-                ),
-                Expanded(
-                  child: InkWell(
-                    child: buildActivityTopRight(),
-                    //品牌闪购点击事件
-                    onTap: () {},
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: buildActivityBottom(0, "天猫Outlets", "大品牌79元购",
-                      "https://img11.360buyimg.com/mobilecms/s110x110_jfs/t1/22034/24/5708/134994/5c41416cE61e9ab02/358c89e09077ac5c.png!q90!cc_110x110.webp"),
-                ),
-                Container(
-                  width: 1.0,
-                  color: Color(0xFFEEEEEE),
-                ),
-                Expanded(
-                  child: buildActivityBottom(1, "量贩优选", "1分钱疯抢",
-                      "https://img11.360buyimg.com/mobilecms/s110x110_jfs/t1/14748/13/13064/114779/5c9dc90fEcd69f15a/9a3ae485e894bf66.jpg!q90!cc_110x110.webp"),
-                ),
-                Container(
-                  width: 1.0,
-                  color: Color(0xFFEEEEEE),
-                ),
-                Expanded(
-                  child: buildActivityBottom(2, "淘宝心选", "官方自营品牌",
-                      "https://img11.360buyimg.com/mobilecms/s110x110_jfs/t1/23443/5/10735/27836/5c88a96aE59ff0726/5f43bec36e308837.jpg!q90!cc_110x110.webp"),
-                ),
-                Container(
-                  width: 1.0,
-                  color: Color(0xFFEEEEEE),
-                ),
-                Expanded(
-                  child: buildActivityBottom(3, "聚名品", "轻奢限量抢",
-                      "https://img11.360buyimg.com/mobilecms/s110x110_jfs/t1/29836/32/1174/55982/5c0fbfe7E5d0a5db9/3226b9a61def3bb3.jpg!q90!cc_110x110.webp"),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Column buildActivityTopLeft() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.fromLTRB(10.0, 10.0, 0.0, 4.0),
-          child: Text(
-            "天天特价",
-            style: TextStyle(color: Color(0xFFFF3507), fontSize: 14),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 4.0),
-          child: Text(
-            "9.9元包邮好货随心抢",
-            style: TextStyle(color: Color(0xFF999999), fontSize: 11),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
-          child: Row(
-            children: <Widget>[
-              UIData.getImageWithWHFit(
-                "https://img13.360buyimg.com/mobilecms/s140x140_jfs/t1/5542/25/10695/184499/5bcc0adcE903a8a97/c43423eedf3039cf.jpg!q90.webp",
-                BoxFit.cover,
-                70.0,
-                70.0,
-              ),
-              Expanded(
-                child: Container(),
-              ),
-              UIData.getImageWithWHFit(
-                "https://img12.360buyimg.com/mobilecms/s140x140_jfs/t28132/336/144040487/125605/531bc317/5be9427dN7a38cc7f.jpg!q90.webp",
-                BoxFit.cover,
-                70.0,
-                70.0,
-              ),
-            ],
-          ),
-        ),
-        Expanded(
-          child: Container(),
-        ),
-        Container(
-          height: 1.0,
-          color: Color(0xFFEEEEEE),
-        )
-      ],
-    );
-  }
-
-  Column buildActivityTopRight() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.fromLTRB(10.0, 10.0, 0.0, 4.0),
-          child: Text(
-            "品牌闪购",
-            style: TextStyle(color: Color(0xFF333333), fontSize: 14),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 4.0),
-          child: Text(
-            "每日签到 可抢5折卷",
-            style: TextStyle(color: Color(0xFF999999), fontSize: 11),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
-          child: Row(
-            children: <Widget>[
-              UIData.getImageWithWHFit(
-                "https://img11.360buyimg.com/mobilecms/s140x140_jfs/t1/36973/38/1895/117319/5cb453e9E93fc31a1/6edd54fcfd32ce9c.png!q90.webp",
-                BoxFit.cover,
-                70.0,
-                70.0,
-              ),
-              Expanded(
-                child: Container(),
-              ),
-              UIData.getImageWithWHFit(
-                "https://img11.360buyimg.com/mobilecms/s140x140_jfs/t1/9339/14/3383/296696/5bd69f43E5078db49/40af3283649c059e.jpg!q90.webp",
-                BoxFit.cover,
-                70.0,
-                70.0,
-              ),
-            ],
-          ),
-        ),
-        Expanded(
-          child: Container(),
-        ),
-        Container(
-          height: 1.0,
-          color: Color(0xFFEEEEEE),
-        )
-      ],
-    );
-  }
-
   InkWell buildActivityBottom(
       int type, String title, String subTitle, String imageUrl) {
     return InkWell(
@@ -849,18 +743,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      onTap: () {
-        switch (type) {
-          case 0:
-            break;
-          case 1:
-            break;
-          case 2:
-            break;
-          case 3:
-            break;
-        }
-      },
     );
   }
 

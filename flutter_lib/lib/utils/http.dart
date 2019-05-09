@@ -4,6 +4,7 @@ import 'package:flutter_lib/model/Banner.dart';
 import 'package:flutter_lib/model/HomeCategory.dart';
 import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/promotion.dart';
+import 'package:flutter_lib/model/special.dart';
 
 class Http {
   static const baseUrl = "https://mall.bchun.com";
@@ -88,8 +89,8 @@ class Http {
     if (result != null && result.code == 0) {
       dynamic data = result.data;
       List<dynamic> l = data["list"];
-      List<Promotion> c = l.map((f){
-        return Promotion.fromJson(f);
+      List<Special> c = l.map((f){
+        return Special.fromJson(f);
       }).toList();
       print(data);
       return c;
