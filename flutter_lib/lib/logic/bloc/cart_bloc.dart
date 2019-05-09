@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter_lib/bridge/cart_bridge.dart';
-import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/cart.dart';
 
@@ -62,7 +61,7 @@ class CartBloc {
 
   addSkuAmount(SkuWapper sku, int amount) {
     Future<Result> future =
-        CartBridge.delSku(sku.sku.productId, sku.goodsId, amount);
+        CartBridge.addSkuAmount(sku.sku.productId, sku.goodsId, amount);
     future.then((result) {
       if (result.code == 200) {
         Cart categoryList = Cart.fromJson(result.data);

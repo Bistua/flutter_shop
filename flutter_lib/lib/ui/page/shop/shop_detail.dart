@@ -147,11 +147,18 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                 ),
                 UIData.getShapeButton(
                     UIData.fffa4848, UIData.fff, 125, 50, "加入购物车", 16, 0, () {
+                  if (skuInfo == null) {
+                    print("执行加入购物车");
+                    addCart(product, product.skuId.toString());
+                    return;
+                  }
                   getSkuResult(product);
                 }),
                 UIData.getShapeButton(
                     UIData.ffffa517, UIData.fff, 110, 50, "立即购买", 16, 0, () {
-                  addCart(product, product.skuId.toString());
+                  if (skuInfo == null) {
+                    addCart(product, product.skuId.toString());
+                  }
                   Navigator.push(
                       context,
                       new MaterialPageRoute(
@@ -561,19 +568,19 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                     padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
                     child: Divider(),
                   ),
-            Padding(
-              padding: EdgeInsets.all(15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "在线支付运费0元",
-                    style: TextStyle(color: UIData.ff353535, fontSize: 15),
-                  ),
-                  Icon(Icons.arrow_forward_ios),
-                ],
-              ),
-            ),
+//            Padding(
+//              padding: EdgeInsets.all(15),
+//              child: Row(
+//                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                children: <Widget>[
+//                  Text(
+//                    "在线支付运费0元",
+//                    style: TextStyle(color: UIData.ff353535, fontSize: 15),
+//                  ),
+//                  Icon(Icons.arrow_forward_ios),
+//                ],
+//              ),
+//            ),
           ],
         ),
       ),
@@ -671,6 +678,10 @@ class ShopDetailPageState extends State<ShopDetailPage> {
             18,
             5,
             () {
+              if (skuInfo == null) {
+                addCart(product, product.skuId.toString());
+                return;
+              }
               getSkuResult(product);
             },
           ),
@@ -757,6 +768,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
           SkuResult skuResult = SkuResult.fromJson(result.data);
           addCart(product, skuResult.id.toString());
         } else {
+          print("获取sku 加入购物车");
 //          Bridge.showLongToast(result.msg);
           addCart(product, product.skuId.toString());
         }
@@ -767,6 +779,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
   }
 
   void addCart(ProductDetail product, String skuId) {
+    print("skuId:=" + skuId);
     Future<Result> future = CartBridge.addSku(
         productId,
         product.id.toString(),
@@ -775,7 +788,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
         0,
         "规格",
         product.name,
-        product.medias[0].url);
+        product.medias.length == 0 ? "" : product.medias[0].url);
     future.then((result) {
       if (result.code == 200) {
         Cart categoryList = Cart.fromJson(result.data);

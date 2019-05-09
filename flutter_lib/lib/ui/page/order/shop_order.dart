@@ -224,7 +224,9 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                       padding: EdgeInsets.fromLTRB(12, 18, 12, 8),
                       child: Text(name,
                           style:
-                              TextStyle(fontSize: 12, color: UIData.ff353535)),
+                              TextStyle(fontSize: 12, color: UIData.ff353535),
+                          softWrap: false,
+                          overflow: TextOverflow.ellipsis),
                     ),
 //                    Padding(
 //                      padding: EdgeInsets.fromLTRB(12, 0, 13, 0),

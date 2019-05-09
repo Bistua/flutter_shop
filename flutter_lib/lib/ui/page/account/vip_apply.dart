@@ -113,7 +113,8 @@ class VipApplyPageState extends State<VipApplyPage> {
                       borderRadius: new BorderRadius.circular(8.0),
                       color: Color(0xFF9E8B69))),
               onTap: () {
-                Navigator.pushNamed(context, UIData.MineWalletPage,arguments: 0);
+//                Navigator.pushNamed(context, UIData.MineWalletPage,arguments: 0);
+                Bridge.showShortToast("功能未开通");
               },
             )),
       ],

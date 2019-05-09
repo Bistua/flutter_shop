@@ -58,19 +58,25 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
         stream: rebateBloc.rebateInfo,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            if (snapshot.data == null || snapshot.data.isEmpty) {
-              return EmptyWidget.WithSliverList(snapshot.error, () {
-                userInfoBloc.getUserInfo();
-              });
-            } else {
-              return getSliverChild(snapshot.data);
-            }
-          } else if (snapshot.hasError) {
-            return EmptyWidget.WithSliverList(snapshot.error, () {
-              rebateBloc.getRebatList();
-            });
+//            if (snapshot.data == null || snapshot.data.isEmpty) {
+//              return EmptyWidget.WithSliverList(snapshot.error, () {
+//                userInfoBloc.getUserInfo();
+//              });
+//            } else {
+//              return getSliverChild(snapshot.data);
+//            }
+//          } else if (snapshot.hasError) {
+//            return EmptyWidget.WithSliverList(snapshot.error, () {
+//              rebateBloc.getRebatList();
+//            });
+//          } else {
+//            return progress();
+//          }
+            return getSliverChild(snapshot.data);
           } else {
-            return progress();
+            return EmptyWidget.WithSliverList("", () {
+//              rebateBloc.getRebatList();
+            });
           }
         });
   }
@@ -160,7 +166,7 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
               buildHeader(userInfo),
               buildVipInfo(userInfo),
               buildPayInfo(userInfo),
-              buildFriendsPayInfoList(),
+              buildFriendsPayInfoList(userInfo),
             ],
           ),
         ),
@@ -169,39 +175,42 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
     );
   }
 
-  Padding buildFriendsPayInfoList() {
+  Padding buildFriendsPayInfoList(Userinfo userInfo) {
+    bool isDIsplay = ((userInfo.inviteNum == "0") || (userInfo == null));
     return Padding(
-      padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
-      child: new Container(
-        child: new Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, 13, 0, 15),
-              child: new Column(
-                children: <Widget>[
-                  new Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+      child: new Offstage(
+          offstage: isDIsplay,
+          child: new Container(
+            child: new Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 13, 0, 15),
+                  child: new Column(
                     children: <Widget>[
-                      Image.asset(
-                        'images/icon_ranking.png',
-                        width: 19.0,
-                        height: 19.0,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(7, 0, 0, 0),
-                        child: UIData.getTextWidget(
-                            "好友成功消费排行版", UIData.ff353535, 15),
+                      new Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Image.asset(
+                            'images/icon_ranking.png',
+                            width: 19.0,
+                            height: 19.0,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(7, 0, 0, 0),
+                            child: UIData.getTextWidget(
+                                "好友成功消费排行版", UIData.ff353535, 15),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          )),
+      padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
     );
   }
 
@@ -284,7 +293,7 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
             Padding(
               padding: EdgeInsets.fromLTRB(15, 8, 15, 10),
               child: UIData.getMaxWidthButton("立即成为VIP", () {
-                Navigator.pushNamed(context, UIData.VipApplyPage,arguments: 0);
+                Navigator.pushNamed(context, UIData.VipApplyPage, arguments: 0);
               }),
             ),
           ],

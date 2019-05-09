@@ -230,29 +230,29 @@ class _UserHomeState extends State<UserHomeListPage> {
                       );
                     },
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, UIData.MineCollectionPage);
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Padding(
-                          child: Image.asset(
-                            "images/icon_shoucang.png",
-                            width: 35.0,
-                            height: 35.0,
-                          ),
-                          padding: EdgeInsets.fromLTRB(0, 12, 0, 8),
-                        ),
-                        Text(
-                          "我的收藏",
-                          style:
-                              TextStyle(color: UIData.ff353535, fontSize: 12),
-                        ),
-                      ],
-                    ),
-                  ),
+//                  GestureDetector(
+//                    onTap: () {
+//                      Navigator.pushNamed(context, UIData.MineCollectionPage);
+//                    },
+//                    child: Column(
+//                      mainAxisAlignment: MainAxisAlignment.center,
+//                      children: <Widget>[
+//                        Padding(
+//                          child: Image.asset(
+//                            "images/icon_shoucang.png",
+//                            width: 35.0,
+//                            height: 35.0,
+//                          ),
+//                          padding: EdgeInsets.fromLTRB(0, 12, 0, 8),
+//                        ),
+//                        Text(
+//                          "我的收藏",
+//                          style:
+//                              TextStyle(color: UIData.ff353535, fontSize: 12),
+//                        ),
+//                      ],
+//                    ),
+//                  ),
                   GestureDetector(
                     onTap: () {
 //                      Navigator.pushNamed(context, UIData.MineCollectionPage);
@@ -694,12 +694,12 @@ class _UserHomeState extends State<UserHomeListPage> {
                 children: <Widget>[
                   //金额
                   Text(
-                    "13",
+                    userInfo == null ? "0" : userInfo.balanceAmt,
                     style: TextStyle(color: Colors.white, fontSize: 15.0),
                   ),
                   //返现余额
                   Text(
-                    "可用余额",
+                    "返现余额",
                     style: TextStyle(color: Colors.white, fontSize: 11.0),
                   ),
                 ],
@@ -714,22 +714,29 @@ class _UserHomeState extends State<UserHomeListPage> {
             height: 30.0,
           ),
           Expanded(
-              child: Padding(
-                child: Column(
-                  children: <Widget>[
-                    //金额
-                    Text(
-                      "6",
-                      style: TextStyle(color: Colors.white, fontSize: 15.0),
-                    ),
-                    //返现余额
-                    Text(
-                      "邀请好友",
-                      style: TextStyle(color: Colors.white, fontSize: 11.0),
-                    ),
-                  ],
+              child: GestureDetector(
+                onTap: () {
+                  //如果用户信息为空，那么我们就要去登录了，如果用户信息不为空，这时候，就要验证下
+                  Navigator.pushNamed(context, UIData.IviteFriendsPage,
+                      arguments: 0);
+                },
+                child: Padding(
+                  child: Column(
+                    children: <Widget>[
+                      //金额
+                      Text(
+                        userInfo == null ? "0" : userInfo.inviteNum,
+                        style: TextStyle(color: Colors.white, fontSize: 15.0),
+                      ),
+                      //返现余额
+                      Text(
+                        "邀请好友",
+                        style: TextStyle(color: Colors.white, fontSize: 11.0),
+                      ),
+                    ],
+                  ),
+                  padding: EdgeInsets.fromLTRB(22, 0, 0, 0),
                 ),
-                padding: EdgeInsets.fromLTRB(22, 0, 0, 0),
               ),
               flex: 1),
           Container(
