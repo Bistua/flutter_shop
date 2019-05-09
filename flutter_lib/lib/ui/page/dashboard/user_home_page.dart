@@ -62,8 +62,8 @@ class _UserHomeState extends State<UserHomeListPage> {
   Widget buildBannerVipHeader() {
     print("创建邀请成为vip");
     return Container(
-        padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
-        child: Card(
+        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+        child: Container(
             child: GestureDetector(
                 onTap: () {
                   Navigator.pushNamed(context, UIData.VipApplyPage,
@@ -84,35 +84,86 @@ class _UserHomeState extends State<UserHomeListPage> {
                               )),
                           Padding(
                               padding: EdgeInsets.fromLTRB(15, 13, 0, 12),
-                              child: Text(
-                                //文本区域
-                                "福利来袭,会员首冲",
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    //文本区域
+                                    "福利来袭！ 会员首冲享7折优惠",
+                                    style: TextStyle(
+                                        color: Color(0xFFF0E6B8),
+                                        fontSize: 12.0),
+                                  ),
+                                  RichText(
+                                    text: TextSpan(
+                                      text: '原价',
+                                      style: TextStyle(
+                                          color: Color(0xFFF0E6B8),
+                                          fontSize: 12.0),
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                          text: '20元',
+                                          style: TextStyle(
+                                              color: Color(0xFFFB5149),
+                                              fontSize: 12.0,
+                                              decoration:
+                                                  TextDecoration.lineThrough,
+                                              decorationStyle:
+                                                  TextDecorationStyle.solid,
+                                              decorationColor:
+                                                  Color(0xFFFB5149)),
+                                        ),
+                                        TextSpan(
+                                          text: '现在只需要',
+                                          style: TextStyle(
+                                              color: Color(0xFFF0E6B8),
+                                              fontSize: 12.0),
+                                        ),
+                                        TextSpan(
+                                          text: '10元',
+                                          style: TextStyle(
+                                              color: Color(0xFFFB5149),
+                                              fontSize: 15.0),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
                               ))
                         ]),
                         flex: 2,
                       ),
-                      Expanded(
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                FlatButton(
-                                  padding: EdgeInsets.fromLTRB(0, 0, 15, 0),
-                                  child: Text(
-                                    '立即开通',
-                                    style: TextStyle(
-                                        color: Color.fromARGB(130, 113, 37, 1),
-                                        fontSize: 12.0),
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(13))),
-                                  color: Color.fromARGB(230, 207, 102, 1),
-                                )
-                              ]),
-                          flex: 1
-                          //立即开通
-                          )
-                    ]))));
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(0, 0, 12, 0),
+                        child: InkWell(
+                          child: Container(
+                            height: 25.0,
+                            width: 70.0,
+                            alignment: Alignment.center,
+                            child: Text(
+                              '立即开通',
+                              style: TextStyle(
+                                  color: Color(0xFF827125), fontSize: 12.0),
+                            ),
+                            decoration: BoxDecoration(
+                                color: Color(0xFFE6CF66),
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.circular(12.5)),
+                          ),
+                          onTap: () {
+                            Navigator.pushNamed(context, UIData.VipApplyPage,
+                                arguments: 0);
+                          },
+                        ),
+                      ),
+                    ]))),
+        decoration: new BoxDecoration(
+          borderRadius: new BorderRadius.circular(8.0),
+          gradient: LinearGradient(colors: [
+            Color(0xFF615B50),
+            Color(0xFF444039),
+          ], begin: FractionalOffset(1, 0), end: FractionalOffset(0, 1)),
+        ));
   }
 
   /*
@@ -127,7 +178,7 @@ class _UserHomeState extends State<UserHomeListPage> {
 //      child: Card(),
 //    );
     return Container(
-      padding: EdgeInsets.fromLTRB(10, 5, 15, 10),
+      padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
       child: Card(
         child: Column(
           children: <Widget>[
@@ -242,7 +293,7 @@ class _UserHomeState extends State<UserHomeListPage> {
                           padding: EdgeInsets.fromLTRB(0, 12, 0, 8),
                         ),
                         Text(
-                          "注销",
+                          "退出登录",
                           style:
                               TextStyle(color: UIData.ff353535, fontSize: 12),
                         ),
@@ -264,7 +315,7 @@ class _UserHomeState extends State<UserHomeListPage> {
   Widget buildOrdlerHeader(Userinfo userInfo) {
     print("创建订单条目");
     return Container(
-      padding: EdgeInsets.fromLTRB(10, 60, 15, 5),
+      padding: EdgeInsets.fromLTRB(10, 25, 10, 0),
       child: Card(
         child: Column(
           children: <Widget>[
@@ -289,14 +340,13 @@ class _UserHomeState extends State<UserHomeListPage> {
                       children: <Widget>[
                         Text(
                           "查看全部订单",
-                          style: TextStyle(
-                              color: Color.fromARGB(153, 153, 153, 1),
-                              fontSize: 12),
+                          style:
+                              TextStyle(color: Color(0xFF999999), fontSize: 12),
                         ),
                         Padding(
                           child: Icon(
                             Icons.arrow_forward_ios,
-                            color: Color.fromARGB(153, 153, 153, 1),
+                            color: Color(0xFF999999),
                             size: 12,
                           ),
                           padding: EdgeInsets.fromLTRB(5, 0, 15, 0),
@@ -633,7 +683,7 @@ class _UserHomeState extends State<UserHomeListPage> {
    */
   Padding getMoneyWidget(Userinfo userInfo) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(0, 5, 8, 16),
+      padding: EdgeInsets.fromLTRB(0, 15, 8, 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -643,38 +693,64 @@ class _UserHomeState extends State<UserHomeListPage> {
               child: Column(
                 children: <Widget>[
                   //金额
-                  Text("123123"),
+                  Text(
+                    "13",
+                    style: TextStyle(color: Colors.white, fontSize: 15.0),
+                  ),
                   //返现余额
-                  Text("123123"),
+                  Text(
+                    "可用余额",
+                    style: TextStyle(color: Colors.white, fontSize: 11.0),
+                  ),
                 ],
               ),
               padding: EdgeInsets.fromLTRB(22, 0, 0, 0),
             ),
             flex: 1,
           ),
-          Divider(),
+          Container(
+            color: Colors.white,
+            width: 0.5,
+            height: 30.0,
+          ),
           Expanded(
               child: Padding(
                 child: Column(
                   children: <Widget>[
                     //金额
-                    Text("123123"),
+                    Text(
+                      "6",
+                      style: TextStyle(color: Colors.white, fontSize: 15.0),
+                    ),
                     //返现余额
-                    Text("123123"),
+                    Text(
+                      "邀请好友",
+                      style: TextStyle(color: Colors.white, fontSize: 11.0),
+                    ),
                   ],
                 ),
                 padding: EdgeInsets.fromLTRB(22, 0, 0, 0),
               ),
               flex: 1),
-          Divider(),
+          Container(
+            color: Colors.white,
+            width: 0.5,
+            height: 30.0,
+          ),
           Expanded(
             child: Padding(
               child: Column(
                 children: <Widget>[
                   //金额
-                  Text("123123"),
+                  Text(
+                    "0",
+                    style: TextStyle(color: Colors.white, fontSize: 15.0),
+                  ),
                   //返现余额
-                  Text("123123"),
+                  Text(
+                    "优惠券",
+                    style: TextStyle(color: Colors.white, fontSize: 11.0),
+                  ),
                 ],
               ),
               padding: EdgeInsets.fromLTRB(22, 0, 0, 0),
@@ -784,7 +860,7 @@ class _UserHomeState extends State<UserHomeListPage> {
       slivers: <Widget>[
         SliverAppBar(
           centerTitle: false,
-          expandedHeight: 155.0,
+          expandedHeight: 198.0,
           floating: false,
           pinned: false,
           //固定在顶部
@@ -792,9 +868,30 @@ class _UserHomeState extends State<UserHomeListPage> {
           flexibleSpace: FlexibleSpaceBar(
             centerTitle: false,
             background: GestureDetector(
-              child: Container(
-                color: UIData.fffa4848,
-                child: getHeaderWidget(userInfo),
+              child: Stack(
+                children: <Widget>[
+                  Image.asset(
+                    'images/icon_mine_bg.png',
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                  ),
+                  Positioned(
+                    right: 0,
+                    top: 0,
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(8, 8, 15, 8),
+                      child: InkWell(
+                        child: Image.asset(
+                          'images/icon_setting.png',
+                          width: 23.0,
+                          height: 23.0,
+                        ),
+                        onTap: () {},
+                      ),
+                    ),
+                  ),
+                  getHeaderWidget(userInfo),
+                ],
               ),
               onTap: () {
                 //如果用户信息为空，那么我们就要去登录了，如果用户信息不为空，这时候，就要验证下

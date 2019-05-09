@@ -97,6 +97,8 @@ flutter:
     - images/no_cart.png
     - images/icon_vip_bg.png
     - images/icon_vip_crown.png
+    - images/icon_mine_bg.png
+    - images/icon_setting.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
