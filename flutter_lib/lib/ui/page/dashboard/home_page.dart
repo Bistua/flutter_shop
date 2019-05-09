@@ -166,8 +166,6 @@ class _MyHomePageState extends State<MyHomePage> {
             buildMustBay(
                 "https://img11.360buyimg.com/mobilecms/s350x250_jfs/t1/23441/6/14922/36622/5cac1223Edaf540b0/7df256141224531d.jpg!q90!cc_350x250.webp",
                 "https://img11.360buyimg.com/mobilecms/s350x250_jfs/t1/30730/6/10877/44332/5cb34d0cE9e0fcea6/9c3cde5807ab4186.jpg!q90!cc_350x250.webp"),
-
-            buildHotShop(),
           ],
         ),
       ),
@@ -183,26 +181,21 @@ class _MyHomePageState extends State<MyHomePage> {
                 childAspectRatio: 0.5,
               ),
               delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
+                (BuildContext context, int index) {
                   Special special = snapshot.data[index];
                   return Center(
                     child: GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         Navigator.pushNamed(context, UIData.ShopDetailPage,
                             arguments: special.productId);
                       },
-                      child: Container(
-                        color: Colors.white,
-                        child: buildActivityBottom(
-                            index,
-                            special.titleName == null
-                                ? "?"
-                                : special.titleName,
-                            special.specialDesc == null
-                                ? ""
-                                : special.specialDesc,
-                            special.imgUrl),
-                      ),
+                      child: buildActivityBottom(
+                          index,
+                          special.titleName == null ? "?" : special.titleName,
+                          special.specialDesc == null
+                              ? ""
+                              : special.specialDesc,
+                          special.imgUrl),
                     ),
                   );
                 },
@@ -222,6 +215,13 @@ class _MyHomePageState extends State<MyHomePage> {
             );
           }
         },
+      ),
+      SliverList(
+        delegate: SliverChildListDelegate(
+          [
+            buildHotShop(),
+          ],
+        ),
       ),
       getFeatureGrid(),
     ]);
@@ -716,7 +716,8 @@ class _MyHomePageState extends State<MyHomePage> {
       int type, String title, String subTitle, String imageUrl) {
     return InkWell(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Padding(
             padding: EdgeInsets.fromLTRB(10.0, 10.0, 0.0, 4.0),
@@ -746,14 +747,18 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Container buildHotShop() {
-    return Container(
-      color: Color(0xFFF6F6F6),
-      alignment: Alignment.center,
-      height: 62.0,
-      child: Image.asset(
-        "images/icon_home_hot_shop.png",
-        height: 15.0,
+  Widget buildHotShop() {
+    return Center(
+      child: Container(
+        color: Color(0xFFF6F6F6),
+        alignment: Alignment.center,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
+          child: Image.asset(
+            "images/icon_home_hot_shop.png",
+            height: 15.0,
+          ),
+        ),
       ),
     );
   }
