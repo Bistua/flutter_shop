@@ -178,7 +178,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 crossAxisCount: 4,
                 crossAxisSpacing: 1.0,
                 mainAxisSpacing: 1.0,
-                childAspectRatio: 0.5,
+                childAspectRatio: 0.73,
               ),
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
@@ -753,7 +753,7 @@ class _MyHomePageState extends State<MyHomePage> {
         color: Color(0xFFF6F6F6),
         alignment: Alignment.center,
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
+          padding: const EdgeInsets.fromLTRB(0, 20, 0, 16),
           child: Image.asset(
             "images/icon_home_hot_shop.png",
             height: 15.0,
