@@ -35,7 +35,7 @@ class OrderActionWidget extends StatelessWidget{
                       future.then((r) {
                         if (r.code == 200) {
                           Bridge.showLongToast("取消成功");
-                          click;
+                          click();
                         } else {
                           Bridge.showLongToast(r.msg);
                         }
@@ -92,7 +92,7 @@ class OrderActionWidget extends StatelessWidget{
                       future.then((r) {
                         if (r.code == 200) {
                           Bridge.showLongToast("取消成功");
-                          click;
+                          click();
                         } else {
                           Bridge.showLongToast(r.msg);
                         }
@@ -147,7 +147,7 @@ class OrderActionWidget extends StatelessWidget{
                       future.then((r) {
                         if (r.code == 200) {
                           Bridge.showLongToast("已确认收货");
-                          click;
+                          click();
                         } else {
                           Bridge.showLongToast(r.msg);
                         }
