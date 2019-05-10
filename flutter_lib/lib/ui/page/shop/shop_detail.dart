@@ -108,7 +108,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                   child: Stack(
                     children: <Widget>[
                       Container(
-                        margin:const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                        margin:const EdgeInsets.fromLTRB(10, 0, 5, 0),
                         child: Center(
 
                             child: IconButton(
@@ -141,7 +141,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                 Expanded(
                   flex: 1,
                   child: Container(
-                    margin:const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                    margin:const EdgeInsets.fromLTRB(5, 0, 10, 0),
                     child: IconButton(
                       icon: Image.asset(
                         'images/icon_collection.png',
