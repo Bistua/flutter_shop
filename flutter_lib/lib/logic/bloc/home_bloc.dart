@@ -48,4 +48,11 @@ class HomeBloc {
   getSpecial() async{
     specialController.add(await Http.getSpecial());
   }
+
+  getHomeAll(){
+    getImages();
+    getHomeCategoryList();
+    getPromotion();
+    getSpecial();
+  }
 }

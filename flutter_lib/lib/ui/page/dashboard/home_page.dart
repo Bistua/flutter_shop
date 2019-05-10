@@ -3,11 +3,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/logic/bloc/home_bloc.dart';
 import 'package:flutter_lib/logic/bloc/product_bloc.dart';
-import 'package:flutter_lib/logic/viewmodel/product_view_model.dart';
 import 'package:flutter_lib/model/Banner.dart';
 import 'package:flutter_lib/model/HomeCategory.dart';
 import 'package:flutter_lib/model/category.dart';
-import 'package:flutter_lib/model/product.dart';
 import 'package:flutter_lib/model/productitem.dart';
 import 'package:flutter_lib/model/promotion.dart';
 import 'package:flutter_lib/model/special.dart';
@@ -785,6 +783,42 @@ class _MyHomePageState extends State<MyHomePage> {
                     imageUrl,
                   ),
                 ),
+                Positioned(
+                    bottom: 8,
+                    left: 10,
+                    right: 10,
+                    child: new Container(
+                      width: 140,
+                      color: Colors.white,
+                      child: new Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          new Padding(
+                            padding: EdgeInsets.fromLTRB(5, 0, 5, 4),
+                            child: Container(
+                              width: 140,
+                              child: new Text(
+                                product.name,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontSize: 12, color: UIData.ff353535),
+                              ),
+                            ),
+                          ),
+                          new Padding(
+                            padding: EdgeInsets.fromLTRB(5, 4, 5, 4),
+                            child: new Text(
+                              "￥" + product.price.toString(),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(color: Colors.red, fontSize: 16),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )),
               ],
             ),
           ),

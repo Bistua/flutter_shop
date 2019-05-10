@@ -107,17 +107,21 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                   flex: 1,
                   child: Stack(
                     children: <Widget>[
-                      Center(
-                          child: IconButton(
-                              icon: Image.asset(
-                                'images/icon_shop_car.png',
-                                width: 22.0,
-                                height: 22.0,
-                              ),
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                    context, UIData.ShopCartListPage);
-                              })),
+                      Container(
+                        margin:const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                        child: Center(
+
+                            child: IconButton(
+                                icon: Image.asset(
+                                  'images/icon_shop_car.png',
+                                  width: 22.0,
+                                  height: 22.0,
+                                ),
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, UIData.ShopCartListPage);
+                                })),
+                      ),
                       Positioned(
                         right: 8,
                         top: 8,
@@ -136,17 +140,20 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                 ),
                 Expanded(
                   flex: 1,
-                  child: IconButton(
-                    icon: Image.asset(
-                      'images/icon_collection.png',
-                      width: 22.0,
-                      height: 22.0,
+                  child: Container(
+                    margin:const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                    child: IconButton(
+                      icon: Image.asset(
+                        'images/icon_collection.png',
+                        width: 22.0,
+                        height: 22.0,
+                      ),
+                      onPressed: () {},
                     ),
-                    onPressed: () {},
                   ),
                 ),
                 UIData.getShapeButton(
-                    UIData.fffa4848, UIData.fff, 125, 50, "加入购物车", 16, 0, () {
+                    UIData.fffa4848, UIData.fff, 100, 50, "加入购物车", 16, 0, () {
                   if (skuInfo == null) {
                     print("执行加入购物车");
                     addCart(product, product.skuId.toString());
@@ -155,7 +162,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                   getSkuResult(product);
                 }),
                 UIData.getShapeButton(
-                    UIData.ffffa517, UIData.fff, 110, 50, "立即购买", 16, 0, () {
+                    UIData.ffffa517, UIData.fff, 95, 50, "立即购买", 16, 0, () {
                   if (skuInfo == null) {
                     addCart(product, product.skuId.toString());
                   }
@@ -627,10 +634,13 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  UIData.getImageWithWH(
-                    product.medias[0].url,
-                    90,
-                    90,
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    child: UIData.getImageWithWH(
+                      product.medias[0].url,
+                      90,
+                      90,
+                    ),
                   ),
                   Expanded(
                     child: Column(
