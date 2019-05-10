@@ -148,7 +148,9 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                         width: 22.0,
                         height: 22.0,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, UIData.MineCollectionPage);
+                      },
                     ),
                   ),
                 ),
