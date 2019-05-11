@@ -6,7 +6,7 @@ import 'package:flutter_lib/bridge/order_list_bridge.dart';
 import 'package:flutter_lib/model/orderListItem.dart';
 import 'package:flutter_lib/model/orderdetail.dart';
 import 'package:flutter_lib/model/orderlist.dart';
-import 'package:flutter_lib/utils/uidata.dart';
+import 'package:flutter_lib/utils/BristuaRouter.dart';
 
 class OrderListBloc {
   final orderListController = StreamController<List<OrderItem>>.broadcast();
@@ -31,7 +31,10 @@ class OrderListBloc {
       } else {
         print(result.msg == null ? "未返回错误信息" : result.msg);
         if (result.code == 401) {
-          Navigator.pushNamed(context, UIData.login);
+          //此处需要判断啊，不要认为很简单的
+          //Navigator.pushNamed(context, UIData.login);
+          //
+          BristuaRouter.routerUserLogin(context);
         }
         orderListController.addError(result);
       }

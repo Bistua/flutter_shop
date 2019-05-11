@@ -653,12 +653,18 @@ class _UserHomeState extends State<UserHomeListPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Padding(
-                  child: Text(userInfo == null ? "点此登录" : userInfo.nickName,
+                  child: Text(
+                      userInfo == null || userInfo.nickName == null
+                          ? "点此登录"
+                          : userInfo.nickName,
                       style: TextStyle(color: UIData.fff, fontSize: 18)),
                   padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                 ),
                 Padding(
-                  child: Text(userInfo == null ? "登录后获取更多精彩内容" : userInfo.phone,
+                  child: Text(
+                      userInfo == null || userInfo.phone == null
+                          ? "登录后获取更多精彩内容"
+                          : userInfo.phone,
                       style: TextStyle(color: UIData.fff, fontSize: 12)),
                   padding: EdgeInsets.fromLTRB(0, 7, 0, 0),
                 )
@@ -694,7 +700,9 @@ class _UserHomeState extends State<UserHomeListPage> {
                 children: <Widget>[
                   //金额
                   Text(
-                    userInfo == null ? "0" : userInfo.balanceAmt,
+                    userInfo == null || userInfo.balanceAmt == null
+                        ? "0"
+                        : userInfo.balanceAmt,
                     style: TextStyle(color: Colors.white, fontSize: 15.0),
                   ),
                   //返现余额
@@ -725,7 +733,9 @@ class _UserHomeState extends State<UserHomeListPage> {
                     children: <Widget>[
                       //金额
                       Text(
-                        userInfo == null ? "0" : userInfo.inviteNum,
+                        userInfo == null || userInfo.inviteNum == null
+                            ? "0"
+                            : userInfo.inviteNum,
                         style: TextStyle(color: Colors.white, fontSize: 15.0),
                       ),
                       //返现余额
@@ -838,7 +848,7 @@ class _UserHomeState extends State<UserHomeListPage> {
   Widget bodyData() {
     userInfoBloc.getUserInfo();
     return StreamBuilder<Userinfo>(
-        stream: userInfoBloc.userInfoStream.stream,
+        stream: userInfoBloc.userInfo,
         builder: (context, snapshot) {
           return getWidget(snapshot.data);
         });
@@ -922,7 +932,7 @@ class _UserHomeState extends State<UserHomeListPage> {
   }
 
   ImageProvider getImage(Userinfo userInfo) {
-    if (userInfo == null) {
+    if (userInfo == null || userInfo.userImgUrl == null) {
       return new AssetImage("images/user_icon.png");
     }
     return new NetworkImage(userInfo.userImgUrl);
@@ -933,7 +943,7 @@ class _UserHomeState extends State<UserHomeListPage> {
    */
   void gotoLogin(Userinfo userInfo) {
     print("跳转至登录页面");
-    if (userInfo == null) {
+    if (userInfo == null || userInfo.phone == null) {
       Navigator.pushNamed(context, UIData.Login);
       return;
     }
