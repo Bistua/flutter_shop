@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/bridge/product_bridge.dart';
 import 'package:flutter_lib/bridge/sku_bridge.dart';
 import 'package:flutter_lib/logic/viewmodel/product_view_model.dart';
@@ -58,7 +57,7 @@ class ProductBloc {
   }
 
   queryProducts(String query, bool orderByAes) {
-    ProductBridge.queryProduct(query, orderByAes).then((result) {
+    ProductBridge.queryProduct(query, orderByAes, 1, 1000).then((result) {
       if (result.code == 200) {
         productController.add(null);
         ProductList productList = ProductList.fromJson(result.data);

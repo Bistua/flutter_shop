@@ -30,14 +30,15 @@ class ProductBridge {
    *
    *获取产品列表
    */
-  static Future<Result> queryProduct(String query, bool orderBy) async {
+  static Future<Result> queryProduct(
+      String query, bool orderBy, int pageNo, int pageSize) async {
     return Bridge.dispenser({
-      "method": "queryProduct",
+      "method": "product_search_list",
       "params": {
         "action": component,
         "arguments": {
-          "method": "queryProduct",
-          "data": {"query": query, "orderBy": orderBy}
+          "method": "product_search_list",
+          "data": {"keywold": query, "pageNo": pageNo, "pageSize": pageSize}
         }
       }
     });

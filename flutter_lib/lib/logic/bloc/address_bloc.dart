@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_lib/bridge/address_bridge.dart';
 import 'package:flutter_lib/model/address.dart';
 import 'package:flutter_lib/model/addresslist.dart';
-import 'package:flutter_lib/utils/uidata.dart';
+import 'package:flutter_lib/utils/BristuaRouter.dart';
 
 class AddressBloc {
   final addressController = StreamController<List<Address>>();
@@ -23,7 +23,7 @@ class AddressBloc {
       } else {
         print(result.msg == null ? "未返回错误信息" : result.msg);
         if (result.code == 401) {
-          Navigator.pushNamed(context, UIData.login);
+          BristuaRouter.routerUserLogin(context);
         }
         addressController.add(List());
       }
