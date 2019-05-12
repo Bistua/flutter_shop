@@ -12,6 +12,7 @@ import 'package:flutter_lib/ui/page/address/add_edit_address.dart';
 import 'package:flutter_lib/ui/page/address/address_list.dart';
 import 'package:flutter_lib/ui/widgets/common_dialogs.dart';
 import 'package:flutter_lib/ui/widgets/error_status_widget.dart';
+import 'package:flutter_lib/utils/BristuaRouter.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class ShopOrderListPage extends StatefulWidget {
@@ -61,8 +62,7 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
           Cart cart = snapshot.data;
           if (snapshot.hasError) {
             Result result = snapshot.error;
-            return ErrorStatusWidget.order(result.code, result.msg, "点击重试",
-                () {
+            return ErrorStatusWidget.order(result.code, result.msg, "点击重试", () {
               cartBloc.findCart();
             });
           } else if (snapshot.hasData) {
@@ -170,20 +170,31 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                       var orders =
                           orderGoodses.map((f) => (f.toJson())).toList();
 
-                      Future<Result> future =
-                          OrderBridge.submitOrder(userAddressId, true, orders);
-                      future.then((result) {
-                        if (result.code == 200) {
-                          if (result.data == null) {
-                            Bridge.showLongToast("订单号获取失败");
-                            return;
+                      if (userAddressId != null && userAddressId.isNotEmpty) {
+                        Future<Result> future = OrderBridge.submitOrder(
+                            userAddressId, true, orders);
+                        future.then((result) {
+                          if (result.code == 200) {
+                            if (result.data == null) {
+                              Bridge.showLongToast("订单号获取失败");
+                              return;
+                            }
+                            showPayDialog(context, cart.totalMoney,
+                                OrderResult.fromJson(result.data).orderId);
+                          } else {
+                            if (result.code == 401) {
+                              BristuaRouter.routerUserLogin(context);
+                            } else {
+                              Bridge.showLongToast(result.msg);
+                            }
                           }
-                          showPayDialog(context, cart.totalMoney,
-                              OrderResult.fromJson(result.data).orderId);
-                        } else {
-                          Bridge.showLongToast(result.msg);
-                        }
-                      });
+                        });
+                      } else {
+                        Navigator.push(
+                            context,
+                            new MaterialPageRoute(
+                                builder: (context) => new AddressListPage()));
+                      }
                     }),
                   ),
                 ],
