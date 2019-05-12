@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_lib/model/Result.dart';
-import 'package:flutter_lib/utils/uidata.dart';
 
 class Bridge {
   static const _bridgePlatform =

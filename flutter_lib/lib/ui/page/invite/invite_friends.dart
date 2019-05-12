@@ -75,7 +75,7 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
 //          }
             return getSliverChild(snapshot.data);
           } else {
-            getNone();
+           return getNone();
           }
         });
   }
