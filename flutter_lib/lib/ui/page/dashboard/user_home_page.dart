@@ -172,11 +172,6 @@ class _UserHomeState extends State<UserHomeListPage> {
   Widget buildCommonTools(Userinfo userInfo) {
     print("常用工具");
     homeItems = homeItemViewModel.getMenuItems(userInfo);
-//    return Padding(padding: EdgeInsets.all(10), child: Card());
-//    return Container(
-//      padding: EdgeInsets.all(10),
-//      child: Card(),
-//    );
     return Container(
       padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
       child: Card(
@@ -224,10 +219,14 @@ class _UserHomeState extends State<UserHomeListPage> {
                       ],
                     ),
                     onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        UIData.InviteInputPage,
-                      );
+                      if (userInfo.phone == null) {
+                        Navigator.pushNamed(context, UIData.Login);
+                      } else {
+                        Navigator.pushNamed(
+                          context,
+                          UIData.InviteInputPage,
+                        );
+                      }
                     },
                   ),
 //                  GestureDetector(
@@ -321,8 +320,12 @@ class _UserHomeState extends State<UserHomeListPage> {
           children: <Widget>[
             GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, UIData.AllShopOrderPage,
-                    arguments: 0);
+                if (userInfo.phone == null) {
+                  Navigator.pushNamed(context, UIData.Login);
+                } else {
+                  Navigator.pushNamed(context, UIData.AllShopOrderPage,
+                      arguments: 0);
+                }
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -386,14 +389,22 @@ class _UserHomeState extends State<UserHomeListPage> {
                       ],
                     ),
                     onTap: () {
-                      Navigator.pushNamed(context, UIData.AllShopOrderPage,
-                          arguments: 1);
+                      if (userInfo.phone == null) {
+                        Navigator.pushNamed(context, UIData.Login);
+                      } else {
+                        Navigator.pushNamed(context, UIData.AllShopOrderPage,
+                            arguments: 1);
+                      }
                     },
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, UIData.AllShopOrderPage,
-                          arguments: 2);
+                      if (userInfo.phone == null) {
+                        Navigator.pushNamed(context, UIData.Login);
+                      } else {
+                        Navigator.pushNamed(context, UIData.AllShopOrderPage,
+                            arguments: 2);
+                      }
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -416,8 +427,12 @@ class _UserHomeState extends State<UserHomeListPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, UIData.AllShopOrderPage,
-                          arguments: 3);
+                      if (userInfo.phone == null) {
+                        Navigator.pushNamed(context, UIData.Login);
+                      } else {
+                        Navigator.pushNamed(context, UIData.AllShopOrderPage,
+                            arguments: 3);
+                      }
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -440,8 +455,12 @@ class _UserHomeState extends State<UserHomeListPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, UIData.AllShopOrderPage,
-                          arguments: 4);
+                      if (userInfo.phone == null) {
+                        Navigator.pushNamed(context, UIData.Login);
+                      } else {
+                        Navigator.pushNamed(context, UIData.AllShopOrderPage,
+                            arguments: 4);
+                      }
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
