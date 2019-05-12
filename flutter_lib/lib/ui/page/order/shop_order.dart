@@ -27,7 +27,7 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
   CartBloc cartBloc = CartBloc();
   AddressBloc addressBloc = AddressBloc();
 
-  String userAddressId = "123123";
+  String userAddressId;
 
   @override
   Widget build(BuildContext context) {
