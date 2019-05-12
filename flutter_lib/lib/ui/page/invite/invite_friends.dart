@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/logic/bloc/rebate_bloc.dart';
 import 'package:flutter_lib/logic/bloc/userinfo_bloc.dart';
+import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/rebateList.dart';
 import 'package:flutter_lib/model/userinfo.dart';
 import 'package:flutter_lib/ui/widgets/empty_widget.dart';
+import 'package:flutter_lib/ui/widgets/error_status_widget.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 //import 'package:clipboard_manager/clipboard_manager.dart';
 
@@ -35,12 +37,13 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
             if (snapshot.data != null) {
               return getCustomScroll(snapshot.data);
             } else {
-              return EmptyWidget.WithSliverList("暂无数据", () {
+              return ErrorStatusWidget.order(0, "暂无数据", "点击重试", () {
                 userInfoBloc.getUserInfo();
               });
             }
           } else if (snapshot.hasError) {
-            return EmptyWidget.WithSliverList(snapshot.error, () {
+            Result result = snapshot.error;
+            return ErrorStatusWidget.order(result.code, "暂无数据", "点击重试", () {
               userInfoBloc.getUserInfo();
             });
           } else {
@@ -74,11 +77,22 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
 //          }
             return getSliverChild(snapshot.data);
           } else {
-            return EmptyWidget.WithSliverList("", () {
-//              rebateBloc.getRebatList();
-            });
+            getNone();
           }
         });
+  }
+
+  SliverList getNone() {
+    return SliverList(
+      delegate: SliverChildListDelegate(
+        [
+          Container(
+            height: 0,
+            width: 0,
+          )
+        ],
+      ),
+    );
   }
 
   Widget progress() {

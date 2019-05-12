@@ -52,7 +52,7 @@ class ProductBloc {
         productController.add(productList.list);
       } else {
         print(result.msg);
-        productController.add(List());
+        productController.addError(result);
       }
     });
   }
@@ -93,7 +93,7 @@ class ProductBloc {
         print("getProduct sku add");
       } else {
         print(result.msg);
-        skuInfoController.add(SkuInfo());
+        skuInfoController.addError(result);
       }
     });
   }

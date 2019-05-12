@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/logic/bloc/product_bloc.dart';
+import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/product.dart';
 import 'package:flutter_lib/model/productitem.dart';
 import 'package:flutter_lib/ui/page/shop/shop_detail.dart';
 import 'package:flutter_lib/ui/widgets/empty_widget.dart';
+import 'package:flutter_lib/ui/widgets/error_status_widget.dart';
 import 'package:flutter_lib/ui/widgets/shop_tab_item.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
@@ -54,14 +56,16 @@ class ShopListState extends State<ShopListPage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data.isEmpty) {
-              return EmptyWidget("无数据", () {
+              return ErrorStatusWidget.order(0, "暂无数据", "点击重试", () {
                 productBloc.getProducts(widget.categoryId, true);
               });
             } else {
               return productGrid(snapshot.data);
             }
           } else if (snapshot.hasError) {
-            return EmptyWidget(snapshot.error, () {
+            Result result = snapshot.error;
+            return ErrorStatusWidget.order(result.code, snapshot.error, "点击重试",
+                () {
               productBloc.getProducts(widget.categoryId, true);
             });
           } else {
@@ -131,7 +135,8 @@ class ShopListState extends State<ShopListPage> {
                                     "￥" + product.price.toString(),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(color: Colors.red, fontSize: 16),
+                                    style: TextStyle(
+                                        color: Colors.red, fontSize: 16),
                                   ),
                                 ),
                               ],
@@ -145,8 +150,7 @@ class ShopListState extends State<ShopListPage> {
                 Navigator.push(
                     context,
                     new MaterialPageRoute(
-                        builder: (context) =>
-                            new ShopDetailPage(product.id)));
+                        builder: (context) => new ShopDetailPage(product.id)));
               },
             );
           }),

@@ -12,6 +12,7 @@ import 'package:flutter_lib/ui/page/address/add_edit_address.dart';
 import 'package:flutter_lib/ui/page/address/address_list.dart';
 import 'package:flutter_lib/ui/widgets/common_dialogs.dart';
 import 'package:flutter_lib/ui/widgets/empty_widget.dart';
+import 'package:flutter_lib/ui/widgets/error_status_widget.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class ShopOrderListPage extends StatefulWidget {
@@ -59,13 +60,23 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
         stream: cartBloc.productItems,
         builder: (context, snapshot) {
           Cart cart = snapshot.data;
-          return snapshot.hasData
-              ? (cart == null
-                  ? EmptyWidget("无数据", () {
-                      cartBloc.findCart();
-                    })
-                  : buildBody(cart))
-              : Center(child: CircularProgressIndicator());
+          if (snapshot.hasError) {
+            Result result = snapshot.error;
+            return ErrorStatusWidget.order(result.code, snapshot.error, "点击重试",
+                () {
+              cartBloc.findCart();
+            });
+          } else if (snapshot.hasData) {
+            if (cart == null) {
+              return ErrorStatusWidget.order(0, "没有数据", "点击重试", () {
+                cartBloc.findCart();
+              });
+            } else {
+              cartBloc.findCart();
+            }
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
         });
   }
 

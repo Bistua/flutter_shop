@@ -60,7 +60,7 @@ class _ShopCartListState extends State<ShopCartListPage> {
                 cart.products == null ||
                 cart.products.isEmpty ||
                 cart.totalCounts == 0)) {
-              return ErrorStatusWidget.cart(0, "暂无购物记录~", () {
+              return ErrorStatusWidget.cart(0, "暂无购物记录~", "立即购物", () {
                 if (widget.showBackBtn) {
                   Navigator.pop(context, true);
                 } else {
@@ -73,7 +73,7 @@ class _ShopCartListState extends State<ShopCartListPage> {
             }
           } else if (snapshot.hasError) {
             Result result = snapshot.error;
-            return ErrorStatusWidget.cart(result.code, result.msg, () {
+            return ErrorStatusWidget.cart(result.code, result.msg, "立即购物", () {
               if (widget.showBackBtn) {
                 Navigator.pop(context, true);
               } else {

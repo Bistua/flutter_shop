@@ -5,6 +5,7 @@ import 'package:flutter_lib/logic/bloc/home_bloc.dart';
 import 'package:flutter_lib/logic/bloc/product_bloc.dart';
 import 'package:flutter_lib/model/Banner.dart';
 import 'package:flutter_lib/model/HomeCategory.dart';
+import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/category.dart';
 import 'package:flutter_lib/model/productitem.dart';
 import 'package:flutter_lib/model/promotion.dart';
@@ -13,6 +14,7 @@ import 'package:flutter_lib/ui/inherited/home_provider.dart';
 import 'package:flutter_lib/ui/inherited/product_provider.dart';
 import 'package:flutter_lib/ui/widgets/banner/banner_widget.dart';
 import 'package:flutter_lib/ui/widgets/empty_widget.dart';
+import 'package:flutter_lib/ui/widgets/error_status_widget.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -327,7 +329,7 @@ class _MyHomePageState extends State<MyHomePage> {
               stream: homeBloc.tabItems,
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
-                  return EmptyWidget(snapshot.error, () {
+                  return ErrorStatusWidget.order(0,"暂无数据",snapshot.error, () {
                     homeBloc.getImages();
                   });
                 } else if (snapshot.hasData) {
@@ -339,7 +341,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           print(position);
                         });
                   } else {
-                    return EmptyWidget("暂无数据", () {
+                    return ErrorStatusWidget.order(0,"暂无数据","点击重试", () {
                       homeBloc.getImages();
                     });
                   }
@@ -480,12 +482,13 @@ class _MyHomePageState extends State<MyHomePage> {
               if (snapshot.data.isNotEmpty) {
                 return getFeatursGrid(snapshot.data);
               } else {
-                return EmptyWidget.WithSliverList("暂无数据", () {
+                return ErrorStatusWidget.order(0,"暂无数据","点击重试", () {
                   productBloc.getFeatures(1, 10);
                 });
               }
             } else if (snapshot.hasError) {
-              return EmptyWidget.WithSliverList(snapshot.error, () {
+                Result result = snapshot.error;
+              return ErrorStatusWidget.order(result.code,snapshot.error,"点击重试", () {
                 productBloc.getFeatures(1, 10);
               });
             } else {

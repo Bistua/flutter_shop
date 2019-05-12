@@ -45,7 +45,7 @@ class OrderListBloc {
         orderDetailController.add(orderDetail);
       } else {
         print(result.msg == null ? "未返回错误信息" : result.msg);
-        orderDetailController.add(OrderDetail.O(""));
+        orderDetailController.addError(result);
       }
     });
   }

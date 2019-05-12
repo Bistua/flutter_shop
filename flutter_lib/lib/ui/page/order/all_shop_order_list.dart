@@ -67,14 +67,14 @@ class TagState extends State<TagOrderPage> {
             if (snapshot.data.isNotEmpty) {
               return buildListView(type, list);
             } else {
-              return ErrorStatusWidget.order(0,"暂无订单", () {
+              return ErrorStatusWidget.order(0,"暂无订单","去下单", () {
                 Navigator.pushNamed(context, UIData.ShopCategoryList,
                     arguments: "全部分类");
               });
             }
           } else if (snapshot.hasError) {
             Result result = snapshot.error;
-            return ErrorStatusWidget.order(result.code,result.msg, () {
+            return ErrorStatusWidget.order(result.code,result.msg,"去下单", () {
               Navigator.pushNamed(context, UIData.ShopCategoryList,
                   arguments: "全部分类");
             });

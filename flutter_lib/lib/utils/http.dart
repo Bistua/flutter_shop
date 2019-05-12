@@ -42,60 +42,25 @@ class Http {
     }
   }
 
-  static Future<List<DataListBean>> getBanner() async {
+  static Future<Result> getBanner() async {
     Result result = await getResult(baseUrl + banner);
-    if (result != null && result.code == 0) {
-      dynamic data = result.data;
-      List<dynamic> l = data["list"];
-      List<DataListBean> c = l.map((f){
-        return DataListBean.fromJson(f);
-      }).toList();
-      print(data);
-      return c;
-    }
-    return null;
+
+    return result;
   }
 
-  static Future<List<HomeCategory>> getHomeCategoryList() async {
+  static Future<Result> getHomeCategoryList() async {
     Result result = await getResult(baseUrl + homeCategory);
-    if (result != null && result.code == 0) {
-      dynamic data = result.data;
-      List<dynamic> l = data["list"];
-      List<HomeCategory> c = l.map((f){
-        return HomeCategory.fromJson(f);
-      }).toList();
-      print(data);
-      return c;
-    }
-    return null;
+    return result;
   }
 
   static getPromotion() async{
     Result result = await getResult(baseUrl + "/mall/get/app/index/promotion");
-    if (result != null && result.code == 0) {
-      dynamic data = result.data;
-      List<dynamic> l = data["list"];
-      List<Promotion> c = l.map((f){
-        return Promotion.fromJson(f);
-      }).toList();
-      print(data);
-      return c;
-    }
-    return null;
+    return result;
   }
 
   static getSpecial() async{
     Result result = await getResult(baseUrl + "/mall/get/app/index/special");
-    if (result != null && result.code == 0) {
-      dynamic data = result.data;
-      List<dynamic> l = data["list"];
-      List<Special> c = l.map((f){
-        return Special.fromJson(f);
-      }).toList();
-      print(data);
-      return c;
-    }
-    return null;
+    return result;
   }
 
 }

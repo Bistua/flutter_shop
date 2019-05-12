@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/logic/bloc/category_bloc.dart';
+import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/category.dart';
 import 'package:flutter_lib/ui/inherited/category_provider.dart';
 import 'package:flutter_lib/ui/widgets/empty_widget.dart';
+import 'package:flutter_lib/ui/widgets/error_status_widget.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class ShopCategoryListPage extends StatefulWidget {
@@ -65,14 +67,16 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
           stream: categoryBloc.categoryItems,
           builder: (context, snapshot) {
             if (snapshot.hasError) {
-              return EmptyWidget(snapshot.error, () {
+              Result result = snapshot.error;
+              return ErrorStatusWidget.order(
+                  result.code, snapshot.error, "点击重试", () {
                 categoryBloc.getCategories();
               });
             } else if (snapshot.hasData) {
               if (snapshot.data.isNotEmpty) {
                 return body(snapshot.data);
               } else {
-                return EmptyWidget("暂无数据", () {
+                return ErrorStatusWidget.order(0, "暂无数据", "点击重试", () {
                   categoryBloc.getCategories();
                 });
               }
@@ -166,19 +170,27 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
         child: StreamBuilder<List<Category>>(
             stream: categoryBloc.suCategoryItems,
             builder: (context, snapshot) {
-              return snapshot.hasData
-                  ? (snapshot.data.isEmpty
-                      ? EmptyWidget.WithSliverList("无子分类数据,点击重试", () {
-                          categoryBloc.getSubCategories(categoryId);
-                        })
-                      : sliverGrid(snapshot.data))
-                  : SliverList(
-                      delegate: SliverChildListDelegate(
-                        [
-                          Center(child: CircularProgressIndicator()),
-                        ],
-                      ),
-                    );
+              if (snapshot.hasData) {
+                if (snapshot.data.isEmpty) {
+                  return ErrorStatusWidget.order(0, "暂无数据", "点击重试", () {
+                    categoryBloc.getCategories();
+                  });
+                } else {
+                  return sliverGrid(snapshot.data);
+                }
+              } else if (snapshot.hasError) {
+                return ErrorStatusWidget.order(0, "暂无数据", "点击重试", () {
+                  categoryBloc.getCategories();
+                });
+              } else {
+                return SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      Center(child: CircularProgressIndicator()),
+                    ],
+                  ),
+                );
+              }
             }));
   }
 

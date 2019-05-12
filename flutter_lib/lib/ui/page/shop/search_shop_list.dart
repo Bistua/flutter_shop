@@ -54,10 +54,10 @@ class SearchShopListState extends State<SearchShopListPage> {
           } else {
             if (snapshot.hasError) {
               Result result = snapshot.error;
-              return ErrorStatusWidget.search(result.code, result.msg, null);
+              return ErrorStatusWidget.search(result.code, result.msg,null, null);
             } else if (snapshot.hasData) {
               if (snapshot.data == null || snapshot.data.isEmpty) {
-                return ErrorStatusWidget.search(0, "暂无搜索结果\n换个搜索词试试", null);
+                return ErrorStatusWidget.search(0, "暂无搜索结果\n换个搜索词试试",null, null);
               } else {
                 return productGrid(snapshot.data);
               }

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/logic/bloc/oder_list_bloc.dart';
+import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/orderListItem.dart';
 import 'package:flutter_lib/model/orderdetail.dart';
 import 'package:flutter_lib/ui/page/order/order_action_widget.dart';
 import 'package:flutter_lib/ui/widgets/empty_widget.dart';
+import 'package:flutter_lib/ui/widgets/error_status_widget.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class OrderDetailPage extends StatefulWidget {
@@ -34,14 +36,16 @@ class OrderDetailPageState extends State<OrderDetailPage> {
         stream: orderListBloc.orderDetail,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return EmptyWidget(snapshot.error, () {
+            Result result = snapshot.error;
+            return ErrorStatusWidget.order(result.code, snapshot.error, "点击重试", () {
               orderListBloc.getOrderDetail(widget.orderId);
             });
           } else if (snapshot.hasData) {
             if (snapshot.data != null && snapshot.data.orderId.isNotEmpty) {
               return buildStack(snapshot.data);
             } else {
-              return EmptyWidget("无数据", () {
+
+              return ErrorStatusWidget.order(0, "暂无数据", "点击重试", () {
                 orderListBloc.getOrderDetail(widget.orderId);
               });
             }

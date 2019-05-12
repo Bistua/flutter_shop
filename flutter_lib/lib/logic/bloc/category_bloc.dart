@@ -38,7 +38,7 @@ class CategoryBloc {
         if (categoryController.isClosed || categoryController.isPaused) {
           return;
         }
-        categoryController.add(List());
+        categoryController.addError(result);
       }
     });
   }
@@ -55,7 +55,7 @@ class CategoryBloc {
         if (subCategoryController.isClosed || subCategoryController.isPaused) {
           return;
         }
-        subCategoryController.add(List());
+        subCategoryController.addError(result);
       }
     });
   }

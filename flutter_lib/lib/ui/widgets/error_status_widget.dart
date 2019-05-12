@@ -12,17 +12,19 @@ class ErrorStatusWidget extends StatelessWidget {
 //  601：连接超时
   var tab;
   String error;
-  String action;
+  String actionTxt;
 
   ErrorStatusWidget(
     this.errorCode,
     this.error,
     this.tab,
+    this.actionTxt,
   );
 
   ErrorStatusWidget.order(
     this.errorCode,
     this.error,
+    this.actionTxt,
     this.tab,
   ) {
     type = 0;
@@ -31,6 +33,7 @@ class ErrorStatusWidget extends StatelessWidget {
   ErrorStatusWidget.search(
     this.errorCode,
     this.error,
+    this.actionTxt,
     this.tab,
   ) {
     type = 1;
@@ -39,6 +42,7 @@ class ErrorStatusWidget extends StatelessWidget {
   ErrorStatusWidget.cart(
     this.errorCode,
     this.error,
+    this.actionTxt,
     this.tab,
   ) {
     type = 2;
@@ -46,19 +50,39 @@ class ErrorStatusWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget img = Image.asset(UIData.net_error,width: 196,height: 196,);
+    Widget img = Image.asset(
+      UIData.net_error,
+      width: 196,
+      height: 196,
+    );
     if (type == 0) {
-      img = Image.asset(UIData.no_order,width: 196,height: 196,);
+      img = Image.asset(
+        UIData.no_order,
+        width: 196,
+        height: 196,
+      );
     } else if (type == 1) {
-      img = Image.asset(UIData.no_search_result,width: 196,height: 196,);
+      img = Image.asset(
+        UIData.no_search_result,
+        width: 196,
+        height: 196,
+      );
     } else if (type == 2) {
-      img = Image.asset(UIData.no_cart,width: 196,height: 196,);
+      img = Image.asset(
+        UIData.no_cart,
+        width: 196,
+        height: 196,
+      );
     }
     switch (errorCode) {
       case 404:
       case 600:
       case 601:
-        img = Image.asset(UIData.net_error,width: 196,height: 196,);
+        img = Image.asset(
+          UIData.net_error,
+          width: 196,
+          height: 196,
+        );
         break;
     }
     if (type == 0) {
@@ -72,7 +96,7 @@ class ErrorStatusWidget extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(32.0),
                   child: Text(
-                    error == null ? "暂无订单" : error,
+                    error == null ? "暂无数据" : error,
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -84,12 +108,14 @@ class ErrorStatusWidget extends StatelessWidget {
                   width: 105,
                   height: 30,
                   child: FlatButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                          side: BorderSide(
-                              color: Color(0xFFF9F3FF), style: BorderStyle.solid, width: 2)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        side: BorderSide(
+                            color: Color(0xFFF9F3FF),
+                            style: BorderStyle.solid,
+                            width: 2)),
                     onPressed: tab,
-                    child: new Text("去下单"),
+                    child: new Text(actionTxt),
                   ),
                 ),
               ),
@@ -137,7 +163,9 @@ class ErrorStatusWidget extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(15)),
                     side: BorderSide(
-                        color: Color(0xFFF9F3FF), style: BorderStyle.solid, width: 2)),
+                        color: Color(0xFFF9F3FF),
+                        style: BorderStyle.solid,
+                        width: 2)),
                 onPressed: tab,
                 child: new Text("立即购物"),
               ),

@@ -15,6 +15,7 @@ import 'package:flutter_lib/model/skuresult.dart';
 import 'package:flutter_lib/ui/inherited/product_provider.dart';
 import 'package:flutter_lib/ui/page/order/shop_order.dart';
 import 'package:flutter_lib/ui/widgets/empty_widget.dart';
+import 'package:flutter_lib/ui/widgets/error_status_widget.dart';
 import 'package:flutter_lib/ui/widgets/rating_bar.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
@@ -80,10 +81,16 @@ class ShopDetailPageState extends State<ShopDetailPage> {
             if (snapshot.data != null && snapshot.data.name.isNotEmpty) {
               return buidBody(snapshot.data);
             } else {
-              return EmptyWidget("暂无数据", () {});
+              return ErrorStatusWidget.order(0, "数据异常", "点击重试", () {
+                productBloc.getProduct(productId);
+              });
             }
           } else if (snapshot.hasError) {
-            return EmptyWidget(snapshot.error, () {});
+            Result result = snapshot.error;
+            return ErrorStatusWidget.order(result.code, snapshot.error, "点击重试",
+                () {
+              productBloc.getProduct(productId);
+            });
           } else {
             return Center(child: CircularProgressIndicator());
           }
@@ -108,9 +115,8 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                   child: Stack(
                     children: <Widget>[
                       Container(
-                        margin:const EdgeInsets.fromLTRB(10, 0, 5, 0),
+                        margin: const EdgeInsets.fromLTRB(10, 0, 5, 0),
                         child: Center(
-
                             child: IconButton(
                                 icon: Image.asset(
                                   'images/icon_shop_car.png',
@@ -141,7 +147,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                 Expanded(
                   flex: 1,
                   child: Container(
-                    margin:const EdgeInsets.fromLTRB(5, 0, 10, 0),
+                    margin: const EdgeInsets.fromLTRB(5, 0, 10, 0),
                     child: IconButton(
                       icon: Image.asset(
                         'images/icon_collection.png',
@@ -262,7 +268,11 @@ class ShopDetailPageState extends State<ShopDetailPage> {
           if (snapshot.hasData) {
             return buildVipInfo(product, snapshot.data);
           } else if (snapshot.hasError) {
-            return EmptyWidget(snapshot.error, () {});
+            Result result = snapshot.error;
+            return ErrorStatusWidget.order(result.code, snapshot.error, "点击重试",
+                () {
+              productBloc.getProductSkuInfo(productId);
+            });
           } else {
             return Center(child: CircularProgressIndicator());
           }
