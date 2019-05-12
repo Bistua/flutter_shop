@@ -15,15 +15,19 @@ class Bridge {
     var params = dispenser['params'];
     print(method);
     print(params);
-    String data = await _bridgePlatform.invokeMethod(method, params);
     Result result;
-    if (data != null) {
-      print("bridge result:" + data);
-      result = Result.fromJson(data);
-    } else {
-      result = Result.fromJson(json.encode({"code": -1, "msg": "无结果"}));
-    }
+    try {
+      String data = await _bridgePlatform.invokeMethod(method, params);
 
+      if (data != null) {
+        print("bridge result:" + data);
+        result = Result.fromJson(data);
+      } else {
+        result = Result.fromJson(json.encode({"code": -1, "msg": "无结果"}));
+      }
+    } catch (e) {
+      result = Result.fromJson(json.encode({"code": -1, "msg": e.toString()}));
+    }
     return result;
   }
 
