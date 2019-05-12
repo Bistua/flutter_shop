@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/logic/bloc/product_bloc.dart';
 import 'package:flutter_lib/logic/viewmodel/tab_view_model.dart';
 import 'package:flutter_lib/model/Result.dart';
@@ -112,8 +113,10 @@ class SearchShopListState extends State<SearchShopListPage> {
               onTap: () {
                 setState(() {
                   _searchQuery.text = chip;
-                  chips.add(_searchQuery.text);
-                  _doSearch();
+                  if(_searchQuery.text.isNotEmpty) {
+                    chips.add(_searchQuery.text);
+                    _doSearch();
+                  }
                 });
               },
             );
@@ -246,8 +249,12 @@ class SearchShopListState extends State<SearchShopListPage> {
         ),
       ),
       onTap: () {
-        chips.add(_searchQuery.text);
-        _doSearch();
+        if (_searchQuery.text.isNotEmpty) {
+          chips.add(_searchQuery.text);
+          _doSearch();
+        } else {
+          Bridge.showShortToast("请输入搜索内容");
+        }
       },
     );
   }
@@ -299,17 +306,19 @@ class SearchShopListState extends State<SearchShopListPage> {
   }
 
   void _doSearch() {
-    if (_searchQuery.text.isEmpty) {
+    if (_searchQuery.text.isEmpty && chips.isNotEmpty) {
       setState(() {
         showHistory = true;
         print("showHistory:" + showHistory.toString());
       });
     } else {
-      productBloc.queryProducts(_searchQuery.text, true);
-      setState(() {
-        showHistory = false;
-        print("showHistory:" + showHistory.toString());
-      });
+      if(_searchQuery.text.isNotEmpty) {
+        productBloc.queryProducts(_searchQuery.text, true);
+        setState(() {
+          showHistory = false;
+          print("showHistory:" + showHistory.toString());
+        });
+      }
     }
   }
 }
