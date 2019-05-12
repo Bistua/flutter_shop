@@ -71,7 +71,7 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                 cartBloc.findCart();
               });
             } else {
-              cartBloc.findCart();
+              return buildBody(cart);
             }
           } else {
             return Center(child: CircularProgressIndicator());
