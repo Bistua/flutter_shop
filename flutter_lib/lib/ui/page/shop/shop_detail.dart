@@ -14,7 +14,6 @@ import 'package:flutter_lib/model/skuinfo.dart';
 import 'package:flutter_lib/model/skuresult.dart';
 import 'package:flutter_lib/ui/inherited/product_provider.dart';
 import 'package:flutter_lib/ui/page/order/shop_order.dart';
-import 'package:flutter_lib/ui/widgets/empty_widget.dart';
 import 'package:flutter_lib/ui/widgets/error_status_widget.dart';
 import 'package:flutter_lib/ui/widgets/rating_bar.dart';
 import 'package:flutter_lib/utils/uidata.dart';
@@ -87,7 +86,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
             }
           } else if (snapshot.hasError) {
             Result result = snapshot.error;
-            return ErrorStatusWidget.order(result.code, snapshot.error, "点击重试",
+            return ErrorStatusWidget.order(result.code, result.msg, "点击重试",
                 () {
               productBloc.getProduct(productId);
             });
@@ -269,7 +268,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
             return buildVipInfo(product, snapshot.data);
           } else if (snapshot.hasError) {
             Result result = snapshot.error;
-            return ErrorStatusWidget.order(result.code, snapshot.error, "点击重试",
+            return ErrorStatusWidget.order(result.code, result.msg, "点击重试",
                 () {
               productBloc.getProductSkuInfo(productId);
             });

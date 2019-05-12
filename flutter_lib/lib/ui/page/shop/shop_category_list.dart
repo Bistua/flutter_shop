@@ -3,7 +3,6 @@ import 'package:flutter_lib/logic/bloc/category_bloc.dart';
 import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/category.dart';
 import 'package:flutter_lib/ui/inherited/category_provider.dart';
-import 'package:flutter_lib/ui/widgets/empty_widget.dart';
 import 'package:flutter_lib/ui/widgets/error_status_widget.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
@@ -69,7 +68,7 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
             if (snapshot.hasError) {
               Result result = snapshot.error;
               return ErrorStatusWidget.order(
-                  result.code, snapshot.error, "点击重试", () {
+                  result.code, result.msg, "点击重试", () {
                 categoryBloc.getCategories();
               });
             } else if (snapshot.hasData) {
@@ -179,7 +178,8 @@ class ShopCategoryListState extends State<ShopCategoryListPage> {
                   return sliverGrid(snapshot.data);
                 }
               } else if (snapshot.hasError) {
-                return ErrorStatusWidget.order(0, "暂无数据", "点击重试", () {
+                Result result = snapshot.error;
+                return ErrorStatusWidget.order(result.code, result.msg, "点击重试", () {
                   categoryBloc.getCategories();
                 });
               } else {

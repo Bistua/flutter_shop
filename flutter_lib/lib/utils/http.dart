@@ -1,10 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter_lib/model/Banner.dart';
-import 'package:flutter_lib/model/HomeCategory.dart';
+
 import 'package:flutter_lib/model/Result.dart';
-import 'package:flutter_lib/model/promotion.dart';
-import 'package:flutter_lib/model/special.dart';
 
 class Http {
   static const baseUrl = "https://mall.bchun.com";
@@ -38,7 +35,7 @@ class Http {
       }
     } catch (exception) {
       result = exception.toString();
-      return Result.fromJson(json.encode({"code": -1, "msg": result}));
+      return Result.fromJson(json.encode({"code": -1, "msg": "网络异常，请检查网络设置"}));
     }
   }
 

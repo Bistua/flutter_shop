@@ -11,7 +11,6 @@ import 'package:flutter_lib/model/ordergoods.dart';
 import 'package:flutter_lib/ui/page/address/add_edit_address.dart';
 import 'package:flutter_lib/ui/page/address/address_list.dart';
 import 'package:flutter_lib/ui/widgets/common_dialogs.dart';
-import 'package:flutter_lib/ui/widgets/empty_widget.dart';
 import 'package:flutter_lib/ui/widgets/error_status_widget.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
@@ -62,7 +61,7 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
           Cart cart = snapshot.data;
           if (snapshot.hasError) {
             Result result = snapshot.error;
-            return ErrorStatusWidget.order(result.code, snapshot.error, "点击重试",
+            return ErrorStatusWidget.order(result.code, result.msg, "点击重试",
                 () {
               cartBloc.findCart();
             });

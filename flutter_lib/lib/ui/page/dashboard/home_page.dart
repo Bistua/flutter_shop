@@ -13,7 +13,6 @@ import 'package:flutter_lib/model/special.dart';
 import 'package:flutter_lib/ui/inherited/home_provider.dart';
 import 'package:flutter_lib/ui/inherited/product_provider.dart';
 import 'package:flutter_lib/ui/widgets/banner/banner_widget.dart';
-import 'package:flutter_lib/ui/widgets/empty_widget.dart';
 import 'package:flutter_lib/ui/widgets/error_status_widget.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
@@ -329,7 +328,8 @@ class _MyHomePageState extends State<MyHomePage> {
               stream: homeBloc.tabItems,
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
-                  return ErrorStatusWidget.order(0,"暂无数据",snapshot.error, () {
+                  Result result = snapshot.error;
+                  return ErrorStatusWidget.order(result.code,result.msg,"点击重试", () {
                     homeBloc.getImages();
                   });
                 } else if (snapshot.hasData) {
@@ -482,13 +482,13 @@ class _MyHomePageState extends State<MyHomePage> {
               if (snapshot.data.isNotEmpty) {
                 return getFeatursGrid(snapshot.data);
               } else {
-                return ErrorStatusWidget.order(0,"暂无数据","点击重试", () {
+                return ErrorStatusWidget.sliver(0,"暂无数据","点击重试", () {
                   productBloc.getFeatures(1, 10);
                 });
               }
             } else if (snapshot.hasError) {
                 Result result = snapshot.error;
-              return ErrorStatusWidget.order(result.code,snapshot.error,"点击重试", () {
+              return ErrorStatusWidget.sliver(result.code,result.msg,"点击重试", () {
                 productBloc.getFeatures(1, 10);
               });
             } else {

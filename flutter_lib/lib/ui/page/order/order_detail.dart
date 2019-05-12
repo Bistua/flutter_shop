@@ -4,7 +4,6 @@ import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/orderListItem.dart';
 import 'package:flutter_lib/model/orderdetail.dart';
 import 'package:flutter_lib/ui/page/order/order_action_widget.dart';
-import 'package:flutter_lib/ui/widgets/empty_widget.dart';
 import 'package:flutter_lib/ui/widgets/error_status_widget.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
@@ -37,14 +36,13 @@ class OrderDetailPageState extends State<OrderDetailPage> {
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             Result result = snapshot.error;
-            return ErrorStatusWidget.order(result.code, snapshot.error, "点击重试", () {
+            return ErrorStatusWidget.order(result.code, result.msg, "点击重试", () {
               orderListBloc.getOrderDetail(widget.orderId);
             });
           } else if (snapshot.hasData) {
             if (snapshot.data != null && snapshot.data.orderId.isNotEmpty) {
               return buildStack(snapshot.data);
             } else {
-
               return ErrorStatusWidget.order(0, "暂无数据", "点击重试", () {
                 orderListBloc.getOrderDetail(widget.orderId);
               });
@@ -382,6 +380,10 @@ class OrderDetailPageState extends State<OrderDetailPage> {
             left: 0,
             right: 0,
             height: 0,
+            child: Container(
+              width: 0,
+              height: 0,
+            ),
           )
         : Positioned(
             bottom: 0,

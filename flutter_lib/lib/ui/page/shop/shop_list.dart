@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/logic/bloc/product_bloc.dart';
 import 'package:flutter_lib/model/Result.dart';
-import 'package:flutter_lib/model/product.dart';
 import 'package:flutter_lib/model/productitem.dart';
 import 'package:flutter_lib/ui/page/shop/shop_detail.dart';
-import 'package:flutter_lib/ui/widgets/empty_widget.dart';
 import 'package:flutter_lib/ui/widgets/error_status_widget.dart';
 import 'package:flutter_lib/ui/widgets/shop_tab_item.dart';
 import 'package:flutter_lib/utils/uidata.dart';
@@ -64,7 +62,7 @@ class ShopListState extends State<ShopListPage> {
             }
           } else if (snapshot.hasError) {
             Result result = snapshot.error;
-            return ErrorStatusWidget.order(result.code, snapshot.error, "点击重试",
+            return ErrorStatusWidget.order(result.code, result.msg, "点击重试",
                 () {
               productBloc.getProducts(widget.categoryId, true);
             });

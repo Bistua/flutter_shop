@@ -4,10 +4,8 @@ import 'package:flutter_lib/logic/bloc/userinfo_bloc.dart';
 import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/rebateList.dart';
 import 'package:flutter_lib/model/userinfo.dart';
-import 'package:flutter_lib/ui/widgets/empty_widget.dart';
 import 'package:flutter_lib/ui/widgets/error_status_widget.dart';
 import 'package:flutter_lib/utils/uidata.dart';
-//import 'package:clipboard_manager/clipboard_manager.dart';
 
 class InviteFriendsPage extends StatefulWidget {
   @override
@@ -43,7 +41,7 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
             }
           } else if (snapshot.hasError) {
             Result result = snapshot.error;
-            return ErrorStatusWidget.order(result.code, "暂无数据", "点击重试", () {
+            return ErrorStatusWidget.order(result.code, result.msg, "点击重试", () {
               userInfoBloc.getUserInfo();
             });
           } else {

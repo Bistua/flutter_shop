@@ -30,6 +30,15 @@ class ErrorStatusWidget extends StatelessWidget {
     type = 0;
   }
 
+  ErrorStatusWidget.sliver(
+    this.errorCode,
+    this.error,
+    this.actionTxt,
+    this.tab,
+  ) {
+    type = 3;
+  }
+
   ErrorStatusWidget.search(
     this.errorCode,
     this.error,
@@ -78,6 +87,7 @@ class ErrorStatusWidget extends StatelessWidget {
       case 404:
       case 600:
       case 601:
+      case -1:
         img = Image.asset(
           UIData.net_error,
           width: 196,
@@ -168,6 +178,51 @@ class ErrorStatusWidget extends StatelessWidget {
                         width: 2)),
                 onPressed: tab,
                 child: new Text("立即购物"),
+              ),
+            ),
+          ],
+        ),
+      );
+    } else {
+      return SliverList(
+        delegate: SliverChildListDelegate(
+          [
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.all(32.0),
+                child: Column(
+                  children: <Widget>[
+                    img,
+                    GestureDetector(
+                      child: Padding(
+                        padding: const EdgeInsets.all(32.0),
+                        child: Text(
+                          error == null ? "暂无数据" : error,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      onTap: tab,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                      child: SizedBox(
+                        width: 105,
+                        height: 30,
+                        child: FlatButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15)),
+                              side: BorderSide(
+                                  color: Color(0xFFF9F3FF),
+                                  style: BorderStyle.solid,
+                                  width: 2)),
+                          onPressed: tab,
+                          child: new Text(actionTxt),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
