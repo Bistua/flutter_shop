@@ -104,9 +104,9 @@ class ShopListState extends State<ShopListPage> {
                         ),
                       ),
                       Positioned(
-                          bottom: 8,
-                          left: 10,
-                          right: 10,
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
                           child: new Container(
                             width: 140,
                             color: Colors.white,
