@@ -106,16 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             );
           } else {
-            return SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  Container(
-                    height: 0,
-                    width: 0,
-                  )
-                ],
-              ),
-            );
+            return getNone();
           }
         },
       ),
@@ -141,16 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             );
           } else {
-            return SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  Container(
-                    height: 0,
-                    width: 0,
-                  )
-                ],
-              ),
-            );
+            return getNone();
           }
         },
       ),
@@ -201,16 +183,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             );
           } else {
-            return SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  Container(
-                    height: 0,
-                    width: 0,
-                  )
-                ],
-              ),
-            );
+            return getNone();
           }
         },
       ),
@@ -223,6 +196,19 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       getFeatureGrid(),
     ]);
+  }
+
+  SliverList getNone() {
+     return SliverList(
+      delegate: SliverChildListDelegate(
+        [
+          Container(
+            height: 0,
+            width: 0,
+          )
+        ],
+      ),
+    );
   }
 
   DefaultTabController buildDefaultTabController() {
@@ -409,13 +395,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               );
             } else {
-              return SliverList(
-                delegate: SliverChildListDelegate(
-                  [
-                    Center(child: CircularProgressIndicator()),
-                  ],
-                ),
-              );
+              return getNone();
             }
           }),
     );
@@ -509,13 +489,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 productBloc.getFeatures(1, 10);
               });
             } else {
-              return SliverList(
-                delegate: SliverChildListDelegate(
-                  [
-                    Center(child: CircularProgressIndicator()),
-                  ],
-                ),
-              );
+              return getNone();
             }
           }),
     );
