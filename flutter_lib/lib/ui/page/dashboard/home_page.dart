@@ -82,15 +82,17 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       buildBanner(),
-      buildType(),
+
       SliverList(
         delegate: SliverChildListDelegate(
           [
-            buildAdvertisement(
-                "https://img20.360buyimg.com/mobilecms/s350x128_jfs/t8554/10/1668315357/28454/82af77f0/59be2c79Ne4502dcf.jpg!q90!cc_350x128.webp"),
+            Container(
+              child: Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 5)),
+            )
           ],
         ),
       ),
+      buildType(),
       StreamBuilder<List<Promotion>>(
         stream: homeBloc.promotions,
         builder: (context, snapshot) {
@@ -136,19 +138,6 @@ class _MyHomePageState extends State<MyHomePage> {
             return getNone();
           }
         },
-      ),
-      SliverList(
-        delegate: SliverChildListDelegate(
-          [
-            Container(
-              height: 10.0,
-              width: double.infinity,
-            ),
-            buildMustBay(
-                "https://img11.360buyimg.com/mobilecms/s350x250_jfs/t1/23441/6/14922/36622/5cac1223Edaf540b0/7df256141224531d.jpg!q90!cc_350x250.webp",
-                "https://img11.360buyimg.com/mobilecms/s350x250_jfs/t1/30730/6/10877/44332/5cb34d0cE9e0fcea6/9c3cde5807ab4186.jpg!q90!cc_350x250.webp"),
-          ],
-        ),
       ),
       StreamBuilder<List<Special>>(
         stream: homeBloc.specials,
@@ -200,7 +189,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   SliverList getNone() {
-     return SliverList(
+    return SliverList(
       delegate: SliverChildListDelegate(
         [
           Container(
@@ -329,7 +318,8 @@ class _MyHomePageState extends State<MyHomePage> {
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   Result result = snapshot.error;
-                  return ErrorStatusWidget.order(result.code,result.msg,"点击重试", () {
+                  return ErrorStatusWidget.order(
+                      result.code, result.msg, "点击重试", () {
                     homeBloc.getImages();
                   });
                 } else if (snapshot.hasData) {
@@ -341,7 +331,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           print(position);
                         });
                   } else {
-                    return ErrorStatusWidget.order(0,"暂无数据","点击重试", () {
+                    return ErrorStatusWidget.order(0, "暂无数据", "点击重试", () {
                       homeBloc.getImages();
                     });
                   }
@@ -376,21 +366,22 @@ class _MyHomePageState extends State<MyHomePage> {
             } else if (snapshot.hasData) {
               List<HomeCategory> list = snapshot.data;
               return SliverGrid(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate:
+                SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 5,
-                  childAspectRatio: (0.7), //item长宽比
-                  mainAxisSpacing: 5.0,
+                  childAspectRatio: 0.9, //item长宽比
                   crossAxisSpacing: 5.0,
+                  mainAxisSpacing: 5.0,
                 ),
                 delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
+                      (BuildContext context, int index) {
                     HomeCategory item = list[index];
-                    return Padding(
-                      padding: const EdgeInsets.all(2.0),
-                      child: Container(
-                        child: buildTypeChild(int.parse(item.categoryId),
-                            item.categoryName, item.categoryImgUrl),
-                      ),
+
+                    return Container(
+                      child: buildTypeChild(
+                          int.parse(item.categoryId),
+                          item.categoryName,
+                          item.categoryImgUrl),
                     );
                   },
                   childCount: list.length,
@@ -482,13 +473,14 @@ class _MyHomePageState extends State<MyHomePage> {
               if (snapshot.data.isNotEmpty) {
                 return getFeatursGrid(snapshot.data);
               } else {
-                return ErrorStatusWidget.sliver(0,"暂无数据","点击重试", () {
+                return ErrorStatusWidget.sliver(0, "暂无数据", "点击重试", () {
                   productBloc.getFeatures(1, 10);
                 });
               }
             } else if (snapshot.hasError) {
-                Result result = snapshot.error;
-              return ErrorStatusWidget.sliver(result.code,result.msg,"点击重试", () {
+              Result result = snapshot.error;
+              return ErrorStatusWidget.sliver(result.code, result.msg, "点击重试",
+                  () {
                 productBloc.getFeatures(1, 10);
               });
             } else {
@@ -520,29 +512,25 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Container buildTypeChild(int type, String typeName, String typeImg) {
-    return Container(
-        child: InkWell(
+  Widget buildTypeChild(int type, String typeName, String typeImg) {
+    return InkWell(
       child: Column(
-        children: <Widget>[
-          UIData.getImageWithWH(typeName, 43, 43),
-          Padding(
-            padding: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 16.0),
-            child: Text(
-              typeName,
-              style: TextStyle(color: Color(0xFF666666), fontSize: 11),
-            ),
-          ),
-        ],
+    children: <Widget>[
+      UIData.getImageWithWH(typeName, 56, 56),
+      Text(
+        typeName,
+        style: TextStyle(color: Color(0xFF666666), fontSize: 11),
+      ),
+    ],
       ),
       //每一个类别点击事件
       onTap: () {
-        Category category = new Category();
-        category.id = type;
-        category.name = typeName;
-        Navigator.pushNamed(context, UIData.ShopListPage, arguments: category);
+    Category category = new Category();
+    category.id = type;
+    category.name = typeName;
+    Navigator.pushNamed(context, UIData.ShopListPage, arguments: category);
       },
-    ));
+    );
   }
 
   Container buildDiscountItem(int index, Promotion product) {
