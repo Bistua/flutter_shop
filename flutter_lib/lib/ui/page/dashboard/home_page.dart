@@ -82,7 +82,6 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       buildBanner(),
-
       SliverList(
         delegate: SliverChildListDelegate(
           [
@@ -177,13 +176,25 @@ class _MyHomePageState extends State<MyHomePage> {
           }
         },
       ),
-      SliverList(
-        delegate: SliverChildListDelegate(
-          [
-            buildHotShop(),
-          ],
-        ),
-      ),
+      StreamBuilder<List<ProductItem>>(
+          stream: productBloc.productItems,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              if (snapshot.data.isNotEmpty) {
+                return SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      buildHotShop(),
+                    ],
+                  ),
+                );
+              } else {
+                return getNone();
+              }
+            } else {
+              return getNone();
+            }
+          }),
       getFeatureGrid(),
     ]);
   }
@@ -320,7 +331,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Result result = snapshot.error;
                   return ErrorStatusWidget.order(
                       result.code, result.msg, "点击重试", () {
-                    homeBloc.getImages();
+                    homeBloc.getHomeAll();
                   });
                 } else if (snapshot.hasData) {
                   if (snapshot.data.isNotEmpty) {
@@ -332,7 +343,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         });
                   } else {
                     return ErrorStatusWidget.order(0, "暂无数据", "点击重试", () {
-                      homeBloc.getImages();
+                      homeBloc.getHomeAll();
                     });
                   }
                 } else {
@@ -366,22 +377,19 @@ class _MyHomePageState extends State<MyHomePage> {
             } else if (snapshot.hasData) {
               List<HomeCategory> list = snapshot.data;
               return SliverGrid(
-                gridDelegate:
-                SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 5,
                   childAspectRatio: 0.9, //item长宽比
                   crossAxisSpacing: 5.0,
                   mainAxisSpacing: 5.0,
                 ),
                 delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
+                  (BuildContext context, int index) {
                     HomeCategory item = list[index];
 
                     return Container(
-                      child: buildTypeChild(
-                          int.parse(item.categoryId),
-                          item.categoryName,
-                          item.categoryImgUrl),
+                      child: buildTypeChild(int.parse(item.categoryId),
+                          item.categoryName, item.categoryImgUrl),
                     );
                   },
                   childCount: list.length,
@@ -478,11 +486,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 });
               }
             } else if (snapshot.hasError) {
-              Result result = snapshot.error;
-              return ErrorStatusWidget.sliver(result.code, result.msg, "点击重试",
-                  () {
-                productBloc.getFeatures(1, 10);
-              });
+              return getNone();
             } else {
               return getNone();
             }
@@ -515,20 +519,20 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget buildTypeChild(int type, String typeName, String typeImg) {
     return InkWell(
       child: Column(
-    children: <Widget>[
-      UIData.getImageWithWH(typeName, 56, 56),
-      Text(
-        typeName,
-        style: TextStyle(color: Color(0xFF666666), fontSize: 11),
-      ),
-    ],
+        children: <Widget>[
+          UIData.getImageWithWH(typeName, 56, 56),
+          Text(
+            typeName,
+            style: TextStyle(color: Color(0xFF666666), fontSize: 11),
+          ),
+        ],
       ),
       //每一个类别点击事件
       onTap: () {
-    Category category = new Category();
-    category.id = type;
-    category.name = typeName;
-    Navigator.pushNamed(context, UIData.ShopListPage, arguments: category);
+        Category category = new Category();
+        category.id = type;
+        category.name = typeName;
+        Navigator.pushNamed(context, UIData.ShopListPage, arguments: category);
       },
     );
   }
