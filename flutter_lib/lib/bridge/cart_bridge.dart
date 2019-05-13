@@ -86,7 +86,8 @@ class CartBridge {
    *
    *从购物车移除
    */
-  static Future<Result> delSku(String productId,String skuId, int amount) async {
+  static Future<Result> delSku(
+      String productId, String skuId, int amount) async {
 //    return Result.fromJson(await getCart());
     return Bridge.dispenser({
       "method": "shop_cart_del",
@@ -94,7 +95,7 @@ class CartBridge {
         "action": component,
         "arguments": {
           "method": "shop_cart_del",
-          "data": {"productId":productId,"skuId": skuId, "distinct": amount}
+          "data": {"productId": productId, "skuId": skuId, "distinct": amount}
         }
       }
     });
@@ -104,7 +105,8 @@ class CartBridge {
    *
    *从购物车数量添加
    */
-  static Future<Result> addSkuAmount(String productId,String skuId, int amount) async {
+  static Future<Result> addSkuAmount(
+      String productId, String skuId, int amount) async {
 //    return Result.fromJson(await getCart());
     return Bridge.dispenser({
       "method": "shop_cart_addAmount",
@@ -112,7 +114,7 @@ class CartBridge {
         "action": component,
         "arguments": {
           "method": "shop_cart_addAmount",
-          "data": {"productId":productId,"skuId": skuId, "distinct": amount}
+          "data": {"productId": productId, "skuId": skuId, "distinct": amount}
         }
       }
     });
@@ -131,7 +133,67 @@ class CartBridge {
         "action": component,
         "arguments": {
           "method": "shop_cart_findCart",
-          "data": {"productId":"xxx",}
+          "data": {
+            "productId": "xxx",
+          }
+        }
+      }
+    });
+  }
+
+  /*
+   *
+   *添加数据至下单列表
+   */
+  static Future<Result> addSkuOrder(
+      int productId,
+      String skuId,
+      int amount,
+      double price,
+      double freight,
+      String norms,
+      String name,
+      String url) async {
+//    //todo  "data": json.encode 待测试
+//    String data = await getCart();
+//    return Result.fromJson(data);
+    return Bridge.dispenser({
+      "method": "shop_cart_order_add",
+      "params": {
+        "action": component,
+        "arguments": {
+          "method": "shop_cart_order_add",
+          "data": json.encode({
+            "productId": productId,
+            "goodsId": skuId,
+            "amount": amount,
+            "price": price,
+            "freight": freight,
+            "norms": norms,
+            "name": name,
+            "img": url,
+          }),
+        },
+      }
+    });
+  }
+
+  /*
+   *
+   *获取购物车信息
+   */
+  static Future<Result> findOrderNow() async {
+//    return Result.fromJson(await getCart());
+
+    return Bridge.dispenser({
+      "method": "shop_cart_order_find",
+      "params": {
+        "action": component,
+        "arguments": {
+          "method": "shop_cart_order_find",
+          "data": {
+            "productId": "xxx",
+          }
         }
       }
     });

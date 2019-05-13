@@ -144,6 +144,8 @@ class _ShopCartListState extends State<ShopCartListPage> {
                         Bridge.showShortToast("请至少选择一个商品");
                         return;
                       }
+                      //此处需要将cart数据同步到底层
+
                       Navigator.push(
                           context,
                           new MaterialPageRoute(

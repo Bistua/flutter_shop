@@ -3,19 +3,15 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <compositeConfiguration>
-          <compositeBuild compositeDefinitionSource="SCRIPT" />
-        </compositeConfiguration>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/../../flutter/.pub-cache/hosted/pub.flutter-io.cn/clipboard_manager-0.0.4/android" />
-            <option value="$PROJECT_DIR$/../../flutter/.pub-cache/hosted/pub.flutter-io.cn/path_provider-0.4.1/android" />
-            <option value="$PROJECT_DIR$/../../flutter/.pub-cache/hosted/pub.flutter-io.cn/shared_preferences-0.4.3/android" />
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/flutter_lib/.android/Flutter" />
+            <option value="$PROJECT_DIR$/../../../../env/flutter_sdk/.pub-cache/hosted/pub.dartlang.org/path_provider-0.4.1/android" />
+            <option value="$PROJECT_DIR$/../../../../env/flutter_sdk/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.4.3/android" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

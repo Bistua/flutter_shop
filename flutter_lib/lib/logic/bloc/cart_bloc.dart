@@ -46,6 +46,24 @@ class CartBloc {
     });
   }
 
+  findOrderNow() {
+    Future<Result> future = CartBridge.findOrderNow();
+    future.then((result) {
+      if (result.code == 200) {
+        if (result.data != null && result.data is Map<String, dynamic>) {
+          Cart categoryList = Cart.fromJson(result.data);
+          cartController.add(categoryList);
+        } else {
+          Cart categoryList = new Cart(totalCounts: 0);
+          cartController.add(categoryList);
+        }
+      } else {
+        cartController.addError(result);
+        print(result.msg == null ? "未返回错误信息" : result.msg);
+      }
+    });
+  }
+
   del2Cart(SkuWapper sku, int amount) {
     Future<Result> future =
         CartBridge.delSku(sku.sku.productId, sku.goodsId, amount);

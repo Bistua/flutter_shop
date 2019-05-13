@@ -55,7 +55,7 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
 
   Widget bodyData() {
     print("立即下单即加入购物车，之后从购物车中读取出来");
-    cartBloc.findCart();
+    cartBloc.findOrderNow();
     return StreamBuilder<Cart>(
         stream: cartBloc.productItems,
         builder: (context, snapshot) {
@@ -63,12 +63,12 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
           if (snapshot.hasError) {
             Result result = snapshot.error;
             return ErrorStatusWidget.order(result.code, result.msg, "点击重试", () {
-              cartBloc.findCart();
+              cartBloc.findOrderNow();
             });
           } else if (snapshot.hasData) {
             if (cart == null) {
               return ErrorStatusWidget.order(0, "没有数据", "点击重试", () {
-                cartBloc.findCart();
+                cartBloc.findOrderNow();
               });
             } else {
               return buildBody(cart);

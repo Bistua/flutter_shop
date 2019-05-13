@@ -86,8 +86,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
             }
           } else if (snapshot.hasError) {
             Result result = snapshot.error;
-            return ErrorStatusWidget.order(result.code, result.msg, "点击重试",
-                () {
+            return ErrorStatusWidget.order(result.code, result.msg, "点击重试", () {
               productBloc.getProduct(productId);
             });
           } else {
@@ -171,7 +170,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                 UIData.getShapeButton(
                     UIData.ffffa517, UIData.fff, 95, 50, "立即购买", 16, 0, () {
                   if (skuInfo == null) {
-                    addCart(product, product.skuId.toString());
+                    addOrderCart(product, product.skuId.toString());
                   }
                   Navigator.push(
                       context,
@@ -268,8 +267,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
             return buildVipInfo(product, snapshot.data);
           } else if (snapshot.hasError) {
             Result result = snapshot.error;
-            return ErrorStatusWidget.order(result.code, result.msg, "点击重试",
-                () {
+            return ErrorStatusWidget.order(result.code, result.msg, "点击重试", () {
               productBloc.getProductSkuInfo(productId);
             });
           } else {
@@ -817,6 +815,33 @@ class ShopDetailPageState extends State<ShopDetailPage> {
           print("setState" + categoryList.totalCounts.toString());
           cartCount = categoryList.totalCounts;
         });
+      } else {
+        Bridge.showLongToast(result.msg);
+      }
+    });
+  }
+
+  /*
+   * 立即下单列表
+   */
+  void addOrderCart(ProductDetail product, String skuId) {
+    print("skuId:=" + skuId);
+    Future<Result> future = CartBridge.addSkuOrder(
+        productId,
+        product.id.toString(),
+        chooseCount,
+        product.retailPrice,
+        0,
+        "规格",
+        product.name,
+        product.medias.length == 0 ? "" : product.medias[0].url);
+    future.then((result) {
+      if (result.code == 200) {
+//        Cart categoryList = Cart.fromJson(result.data);
+//        setState(() {
+//          print("setState" + categoryList.totalCounts.toString());
+//          cartCount = categoryList.totalCounts;
+//        });
       } else {
         Bridge.showLongToast(result.msg);
       }

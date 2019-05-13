@@ -154,8 +154,14 @@ showPayDialog(BuildContext context, double totalMoney, String tradeOrderId) {
                               "附加数据，在查询API和支付通知中原样返回，该字段主要用于商户携带订单的自定义数据");
                           future.then((v) {
                             if (v.code == 200) {
+                              Navigator.pushNamed(context, UIData.homeRoute);
+                            } else if (v.code == 403) {
+                              //支付失败
                               Navigator.pop(context, false);
-                            } else {
+                              Bridge.showShortToast(v.msg);
+                            } else if (v.code == 406) {
+                              //取消支付
+                              Navigator.pop(context, false);
                               Bridge.showShortToast(v.msg);
                             }
                           });
