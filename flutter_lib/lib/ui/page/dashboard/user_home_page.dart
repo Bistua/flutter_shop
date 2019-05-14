@@ -255,7 +255,7 @@ class _UserHomeState extends State<UserHomeListPage> {
 //                  ),
                   GestureDetector(
                     onTap: () {
-//                      Navigator.pushNamed(context, UIData.MineCollectionPage);
+                      Bridge.openQQ("3346767433");
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -269,7 +269,9 @@ class _UserHomeState extends State<UserHomeListPage> {
                           padding: EdgeInsets.fromLTRB(0, 12, 0, 8),
                         ),
                         GestureDetector(
-                          onTap: Bridge.openQQ("3346767433"),
+                          onTap: (){
+                            Bridge.openQQ("3346767433");
+                          },
                           child: Text(
                             "客服中心",
                             style:

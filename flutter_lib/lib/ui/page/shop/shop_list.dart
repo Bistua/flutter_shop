@@ -48,14 +48,14 @@ class ShopListState extends State<ShopListPage> {
   }
 
   Widget bodyData() {
-    productBloc.getProducts(widget.categoryId, true);
+    productBloc.getProducts(widget.categoryId, 1);
     return StreamBuilder<List<ProductItem>>(
         stream: productBloc.productItems,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data.isEmpty) {
               return ErrorStatusWidget.order(0, "暂无数据", "点击重试", () {
-                productBloc.getProducts(widget.categoryId, true);
+                productBloc.getProducts(widget.categoryId, 1);
               });
             } else {
               return productGrid(snapshot.data);
@@ -64,7 +64,7 @@ class ShopListState extends State<ShopListPage> {
             Result result = snapshot.error;
             return ErrorStatusWidget.order(result.code, result.msg, "点击重试",
                 () {
-              productBloc.getProducts(widget.categoryId, true);
+              productBloc.getProducts(widget.categoryId, 1);
             });
           } else {
             return Center(child: CircularProgressIndicator());

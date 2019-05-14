@@ -28,7 +28,8 @@ class ProductBloc {
 
   ProductBloc();
 
-  getProducts(int categoryId, bool orderByAes) {
+  getProducts(int categoryId, int orderByAes) {
+    productController.add(null);
     ProductBridge.getProducts(categoryId, orderByAes).then((result) {
       if (result.code == 200) {
         ProductList productList = ProductList.fromJson(result.data);
@@ -56,7 +57,7 @@ class ProductBloc {
     });
   }
 
-  queryProducts(String query, bool orderByAes) {
+  queryProducts(String query, int orderByAes) {
     ProductBridge.queryProduct(query, orderByAes, 1, 1000).then((result) {
       if (result.code == 200) {
         productController.add(null);

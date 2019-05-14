@@ -8,7 +8,7 @@ class ProductBridge {
    *
    *获取产品列表
    */
-  static Future<Result> getProducts(int categoryId, bool orderBy) async {
+  static Future<Result> getProducts(int categoryId, int orderBy) async {
     return Bridge.dispenser({
       "method": "product_findAll",
       "params": {
@@ -31,7 +31,7 @@ class ProductBridge {
    *获取产品列表
    */
   static Future<Result> queryProduct(
-      String query, bool orderBy, int pageNo, int pageSize) async {
+      String query, int orderBy, int pageNo, int pageSize) async {
     return Bridge.dispenser({
       "method": "product_search_list",
       "params": {

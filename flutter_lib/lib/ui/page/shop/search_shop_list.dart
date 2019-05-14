@@ -5,7 +5,6 @@ import 'package:flutter_lib/logic/viewmodel/tab_view_model.dart';
 import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/productitem.dart';
 import 'package:flutter_lib/ui/page/shop/shop_detail.dart';
-import 'package:flutter_lib/ui/widgets/empty_widget.dart';
 import 'package:flutter_lib/ui/widgets/error_status_widget.dart';
 import 'package:flutter_lib/ui/widgets/shop_tab_item.dart';
 import 'package:flutter_lib/utils/uidata.dart';
@@ -312,7 +311,7 @@ class SearchShopListState extends State<SearchShopListPage> {
       });
     } else {
       if(_searchQuery.text.isNotEmpty) {
-        productBloc.queryProducts(_searchQuery.text, true);
+        productBloc.queryProducts(_searchQuery.text, 1);
         setState(() {
           showHistory = false;
           print("showHistory:" + showHistory.toString());
