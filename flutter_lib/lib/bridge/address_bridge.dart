@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/model/Result.dart';
+import 'package:flutter_lib/model/address.dart';
 
 class AddressBridge {
   static const String component = "address";
@@ -13,18 +16,19 @@ class AddressBridge {
  */
   static Future<Result> addAddress(String receivePhone, String receiveGoodsName,
       String receiveAddressName, int status) {
+    Address adss = new Address();
+    adss.phone = receivePhone;
+    adss.name = receiveGoodsName;
+    adss.address = receiveAddressName;
+    adss.status = status;
+
     return Bridge.dispenser({
       "method": "address_add",
       "params": {
         "action": component,
         "arguments": {
           "method": "address_add",
-          "data": {
-            "receivePhone": receivePhone,
-            "receiveGoodsName": receiveGoodsName,
-            "receiveAddressName": receiveAddressName,
-            "status": status
-          },
+          "data": json.encode(adss),
         }
       }
     });

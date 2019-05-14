@@ -32,6 +32,8 @@ class ProductBridge {
    */
   static Future<Result> queryProduct(
       String query, int orderBy, int pageNo, int pageSize) async {
+//    String searchQuery=(query==null?"":query);
+//    SearchInfo searchInfo = new SearchInfo(searchQuery, pageNo, pageSize);
     return Bridge.dispenser({
       "method": "product_search_list",
       "params": {
