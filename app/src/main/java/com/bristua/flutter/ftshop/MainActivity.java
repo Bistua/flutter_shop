@@ -1,22 +1,15 @@
 package com.bristua.flutter.ftshop;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.alibaba.fastjson.JSON;
 import com.bristua.flutter.ftshop.plugin.PluginDelegate;
 import com.bristua.flutter.ftshop.plugin.PluginProvider;
-import com.bristua.flutter.ftshop.wxapi.WXCode;
-import com.bristua.framework.define.IFlutterResult;
-import com.bristua.framework.router.BRouter;
-import com.bristua.ft.component.CategoryConstant;
-import com.bristua.ft.component.userlogin.UserLoginConstant;
-import com.bristua.ft.protocol.Protocol;
 
 import io.flutter.facade.Flutter;
 import io.flutter.view.FlutterView;

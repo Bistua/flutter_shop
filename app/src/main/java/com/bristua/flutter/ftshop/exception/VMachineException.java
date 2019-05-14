@@ -1,6 +1,6 @@
 package com.bristua.flutter.ftshop.exception;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 /**
  * 虚拟机异常

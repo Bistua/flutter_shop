@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lib/utils/uidata.dart';
 import './banner_evalutor.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'dart:async';
 
-class BannerWidget extends StatefulWidget{
+class BannerWidget extends StatefulWidget {
   final List<BannerWithEval> data;
-  final int height,delayTime,duration;
+  final int height, delayTime, duration;
   final Curve curve;
   final ItemBuild build;
   final IndicatorBuild indicator;
@@ -21,7 +22,7 @@ class BannerWidget extends StatefulWidget{
     this.height = 160,
     this.delayTime = 4000,
     this.duration = 1000,
-  }): super(key : key);
+  }) : super(key: key);
 
   createState() => BannerState();
 }
@@ -29,7 +30,7 @@ class BannerWidget extends StatefulWidget{
 class BannerState extends State<BannerWidget> {
   Timer timer;
   PageController controller;
-  int position,currentPage;
+  int position, currentPage;
   List<BannerWithEval> bannerList = [];
   bool isRoll = true;
 
@@ -58,23 +59,24 @@ class BannerState extends State<BannerWidget> {
 
   Widget pageView() {
     return Listener(
-      onPointerMove: (event){
+      onPointerMove: (event) {
         isRoll = true;
       },
-      onPointerDown: (event){
+      onPointerDown: (event) {
         isRoll = false;
       },
-      onPointerUp: (event){
+      onPointerUp: (event) {
         isRoll = true;
       },
-      onPointerCancel: (event){
+      onPointerCancel: (event) {
         isRoll = true;
       },
       child: NotificationListener(
-        onNotification: (scrollNotification){
+        onNotification: (scrollNotification) {
           if (currentPage == -1) {
             isRoll = true;
-          }else if (scrollNotification is ScrollEndNotification || scrollNotification is UserScrollNotification) {
+          } else if (scrollNotification is ScrollEndNotification ||
+              scrollNotification is UserScrollNotification) {
             if (currentPage == 0) {
               setState(() {
                 currentPage = getRealCount();
@@ -93,17 +95,21 @@ class BannerState extends State<BannerWidget> {
             position = index % getRealCount();
             setState(() {});
           },
-          physics: const PageScrollPhysics(parent: const BouncingScrollPhysics()),
-          childrenDelegate: SliverChildBuilderDelegate((context, index){
-            int current =  index % getRealCount();
-            BannerWithEval bannerWithEval = bannerList[current];
-            return GestureDetector(
-              onTap: () => widget.onClick(current, bannerWithEval),
-              child: widget.build != null ? widget.build(current) : BannerItem(
-                url: bannerWithEval.bannerUrl,
-              ),
-            );
-          },
+          physics:
+              const PageScrollPhysics(parent: const BouncingScrollPhysics()),
+          childrenDelegate: SliverChildBuilderDelegate(
+            (context, index) {
+              int current = index % getRealCount();
+              BannerWithEval bannerWithEval = bannerList[current];
+              return GestureDetector(
+                onTap: () => widget.onClick(current, bannerWithEval),
+                child: widget.build != null
+                    ? widget.build(current)
+                    : BannerItem(
+                        url: bannerWithEval.bannerUrl,
+                      ),
+              );
+            },
             childCount: bannerList.length,
           ),
         ),
@@ -112,16 +118,18 @@ class BannerState extends State<BannerWidget> {
   }
 
   Widget indicator() {
-    return widget.indicator == null ? Align(
-        alignment: Alignment.bottomCenter,
-        child: Container(
-          height: 20.0,
-          padding: EdgeInsets.all(2.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: circularPoint(getRealCount()),
-          ),
-        )) : widget.indicator(position,getRealCount());
+    return widget.indicator == null
+        ? Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              height: 20.0,
+              padding: EdgeInsets.all(2.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: circularPoint(getRealCount()),
+              ),
+            ))
+        : widget.indicator(position, getRealCount());
   }
 
   List<Widget> circularPoint(int count) {
@@ -130,7 +138,7 @@ class BannerState extends State<BannerWidget> {
       children.add(Container(
         width: 6.0,
         height: 6.0,
-        margin: EdgeInsets.only(left: 2.0,top: 0.0,right: 2.0,bottom: 0.0),
+        margin: EdgeInsets.only(left: 2.0, top: 0.0, right: 2.0, bottom: 0.0),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: position == i ? Colors.black38 : Colors.white,
@@ -141,29 +149,30 @@ class BannerState extends State<BannerWidget> {
   }
 
   void restTime() {
-    if (timer == null){
+    if (timer == null) {
       timer = Timer.periodic(Duration(milliseconds: widget.delayTime), (timer) {
-        if (isRoll){
-          if (currentPage == -1){
+        if (isRoll) {
+          if (currentPage == -1) {
             currentPage = 0;
             controller.jumpToPage(currentPage);
             return;
           }
           currentPage++;
-          controller.nextPage(duration: Duration(milliseconds: widget.duration),
+          controller.nextPage(
+              duration: Duration(milliseconds: widget.duration),
               curve: widget.curve);
         }
       });
     }
   }
 
-  void cancelTime(){
+  void cancelTime() {
     timer?.cancel();
     timer = null;
   }
 
-  void restData(){
-    for (int i = 0;i<2;i++){
+  void restData() {
+    for (int i = 0; i < 2; i++) {
       bannerList.addAll(widget.data);
     }
   }
@@ -179,12 +188,12 @@ class BannerState extends State<BannerWidget> {
   }
 }
 
-class BannerItem extends StatefulWidget{
+class BannerItem extends StatefulWidget {
   final String url;
   BannerItem({
     Key key,
     @required this.url,
-  }): super(key : key);
+  }) : super(key: key);
 
   @override
   createState() => ItemState();
@@ -194,18 +203,19 @@ class ItemState extends State<BannerItem> {
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
-        placeholder: Container(
-            height: 160.0,
-            width: double.infinity,
-            color: Colors.black38,
-            child: Center(
-              widthFactor: 2.0,
-              heightFactor: 2.0,
-              child: CircularProgressIndicator(),
-            )
-        ),
-        imageUrl: widget.url,
-        fit: BoxFit.cover);
+      imageUrl: widget.url,
+      placeholder: (context, url) => Container(
+          height: 160.0,
+          width: double.infinity,
+          color: Colors.black38,
+          child: Center(
+            widthFactor: 2.0,
+            heightFactor: 2.0,
+            child: CircularProgressIndicator(),
+          )),
+      fit: BoxFit.cover,
+      errorWidget: (context, url, error) => UIData.getImage(""),
+    );
   }
 }
 
@@ -213,7 +223,7 @@ class ItemState extends State<BannerItem> {
 typedef Widget ItemBuild(int position);
 
 //在这添加自定义的指示器，指示器位置自定义请使用Align部件，默认圆点
-typedef Widget IndicatorBuild(int position,int counmt);
+typedef Widget IndicatorBuild(int position, int counmt);
 
 //点击监听
 typedef void OnClick(int position, BannerWithEval bannerWithEval);

@@ -1,6 +1,5 @@
 package com.bristua.flutter.ftshop;
-import android.app.Application;
-import android.support.multidex.MultiDexApplication;
+import androidx.multidex.MultiDexApplication;
 
 import com.bristua.flutter.ftshop.app.AppVMachine;
 import com.bristua.flutter.ftshop.exception.VMachineException;

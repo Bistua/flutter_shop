@@ -17,6 +17,7 @@ import 'package:flutter_lib/ui/page/order/shop_order.dart';
 import 'package:flutter_lib/ui/widgets/error_status_widget.dart';
 import 'package:flutter_lib/ui/widgets/rating_bar.dart';
 import 'package:flutter_lib/utils/uidata.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 class ShopDetailPage extends StatefulWidget {
   int productId;
@@ -42,6 +43,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
   int chooseCount = 1;
   String chooseCountStr = "1";
   int cartCount = 0;
+  String productName = "";
 
   ShopDetailPageState(int productId) {
     this.productId = productId;
@@ -66,7 +68,26 @@ class ShopDetailPageState extends State<ShopDetailPage> {
     return ProductProvider(
         productBloc: productBloc,
         child: new Scaffold(
-          appBar: UIData.getCenterTitleAppBar("商品名称", context),
+          appBar: AppBar(
+            centerTitle: true,
+            title: StreamBuilder<ProductDetail>(
+                stream: productBloc.productDetail,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    if (snapshot.data != null &&
+                        snapshot.data.name.isNotEmpty) {
+                      productName = snapshot.data.name;
+                      return Text(productName);
+                    }
+                  } else {
+                    return Text(productName);
+                  }
+                }),
+            leading: new IconButton(
+              icon: UIData.back,
+              onPressed: () => Navigator.pop(context, false),
+            ),
+          ),
           body: bodyData(),
         ));
   }
@@ -235,23 +256,18 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                       bottomLeft: Radius.circular(5.0),
                       bottomRight: Radius.circular(5.0)),
                 ),
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(15, 17, 15, 12),
-                  child: Text(
-                    "商品详情",
-                    style: TextStyle(color: UIData.ff353535, fontSize: 15),
-                  ),
-                ),
               ),
-              Container(
-                child: UIData.getImage(img),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(5.0),
-                      bottomRight: Radius.circular(5.0)),
-                ),
-              ),
+              (product.description == null || product.description.isEmpty)
+                  ? Container(
+                      width: 0,
+                      height: 0,
+                    )
+                  : Container(
+                      child: HtmlWidget(
+                        product.description,
+                        webView: true,
+                      ),
+                    ),
             ],
           ),
         ),
@@ -373,7 +389,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                   Padding(
                     padding: EdgeInsets.fromLTRB(15, 6, 15, 15),
                     child: Text(
-                      product.detail == null ? "" : product.detail,
+                      product.metaTitle == null ? "" : product.metaTitle,
                       style: TextStyle(color: UIData.ff999999, fontSize: 12),
                     ),
                   ),

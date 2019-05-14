@@ -320,7 +320,7 @@ class UIData {
 
   static Widget getImage(String image) {
     if (image == null || !image.startsWith("http")) {
-      return Image.asset("images/placeholder.png");
+      return Image.asset("images/placeholder.png",fit: BoxFit.cover,);
     } else {
       return FadeInImage.assetNetwork(
         placeholder: 'images/placeholder.png',
