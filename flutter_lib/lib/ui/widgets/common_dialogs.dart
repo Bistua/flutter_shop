@@ -68,7 +68,8 @@ hideProgress(BuildContext context) {
   Navigator.pop(context);
 }
 
-showPayDialog(BuildContext context, double totalMoney, String tradeOrderId) {
+showPayDialog(BuildContext context, double totalMoney, String tradeOrderId,
+    String attach) {
   if (tradeOrderId == null) {
     Bridge.showLongToast("订单id无效");
     return;
@@ -151,7 +152,9 @@ showPayDialog(BuildContext context, double totalMoney, String tradeOrderId) {
                               tradeOrderId,
                               "123.12.12.123",
                               "商品组合",
-                              "附加数据，在查询API和支付通知中原样返回，该字段主要用于商户携带订单的自定义数据");
+                              attach == null
+                                  ? "附加数据，在查询API和支付通知中原样返回，该字段主要用于商户携带订单的自定义数据"
+                                  : attach);
                           future.then((v) {
                             if (v.code == 200) {
                               Navigator.pushNamed(context, UIData.homeRoute);

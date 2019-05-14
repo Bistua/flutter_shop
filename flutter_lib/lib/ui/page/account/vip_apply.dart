@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/bridge/invite_bridge.dart';
+import 'package:flutter_lib/bridge/order_bridge.dart';
 import 'package:flutter_lib/model/Result.dart';
+import 'package:flutter_lib/model/order_result.dart';
+import 'package:flutter_lib/ui/widgets/common_dialogs.dart';
+import 'package:flutter_lib/utils/BristuaRouter.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class VipApplyPage extends StatefulWidget {
@@ -113,8 +117,23 @@ class VipApplyPageState extends State<VipApplyPage> {
                       borderRadius: new BorderRadius.circular(8.0),
                       color: Color(0xFF9E8B69))),
               onTap: () {
-//                Navigator.pushNamed(context, UIData.MineWalletPage,arguments: 0);
-                Bridge.showShortToast("功能未开通");
+                Future<Result> future = OrderBridge.orderVip(1);
+                future.then((result) {
+                  if (result.code == 200) {
+                    if (result.data == null) {
+                      Bridge.showLongToast("订单号获取失败");
+                      return;
+                    }
+                    showPayDialog(context, 389.00,
+                        OrderResult.fromJson(result.data).orderId,"vip");
+                  } else {
+                    if (result.code == 401) {
+                      BristuaRouter.routerUserLogin(context);
+                    } else {
+                      Bridge.showLongToast(result.msg);
+                    }
+                  }
+                });
               },
             )),
       ],

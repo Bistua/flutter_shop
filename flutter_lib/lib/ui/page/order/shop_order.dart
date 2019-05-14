@@ -182,7 +182,7 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                             //清除订单的下单数据
                             cartBloc.clearOrderNow();
                             showPayDialog(context, cart.totalMoney,
-                                OrderResult.fromJson(result.data).orderId);
+                                OrderResult.fromJson(result.data).orderId, "");
                           } else {
                             if (result.code == 401) {
                               BristuaRouter.routerUserLogin(context);

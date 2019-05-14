@@ -60,7 +60,7 @@ class OrderActionWidget extends StatelessWidget{
                 child: GestureDetector(
                     onTap: () {
                       showPayDialog(context, double.parse(orderItem.payPrice),
-                          orderItem.orderNumber);
+                          orderItem.orderNumber,"");
                     },
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
