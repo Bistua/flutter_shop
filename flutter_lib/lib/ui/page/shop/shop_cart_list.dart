@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_lib/bridge/cart_bridge.dart';
 import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/logic/bloc/cart_bloc.dart';
 import 'package:flutter_lib/model/Result.dart';
@@ -145,11 +148,11 @@ class _ShopCartListState extends State<ShopCartListPage> {
                         return;
                       }
                       //此处需要将cart数据同步到底层
-
-                      Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                              builder: (context) => new ShopOrderListPage()));
+                      synchorizedCartList(cart);
+//                      Navigator.push(
+//                          context,
+//                          new MaterialPageRoute(
+//                              builder: (context) => new ShopOrderListPage()));
                     }),
                   ),
                 ],
@@ -312,5 +315,22 @@ class _ShopCartListState extends State<ShopCartListPage> {
         );
       },
     );
+  }
+
+  /*
+   * 立即下单列表
+   */
+  void synchorizedCartList(Cart cart) {
+    Future<Result> future = CartBridge.syschrizonCart(json.encode(cart));
+    future.then((result) {
+      if (result.code == 200) {
+        Navigator.push(
+            context,
+            new MaterialPageRoute(
+                builder: (context) => new ShopOrderListPage()));
+      } else {
+        Bridge.showLongToast(result.msg);
+      }
+    });
   }
 }

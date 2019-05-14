@@ -179,6 +179,8 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                               Bridge.showLongToast("订单号获取失败");
                               return;
                             }
+                            //清除订单的下单数据
+                            cartBloc.clearOrderNow();
                             showPayDialog(context, cart.totalMoney,
                                 OrderResult.fromJson(result.data).orderId);
                           } else {

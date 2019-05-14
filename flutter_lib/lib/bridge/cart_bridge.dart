@@ -198,4 +198,37 @@ class CartBridge {
       }
     });
   }
+
+  /*
+   *
+   *获取购物车信息
+   */
+  static Future<Result> syschrizonCart(String cardJson) async {
+    return Bridge.dispenser({
+      "method": "shop_cart_order_sys",
+      "params": {
+        "action": component,
+        "arguments": {"method": "shop_cart_order_sys", "data": cardJson}
+      }
+    });
+  }
+
+  /*
+   *
+   *获取购物车信息
+   */
+  static Future<Result> clearOrderNow() async {
+    return Bridge.dispenser({
+      "method": "shop_cart_order_clear",
+      "params": {
+        "action": component,
+        "arguments": {
+          "method": "shop_cart_order_clear",
+          "data": {
+            "productId": "xxx",
+          }
+        }
+      }
+    });
+  }
 }

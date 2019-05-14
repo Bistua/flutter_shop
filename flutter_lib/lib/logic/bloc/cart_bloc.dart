@@ -64,6 +64,16 @@ class CartBloc {
     });
   }
 
+  clearOrderNow() {
+    Future<Result> future = CartBridge.clearOrderNow();
+    future.then((result) {
+      if (result.code == 200) {
+      } else {
+        print(result.msg == null ? "未返回错误信息" : result.msg);
+      }
+    });
+  }
+
   del2Cart(SkuWapper sku, int amount) {
     Future<Result> future =
         CartBridge.delSku(sku.sku.productId, sku.goodsId, amount);
