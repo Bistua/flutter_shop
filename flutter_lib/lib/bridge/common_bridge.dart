@@ -45,6 +45,25 @@ class Bridge {
     });
   }
 
+
+  static openQQ(String url) {
+    if (url == null || url.isEmpty) {
+      return;
+    }
+    url = "" + url;
+    url = url.replaceAll(" ", "");
+    dispenser({
+      "method": "openQQ",
+      "params": json.encode({
+        "qq": url,
+      }),
+    });
+  }
+
+
+
+
+
   static showShortToast(String message) {
     if (message == null || message.isEmpty) {
       return;

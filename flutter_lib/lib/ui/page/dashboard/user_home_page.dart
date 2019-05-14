@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/logic//bloc/userinfo_bloc.dart';
 import 'package:flutter_lib/logic/viewmodel/homeitem_view_model.dart';
 import 'package:flutter_lib/model/homeitem.dart';
@@ -267,10 +268,13 @@ class _UserHomeState extends State<UserHomeListPage> {
                           ),
                           padding: EdgeInsets.fromLTRB(0, 12, 0, 8),
                         ),
-                        Text(
-                          "客服中心",
-                          style:
-                              TextStyle(color: UIData.ff353535, fontSize: 12),
+                        GestureDetector(
+                          onTap: Bridge.openQQ("3346767433"),
+                          child: Text(
+                            "客服中心",
+                            style:
+                                TextStyle(color: UIData.ff353535, fontSize: 12),
+                          ),
                         ),
                       ],
                     ),
