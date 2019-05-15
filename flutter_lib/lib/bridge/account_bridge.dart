@@ -101,4 +101,23 @@ class AccountBridge {
       }
     });
   }
+
+
+  /*
+   * 绑定用户信息
+   */
+  static Future<Result> logout() {
+    return Bridge.dispenser({
+      "method": "logout",
+      "params": {
+        "action": component,
+        "arguments": {
+          "method": "logout",
+          "data": {
+            "token":"token"
+          },
+        }
+      }
+    });
+  }
 }

@@ -32,15 +32,18 @@ class ProductBridge {
    */
   static Future<Result> queryProduct(
       String query, int orderBy, int pageNo, int pageSize) async {
-//    String searchQuery=(query==null?"":query);
-//    SearchInfo searchInfo = new SearchInfo(searchQuery, pageNo, pageSize);
+    String searchQuery = (query == null ? "" : query);
     return Bridge.dispenser({
       "method": "product_search_list",
       "params": {
         "action": component,
         "arguments": {
           "method": "product_search_list",
-          "data": {"keywold": query, "pageNo": pageNo, "pageSize": pageSize}
+          "data": {
+            "keywold": searchQuery,
+            "pageNo": pageNo,
+            "pageSize": pageSize
+          }
         }
       }
     });

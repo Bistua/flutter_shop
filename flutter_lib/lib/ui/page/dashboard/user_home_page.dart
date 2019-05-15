@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_lib/bridge/account_bridge.dart';
 import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/logic//bloc/userinfo_bloc.dart';
 import 'package:flutter_lib/logic/viewmodel/homeitem_view_model.dart';
@@ -26,12 +27,13 @@ class _UserHomeState extends State<UserHomeListPage> {
 //      statusBarColor: UIData.fffa4848, //or set color with: Color(0xFF0000FF)
 //    ));
     //InfoBridge.wxInfo();
-    return Scaffold(
-      body: buildBody(),
-    );
+//    return Scaffold(
+//      body: getContent(),
+//    );
+    return getContent();
   }
 
-  Container buildBody() {
+  Container buildBody(Userinfo userInfo) {
     return Container(
       child: Stack(
         alignment: Alignment.topCenter,
@@ -44,13 +46,13 @@ class _UserHomeState extends State<UserHomeListPage> {
               bottom: 0,
               left: 0,
               right: 0,
-              child: new Scaffold(body: bodyData())),
+              child: new Scaffold(body: bodyData(userInfo))),
           //充值成VIP
           Positioned(
             top: 152,
             left: 10,
             right: 10,
-            child: buildBannerVipHeader(),
+            child: buildBannerVipHeader(userInfo),
           )
         ],
       ),
@@ -60,7 +62,7 @@ class _UserHomeState extends State<UserHomeListPage> {
   /*
    * 创建邀请成为vip
    */
-  Widget buildBannerVipHeader() {
+  Widget buildBannerVipHeader(Userinfo userInfo) {
     print("创建邀请成为vip");
     return Container(
         padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -152,8 +154,14 @@ class _UserHomeState extends State<UserHomeListPage> {
                                 borderRadius: BorderRadius.circular(12.5)),
                           ),
                           onTap: () {
-                            Navigator.pushNamed(context, UIData.VipApplyPage,
-                                arguments: 0);
+                            //如果用户信息为空
+                            if (userInfo == null ||
+                                userInfo.userLevel == "" ||
+                                userInfo.userLevel == "-" ||
+                                int.parse(userInfo.userLevel) == 0) {
+                              Navigator.pushNamed(context, UIData.VipApplyPage,
+                                  arguments: 0);
+                            }
                           },
                         ),
                       ),
@@ -269,7 +277,7 @@ class _UserHomeState extends State<UserHomeListPage> {
                           padding: EdgeInsets.fromLTRB(0, 12, 0, 8),
                         ),
                         GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             Bridge.openQQ("3346767433");
                           },
                           child: Text(
@@ -283,8 +291,9 @@ class _UserHomeState extends State<UserHomeListPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-//                      Navigator.pushNamed(context, UIData.AllShopOrderPage,
-//                          arguments: 4);
+                      AccountBridge.logout().then((result) {
+                        Navigator.pushNamed(context, UIData.Login);
+                      });
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -870,12 +879,16 @@ class _UserHomeState extends State<UserHomeListPage> {
     );
   }
 
-  Widget bodyData() {
+  Widget bodyData(Userinfo userInfo) {
+    return getWidget(userInfo);
+  }
+
+  Widget getContent() {
     userInfoBloc.getUserInfo();
     return StreamBuilder<Userinfo>(
         stream: userInfoBloc.userInfo,
         builder: (context, snapshot) {
-          return getWidget(snapshot.data);
+          return buildBody(snapshot.data);
         });
   }
 
