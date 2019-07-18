@@ -27,6 +27,10 @@ class UIData {
 
   static const String ShopDetailPage = "/ShopDetailPage";
   static const String ShopCartListPage = "/ShopCartListPage";
+  static const String WebViewPage = "/WebViewPage";
+
+  static const String VipApplyPage = "/VipApplyPage";
+  static const String MineWalletPage = "/MineWalletPage";
 
   //strings
   static const String appName = "Flutter UIKit";
@@ -37,6 +41,7 @@ class UIData {
   static const String quickBoldFont = "Quicksand_Bold.otf";
   static const String quickNormalFont = "Quicksand_Book.otf";
   static const String quickLightFont = "Quicksand_Light.otf";
+
 
   //images
   static const String imageDir = "assets/images";
@@ -50,6 +55,13 @@ class UIData {
   static const String shoppingImage = "$imageDir/shopping.jpeg";
   static const String timelineImage = "$imageDir/timeline.jpeg";
   static const String verifyImage = "$imageDir/verification.jpg";
+
+  static const String no_search_result = "images/no_search_result.png";
+  static const String net_error = "images/net_error.png";
+  static const String no_order = "images/no_order.png";
+  static const String no_msg = "images/no_msg.png";
+  static const String no_cart = "images/no_cart.png";
+
 
   //login
   static const String enter_code_label = "Phone Number";
@@ -68,7 +80,7 @@ class UIData {
   static const String ok = "OK";
   static const String forgot_password = "Forgot Password?";
   static const String something_went_wrong = "Something went wrong";
-  static const String coming_soon = "Coming Soon";
+  static const String coming_soon = "未知领域";
 
   static const MaterialColor ui_kit_color = Colors.grey;
   static const Color ffcccccc = Color(0xffcccccc);
@@ -308,11 +320,11 @@ class UIData {
 
   static Widget getImage(String image) {
     if (image == null || !image.startsWith("http")) {
-      return Image.asset("images/shop_type_hat.png");
+      return Image.asset("images/placeholder.png",fit: BoxFit.cover,);
     } else {
       return FadeInImage.assetNetwork(
-        placeholder: 'images/shop_type_hat.png',
-        fit: BoxFit.contain,
+        placeholder: 'images/placeholder.png',
+        fit: BoxFit.cover,
         image: image,
       );
     }
@@ -321,14 +333,14 @@ class UIData {
   static Widget getImageWithWH(String image, double w, double h) {
     if (image == null || !image.startsWith("http")) {
       return Image.asset(
-        "images/shop_type_hat.png",
+        "images/placeholder.png",
         width: w,
         height: h,
       );
     } else {
       return FadeInImage.assetNetwork(
-        placeholder: 'images/shop_type_hat.png',
-        fit: BoxFit.contain,
+        placeholder: 'images/placeholder.png',
+        fit: BoxFit.cover,
         image: image,
         width: w,
         height: h,
@@ -340,18 +352,50 @@ class UIData {
       String image, BoxFit fit, double w, double h) {
     if (image == null || !image.startsWith("http")) {
       return Image.asset(
-        "images/shop_type_hat.png",
+        "images/placeholder.png",
         width: w,
         height: h,
       );
     } else {
       return FadeInImage.assetNetwork(
-        placeholder: 'images/shop_type_hat.png',
+        placeholder: 'images/placeholder.png',
         fit: fit,
         image: image,
         width: w,
         height: h,
       );
     }
+  }
+
+  static Widget getFlatButton(String txt,tab) {
+    return FlatButton(
+      child: Text(txt),
+      onPressed: tab,
+      textTheme: ButtonTextTheme.normal,
+      textColor: Colors.yellow,
+      disabledTextColor: Colors.red,
+      color: Color(0xFF82B1FF),
+      disabledColor: Colors.grey,
+      highlightColor: Colors.grey,
+      // 按下的背景色
+      splashColor: Colors.transparent,
+      // 水波纹颜色
+      colorBrightness: Brightness.light,
+      // 主题
+//      elevation: 10,
+//      highlightElevation: 10,
+//      disabledElevation: 10,
+      padding: EdgeInsets.all(10),
+//       RaisedButton 才起效
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+          side: BorderSide(
+              color: Color(0xFFF9F3FF), style: BorderStyle.solid, width: 2)),
+      clipBehavior: Clip.antiAlias,
+      materialTapTargetSize: MaterialTapTargetSize.padded,
+//      animationDuration: Duration(seconds:1),
+//      minWidth: 200,
+//      height: 50,
+    );
   }
 }

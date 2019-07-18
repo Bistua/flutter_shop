@@ -52,9 +52,11 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
                 break;
             case BaseResp.ErrCode.ERR_COMM:// 支付失败
                 Log.e(TAG, "微信支付 ------ 支付失败");
+                PluginProvider.resultCallBack(403,"微信支付失败");
                 break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:// 支付取消
                 Log.e(TAG, "微信支付 ------ 支付取消");
+                PluginProvider.resultCallBack(406,"支付取消");
                 break;
         }
         finish();

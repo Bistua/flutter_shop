@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_lib/model/Result.dart';
 
@@ -7,18 +8,61 @@ class Bridge {
   static const _bridgePlatform =
       const MethodChannel("com.ym.framework.plugins/bridge");
 
+  static BuildContext context;
+
   static Future<Result> dispenser(var dispenser) async {
     String method = dispenser['method'];
     var params = dispenser['params'];
     print(method);
     print(params);
-    String data = await _bridgePlatform.invokeMethod(method, params);
-    if (data != null) {
-      print("bridge result:" + data);
-      return Result.fromJson(data);
+    Result result;
+    try {
+      String data = await _bridgePlatform.invokeMethod(method, params);
+
+      if (data != null) {
+        print("bridge result:" + data);
+        result = Result.fromJson(data);
+      } else {
+        result = Result.fromJson(json.encode({"code": -1, "msg": "无结果"}));
+      }
+    } catch (e) {
+      result = Result.fromJson(json.encode({"code": -1, "msg": e.toString()}));
     }
-    return Result.fromJson(json.encode({"code": -1, "msg": "无结果"}));
+    return result;
   }
+
+  static webview(String url) {
+    if (url == null || url.isEmpty) {
+      return;
+    }
+    url = "" + url;
+    url = url.replaceAll(" ", "");
+    dispenser({
+      "method": "webview",
+      "params": json.encode({
+        "url": url,
+      }),
+    });
+  }
+
+
+  static openQQ(String url) {
+    if (url == null || url.isEmpty) {
+      return;
+    }
+    url = "" + url;
+    url = url.replaceAll(" ", "");
+    dispenser({
+      "method": "openQQ",
+      "params": json.encode({
+        "qq": url,
+      }),
+    });
+  }
+
+
+
+
 
   static showShortToast(String message) {
     if (message == null || message.isEmpty) {

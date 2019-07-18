@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lib/bridge/common_bridge.dart';
+import 'package:flutter_lib/bridge/order_bridge.dart';
+import 'package:flutter_lib/model/OrderComment.dart';
+import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/ui/widgets/rating_bar.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class OrderCommentPage extends StatefulWidget {
-  OrderCommentPage({Key key}) : super(key: key);
+  OrderComment orderComment;
+
+  OrderCommentPage(this.orderComment);
 
   @override
   OrderCommentPageState createState() => new OrderCommentPageState();
@@ -46,6 +52,9 @@ class OrderCommentPageState extends State<OrderCommentPage> {
                         onChange: (int value) {
                           setState(() {
                             _value = value;
+                            widget.orderComment.goodsEvaluates.forEach((f) {
+                              f.level = _value.toString();
+                            });
                           });
                         },
                       ),
@@ -70,19 +79,19 @@ class OrderCommentPageState extends State<OrderCommentPage> {
                 maxLength: 130,
                 maxLines: 7,
                 //最大行数
-                style: TextStyle(
-                    fontSize: 15.0, color: Color(0xFF333333)),
+                style: TextStyle(fontSize: 15.0, color: Color(0xFF333333)),
                 //输入文本的样式
                 decoration: new InputDecoration(
-                  //fillColor: Color(0xFFEEEEEE),
+                    //fillColor: Color(0xFFEEEEEE),
                     border: InputBorder.none,
-                    counterStyle:
-                    TextStyle(color: Colors.transparent),
+                    counterStyle: TextStyle(color: Colors.transparent),
                     hintText: '填写你要发表的评语',
-                    hintStyle: TextStyle(
-                        fontSize: 15.0, color: Color(0xFFCCCCCC))),
+                    hintStyle:
+                        TextStyle(fontSize: 15.0, color: Color(0xFFCCCCCC))),
                 onChanged: (text) {
-
+                  widget.orderComment.goodsEvaluates.forEach((f) {
+                    f.content = text;
+                  });
                 },
                 onSubmitted: (text) {
                   //内容提交(按回车)的回调
@@ -95,10 +104,15 @@ class OrderCommentPageState extends State<OrderCommentPage> {
               height: 50,
               child: UIData.getShapeButton(
                   UIData.fffa4848, UIData.fff, 345, 45, "提交评价", 18, 5, () {
-                setState(() {
-
+                Future<Result> future =
+                    OrderBridge.submitComment(widget.orderComment);
+                future.then((r) {
+                  if (r.code == 200) {
+                    Navigator.of(context).pop();
+                  } else {
+                    Bridge.showLongToast(r.msg);
+                  }
                 });
-                Navigator.of(context).pop();
               }),
             )
           ],

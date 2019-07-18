@@ -34,11 +34,11 @@ class CategoryBloc {
         categoryController.add(categoryViewModel.categorysItems);
         print("getCategories add");
       } else {
-        Bridge.showLongToast(result.msg == null ? "未返回错误信息" : result.msg);
+        print(result.msg == null ? "未返回错误信息" : result.msg);
         if (categoryController.isClosed || categoryController.isPaused) {
           return;
         }
-        categoryController.add(List());
+        categoryController.addError(result);
       }
     });
   }
@@ -51,11 +51,11 @@ class CategoryBloc {
         subCategoryController.add(subCategoryList.list);
         print("getSubCategories add");
       } else {
-        Bridge.showLongToast(result.msg == null ? "未返回错误信息" : result.msg);
+        print(result.msg == null ? "未返回错误信息" : result.msg);
         if (subCategoryController.isClosed || subCategoryController.isPaused) {
           return;
         }
-        subCategoryController.add(List());
+        subCategoryController.addError(result);
       }
     });
   }

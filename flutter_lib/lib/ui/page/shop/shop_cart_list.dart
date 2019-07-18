@@ -1,8 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_lib/bridge/cart_bridge.dart';
 import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/logic/bloc/cart_bloc.dart';
+import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/cart.dart';
 import 'package:flutter_lib/ui/page/order/shop_order.dart';
+import 'package:flutter_lib/ui/widgets/error_status_widget.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class ShopCartListPage extends StatefulWidget {
@@ -53,36 +58,36 @@ class _ShopCartListState extends State<ShopCartListPage> {
         stream: cartBloc.productItems,
         builder: (context, snapshot) {
           Cart cart = snapshot.data;
-          return snapshot.hasData
-              ? ((cart == null ||
-                      cart.products == null ||
-                      cart.products.isEmpty ||
-                      cart.totalCounts == 0)
-                  ? empty()
-                  : buildBody(cart))
-              : Center(child: CircularProgressIndicator());
-        });
-  }
-
-  Widget empty() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32.0),
-        child: GestureDetector(
-          child: Padding(
-            padding: const EdgeInsets.all(32.0),
-            child: Text(widget.showBackBtn ? "快去添加商品" : "可前往首页选购商品"),
-          ),
-          onTap: () {
-            if (widget.showBackBtn) {
-              Navigator.pop(context, true);
+          if (snapshot.hasData) {
+            if ((cart == null ||
+                cart.products == null ||
+                cart.products.isEmpty ||
+                cart.totalCounts == 0)) {
+              return ErrorStatusWidget.cart(0, "暂无购物记录~", "立即购物", () {
+                if (widget.showBackBtn) {
+                  Navigator.pop(context, true);
+                } else {
+                  Navigator.pushNamed(context, UIData.ShopCategoryList,
+                      arguments: "全部分类");
+                }
+              });
             } else {
-              cartBloc.findCart();
+              return buildBody(cart);
             }
-          },
-        ),
-      ),
-    );
+          } else if (snapshot.hasError) {
+            Result result = snapshot.error;
+            return ErrorStatusWidget.cart(result.code, result.msg, "立即购物", () {
+              if (widget.showBackBtn) {
+                Navigator.pop(context, true);
+              } else {
+                Navigator.pushNamed(context, UIData.ShopCategoryList,
+                    arguments: "全部分类");
+              }
+            });
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        });
   }
 
   String userAddressId = "12";
@@ -142,10 +147,12 @@ class _ShopCartListState extends State<ShopCartListPage> {
                         Bridge.showShortToast("请至少选择一个商品");
                         return;
                       }
-                      Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                              builder: (context) => new ShopOrderListPage()));
+                      //此处需要将cart数据同步到底层
+                      synchorizedCartList(cart);
+//                      Navigator.push(
+//                          context,
+//                          new MaterialPageRoute(
+//                              builder: (context) => new ShopOrderListPage()));
                     }),
                   ),
                 ],
@@ -175,6 +182,8 @@ class _ShopCartListState extends State<ShopCartListPage> {
                 ? products[index].sku.price.toStringAsFixed(2)
                 : "0.00");
 
+        String skuInfo =
+            products[index].sku.norms == null ? "" : products[index].sku.norms;
         return GestureDetector(
           child: Container(
             child: Card(
@@ -184,7 +193,7 @@ class _ShopCartListState extends State<ShopCartListPage> {
                   Padding(
                     padding: EdgeInsets.fromLTRB(14, 0, 12, 0),
                     child: UIData.getImageWithWHFit(
-                        products[index].sku.img, BoxFit.cover, 88, 88),
+                        products[index].sku.img, BoxFit.cover, 44, 44),
                   ),
                   Expanded(
                     child: Column(
@@ -198,20 +207,25 @@ class _ShopCartListState extends State<ShopCartListPage> {
                               style: TextStyle(
                                   fontSize: 12, color: UIData.ff353535)),
                         ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(12, 0, 13, 0),
-                          child: Container(
-                              height: 18,
-                              width: 92,
-                              decoration: BoxDecoration(
-                                  color: UIData.fff7f7f7,
-                                  shape: BoxShape.rectangle,
-                                  borderRadius: BorderRadius.circular(3)),
-                              child: Center(
-                                child: UIData.getTextWidget(
-                                    name, UIData.ff999999, 11),
-                              )),
-                        ),
+                        skuInfo.isEmpty
+                            ? Container(
+                                width: 0,
+                                height: 0,
+                              )
+                            : Padding(
+                                padding: EdgeInsets.fromLTRB(12, 0, 13, 0),
+                                child: Container(
+                                    height: 18,
+                                    width: 92,
+                                    decoration: BoxDecoration(
+                                        color: UIData.fff7f7f7,
+                                        shape: BoxShape.rectangle,
+                                        borderRadius: BorderRadius.circular(3)),
+                                    child: Center(
+                                      child: UIData.getTextWidget(
+                                          skuInfo, UIData.ff999999, 11),
+                                    )),
+                              ),
                         Padding(
                           padding: EdgeInsets.fromLTRB(15, 6, 15, 17),
                           child: Row(
@@ -220,10 +234,15 @@ class _ShopCartListState extends State<ShopCartListPage> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: <Widget>[
                               Expanded(
-                                child: Text(
-                                  price,
-                                  style: TextStyle(
-                                      color: UIData.fffa4848, fontSize: 15),
+                                child: Container(
+                                  width: 80,
+                                  child: Text(
+                                    price,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        color: UIData.fffa4848, fontSize: 12),
+                                  ),
                                 ),
                               ),
                               GestureDetector(
@@ -296,5 +315,22 @@ class _ShopCartListState extends State<ShopCartListPage> {
         );
       },
     );
+  }
+
+  /*
+   * 立即下单列表
+   */
+  void synchorizedCartList(Cart cart) {
+    Future<Result> future = CartBridge.syschrizonCart(json.encode(cart));
+    future.then((result) {
+      if (result.code == 200) {
+        Navigator.push(
+            context,
+            new MaterialPageRoute(
+                builder: (context) => new ShopOrderListPage()));
+      } else {
+        Bridge.showLongToast(result.msg);
+      }
+    });
   }
 }

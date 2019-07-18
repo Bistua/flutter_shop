@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/logic/bloc/product_bloc.dart';
 import 'package:flutter_lib/logic/viewmodel/tab_view_model.dart';
+import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/productitem.dart';
 import 'package:flutter_lib/ui/page/shop/shop_detail.dart';
+import 'package:flutter_lib/ui/widgets/error_status_widget.dart';
 import 'package:flutter_lib/ui/widgets/shop_tab_item.dart';
 import 'package:flutter_lib/utils/uidata.dart';
-
 
 class SearchShopListPage extends StatefulWidget {
   @override
@@ -41,31 +43,28 @@ class SearchShopListState extends State<SearchShopListPage> {
         builder: (context, snapshot) {
           if (showHistory) {
             if (chips.isEmpty) {
-              return empty();
+              return Container(
+                width: 0,
+                height: 0,
+              );
             } else {
               return buildWrapChips();
             }
           } else {
-            return snapshot.hasData
-                ? productGrid(snapshot.data)
-                : Center(child: CircularProgressIndicator());
+            if (snapshot.hasError) {
+              Result result = snapshot.error;
+              return ErrorStatusWidget.search(result.code, result.msg,null, null);
+            } else if (snapshot.hasData) {
+              if (snapshot.data == null || snapshot.data.isEmpty) {
+                return ErrorStatusWidget.search(0, "暂无搜索结果\n换个搜索词试试",null, null);
+              } else {
+                return productGrid(snapshot.data);
+              }
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
           }
         });
-  }
-
-  Widget empty() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32.0),
-        child: GestureDetector(
-          child: Padding(
-            padding: const EdgeInsets.all(32.0),
-            child: Text("热门搜索,可以补充任何东西?"),
-          ),
-          onTap: () {},
-        ),
-      ),
-    );
   }
 
   Column buildWrapChips() {
@@ -113,8 +112,10 @@ class SearchShopListState extends State<SearchShopListPage> {
               onTap: () {
                 setState(() {
                   _searchQuery.text = chip;
-                  chips.add(_searchQuery.text);
-                  _doSearch();
+                  if(_searchQuery.text.isNotEmpty) {
+                    chips.add(_searchQuery.text);
+                    _doSearch();
+                  }
                 });
               },
             );
@@ -127,60 +128,70 @@ class SearchShopListState extends State<SearchShopListPage> {
 
   Widget productGrid(List<ProductItem> data) {
     return new Padding(
-      padding: EdgeInsets.all(5),
+      padding: EdgeInsets.all(10),
       child: new GridView.builder(
           itemCount: data.length,
           gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             childAspectRatio: (0.7), //item长宽比
-            mainAxisSpacing: 5.0,
-            crossAxisSpacing: 5.0, // add some space
+            mainAxisSpacing: 10.0,
+            crossAxisSpacing: 10.0,
           ),
           itemBuilder: (BuildContext context, int index) {
-            ProductItem prodcutItem = data[index];
+            ProductItem product = data[index];
+            String imgUrl;
+            if (product.medias.isNotEmpty) {
+              imgUrl = product.medias[0].url;
+            }
             return new GestureDetector(
               child: new Card(
                 elevation: 5.0,
                 child: new Container(
-                  alignment: Alignment.center,
-                  child: new Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                  child: new Stack(
                     children: <Widget>[
-                      new Stack(
-                        children: <Widget>[
-                          UIData.getImage(
-                            prodcutItem.medias[0].url,
-                          ),
-                          Positioned(
-                              bottom: 0,
-                              left: 0,
-                              right: 0,
-                              child: new Container(
-                                color: Colors.white,
-                                child: new Column(
-                                  children: <Widget>[
-                                    new Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 12, 0, 6),
-                                      child: new Text(
-                                        prodcutItem.name,
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            color: UIData.ff353535),
-                                      ),
-                                    ),
-                                    new Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 6, 0, 12),
-                                      child: new Text(
-                                        prodcutItem.price.toString(),
-                                        style: TextStyle(
-                                            color: Colors.red, fontSize: 16),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )),
-                        ],
+                      Positioned(
+                        top: 0,
+                        left: 0,
+                        child: UIData.getImage(
+                          imgUrl,
+                        ),
                       ),
+                      Positioned(
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: new Container(
+                            color: Colors.white,
+                            child: new Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                new Padding(
+                                  padding: EdgeInsets.fromLTRB(5, 5, 5, 4),
+                                  child: Container(
+                                    width: 140,
+                                    child: new Text(
+                                      product.name,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontSize: 12, color: UIData.ff353535),
+                                    ),
+                                  ),
+                                ),
+                                new Padding(
+                                  padding: EdgeInsets.fromLTRB(5, 4, 5, 4),
+                                  child: new Text(
+                                    "￥" + product.price.toString(),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        color: Colors.red, fontSize: 16),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )),
                     ],
                   ),
                 ),
@@ -189,8 +200,7 @@ class SearchShopListState extends State<SearchShopListPage> {
                 Navigator.push(
                     context,
                     new MaterialPageRoute(
-                        builder: (context) =>
-                            new ShopDetailPage(prodcutItem.id)));
+                        builder: (context) => new ShopDetailPage(product.id)));
               },
             );
           }),
@@ -237,70 +247,76 @@ class SearchShopListState extends State<SearchShopListPage> {
         ),
       ),
       onTap: () {
-        chips.add(_searchQuery.text);
-        _doSearch();
+        if (_searchQuery.text.isNotEmpty) {
+          chips.add(_searchQuery.text);
+          _doSearch();
+        } else {
+          Bridge.showShortToast("请输入搜索内容");
+        }
       },
     );
   }
 
   Widget buildTextField() {
-    return Center(
-      child: Stack(
-        children: <Widget>[
-          Center(
-            child: Container(
-              alignment: Alignment.center,
-              height: 30.0,
-              decoration: BoxDecoration(
-                border: Border.all(color: Color(0xFFF5F5F5), width: 15.0),
-                borderRadius: new BorderRadius.all(new Radius.circular(15.0)),
-              ),
+    return Stack(
+      children: <Widget>[
+        Center(
+          child: Container(
+            decoration: BoxDecoration(
+              color: Color(0xFFF5F5F5),
+              border: Border.all(color: Color(0xFFF5F5F5), width: 1),
+              borderRadius: BorderRadius.circular(13.0),
             ),
+            height: 30.0,
+            child: new TextField(
+              controller: _searchQuery,
+              cursorColor: Colors.transparent,
+              cursorWidth: 0,
+              decoration: new InputDecoration(
+                focusedBorder: UnderlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Colors.transparent, width: 0)),
+                hintText: "请输入搜索内容",
+                fillColor: Colors.transparent,
+                contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                hintStyle: new TextStyle(color: UIData.ffcccccc, fontSize: 12),
+              ),
+              maxLines: 1,
+              textAlign: TextAlign.left,
+            ),
+            alignment: Alignment.centerLeft,
           ),
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-              child: TextField(
-                maxLines: 1,
-                controller: _searchQuery,
-                cursorColor: Colors.transparent,
-                style: new TextStyle(color: UIData.ff353535, fontSize: 12),
-                decoration: new InputDecoration(
-                    focusedBorder: null,
-                    errorBorder: null,
-                    disabledBorder: null,
-                    focusedErrorBorder: null,
-                    border: null,
-                    fillColor: Color(0xfff5f5f5),
-                    suffixIcon: new IconButton(
-                      color: UIData.ffcccccc,
-                      icon: Icon(Icons.close),
-                      onPressed: () {
-                        _searchQuery.clear();
-                      },
-                    ),
-                    hintText: "请输入搜索内容",
-                    hintStyle: new TextStyle(color: UIData.ffcccccc)),
-              ),
-            ),
-          )
-        ],
-      ),
+        ),
+        Positioned(
+          top: 0,
+          bottom: 0,
+          right: 1,
+          child: new IconButton(
+            color: UIData.ffcccccc,
+            icon: Icon(Icons.close),
+            onPressed: () {
+              _searchQuery.clear();
+            },
+          ),
+        ),
+      ],
     );
   }
 
   void _doSearch() {
-    if (_searchQuery.text.isEmpty) {
+    if (_searchQuery.text.isEmpty && chips.isNotEmpty) {
       setState(() {
         showHistory = true;
         print("showHistory:" + showHistory.toString());
       });
     } else {
-      productBloc.queryProducts(_searchQuery.text, true);
-      setState(() {
-        showHistory = false;
-        print("showHistory:" + showHistory.toString());
-      });
+      if(_searchQuery.text.isNotEmpty) {
+        productBloc.queryProducts(_searchQuery.text, 1);
+        setState(() {
+          showHistory = false;
+          print("showHistory:" + showHistory.toString());
+        });
+      }
     }
   }
 }

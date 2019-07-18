@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lib/bridge/common_bridge.dart';
+import 'package:flutter_lib/model/OrderComment.dart';
 import 'package:flutter_lib/model/category.dart';
 import 'package:flutter_lib/ui/page/account/login.dart';
+import 'package:flutter_lib/ui/page/account/mine_wallet.dart';
 import 'package:flutter_lib/ui/page/account/register.dart';
+import 'package:flutter_lib/ui/page/account/vip_apply.dart';
 import 'package:flutter_lib/ui/page/dashboard/dashboard.page.dart';
 import 'package:flutter_lib/ui/page/dashboard/home_page.dart';
 import 'package:flutter_lib/ui/page/dashboard/user_home_page.dart';
@@ -9,7 +13,6 @@ import 'package:flutter_lib/ui/page/invite/invite_friends.dart';
 import 'package:flutter_lib/ui/page/invite/invite_input.dart';
 import 'package:flutter_lib/ui/page/notfound/notfound_page.dart';
 import 'package:flutter_lib/ui/page/order/all_shop_order_list.dart';
-import 'package:flutter_lib/ui/page/order/mine_order.dart';
 import 'package:flutter_lib/ui/page/order/oder_comment.dart';
 import 'package:flutter_lib/ui/page/order/order_comment_list.dart';
 import 'package:flutter_lib/ui/page/order/order_detail.dart';
@@ -33,18 +36,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: true,
       showPerformanceOverlay: false,
       home: DashboardPage(),
-//      localizationsDelegates: [
-//        const TranslationsDelegate(),
-//        GlobalMaterialLocalizations.delegate,
-//        GlobalWidgetsLocalizations.delegate,
-//      ],
-//      supportedLocales: [
-//        const Locale("en", "US"),
-//        const Locale("hi", "IN"),
-//      ],
       initialRoute: UIData.notFoundRoute,
-
-      //routes
       routes: <String, WidgetBuilder>{
         UIData.ShopCartListPage: (BuildContext context) =>
             ShopCartListPage(true),
@@ -54,12 +46,11 @@ class MyApp extends StatelessWidget {
         UIData.notFoundRoute: (BuildContext context) => NotFoundPage(),
         UIData.IviteFriendsPage: (BuildContext context) => InviteFriendsPage(),
         UIData.InviteInputPage: (BuildContext context) => InviteInputPage(),
+        UIData.VipApplyPage: (BuildContext context) => VipApplyPage(),
+        UIData.MineWalletPage: (BuildContext context) => MineWalletPage(),
         UIData.UserHomeListPage: (BuildContext context) => UserHomeListPage(),
-        UIData.AllShopOrderPage: (BuildContext context) => AllShopOrderPage(),
         UIData.MineCollectionPage: (BuildContext context) =>
             MineCollectionPage(),
-        UIData.OrderDetailPage: (BuildContext context) => OrderDetailPage(),
-        UIData.OrderCommentPage: (BuildContext context) => OrderCommentPage(),
         UIData.OrderCommentListPage: (BuildContext context) =>
             OrderCommentListPage(),
         UIData.Register: (BuildContext context) => RegisterPage()
@@ -94,24 +85,47 @@ class MyApp extends StatelessWidget {
               );
             }
             break;
-          case UIData.MineOrderPage:
+          case UIData.OrderCommentPage:
+            if (arguments is OrderComment) {
+              return new MaterialPageRoute(
+                settings: settings,
+                builder: (BuildContext context) => OrderCommentPage(arguments),
+              );
+            }
+            break;
+          case UIData.OrderDetailPage:
+            if (arguments is String) {
+              return new MaterialPageRoute(
+                settings: settings,
+                builder: (BuildContext context) => OrderDetailPage(arguments),
+              );
+            }
+            break;
+          case UIData.AllShopOrderPage:
             if (arguments is int) {
               return new MaterialPageRoute(
                 settings: settings,
-                builder: (BuildContext context) => MineOrderPage(arguments),
+                builder: (BuildContext context) => AllShopOrderPage(arguments),
               );
             }
             break;
         }
       },
-      onUnknownRoute: (RouteSettings rs) => new MaterialPageRoute(
-          builder: (context) => new NotFoundPage(
-                appTitle: UIData.coming_soon,
-//            icon: FontAwesomeIcons.solidSmile,
-                title: UIData.coming_soon,
-                message: "Under Development",
-                iconColor: Colors.grey,
-              )));
+      onUnknownRoute: (RouteSettings settings) {
+//        final arguments = settings.arguments;
+//        switch (settings.name) {
+//          case UIData.ShopDetailPage:
+//
+//            break;
+//        }
+        new MaterialPageRoute(
+            builder: (context) => new NotFoundPage(
+              appTitle: UIData.coming_soon,
+              title: UIData.coming_soon,
+              message: "Under Development",
+              iconColor: Colors.grey,
+            ));
+      });
 
   @override
   Widget build(BuildContext context) {

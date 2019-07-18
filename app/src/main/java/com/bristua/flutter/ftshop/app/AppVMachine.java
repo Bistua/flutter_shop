@@ -1,9 +1,8 @@
 package com.bristua.flutter.ftshop.app;
 
-import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.bristua.bristua.sp.ShareprefenseImpl;
 import com.bristua.flutter.ftshop.R;

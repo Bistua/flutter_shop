@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter_lib/bridge/cart_bridge.dart';
-import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/cart.dart';
 
@@ -23,7 +22,8 @@ class CartBloc {
         Cart categoryList = Cart.fromJson(result.data);
         cartController.add(categoryList);
       } else {
-        Bridge.showLongToast(result.msg);
+        cartController.add(null);
+        print(result.msg == null ? "未返回错误信息" : result.msg);
       }
     });
   }
@@ -40,7 +40,36 @@ class CartBloc {
           cartController.add(categoryList);
         }
       } else {
-        Bridge.showLongToast(result.msg);
+        cartController.addError(result);
+        print(result.msg == null ? "未返回错误信息" : result.msg);
+      }
+    });
+  }
+
+  findOrderNow() {
+    Future<Result> future = CartBridge.findOrderNow();
+    future.then((result) {
+      if (result.code == 200) {
+        if (result.data != null && result.data is Map<String, dynamic>) {
+          Cart categoryList = Cart.fromJson(result.data);
+          cartController.add(categoryList);
+        } else {
+          Cart categoryList = new Cart(totalCounts: 0);
+          cartController.add(categoryList);
+        }
+      } else {
+        cartController.addError(result);
+        print(result.msg == null ? "未返回错误信息" : result.msg);
+      }
+    });
+  }
+
+  clearOrderNow() {
+    Future<Result> future = CartBridge.clearOrderNow();
+    future.then((result) {
+      if (result.code == 200) {
+      } else {
+        print(result.msg == null ? "未返回错误信息" : result.msg);
       }
     });
   }
@@ -53,20 +82,20 @@ class CartBloc {
         Cart categoryList = Cart.fromJson(result.data);
         cartController.add(categoryList);
       } else {
-        Bridge.showLongToast(result.msg);
+        print(result.msg == null ? "未返回错误信息" : result.msg);
       }
     });
   }
 
   addSkuAmount(SkuWapper sku, int amount) {
     Future<Result> future =
-        CartBridge.delSku(sku.sku.productId, sku.goodsId, amount);
+        CartBridge.addSkuAmount(sku.sku.productId, sku.goodsId, amount);
     future.then((result) {
       if (result.code == 200) {
         Cart categoryList = Cart.fromJson(result.data);
         cartController.add(categoryList);
       } else {
-        Bridge.showLongToast(result.msg);
+        print(result.msg == null ? "未返回错误信息" : result.msg);
       }
     });
   }

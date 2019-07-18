@@ -4,18 +4,47 @@ import 'package:flutter_lib/bridge/account_bridge.dart';
 import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/ui/page/account/register.dart';
+import 'package:flutter_lib/ui/widgets/countdown.dart';
 
 class LoginPage extends StatefulWidget {
   @override
   LoginState createState() => LoginState();
 }
 
-class LoginState extends State<LoginPage> {
+class LoginState extends State<LoginPage> with TickerProviderStateMixin {
+  TextEditingController smsCodeEditingController = new TextEditingController();
+  TextEditingController inviteCodeEditingController =
+  new TextEditingController();
+  Color _verifycodecolor = Color(0xFF999999);
+  Color _verifybordercolor = Color(0xFFEEEEEE);
+  var _verifyborderwidth = 1.0;
+
+  int time_cutdown = 60;
+  bool isGetingSms = false;
+  AnimationController _animationController;
+
   var _scaffoldkey = new GlobalKey<ScaffoldState>();
 
   void showSnackBar(String message) {
     var snackBar = SnackBar(content: Text(message));
     _scaffoldkey.currentState.showSnackBar(snackBar);
+  }
+
+  @override
+  void initState() {
+    _animationController = new AnimationController(
+      duration: new Duration(seconds: time_cutdown),
+      vsync: this,
+    );
+    _animationController.addStatusListener((v) {
+      AnimationStatus a = v;
+      if (a == AnimationStatus.completed) {
+        setState(() {
+          isGetingSms = false;
+        });
+      }
+    });
+    super.initState();
   }
 
   @override
@@ -152,12 +181,7 @@ class LoginState extends State<LoginPage> {
     );
   }
 
-  TextEditingController smsCodeEditingController = new TextEditingController();
-  TextEditingController inviteCodeEditingController =
-      new TextEditingController();
-  Color _verifycodecolor = Color(0xFF999999);
-  Color _verifybordercolor = Color(0xFFEEEEEE);
-  var _verifyborderwidth = 1.0;
+
 
   Container buildGetSms() {
     return Container(
@@ -190,10 +214,19 @@ class LoginState extends State<LoginPage> {
                   child: new Container(
                     width: 71.0,
                     height: 22.0,
-                    child: new Text(
-                      "获取验证码",
-                      style: TextStyle(color: _verifybordercolor, fontSize: 10),
-                    ),
+                    child: isGetingSms
+                        ? new Countdown(
+                            color: Colors.white,
+                            animation: new StepTween(
+                              begin: time_cutdown,
+                              end: 0,
+                            ).animate(_animationController),
+                          )
+                        : new Text(
+                            "获取验证码",
+                            style: TextStyle(
+                                color: _verifybordercolor, fontSize: 10),
+                          ),
                     alignment: Alignment.center,
                   ),
                   //圆角大小,与BoxDecoration保持一致，更美观
@@ -207,6 +240,10 @@ class LoginState extends State<LoginPage> {
                     future.then((v) {
                       if (v.code == 200) {
                         Bridge.showShortToast("短信发送成功");
+                        _animationController.forward(from: 0.0);
+                        this.setState(() {
+                          isGetingSms = true;
+                        });
                       } else {
                         Bridge.showShortToast(v.msg);
                       }

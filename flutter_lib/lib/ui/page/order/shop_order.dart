@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/bridge/order_bridge.dart';
-import 'package:flutter_lib/bridge/pay_bridge.dart';
 import 'package:flutter_lib/logic/bloc/address_bloc.dart';
 import 'package:flutter_lib/logic/bloc/cart_bloc.dart';
 import 'package:flutter_lib/model/Result.dart';
@@ -11,6 +10,9 @@ import 'package:flutter_lib/model/order_result.dart';
 import 'package:flutter_lib/model/ordergoods.dart';
 import 'package:flutter_lib/ui/page/address/add_edit_address.dart';
 import 'package:flutter_lib/ui/page/address/address_list.dart';
+import 'package:flutter_lib/ui/widgets/common_dialogs.dart';
+import 'package:flutter_lib/ui/widgets/error_status_widget.dart';
+import 'package:flutter_lib/utils/BristuaRouter.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class ShopOrderListPage extends StatefulWidget {
@@ -25,7 +27,7 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
   CartBloc cartBloc = CartBloc();
   AddressBloc addressBloc = AddressBloc();
 
-  String userAddressId = "123123";
+  String userAddressId;
 
   @override
   Widget build(BuildContext context) {
@@ -52,32 +54,29 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
   }
 
   Widget bodyData() {
-    cartBloc.findCart();
+    print("立即下单即加入购物车，之后从购物车中读取出来");
+    cartBloc.findOrderNow();
     return StreamBuilder<Cart>(
         stream: cartBloc.productItems,
         builder: (context, snapshot) {
           Cart cart = snapshot.data;
-          return snapshot.hasData
-              ? (cart == null ? empty() : buildBody(cart))
-              : Center(child: CircularProgressIndicator());
+          if (snapshot.hasError) {
+            Result result = snapshot.error;
+            return ErrorStatusWidget.order(result.code, result.msg, "点击重试", () {
+              cartBloc.findOrderNow();
+            });
+          } else if (snapshot.hasData) {
+            if (cart == null) {
+              return ErrorStatusWidget.order(0, "没有数据", "点击重试", () {
+                cartBloc.findOrderNow();
+              });
+            } else {
+              return buildBody(cart);
+            }
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
         });
-  }
-
-  Widget empty() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32.0),
-        child: GestureDetector(
-          child: Padding(
-            padding: const EdgeInsets.all(32.0),
-            child: Text("无数据,点击重试"),
-          ),
-          onTap: () {
-            cartBloc.findCart();
-          },
-        ),
-      ),
-    );
   }
 
   Container buildBody(Cart cart) {
@@ -161,8 +160,9 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                       List<OrderGoods> orderGoodses = cart.products
                           .map(
                             (sku) => new OrderGoods(
-                                  sku.goodsId,
+                                  sku.sku.productId,
                                   sku.sku.amount.toString(),
+                                  sku.goodsId,
                                 ),
                           )
                           .toList();
@@ -170,20 +170,33 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                       var orders =
                           orderGoodses.map((f) => (f.toJson())).toList();
 
-                      Future<Result> future =
-                          OrderBridge.submitOrder(userAddressId, true, orders);
-                      future.then((result) {
-                        if (result.code == 200) {
-                          if (result.data == null) {
-                            Bridge.showLongToast("订单号获取失败");
-                            return;
+                      if (userAddressId != null && userAddressId.isNotEmpty) {
+                        Future<Result> future = OrderBridge.submitOrder(
+                            userAddressId, true, orders);
+                        future.then((result) {
+                          if (result.code == 200) {
+                            if (result.data == null) {
+                              Bridge.showLongToast("订单号获取失败");
+                              return;
+                            }
+                            //清除订单的下单数据
+                            cartBloc.clearOrderNow();
+                            showPayDialog(context, cart.totalMoney,
+                                OrderResult.fromJson(result.data).orderId, "");
+                          } else {
+                            if (result.code == 401) {
+                              BristuaRouter.routerUserLogin(context);
+                            } else {
+                              Bridge.showLongToast(result.msg);
+                            }
                           }
-                          showPayDialog(
-                              context, cart, OrderResult.fromJson(result.data));
-                        } else {
-                          Bridge.showLongToast(result.msg);
-                        }
-                      });
+                        });
+                      } else {
+                        Navigator.push(
+                            context,
+                            new MaterialPageRoute(
+                                builder: (context) => new AddressListPage()));
+                      }
                     }),
                   ),
                 ],
@@ -199,103 +212,6 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
         ],
       ),
     );
-  }
-
-  showPayDialog(BuildContext context, Cart cart, OrderResult orderResult) {
-    if (orderResult == null) {
-      Bridge.showLongToast("订单信息生成失败");
-      return;
-    }
-    showModalBottomSheet(
-        context: context,
-        builder: (context) => Center(
-              child: Material(
-                borderRadius: BorderRadius.circular(8.0),
-                color: Colors.white,
-                elevation: 5.0,
-                child: Padding(
-                  padding: const EdgeInsets.all(32.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Center(
-                          child: Text("确认付款",
-                              style: TextStyle(
-                                  color: UIData.ff33333, fontSize: 18))),
-                      Divider(),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 46, 0, 0),
-                        child: Text(
-                          "￥" + cart.totalMoney.toStringAsFixed(2),
-                          style:
-                              TextStyle(color: UIData.ff353535, fontSize: 33),
-                        ),
-                      ),
-                      Divider(),
-                      Padding(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            Text(
-                              "订单信息",
-                              style: TextStyle(
-                                  color: UIData.ff666666, fontSize: 15),
-                            ),
-                            Text(
-                              "商品组合",
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 15),
-                            )
-                          ],
-                        ),
-                        padding: EdgeInsets.fromLTRB(14, 14, 14, 14),
-                      ),
-                      Divider(),
-                      Padding(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              "付款方式",
-                              style: TextStyle(
-                                  color: UIData.ff666666, fontSize: 15),
-                            ),
-                            Text(
-                              "支付宝",
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 15),
-                            )
-                          ],
-                        ),
-                        padding: EdgeInsets.fromLTRB(14, 14, 14, 0),
-                      ),
-                      Divider(),
-                      UIData.getShapeButton(
-                        UIData.fffa4848,
-                        UIData.fff,
-                        345,
-                        45,
-                        "立即付款",
-                        18,
-                        5,
-                        () {
-                          //"1555746236014000",
-                          //"商品描述",
-                          goToPay(
-                              context,
-                              orderResult.orderId,
-                              "123.12.12.123",
-                              "商品组合",
-                              "附加数据，在查询API和支付通知中原样返回，该字段主要用于商户携带订单的自定义数据");
-                        },
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ));
   }
 
   GestureDetector buildListIItem(SkuWapper sku) {
@@ -331,22 +247,24 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                       padding: EdgeInsets.fromLTRB(12, 18, 12, 8),
                       child: Text(name,
                           style:
-                              TextStyle(fontSize: 12, color: UIData.ff353535)),
+                              TextStyle(fontSize: 12, color: UIData.ff353535),
+                          softWrap: false,
+                          overflow: TextOverflow.ellipsis),
                     ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(12, 0, 13, 0),
-                      child: Container(
-                          height: 18,
-                          width: 92,
-                          decoration: BoxDecoration(
-                              color: UIData.fff7f7f7,
-                              shape: BoxShape.rectangle,
-                              borderRadius: BorderRadius.circular(3)),
-                          child: Center(
-                            child:
-                                UIData.getTextWidget(name, UIData.ff999999, 11),
-                          )),
-                    ),
+//                    Padding(
+//                      padding: EdgeInsets.fromLTRB(12, 0, 13, 0),
+//                      child: Container(
+//                          height: 18,
+//                          width: 92,
+//                          decoration: BoxDecoration(
+//                              color: UIData.fff7f7f7,
+//                              shape: BoxShape.rectangle,
+//                              borderRadius: BorderRadius.circular(3)),
+//                          child: Center(
+//                            child:
+//                                UIData.getTextWidget(name, UIData.ff999999, 11),
+//                          )),
+//                    ),
                     Padding(
                       padding: EdgeInsets.fromLTRB(15, 6, 15, 17),
                       child: Row(
@@ -382,7 +300,7 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
                           Padding(
                             padding: EdgeInsets.fromLTRB(3, 0, 3, 0),
                             child: UIData.getTextWidget(
-                                cartProduct.amount.toString(),
+                                "x " + cartProduct.amount.toString(),
                                 UIData.ff999999,
                                 11),
                           ),
@@ -419,7 +337,7 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
   }
 
   Widget buildHeaderBody() {
-    addressBloc.getAddressList();
+    addressBloc.getAddressList(context);
     return StreamBuilder<List<Address>>(
         stream: addressBloc.productItems,
         builder: (context, snapshot) {
@@ -547,18 +465,5 @@ class _ShopOrderListState extends State<ShopOrderListPage> {
         ),
       ),
     );
-  }
-
-  goToPay(BuildContext context, String tradeOrderId, String spbillCreateIp,
-      String goodsDesc, String attach) async {
-    Future<Result> future =
-        PayBridge.wxPay(tradeOrderId, spbillCreateIp, goodsDesc, attach);
-    future.then((v) {
-      if (v.code == 200) {
-        Navigator.pop(context, false);
-      } else {
-        Bridge.showShortToast(v.msg);
-      }
-    });
   }
 }

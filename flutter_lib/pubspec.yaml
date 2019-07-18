@@ -20,13 +20,15 @@ dependencies:
   flutter:
     sdk: flutter
 
-
-  cached_network_image: ^0.4.1
+  fish_redux: ^0.1.7
+  cached_network_image: ^0.7.0
+#  clipboard_manager: ^0.0.4
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   json_annotation: ^2.0.0
+  flutter_widget_from_html: ^0.2.0
 
 dev_dependencies:
   flutter_test:
@@ -53,6 +55,12 @@ flutter:
     - images/icon_login_wx.png
     - images/icon_back.png
     - images/icon_code.png
+    - images/icon_vip.png
+    - images/btn_settings.png
+    - images/icon_exit.png
+    - images/icon_kehu.png
+    - images/icon_inputnumber.png
+    - images/icon_shoucang.png
     - images/shop_type_hat.png
     - images/shop_type_beauty.png
     - images/shop_type_furniture.png
@@ -74,6 +82,24 @@ flutter:
     - images/invite.png
     - images/favor.png
     - images/coin.png
+    - images/user_icon.png
+    - images/placeholder.png
+    - images/icon_bottom_navigation_active.png
+    - images/icon_bottom_navigation_car.png
+    - images/icon_bottom_navigation_home.png
+    - images/icon_bottom_navigation_mine.png
+    - images/icon_ranking.png
+    - images/icon_collection.png
+    - images/icon_shop_car.png
+    - images/no_search_result.png
+    - images/net_error.png
+    - images/no_order.png
+    - images/no_msg.png
+    - images/no_cart.png
+    - images/icon_vip_bg.png
+    - images/icon_vip_crown.png
+    - images/icon_mine_bg.png
+    - images/icon_setting.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

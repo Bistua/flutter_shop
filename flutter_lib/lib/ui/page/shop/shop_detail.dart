@@ -5,18 +5,19 @@ import 'package:flutter_lib/bridge/cart_bridge.dart';
 import 'package:flutter_lib/bridge/common_bridge.dart';
 import 'package:flutter_lib/bridge/sku_bridge.dart';
 import 'package:flutter_lib/logic/bloc/product_bloc.dart';
-import 'package:flutter_lib/logic/inherited/product_provider.dart';
 import 'package:flutter_lib/logic/viewmodel/comment_view_model.dart';
 import 'package:flutter_lib/model/Result.dart';
-import 'package:flutter_lib/model/productdetail.dart';
-import 'package:flutter_lib/model/skuresult.dart';
 import 'package:flutter_lib/model/cart.dart';
 import 'package:flutter_lib/model/comment.dart';
-import 'package:flutter_lib/model/productitem.dart';
+import 'package:flutter_lib/model/productdetail.dart';
 import 'package:flutter_lib/model/skuinfo.dart';
+import 'package:flutter_lib/model/skuresult.dart';
+import 'package:flutter_lib/ui/inherited/product_provider.dart';
 import 'package:flutter_lib/ui/page/order/shop_order.dart';
+import 'package:flutter_lib/ui/widgets/error_status_widget.dart';
 import 'package:flutter_lib/ui/widgets/rating_bar.dart';
 import 'package:flutter_lib/utils/uidata.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 class ShopDetailPage extends StatefulWidget {
   int productId;
@@ -42,6 +43,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
   int chooseCount = 1;
   String chooseCountStr = "1";
   int cartCount = 0;
+  String productName = "";
 
   ShopDetailPageState(int productId) {
     this.productId = productId;
@@ -50,34 +52,64 @@ class ShopDetailPageState extends State<ShopDetailPage> {
   @override
   void initState() {
     super.initState();
+    productBloc = ProductBloc();
+    productBloc.getProduct(productId);
   }
 
   @override
   void dispose() {
-//    productBloc.close();
+    productBloc.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     print("ShopDetailPage build");
-    productBloc = ProductBloc();
     return ProductProvider(
         productBloc: productBloc,
         child: new Scaffold(
-          appBar: UIData.getCenterTitleAppBar("商品名称", context),
+          appBar: AppBar(
+            centerTitle: true,
+            title: StreamBuilder<ProductDetail>(
+                stream: productBloc.productDetail,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    if (snapshot.data != null &&
+                        snapshot.data.name.isNotEmpty) {
+                      productName = snapshot.data.name;
+                      return Text(productName);
+                    }
+                  } else {
+                    return Text(productName);
+                  }
+                }),
+            leading: new IconButton(
+              icon: UIData.back,
+              onPressed: () => Navigator.pop(context, false),
+            ),
+          ),
           body: bodyData(),
         ));
   }
 
   Widget bodyData() {
-    productBloc.getProduct(productId);
     return StreamBuilder<ProductDetail>(
         stream: productBloc.productDetail,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             print("getProduct hasdata");
-            return buidBody(snapshot.data);
+            if (snapshot.data != null && snapshot.data.name.isNotEmpty) {
+              return buidBody(snapshot.data);
+            } else {
+              return ErrorStatusWidget.order(0, "数据异常", "点击重试", () {
+                productBloc.getProduct(productId);
+              });
+            }
+          } else if (snapshot.hasError) {
+            Result result = snapshot.error;
+            return ErrorStatusWidget.order(result.code, result.msg, "点击重试", () {
+              productBloc.getProduct(productId);
+            });
           } else {
             return Center(child: CircularProgressIndicator());
           }
@@ -85,7 +117,6 @@ class ShopDetailPageState extends State<ShopDetailPage> {
   }
 
   Container buidBody(ProductDetail product) {
-
     productBloc.getProductSkuInfo(productId);
     return Container(
       child: Stack(
@@ -102,16 +133,20 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                   flex: 1,
                   child: Stack(
                     children: <Widget>[
-                      Center(
-                          child: IconButton(
-                              icon: Icon(
-                                Icons.shopping_cart,
-                                color: Colors.black,
-                              ),
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                    context, UIData.ShopCartListPage);
-                              })),
+                      Container(
+                        margin: const EdgeInsets.fromLTRB(10, 0, 5, 0),
+                        child: Center(
+                            child: IconButton(
+                                icon: Image.asset(
+                                  'images/icon_shop_car.png',
+                                  width: 22.0,
+                                  height: 22.0,
+                                ),
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, UIData.ShopCartListPage);
+                                })),
+                      ),
                       Positioned(
                         right: 8,
                         top: 8,
@@ -130,17 +165,34 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                 ),
                 Expanded(
                   flex: 1,
-                  child: IconButton(
-                    icon: Icon(Icons.star, color: Colors.black),
-                    onPressed: () {},
+                  child: Container(
+                    margin: const EdgeInsets.fromLTRB(5, 0, 10, 0),
+                    child: IconButton(
+                      icon: Image.asset(
+                        'images/icon_collection.png',
+                        width: 22.0,
+                        height: 22.0,
+                      ),
+                      onPressed: () {
+                        Navigator.pushNamed(context, UIData.MineCollectionPage);
+                      },
+                    ),
                   ),
                 ),
                 UIData.getShapeButton(
-                    UIData.fffa4848, UIData.fff, 125, 50, "加入购物车", 16, 0, () {
+                    UIData.fffa4848, UIData.fff, 100, 50, "加入购物车", 16, 0, () {
+                  if (skuInfo == null) {
+                    print("执行加入购物车");
+                    addCart(product, product.skuId.toString());
+                    return;
+                  }
                   getSkuResult(product);
                 }),
                 UIData.getShapeButton(
-                    UIData.ffffa517, UIData.fff, 110, 50, "立即购买", 16, 0, () {
+                    UIData.ffffa517, UIData.fff, 95, 50, "立即购买", 16, 0, () {
+                  if (skuInfo == null) {
+                    addOrderCart(product, product.skuId.toString());
+                  }
                   Navigator.push(
                       context,
                       new MaterialPageRoute(
@@ -162,6 +214,12 @@ class ShopDetailPageState extends State<ShopDetailPage> {
   }
 
   CustomScrollView buildCustomScrollView(ProductDetail product) {
+    String img = "";
+    if (product != null &&
+        product.medias != null &&
+        product.medias.isNotEmpty) {
+      img = product.medias[0].url;
+    }
     return CustomScrollView(
       slivers: <Widget>[
         SliverList(
@@ -192,16 +250,24 @@ class ShopDetailPageState extends State<ShopDetailPage> {
           delegate: SliverChildListDelegate(
             [
               Container(
-                color: UIData.fff,
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(15, 17, 15, 12),
-                  child: Text(
-                    "商品详情",
-                    style: TextStyle(color: UIData.ff353535, fontSize: 15),
-                  ),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(5.0),
+                      bottomRight: Radius.circular(5.0)),
                 ),
               ),
-              UIData.getImage(product.medias[0].url),
+              (product.description == null || product.description.isEmpty)
+                  ? Container(
+                      width: 0,
+                      height: 0,
+                    )
+                  : Container(
+                      child: HtmlWidget(
+                        product.description,
+                        webView: true,
+                      ),
+                    ),
             ],
           ),
         ),
@@ -213,16 +279,26 @@ class ShopDetailPageState extends State<ShopDetailPage> {
     return StreamBuilder<SkuInfo>(
         stream: productBloc.skuInfo,
         builder: (context, snapshot) {
-          if(snapshot.hasData){
-            print("getProduct sku hasdata");
+          if (snapshot.hasData) {
             return buildVipInfo(product, snapshot.data);
-          }else{
+          } else if (snapshot.hasError) {
+            Result result = snapshot.error;
+            return ErrorStatusWidget.order(result.code, result.msg, "点击重试", () {
+              productBloc.getProductSkuInfo(productId);
+            });
+          } else {
             return Center(child: CircularProgressIndicator());
           }
         });
   }
 
   Padding buildHeader(ProductDetail product) {
+    String img = "";
+    if (product != null &&
+        product.medias != null &&
+        product.medias.isNotEmpty) {
+      img = product.medias[0].url;
+    }
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
       child: new Container(
@@ -230,7 +306,15 @@ class ShopDetailPageState extends State<ShopDetailPage> {
         child: new Center(
           child: new Column(
             children: <Widget>[
-              UIData.getImage(product.medias[0].url),
+              Container(
+                child: UIData.getImage(img),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(5.0),
+                      bottomRight: Radius.circular(5.0)),
+                ),
+              ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -273,7 +357,10 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                         ),
                         Expanded(
                           child: GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, UIData.IviteFriendsPage);
+                            },
                             child: Container(
                               width: 115,
                               height: 20,
@@ -295,14 +382,14 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                   Padding(
                     padding: EdgeInsets.fromLTRB(15, 6, 15, 6),
                     child: Text(
-                      product.name,
+                      product.name == null ? "" : product.name,
                       style: TextStyle(color: UIData.ff353535, fontSize: 16),
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.fromLTRB(15, 6, 15, 15),
                     child: Text(
-                      product.detail,
+                      product.metaTitle == null ? "" : product.metaTitle,
                       style: TextStyle(color: UIData.ff999999, fontSize: 12),
                     ),
                   ),
@@ -447,16 +534,21 @@ class ShopDetailPageState extends State<ShopDetailPage> {
   }
 
   Padding buildVipInfo(ProductDetail product, SkuInfo data) {
-    this.skuInfo = data;
+    print(data.toString());
     String skuInfoSelect = "";
-    for (int i = 0; i < this.skuInfo.options.length; i++) {
-      var o = this.skuInfo.options[i];
-      List<ValuesListBean> vs = this.skuInfo.options[i].values;
-      for (int j = 0; j < vs.length; j++) {
-        var v = vs[j];
-        if (j == 0) {
-          widget.mapForUI[o.key] = v;
-          skuInfoSelect = skuInfoSelect + "  " + o.key + ":" + v.name;
+    if (skuInfo != null &&
+        skuInfo.options != null &&
+        skuInfo.options.isNotEmpty) {
+      this.skuInfo = data;
+      for (int i = 0; i < this.skuInfo.options.length; i++) {
+        var o = this.skuInfo.options[i];
+        List<ValuesListBean> vs = this.skuInfo.options[i].values;
+        for (int j = 0; j < vs.length; j++) {
+          var v = vs[j];
+          if (j == 0) {
+            widget.mapForUI[o.key] = v;
+            skuInfoSelect = skuInfoSelect + "  " + o.key + ":" + v.name;
+          }
         }
       }
     }
@@ -469,45 +561,58 @@ class ShopDetailPageState extends State<ShopDetailPage> {
         child: new Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Padding(
-              padding: EdgeInsets.all(15),
-              child: GestureDetector(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      widget.skuInfoSelect + "  数量：" + chooseCount.toString(),
-                      style: TextStyle(color: UIData.ff353535, fontSize: 15),
+            widget.skuInfoSelect.isEmpty
+                ? Container(
+                    width: 0,
+                    height: 0,
+                  )
+                : Padding(
+                    padding: EdgeInsets.all(15),
+                    child: GestureDetector(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            widget.skuInfoSelect +
+                                "  数量：" +
+                                chooseCount.toString(),
+                            style:
+                                TextStyle(color: UIData.ff353535, fontSize: 15),
+                          ),
+                          Icon(Icons.arrow_forward_ios),
+                        ],
+                      ),
+                      onTap: () {
+                        if (skuInfo == null) {
+                          getSkuResult(product);
+                          return;
+                        }
+                        showChooseDialog(product);
+                      },
                     ),
-                    Icon(Icons.arrow_forward_ios),
-                  ],
-                ),
-                onTap: () {
-                  if (skuInfo == null) {
-                    getSkuResult(product);
-                    return;
-                  }
-                  showChooseDialog(product);
-                },
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
-              child: Divider(),
-            ),
-            Padding(
-              padding: EdgeInsets.all(15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "在线支付运费0元",
-                    style: TextStyle(color: UIData.ff353535, fontSize: 15),
                   ),
-                  Icon(Icons.arrow_forward_ios),
-                ],
-              ),
-            ),
+            widget.skuInfoSelect.isEmpty
+                ? Container(
+                    width: 0,
+                    height: 0,
+                  )
+                : Padding(
+                    padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
+                    child: Divider(),
+                  ),
+//            Padding(
+//              padding: EdgeInsets.all(15),
+//              child: Row(
+//                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                children: <Widget>[
+//                  Text(
+//                    "在线支付运费0元",
+//                    style: TextStyle(color: UIData.ff353535, fontSize: 15),
+//                  ),
+//                  Icon(Icons.arrow_forward_ios),
+//                ],
+//              ),
+//            ),
           ],
         ),
       ),
@@ -554,10 +659,13 @@ class ShopDetailPageState extends State<ShopDetailPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  UIData.getImageWithWH(
-                    product.medias[0].url,
-                    90,
-                    90,
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    child: UIData.getImageWithWH(
+                      product.medias[0].url,
+                      90,
+                      90,
+                    ),
                   ),
                   Expanded(
                     child: Column(
@@ -605,6 +713,10 @@ class ShopDetailPageState extends State<ShopDetailPage> {
             18,
             5,
             () {
+              if (skuInfo == null) {
+                addCart(product, product.skuId.toString());
+                return;
+              }
               getSkuResult(product);
             },
           ),
@@ -652,6 +764,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
       ).toList(),
     );
   }
+
 //
 //  void getSkuList(int productId) {
 //    Future<Result> skuFuture = SkuBridge.findGoodsSku(productId.toString());
@@ -685,21 +798,23 @@ class ShopDetailPageState extends State<ShopDetailPage> {
       print(int64list);
       Future<Result> skuFuture =
           SkuBridge.findGoodsSkuInfo(productId.toString(), int64list);
-
       skuFuture.then((result) {
         if (result.code == 200) {
           SkuResult skuResult = SkuResult.fromJson(result.data);
           addCart(product, skuResult.id.toString());
         } else {
-          Bridge.showLongToast(result.msg);
+          print("获取sku 加入购物车");
+//          Bridge.showLongToast(result.msg);
+          addCart(product, product.skuId.toString());
         }
       });
     } else {
-      addCart(product, product.id.toString());
+      addCart(product, product.skuId.toString());
     }
   }
 
   void addCart(ProductDetail product, String skuId) {
+    print("skuId:=" + skuId);
     Future<Result> future = CartBridge.addSku(
         productId,
         product.id.toString(),
@@ -708,7 +823,7 @@ class ShopDetailPageState extends State<ShopDetailPage> {
         0,
         "规格",
         product.name,
-        product.medias[0].url);
+        product.medias.length == 0 ? "" : product.medias[0].url);
     future.then((result) {
       if (result.code == 200) {
         Cart categoryList = Cart.fromJson(result.data);
@@ -716,6 +831,33 @@ class ShopDetailPageState extends State<ShopDetailPage> {
           print("setState" + categoryList.totalCounts.toString());
           cartCount = categoryList.totalCounts;
         });
+      } else {
+        Bridge.showLongToast(result.msg);
+      }
+    });
+  }
+
+  /*
+   * 立即下单列表
+   */
+  void addOrderCart(ProductDetail product, String skuId) {
+    print("skuId:=" + skuId);
+    Future<Result> future = CartBridge.addSkuOrder(
+        productId,
+        product.id.toString(),
+        chooseCount,
+        product.retailPrice,
+        0,
+        "规格",
+        product.name,
+        product.medias.length == 0 ? "" : product.medias[0].url);
+    future.then((result) {
+      if (result.code == 200) {
+//        Cart categoryList = Cart.fromJson(result.data);
+//        setState(() {
+//          print("setState" + categoryList.totalCounts.toString());
+//          cartCount = categoryList.totalCounts;
+//        });
       } else {
         Bridge.showLongToast(result.msg);
       }

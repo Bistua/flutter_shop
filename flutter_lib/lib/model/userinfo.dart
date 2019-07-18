@@ -1,6 +1,19 @@
 class Userinfo {
+
+//  balanceAmt:金币
+////  totalConsumeAmt:总的消费额
+////  userCode:邀请码
+////  phone:手机号
+////  inviteNum:我的会员个数
+////  userSex:性别，1：男，2：女
+////  userImgUrl:用户头像
+////  openId:微信openid
+////  nickName：昵称
+////  cityName:所在城市
+////  provinceName：所在省份
+
   String balanceAmt;
-  String totalConsumeAmt;
+  String totalConsume;
   String phone;
   String userCode;
   String status;
@@ -18,11 +31,11 @@ class Userinfo {
   String inviteNum;
 
 
-  Userinfo({this.balanceAmt, this.totalConsumeAmt, this.phone, this.userCode, this.status, this.parentId, this.createTime, this.userLevel, this.userSex, this.userImgUrl, this.openId, this.nickName, this.cityName, this.countryName, this.provinceName, this.imgUrl, this.inviteNum});
+  Userinfo({this.balanceAmt, this.totalConsume, this.phone, this.userCode, this.status, this.parentId, this.createTime, this.userLevel, this.userSex, this.userImgUrl, this.openId, this.nickName, this.cityName, this.countryName, this.provinceName, this.imgUrl, this.inviteNum});
 
   Userinfo.fromJson(Map<String, dynamic> json) {    
     this.balanceAmt = json['balanceAmt'];
-    this.totalConsumeAmt = json['totalConsumeAmt'];
+    this.totalConsume = json['totalConsume'];
     this.phone = json['phone'];
     this.userCode = json['userCode'];
     this.status = json['status'];
@@ -43,7 +56,7 @@ class Userinfo {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['balanceAmt'] = this.balanceAmt;
-    data['totalConsumeAmt'] = this.totalConsumeAmt;
+    data['totalConsume'] = this.totalConsume;
     data['phone'] = this.phone;
     data['userCode'] = this.userCode;
     data['status'] = this.status;

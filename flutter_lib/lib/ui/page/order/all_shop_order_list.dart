@@ -1,12 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/logic/bloc/oder_list_bloc.dart';
+import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/orderListItem.dart';
+import 'package:flutter_lib/ui/page/order/order_action_widget.dart';
+import 'package:flutter_lib/ui/widgets/error_status_widget.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class AllShopOrderPage extends StatefulWidget {
+  final int initialIndex;
+
+  AllShopOrderPage(this.initialIndex);
+
   @override
   State<StatefulWidget> createState() {
-    return _ShopCartListState();
+    List<Widget> pages = List();
+
+    pages.add(Container(child: TagOrderPage(0)));
+    pages.add(Container(child: TagOrderPage(1)));
+    pages.add(Container(child: TagOrderPage(2)));
+    pages.add(Container(child: TagOrderPage(3)));
+    pages.add(Container(child: TagOrderPage(4)));
+
+    return _ShopCartListState(pages);
   }
 }
 
@@ -16,6 +31,8 @@ class TagOrderPage extends StatefulWidget {
     this.type = i;
   }
 
+  OrderListBloc orderListBloc;
+
   @override
   State<StatefulWidget> createState() {
     return TagState();
@@ -23,7 +40,18 @@ class TagOrderPage extends StatefulWidget {
 }
 
 class TagState extends State<TagOrderPage> {
-  OrderListBloc orderListBloc = OrderListBloc();
+  @override
+  void initState() {
+    super.initState();
+    widget.orderListBloc = OrderListBloc();
+    widget.orderListBloc.getOrderListList(context,widget.type);
+  }
+
+  @override
+  void dispose() {
+    widget.orderListBloc?.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,58 +59,51 @@ class TagState extends State<TagOrderPage> {
   }
 
   Widget getOrderList(int type) {
-//    todo type
-    orderListBloc.getOrderListList(type);
     return StreamBuilder<List<OrderItem>>(
-        stream: orderListBloc.productItems,
+        stream: widget.orderListBloc.productItems,
         builder: (context, snapshot) {
           List<OrderItem> list = snapshot.data;
-          return snapshot.hasData
-              ? ((list == null || list.isEmpty)
-                  ? empty(type)
-                  : buildListView(list))
-              : Center(child: CircularProgressIndicator());
+          if (snapshot.hasData) {
+            if (snapshot.data.isNotEmpty) {
+              return buildListView(type, list);
+            } else {
+              return ErrorStatusWidget.order(0,"暂无订单","去下单", () {
+                Navigator.pushNamed(context, UIData.ShopCategoryList,
+                    arguments: "全部分类");
+              });
+            }
+          } else if (snapshot.hasError) {
+            Result result = snapshot.error;
+            return ErrorStatusWidget.order(result.code,result.msg,"去下单", () {
+              Navigator.pushNamed(context, UIData.ShopCategoryList,
+                  arguments: "全部分类");
+            });
+          } else {
+            return center();
+          }
         });
   }
 
-  Widget empty(int type) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32.0),
-        child: GestureDetector(
-          child: Padding(
-            padding: const EdgeInsets.all(32.0),
-            child: Text("无数据,点击重试"),
-          ),
-          onTap: () {
-            orderListBloc.getOrderListList(type);
-          },
-        ),
-      ),
-    );
+  Center center() {
+    widget.orderListBloc.getOrderListList(context,widget.type);
+    return Center(child: CircularProgressIndicator());
   }
 
-  Widget buildListView(List<OrderItem> orders) {
+  Widget buildListView(int type, List<OrderItem> orders) {
     return ListView.builder(
       itemCount: orders == null ? 0 : orders.length,
       itemBuilder: (context, index) {
-        return buildOrderItem(orders, index);
+        return buildOrderItem(orders, index, type);
       },
     );
   }
 
-  GestureDetector buildOrderItem(List<OrderItem> orders, int index) {
+  GestureDetector buildOrderItem(List<OrderItem> orders, int index, int type) {
     OrderItem orderItem = orders[index];
     List<Good> prducts = orderItem.products;
     String status = "无状态";
-    String action = "无动作";
-
 //    1:待付款，2:待发货，3:待收货，4:待评价,0:全部
-
     switch (orderItem.status) {
-      case 0:
-        status = "已取消";
-        break;
       case 1:
         status = "待付款";
         break;
@@ -94,6 +115,9 @@ class TagState extends State<TagOrderPage> {
         break;
       case 4:
         status = "待评价";
+        break;
+      default:
+        status = "已取消";
         break;
     }
 
@@ -134,20 +158,17 @@ class TagState extends State<TagOrderPage> {
                       Text(
                         "共" +
                             prducts.length.toString() +
-                            "商品，已付款：" +
+                            "商品，总价：￥" +
                             orderItem.payPrice.toString(),
                         style: TextStyle(color: UIData.ff353535, fontSize: 14),
                       ),
                     ],
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Text(
-                        action,
-                        style: TextStyle(color: UIData.ff353535, fontSize: 14),
-                      ),
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
+                    child: OrderActionWidget(orderItem, type, () {
+                      widget.orderListBloc.getOrderListList(context,type);
+                    }),
                   ),
                 ],
               ),
@@ -156,14 +177,14 @@ class TagState extends State<TagOrderPage> {
         ),
       ),
       onTap: () {
-        Navigator.pushNamed(context, UIData.OrderDetailPage);
+        Navigator.pushNamed(context, UIData.OrderDetailPage,
+            arguments: orderItem.orderNumber);
       },
     );
   }
 
   GestureDetector buildListIItem(Good product) {
-    String img = "";
-    String description = "没有";
+    String img = product.goodsImgUrl;
     String price = product.goodsPrice;
     String count = product.buyNum;
     return GestureDetector(
@@ -191,20 +212,6 @@ class TagState extends State<TagOrderPage> {
                         style: TextStyle(fontSize: 12, color: UIData.ff353535)),
                   ),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(12, 0, 13, 0),
-                    child: Container(
-                        height: 18,
-                        width: 92,
-                        decoration: BoxDecoration(
-                            color: UIData.fff7f7f7,
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.circular(3)),
-                        child: Center(
-                          child: UIData.getTextWidget(
-                              description, UIData.ff999999, 11),
-                        )),
-                  ),
-                  Padding(
                     padding: EdgeInsets.fromLTRB(15, 6, 15, 17),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
@@ -219,11 +226,14 @@ class TagState extends State<TagOrderPage> {
                           ),
                         ),
                         Container(
-                          width: 20,
+                          width: 100,
                           height: 20,
                           child: Center(
-                            child: UIData.getTextWidget(
-                                "x" + count.toString(), UIData.ff999999, 11),
+                            child: Text("数量：x " + count.toString(),
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  color: UIData.ff999999,
+                                )),
                           ),
                           decoration: BoxDecoration(
                             border:
@@ -249,15 +259,15 @@ class TagState extends State<TagOrderPage> {
 }
 
 class _ShopCartListState extends State<AllShopOrderPage> {
-  OrderListBloc orderListBloc = OrderListBloc();
+  List<Widget> pages;
+  _ShopCartListState(pages) {
+    this.pages = pages;
+  }
 
   @override
   Widget build(BuildContext context) {
-//    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-//      statusBarColor: UIData.fffa4848, //or set color with: Color(0xFF0000FF)
-//    ));
-
     return DefaultTabController(
+      initialIndex: widget.initialIndex,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: UIData.fff,
@@ -286,7 +296,16 @@ class _ShopCartListState extends State<AllShopOrderPage> {
                   color: UIData.fff,
                   child: Text(
                     "全部",
-                    style: TextStyle(color: UIData.ff666666, fontSize: 14),
+                    style: TextStyle(color: UIData.ff666666, fontSize: 12),
+                  ),
+                ),
+              ),
+              Tab(
+                child: Container(
+                  color: UIData.fff,
+                  child: Text(
+                    "待付款",
+                    style: TextStyle(color: UIData.ff666666, fontSize: 12),
                   ),
                 ),
               ),
@@ -295,7 +314,16 @@ class _ShopCartListState extends State<AllShopOrderPage> {
                   color: UIData.fff,
                   child: Text(
                     "待发货",
-                    style: TextStyle(color: UIData.ff666666, fontSize: 14),
+                    style: TextStyle(color: UIData.ff666666, fontSize: 12),
+                  ),
+                ),
+              ),
+              Tab(
+                child: Container(
+                  color: UIData.fff,
+                  child: Text(
+                    "待收货",
+                    style: TextStyle(color: UIData.ff666666, fontSize: 12),
                   ),
                 ),
               ),
@@ -304,7 +332,7 @@ class _ShopCartListState extends State<AllShopOrderPage> {
                   color: UIData.fff,
                   child: Text(
                     "待评价",
-                    style: TextStyle(color: UIData.ff666666, fontSize: 14),
+                    style: TextStyle(color: UIData.ff666666, fontSize: 12),
                   ),
                 ),
               ),
@@ -312,15 +340,10 @@ class _ShopCartListState extends State<AllShopOrderPage> {
           ),
         ),
         body: TabBarView(
-          children: [
-            //    1:待付款，2:待发货，3:待收货，4:待评价,0:全部
-            Container(child: TagOrderPage(0)),
-            Container(child: TagOrderPage(2)),
-            Container(child: TagOrderPage(4)),
-          ],
+          children: pages,
         ),
       ),
-      length: 3,
+      length: 5,
     );
   }
 }

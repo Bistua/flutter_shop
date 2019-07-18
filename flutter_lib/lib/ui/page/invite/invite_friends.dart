@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lib/logic/bloc/rebate_bloc.dart';
 import 'package:flutter_lib/logic/bloc/userinfo_bloc.dart';
+import 'package:flutter_lib/model/Result.dart';
 import 'package:flutter_lib/model/rebateList.dart';
 import 'package:flutter_lib/model/userinfo.dart';
+import 'package:flutter_lib/ui/widgets/error_status_widget.dart';
 import 'package:flutter_lib/utils/uidata.dart';
 
 class InviteFriendsPage extends StatefulWidget {
-  InviteFriendsPage({Key key}) : super(key: key);
-
   @override
   InviteFriendsPageState createState() => new InviteFriendsPageState();
 }
 
 class InviteFriendsPageState extends State<InviteFriendsPage> {
-  BuildContext _context;
   UserInfoBloc userInfoBloc = new UserInfoBloc();
   RebateBloc rebateBloc = new RebateBloc();
 
   @override
   Widget build(BuildContext context) {
-    _context = context;
     return new Scaffold(
         appBar: UIData.getCenterTitleAppBar("邀请好友下单", context),
         body: bodyData());
@@ -31,9 +29,24 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
   Widget bodyData() {
     userInfoBloc.getUserInfo();
     return StreamBuilder<Userinfo>(
-        stream: userInfoBloc.userInfoStream.stream,
+        stream: userInfoBloc.userInfo,
         builder: (context, snapshot) {
-          return getCustomScroll(snapshot.data);
+          if (snapshot.hasData) {
+            if (snapshot.data != null) {
+              return getCustomScroll(snapshot.data);
+            } else {
+              return ErrorStatusWidget.order(0, "暂无数据", "点击重试", () {
+                userInfoBloc.getUserInfo();
+              });
+            }
+          } else if (snapshot.hasError) {
+            Result result = snapshot.error;
+            return ErrorStatusWidget.order(result.code, result.msg, "点击重试", () {
+              userInfoBloc.getUserInfo();
+            });
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
         });
   }
 
@@ -43,33 +56,49 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
   Widget getSliverDelegate() {
     rebateBloc.getRebatList();
     return StreamBuilder<List<RebateInfo>>(
-        stream: rebateBloc.rebateStream.stream,
+        stream: rebateBloc.rebateInfo,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            print("又要进来了吧");
-            empty2("hello");
-          } else if (snapshot.hasError) {
-            empty(snapshot.error);
+//            if (snapshot.data == null || snapshot.data.isEmpty) {
+//              return EmptyWidget.WithSliverList(snapshot.error, () {
+//                userInfoBloc.getUserInfo();
+//              });
+//            } else {
+//              return getSliverChild(snapshot.data);
+//            }
+//          } else if (snapshot.hasError) {
+//            return EmptyWidget.WithSliverList(snapshot.error, () {
+//              rebateBloc.getRebatList();
+//            });
+//          } else {
+//            return progress();
+//          }
+            return getSliverChild(snapshot.data);
           } else {
-            return Center(child: CircularProgressIndicator());
+           return getNone();
           }
         });
   }
 
-  Widget empty2(Object error) {
-    return SliverFixedExtentList(itemExtent: 120.0);
+  SliverList getNone() {
+    return SliverList(
+      delegate: SliverChildListDelegate(
+        [
+          Container(
+            height: 0,
+            width: 0,
+          )
+        ],
+      ),
+    );
   }
 
-  Widget empty(Object error) {
-    return Center(
-      child: GestureDetector(
-        child: Padding(
-          padding: const EdgeInsets.all(32.0),
-          child: Text(error == null ? error.toString() : "點擊重試"),
-        ),
-        onTap: () {
-//         todo try again？
-        },
+  Widget progress() {
+    return SliverList(
+      delegate: SliverChildListDelegate(
+        [
+          Center(child: CircularProgressIndicator()),
+        ],
       ),
     );
   }
@@ -82,10 +111,12 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
     return Text("123");
   }
 
-  Widget getSliverChild() {
+  Widget getSliverChild(List<RebateInfo> data) {
 //    print("rankList:" + rankList.length.toString());
+
     return SliverFixedExtentList(
       itemExtent: 77, // I'm forcing item heights
+
       delegate: SliverChildBuilderDelegate(
         (context, index) => Container(
               color: UIData.fff,
@@ -99,7 +130,8 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
                           width: 25,
                           height: 25,
                           child: Center(
-                            child: UIData.getTextWidget("1231", UIData.fff, 15),
+                            child: UIData.getTextWidget(
+                                data[index].userName, UIData.fff, 15),
                           ),
                           decoration: new BoxDecoration(
                             color: UIData.fffa4848,
@@ -113,12 +145,12 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
                         children: <Widget>[
                           Padding(
                             child: UIData.getTextWidget(
-                                "121", UIData.ff353535, 12),
+                                data[index].iegralNum, UIData.ff353535, 12),
                             padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
                           ),
                           Padding(
                             child: UIData.getTextWidget(
-                                "123", UIData.ff353535, 12),
+                                data[index].consumeAmt, UIData.ff353535, 12),
                             padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                           ),
                         ],
@@ -129,7 +161,7 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
                 ],
               ),
             ),
-        childCount: 0,
+        childCount: data.length,
       ),
     );
   }
@@ -146,7 +178,7 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
               buildHeader(userInfo),
               buildVipInfo(userInfo),
               buildPayInfo(userInfo),
-              buildFriendsPayInfoList(),
+              buildFriendsPayInfoList(userInfo),
             ],
           ),
         ),
@@ -155,35 +187,42 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
     );
   }
 
-  Padding buildFriendsPayInfoList() {
+  Padding buildFriendsPayInfoList(Userinfo userInfo) {
+    bool isDIsplay = ((userInfo.inviteNum == "0") || (userInfo == null));
     return Padding(
-      padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
-      child: new Container(
-        child: new Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, 13, 0, 15),
-              child: new Column(
-                children: <Widget>[
-                  new Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+      child: new Offstage(
+          offstage: isDIsplay,
+          child: new Container(
+            child: new Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 13, 0, 15),
+                  child: new Column(
                     children: <Widget>[
-                      Icon(Icons.cloud_upload),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(7, 0, 0, 0),
-                        child: UIData.getTextWidget(
-                            "好友成功消费排行版", UIData.ff353535, 15),
+                      new Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Image.asset(
+                            'images/icon_ranking.png',
+                            width: 19.0,
+                            height: 19.0,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(7, 0, 0, 0),
+                            child: UIData.getTextWidget(
+                                "好友成功消费排行版", UIData.ff353535, 15),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          )),
+      padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
     );
   }
 
@@ -205,7 +244,7 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
                     style: TextStyle(color: UIData.ff353535, fontSize: 15),
                   ),
                   Text(
-                    "累计1560.0",
+                    userInfo == null ? "" : userInfo.totalConsume,
                     style: TextStyle(color: UIData.fffa4848, fontSize: 15),
                   )
                 ],
@@ -246,7 +285,7 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
                     style: TextStyle(color: UIData.ff353535, fontSize: 15),
                   ),
                   Text(
-                    "0个",
+                    userInfo == null ? "" : userInfo.balanceAmt,
                     style: TextStyle(color: UIData.ff353535, fontSize: 15),
                   )
                 ],
@@ -265,7 +304,9 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(15, 8, 15, 10),
-              child: UIData.getMaxWidthButton("立即成为VIP", () {}),
+              child: UIData.getMaxWidthButton("立即成为VIP", () {
+                Navigator.pushNamed(context, UIData.VipApplyPage, arguments: 0);
+              }),
             ),
           ],
         ),
@@ -292,12 +333,26 @@ class InviteFriendsPageState extends State<InviteFriendsPage> {
                 "专属邀请码",
                 style: TextStyle(color: UIData.ffffa5a5, fontSize: 12),
               ),
-              new Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 14),
-                child: Text(
-                  userInfo == null ? "" : userInfo.userCode,
-                  style: TextStyle(color: UIData.ffffe116, fontSize: 30),
+              GestureDetector(
+                child: new Padding(
+                  padding: EdgeInsets.fromLTRB(0, 10, 0, 14),
+                  child: Text(
+                    userInfo == null ? "" : userInfo.userCode,
+                    style: TextStyle(color: UIData.ffffe116, fontSize: 30),
+                  ),
                 ),
+                onTap: () {
+                  if (userInfo != null && userInfo.userCode.isNotEmpty) {
+//                    ClipboardManager.copyToClipBoard(
+//                            userInfo == null ? "" : userInfo.userCode)
+//                        .then((result) {
+//                      final snackBar = SnackBar(
+//                        content: Text('已复制到粘贴板'),
+//                      );
+//                      Scaffold.of(context).showSnackBar(snackBar);
+//                    });
+                  }
+                },
               ),
               new Padding(
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 26),

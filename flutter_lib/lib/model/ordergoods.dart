@@ -6,8 +6,11 @@ part 'ordergoods.g.dart';
 class OrderGoods {
   String goodsId;
   String buyNum;
+  String productId;
 
-  OrderGoods(this.goodsId, this.buyNum);
+
+
+  OrderGoods(this.goodsId, this.buyNum, this.productId);
 
   factory OrderGoods.fromJson(Map<String, dynamic> json) => _$OrderGoodsFromJson(json);
 

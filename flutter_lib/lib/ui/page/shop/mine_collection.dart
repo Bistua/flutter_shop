@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lib/bridge/collection_bridge.dart';
 import 'package:flutter_lib/logic/viewmodel/product_view_model.dart';
 import 'package:flutter_lib/model/product.dart';
 import 'package:flutter_lib/utils/uidata.dart';
@@ -21,6 +22,7 @@ class MineCollectionPageState extends State<MineCollectionPage> {
 
   @override
   Widget build(BuildContext context) {
+    CollectionBridge.allCollection(1, 2000);
     return new Scaffold(
       appBar: UIData.getCenterTitleAppBar("我的收藏", context),
       body: Container(

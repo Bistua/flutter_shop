@@ -1,20 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.bristua.flutter.ftshop">
 
     <application
-        android:name="com.bristua.flutter.ftshop.AppApplication"
+        android:name=".AppApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <!--9.0问题-->
-        <uses-library android:name="org.apache.http.legacy" android:required="false" />
+        android:theme="@style/AppTheme"
+        >
+        <activity android:name=".WebActivity"></activity>
+        <!-- 9.0问题 -->
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
         <activity
-            android:name="com.bristua.flutter.ftshop.VideoActivity"
+            android:name=".VideoActivity"
             android:theme="@style/DarkAppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -26,17 +32,15 @@
                     android:host="video"
                     android:scheme="flutterhost" />
             </intent-filter>
-
         </activity>
-
-        <activity android:name="com.bristua.flutter.ftshop.MainActivity">
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -46,8 +50,7 @@
             android:name=".WXAwakenActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <!-- 微信支付回调 -->
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" /> <!-- 微信支付回调 -->
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
